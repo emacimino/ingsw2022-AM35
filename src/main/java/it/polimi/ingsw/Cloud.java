@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 public class Cloud {
     private Collection<Student> StudentInCloud = new HashSet<Student>();

@@ -52,7 +52,7 @@ public class Wizard {
 
     public void Action(){};
 
-    public Card SelectHelperCard(){};
+    public HelperCard SelectHelperCard(){};
 
     public Student SelectStudentFromEntrance(){};
 

@@ -3,8 +3,8 @@ package it.polimi.ingsw;
 import java.util.*;
 
 public class Island {
-    private Collection <Student> StudentInIsland = new Collection <Student>();
-    private Collection <Tower> TowerInIsland = new Collection <Tower>();
+    private Collection <Student> StudentInIsland = new HashSet<Student>();
+    private Collection <Tower> TowerInIsland = new HashSet<Tower>();
 
     public Island(Collection<Student> studentInIsland) {
         StudentInIsland = studentInIsland;

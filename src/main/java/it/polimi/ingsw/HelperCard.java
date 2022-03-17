@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public enum Card {
+public enum HelperCard {
     private int Value, Step;
     private String Wizard;
 

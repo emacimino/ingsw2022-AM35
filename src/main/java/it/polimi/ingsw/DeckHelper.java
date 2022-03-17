@@ -1,29 +1,30 @@
 package it.polimi.ingsw;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.List;
 
 public class DeckHelper {
-    private Collection <Card> PlayableCards = new Collection<Card>();
-    private Collection <Card> UsedCards = new Collection<Card>();
+    private Collection<HelperCard> PlayableCards = new ArrayList<HelperCard>();
+    private Collection <HelperCard> UsedCards = new ArrayList<HelperCard>();
 
-    public DeckHelper(Collection<Card> playableCards, Collection<Card> usedCards) {
+    public DeckHelper(Collection<HelperCard> playableCards, Collection<HelperCard> usedCards) {
         PlayableCards = playableCards;
         UsedCards = usedCards;
     }
 
-    public Collection<Card> getPlayableCards() {
+    public Collection<HelperCard> getPlayableCards() {
         return PlayableCards;
     }
 
-    public Collection<Card> getUsedCards() {
+    public Collection<HelperCard> getUsedCards() {
         return UsedCards;
     }
 
-    public void setPlayableCards(Collection<Card> playableCards) {
+    public void setPlayableCards(Collection<HelperCard> playableCards) {
         PlayableCards = playableCards;
     }
 
-    public void setUsedCards(Collection<Card> usedCards) {
+    public void setUsedCards(Collection<HelperCard> usedCards) {
         UsedCards = usedCards;
     }
 }
