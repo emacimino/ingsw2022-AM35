@@ -4,17 +4,20 @@ import java.util.*;
 
 public class TableOfStudents {
     public Color color;
-    public Collection studentsInTable= HashSet<Student>;
+    public Collection studentsInTable= new HashSet<Student>();
     public int limitOfStudents;
 
-    public TableOfStudents(Color color, Collection studentsInTable, int limitOfStudents) {
+    public TableOfStudents(Color color) {
         this.color = color;
-        this.studentsInTable = studentsInTable;
-        this.limitOfStudents = limitOfStudents;
-    }
+        limitOfStudents=9;
+        }
 
     public Collection getStudentsInTable() {
         return studentsInTable;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public void setStudentsInTable(Collection studentsInTable) {
