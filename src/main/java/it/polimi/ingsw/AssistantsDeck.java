@@ -3,22 +3,29 @@ package it.polimi.ingsw;
 import java.util.ArrayList;
 
 /**
- *Instatiate a deck of Assistants for every Wizard
+ *Instantiate a deck of Assistants for every Wizard
  */
 public class AssistantsDeck {
     ArrayList<AssistantsCards> playableAssistants;
     ArrayList<AssistantsCards> usedAssistants;
 
     /**
-     *
+     *Instantiate a deck of Assistants
      */
     public AssistantsDeck() {
-        this.playableAssistants = playableAssistants;
-        this.usedAssistants = usedAssistants;
+        this.playableAssistants = new ArrayList<>();
+        this.usedAssistants = new ArrayList<>();
 
-        for(AssistantsCards assistantsCards: AssistantsCards.values() ){
-            playableAssistants.add(assistantsCards);
-        }
+        playableAssistants.add(AssistantsCards.CardOne);
+        playableAssistants.add(AssistantsCards.CardTwo);
+        playableAssistants.add(AssistantsCards.CardThree);
+        playableAssistants.add(AssistantsCards.CardFour);
+        playableAssistants.add(AssistantsCards.CardFive);
+        playableAssistants.add(AssistantsCards.CardSix);
+        playableAssistants.add(AssistantsCards.CardSeven);
+        playableAssistants.add(AssistantsCards.CardEight);
+        playableAssistants.add(AssistantsCards.CardNine);
+        playableAssistants.add(AssistantsCards.CardTen);
     }
 
 
@@ -39,8 +46,8 @@ public class AssistantsDeck {
     }
 
     /**
-     * When a card is used it is removed from playable assistant and added to usedAssistant
-     * @param assistantCard
+     * When a card is used it is removed from the playable assistant and added to the usedAssistant
+     * @param assistantCard is an instance of AssistantsCard
      */
     public void usedAssistantCard(AssistantsCards assistantCard){
         playableAssistants.remove(assistantCard);

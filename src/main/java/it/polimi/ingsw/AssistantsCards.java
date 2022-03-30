@@ -17,6 +17,7 @@ public enum AssistantsCards {
 
         private final int value;
         private final int step;
+
         AssistantsCards(int value, int step) {
             this.value = value;
             this.step = step;

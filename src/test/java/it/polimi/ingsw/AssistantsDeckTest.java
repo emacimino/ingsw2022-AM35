@@ -2,29 +2,26 @@ package it.polimi.ingsw;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 
 class AssistantsDeckTest {
 
-    public ArrayList<AssistantsCards> ()    {
-        ArrayList<AssistantsCards> ar = new ArrayList<AssistantsCards>();
-        ar.add();
-        ar.add();
-        ar.add();
-        return();
-    }
     @Test
-    void getPlayableAssistants(AssistantsDeck assistantsDeck) {
+    void getPlayableAssistantsTest() {
         AssistantsDeck assistantsDeckTest = new AssistantsDeck();
-        for(AssistantsCards assistantDeckTest : assistantsDeck.playableAssistants);
-        Assertions.assertArrayEquals(assistantsDeckTest.playableAssistants, assistantsDeck.playableAssistants);
+        Assertions.assertEquals(assistantsDeckTest.getPlayableAssistants(), assistantsDeckTest.playableAssistants);
     }
 
     @Test
-    void getUsedAssistants() {
+    void getUsedAssistantsTest() {
+        AssistantsDeck assistantsDeckTest = new AssistantsDeck();
+        Assertions.assertEquals(assistantsDeckTest.getUsedAssistants(), assistantsDeckTest.usedAssistants);
     }
 
     @Test
-    void usedAssistantCard() {
+    void usedAssistantCardTest() {
+        AssistantsDeck assistantsDeckTest = new AssistantsDeck();
+        assistantsDeckTest.usedAssistantCard(AssistantsCards.CardFour);
+        Assertions.assertEquals(assistantsDeckTest.getPlayableAssistants(), assistantsDeckTest.playableAssistants);
+        Assertions.assertEquals(assistantsDeckTest.getUsedAssistants(), assistantsDeckTest.usedAssistants);
     }
 }
