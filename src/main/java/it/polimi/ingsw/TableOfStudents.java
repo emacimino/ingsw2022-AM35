@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TableOfStudents {
     public Color color;
-    public Collection studentsInTable= new HashSet<Student>();
+    public Collection<Student> studentsInTable= new HashSet<>();
     public int limitOfStudents;
 
     public TableOfStudents(Color color) {

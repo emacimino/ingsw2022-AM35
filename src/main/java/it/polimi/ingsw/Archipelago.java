@@ -38,7 +38,7 @@ public class Archipelago {
     public int calculateInfluenceInArchipelago(Wizard w){
         int influence=0;
         for (Island island: isle) {
-            try(){
+            try{
                 if(island.getTower().getProperty()==w){
                     influence++;
                 }
@@ -51,9 +51,10 @@ public class Archipelago {
                 influence+=island.getStudentFilteredByColor(c).size();
             }
         }
+        return influence;
     }
 
     public void addStudentInArchipelago(Student student){
-        isle.get(0).studentInIsle.add(student);
+        isle.get(0).getStudentInIsland().add(student);
     }
 }

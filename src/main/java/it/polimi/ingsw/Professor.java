@@ -21,10 +21,6 @@ public class Professor {
         this.property = property;
     }
 
-    public static Color getColor() {
-        return color;
-    }
-
     public Wizard getProperty() {
         return property;
     }

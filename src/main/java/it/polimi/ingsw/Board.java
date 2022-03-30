@@ -1,15 +1,14 @@
 package it.polimi.ingsw;
 
-import sun.tools.jconsole.Tab;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class Board {
-    private Collection towersInBoard= new HashSet<Tower>();
-    private Collection professorInTable= new HashSet<Professor>();
-    private Collection tables= new HashSet<TableOfStudents>();
-    private Collection studentsInEntrance= new HashSet<Student>();
+    private Collection<Tower> towersInBoard= new HashSet<>();
+    private Collection<Professor> professorInTable= new HashSet<>();
+    private Collection<TableOfStudents> tables= new HashSet<>();
+    private Collection<Student> studentsInEntrance= new HashSet<>();
     private final int limitStudentInEntrance;
 
     public Board(int limitStudentInEntrance) {
