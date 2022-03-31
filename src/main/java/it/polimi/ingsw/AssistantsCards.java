@@ -24,16 +24,12 @@ public enum AssistantsCards {
         }
 
     /**
-     *
-     * @param assistantCard
      * @return the value of one card
      */
-    private double getValue(AssistantsCards assistantCard) { return value; }
+    public double getValue() { return value; }
 
     /**
-     *
-     * @param assistantCard
      * @return the step that MotherNature can do by playing that card
      */
-    private double getStep(AssistantsCards assistantCard) { return step; }
+    public double getStep() { return step; }
 }
