@@ -36,7 +36,7 @@ class WizardTest {
         else
             Assertions.assertTrue(wizard.playableAssistantsCard(cardPlayed,playedByOpponent));
 
-        wizard.assistantsDeck.playableAssistants.removeIf(a -> !a.equals(cardPlayed));
+        wizard.getAssistantsDeck().playableAssistants.removeIf(a -> !a.equals(cardPlayed));
         if(wizard.checkIfAssistantsCardAlreadyPlayed(cardPlayed,playedByOpponent) && !wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent))
             Assertions.assertTrue(wizard.playableAssistantsCard(cardPlayed,playedByOpponent));
     }
@@ -65,7 +65,7 @@ class WizardTest {
        boolean isThereAlternative = wizard.checkIfThereIsAlternativeAssistantsCard( playedByOpponent);
        Assertions.assertTrue(isThereAlternative);   //Verified that there is an alternative
 
-        wizard.assistantsDeck.playableAssistants.removeIf(a -> !a.equals(cardPlayed));
+        wizard.getAssistantsDeck().playableAssistants.removeIf(a -> !a.equals(cardPlayed));
 
         if(playedByOpponent.contains(cardPlayed)){
             boolean isThereAlternative_false = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
