@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Wizard is the class who is related to the username of the Player and manage to play the assitant's card
+ * Wizard is the class who is related to the username of the Player and manage to play the assistant's card
  * and move the Student from the Entrance of the Board
  */
 
 public class Wizard {
-   // Board board = new Board;
-    AssistantsDeck assistantsDeck= new AssistantsDeck();
-    String username;
-    Collection<Coin> coins = new HashSet<>();
-   // Collection<Arcrhipelago> archipelagosOfWizard = new HashSet<>();
-    AssistantsCards roundAssistantsCard;
+   // private Board board = new Board;
+    private final AssistantsDeck assistantsDeck= new AssistantsDeck();
+    private final String username;
+    private final Collection<Coin> coins = new HashSet<>();
+   // private Collection<Arcrhipelago> archipelagosOfWizard = new HashSet<>();
+    private AssistantsCards roundAssistantsCard;
 
     public Wizard(String username) {
         this.username = username;
@@ -23,6 +23,18 @@ public class Wizard {
 
     public String getUsername() {
         return username;
+    }
+
+    public AssistantsDeck getAssistantsDeck() {
+        return assistantsDeck;
+    }
+
+    public Collection<Coin> getCoins() {
+        return coins;
+    }
+
+    public AssistantsCards getRoundAssistantsCard() {
+        return roundAssistantsCard;
     }
 
     /**
@@ -82,7 +94,7 @@ public class Wizard {
 
     /**
      * @param playedCardsByOpponent are the assistant's card already played by the opponent
-     * @return if in the deck of the Wizard there is an assistant's card different fromthe cards already played by the opponents, the method returns true
+     * @return if in the deck of the Wizard there is an assistant's card different from the cards already played by the opponents, the method returns true
      */
     public boolean checkIfThereIsAlternativeAssistantsCard( Collection<AssistantsCards> playedCardsByOpponent){
        for( AssistantsCards a : assistantsDeck.playableAssistants){
