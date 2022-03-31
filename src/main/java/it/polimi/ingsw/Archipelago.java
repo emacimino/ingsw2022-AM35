@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class Archipelago {
@@ -33,6 +34,7 @@ public class Archipelago {
         for (Island island: archipelago.isle) {
             isle.add(island);
         }
+        archipelago.getIsle().removeAll(isle);
     }
 
     public int calculateInfluenceInArchipelago(Wizard w){
@@ -46,9 +48,8 @@ public class Archipelago {
             catch(ExceptionTowerNotThere e){
                 ;
             }
-            for (Professor p:w.board.professorInTable) {
-                Color c=w.board.getProfessorInTable().getColor();
-                influence+=island.getStudentFilteredByColor(c).size();
+            if(!w.board.getProfessorInTable().isEmpty()) {
+                influence += w.board.professorInTable.stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
             }
         }
         return influence;

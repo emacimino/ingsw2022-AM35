@@ -20,7 +20,7 @@ public class TableOfStudents {
         return color;
     }
 
-    public void setStudentsInTable(Collection studentsInTable) {
-        this.studentsInTable = studentsInTable;
+    public void setStudentsInTable(Student student) {
+        studentsInTable.add(student);
     }
 }

@@ -12,13 +12,16 @@ public class Professor {
  * */
     public Professor(Color color) {
         this.color = color;
-        property=new Wizard();
     }
 /**
  * @param property is used to tell which Wizard owns what
  * setProperty(Wizard property) is needed because the property changes a lot during the game*/
     public void setProperty(Wizard property) {
         this.property = property;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public Wizard getProperty() {
