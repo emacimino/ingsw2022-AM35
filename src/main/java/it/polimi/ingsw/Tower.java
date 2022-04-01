@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+/**
+ *
+ */
 public class Tower {
     private Wizard property;
 

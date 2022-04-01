@@ -4,51 +4,73 @@ package it.polimi.ingsw;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Board is the board you are given in the beginning and belongs only to you
+ */
 public class Board {
     private Collection<Tower> towersInBoard= new HashSet<>();
-    private Collection<Professor> professorInTable= new HashSet<>();
+    public Collection<Professor> professorInTable= new HashSet<>();
     private Collection<TableOfStudents> tables= new HashSet<>();
     private Collection<Student> studentsInEntrance= new HashSet<>();
-    private final int limitStudentInEntrance;
 
-    public Board(int limitStudentInEntrance) {
-        this.limitStudentInEntrance = limitStudentInEntrance;
+    /**
+     * constructs the class
+     */
+    public Board() {
         for (Color c: Color.values()) {
             tables.add(new TableOfStudents(c));
         }
     }
 
-    public Collection getTowersInBoard() {
+    /**
+     * @return an HashSet of towers that are on the board
+     */
+    public Collection<Tower> getTowersInBoard() {
         return towersInBoard;
     }
 
-    public Collection getProfessorInTable() {
+    /**
+     * @return an HashSet of professors in table
+     */
+    public Collection<Professor> getProfessorInTable() {
         return professorInTable;
     }
 
-    public Collection getTables() {
+    /**
+     * @return an HashSet of tables of students
+     */
+    public Collection<TableOfStudents> getTables() {
         return tables;
     }
 
-    public Collection getStudentsInEntrance() {
+    /**
+     * @return an HashSet of students sitting in the entrance
+     */
+    public Collection<Student> getStudentsInEntrance() {
         return studentsInEntrance;
     }
 
-    public int getLimitStudentInEntrance() {
-        return limitStudentInEntrance;
+    /**
+     * @param professor adds a professor to the HashSet
+     */
+    public void setProfessorInTable(Professor professor) {
+        professorInTable.add(professor);
     }
 
-    public void setProfessorInTable(Collection professorInTable) {
-        this.professorInTable = professorInTable;
-    }
-
+    /**
+     * collects coins every 3 students placed in the table of students
+     */
     public void collectCoins(){}
 
+    /**
+     * This method is used to place a student on the table of students
+     * @param stud is the student that's going to be added to the collection
+     */
     public void addStudentInTable(Student stud){
         Color c=stud.getColor();
-        for (TableOfStudents t : tables ) {
-            if(t.getColor() == c)
-                t.studentsInTable.add(stud);
+        for (TableOfStudents t:
+             tables) {
+            if(t.getColor().equals(c))t.setStudentsInTable(stud);
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.Random;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WizardTest {
-
+/*
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     @DisplayName("playAssistantCardThrowsException_Test (Method setRoundAssistantCard was tested in local since is a private method)")
@@ -106,4 +106,5 @@ class WizardTest {
 
         return combination;
     }
+    */
 }

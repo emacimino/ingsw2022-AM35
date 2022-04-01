@@ -3,16 +3,27 @@ package it.polimi.ingsw;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * This class represents the island that is instanced in the archipelago
+ */
+
 public class Island {
     private Collection<Student> studentInIsland= new HashSet<>();
     private Tower tower;
     private boolean interdictionCard;
 
-
+    /**
+     * @return an HashSet of students present on the island
+     */
     public Collection getStudentInIsland() {
         return studentInIsland;
     }
 
+    /**
+     * This method returns the student filtered by color
+     * @param c color of the students you are looking for
+     * @return an HashSet of student which color is c
+     */
     public Collection getStudentFilteredByColor(Color c){
         Collection<Student> filteredStudents= new HashSet<>();
         for (Student s:studentInIsland) {
@@ -21,9 +32,14 @@ public class Island {
         return filteredStudents;
     }
 
-    public Tower getTower() throws ExceptionTowerNotThere{
+    /**
+     * This method returns a tower object
+     * @return a tower
+     * @throws ExceptionGame that signals that there is no tower on the island
+     */
+    public Tower getTower() throws ExceptionGame{
         if(tower==null){
-            throw new ExceptionTowerNotThere("Tower is not present on the island");
+            throw new ExceptionGame("Tower is not present on the island");
         }
         return tower;
     }

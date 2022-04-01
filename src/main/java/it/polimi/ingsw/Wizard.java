@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Wizard is the class who is related to the username of the Player and manage to play the assistant's card
+ * Wizard is the class who is related to the username of the Player and manage to play the assitant's card
  * and move the Student from the Entrance of the Board
  */
 
 public class Wizard {
-   // private Board board = new Board;
-    private final AssistantsDeck assistantsDeck= new AssistantsDeck();
-    private final String username;
-    private final Collection<Coin> coins = new HashSet<>();
-   // private Collection<Arcrhipelago> archipelagosOfWizard = new HashSet<>();
-    private AssistantsCards roundAssistantsCard;
+    Board board = new Board(7);
+    AssistantsDeck assistantsDeck= new AssistantsDeck();
+    String username;
+    Collection<Coin> coins = new HashSet<>();
+    Collection<Archipelago> archipelagosOfWizard = new HashSet<>();
+    AssistantsCards roundAssistantsCard;
 
     public Wizard(String username) {
         this.username = username;
@@ -23,18 +23,6 @@ public class Wizard {
 
     public String getUsername() {
         return username;
-    }
-
-    public AssistantsDeck getAssistantsDeck() {
-        return assistantsDeck;
-    }
-
-    public Collection<Coin> getCoins() {
-        return coins;
-    }
-
-    public AssistantsCards getRoundAssistantsCard() {
-        return roundAssistantsCard;
     }
 
     /**
@@ -94,7 +82,7 @@ public class Wizard {
 
     /**
      * @param playedCardsByOpponent are the assistant's card already played by the opponent
-     * @return if in the deck of the Wizard there is an assistant's card different from the cards already played by the opponents, the method returns true
+     * @return if in the deck of the Wizard there is an assistant's card different fromthe cards already played by the opponents, the method returns true
      */
     public boolean checkIfThereIsAlternativeAssistantsCard( Collection<AssistantsCards> playedCardsByOpponent){
        for( AssistantsCards a : assistantsDeck.playableAssistants){
@@ -105,11 +93,11 @@ public class Wizard {
        return false;
     }
 
- /*
+
     public void placeStudentOnArchipelago(Student student, Archipelago archipelago) throws ExceptionGame{
         if(checkIfStudentIsMovable(student)){
             archipelago.addStudentInArchipelago(student);
-            board.studentInEntrance.remove(student);
+            board.getStudentsInEntrance().remove(student);
         }else{
             throw new ExceptionGame("Can't move Student \n");
         }
@@ -119,7 +107,7 @@ public class Wizard {
     public void placeStudentOnTable(Student student) throws ExceptionGame{
         if(checkIfStudentIsMovable(student)){
             board.addStudentInTable(student);
-            board.studentInEntrance.remove(student);
+            board.getStudentsInEntrance().remove(student);
         }else{
             throw new ExceptionGame("Can't move Student \n");
         }
@@ -127,8 +115,8 @@ public class Wizard {
 
 
     public boolean checkIfStudentIsMovable(Student student) throws ExceptionGame{
-        if(board.studentInEntrance.contains(student)){
-            if(board.studentInEntrance.size() > board.limitStudentEntrance - 3){
+        if(board.getStudentsInEntrance().contains(student)){
+            if(board.getStudentsInEntrance().size() > board.getLimitStudentInEntrance() - 3){
                     return true;
             }else{
                 throw new ExceptionGame("Already move 3 students \n");
@@ -136,8 +124,8 @@ public class Wizard {
         }else{
             throw new ExceptionGame("Student is not in Board Entrance \n");
         }
-        return false;
+        //return false;
     }
-*/
+
 }
 
