@@ -9,27 +9,35 @@ public class Island {
     private boolean interdictionCard;
 
 
-    public Collection getStudentInIsland() {
+    public Collection<Student> getStudentInIsland() {
         return studentInIsland;
     }
 
-    public Collection getStudentFilteredByColor(Color c){
+    public Collection<Student> getStudentFilteredByColor(Color c){
         Collection<Student> filteredStudents= new HashSet<>();
         for (Student s:studentInIsland) {
-            if(s.getColor()==c)filteredStudents.add(s);
+            if(s.getColor()==c)
+                filteredStudents.add(s);
         }
         return filteredStudents;
     }
 
-    public Tower getTower() throws ExceptionTowerNotThere{
+    public Tower getTower() throws ExceptionGame{
         if(tower==null){
-            throw new ExceptionTowerNotThere("Tower is not present on the island");
+            throw new ExceptionGame("Tower is not present on the island");
         }
         return tower;
     }
 
     public void setTower(Tower tower) {
-        this.tower = tower;
+        try {
+            Wizard wizard = this.tower.getProperty();
+            wizard.getBoard().getTowersInBoard().add(this.tower);
+            this.tower = tower;
+        }catch(NullPointerException e){
+            this.tower = tower;
+        }
+
     }
 
     public boolean isInterdictionCard() {

@@ -9,12 +9,14 @@ import java.util.HashSet;
  */
 
 public class Wizard {
-   // private Board board = new Board;
+    private final Board board = new Board();
     private final AssistantsDeck assistantsDeck= new AssistantsDeck();
     private final String username;
     private final Collection<Coin> coins = new HashSet<>();
-   // private Collection<Arcrhipelago> archipelagosOfWizard = new HashSet<>();
+    private final Collection<Archipelago> archipelagosOfWizard = new HashSet<>();
     private AssistantsCards roundAssistantsCard;
+    private int numOfStudentMovable;
+    private int limitOfStudentInEntrance;
 
     public Wizard(String username) {
         this.username = username;
@@ -35,6 +37,14 @@ public class Wizard {
 
     public AssistantsCards getRoundAssistantsCard() {
         return roundAssistantsCard;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Collection<Archipelago> getArchipelagosOfWizard() {
+        return archipelagosOfWizard;
     }
 
     /**
@@ -105,39 +115,50 @@ public class Wizard {
        return false;
     }
 
- /*
-    public void placeStudentOnArchipelago(Student student, Archipelago archipelago) throws ExceptionGame{
-        if(checkIfStudentIsMovable(student)){
+
+
+    public void placeStudentOnArchipelago(Student student, Archipelago archipelago, int limitStudentEntrance, int numOfStudentMovable) throws ExceptionGame{
+        if(checkIfStudentIsMovable(student, limitStudentEntrance, numOfStudentMovable)){
             archipelago.addStudentInArchipelago(student);
-            board.studentInEntrance.remove(student);
+            board.getStudentsInEntrance().remove(student);
         }else{
             throw new ExceptionGame("Can't move Student \n");
         }
     }
 
 
-    public void placeStudentOnTable(Student student) throws ExceptionGame{
-        if(checkIfStudentIsMovable(student)){
-            board.addStudentInTable(student);
-            board.studentInEntrance.remove(student);
-        }else{
-            throw new ExceptionGame("Can't move Student \n");
-        }
+    public void placeStudentOnTable(Student student, int limitOfStudentInEntrance, int numOfStudentMovable) throws ExceptionGame{
+        try{
+            if(checkIfStudentIsMovable(student, limitOfStudentInEntrance, numOfStudentMovable)) {
+                board.getStudentsInEntrance().remove(student);
+                board.addStudentInTable(student);
+            }
+        }catch(ExceptionGame exceptionGame){
+                throw new ExceptionGame("Can't move Student-> " + exceptionGame, exceptionGame);
+            }
     }
 
 
-    public boolean checkIfStudentIsMovable(Student student) throws ExceptionGame{
-        if(board.studentInEntrance.contains(student)){
-            if(board.studentInEntrance.size() > board.limitStudentEntrance - 3){
+    public boolean checkIfStudentIsMovable(Student student, int limitStudentEntrance, int numOfStudentMovable) throws ExceptionGame{
+        if(board.getStudentsInEntrance().contains(student)){
+            if(board.getStudentsInEntrance().size() > limitStudentEntrance - numOfStudentMovable){
                     return true;
             }else{
-                throw new ExceptionGame("Already move 3 students \n");
+                throw new ExceptionGame("Already move " + numOfStudentMovable + "students");
             }
-        }else{
-            throw new ExceptionGame("Student is not in Board Entrance \n");
-        }
-        return false;
+        }else
+            throw new ExceptionGame("Student is not in Board Entrance");
     }
-*/
+
+    public void placeStudentInEntrance( Collection<Student> students){
+        board.getStudentsInEntrance().addAll(students);
+    }
+
+    @Override
+    public String toString() {
+        return "Wizard{" +
+                "username='" + username + '\'' +
+                '}';
+    }
 }
 

@@ -12,7 +12,7 @@ public class TableOfStudents {
         limitOfStudents=9;
         }
 
-    public Collection getStudentsInTable() {
+    public Collection<Student> getStudentsInTable() {
         return studentsInTable;
     }
 

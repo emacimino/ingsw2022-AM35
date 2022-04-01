@@ -3,10 +3,12 @@ package it.polimi.ingsw;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 
@@ -60,36 +62,75 @@ class WizardTest {
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     void checkIfThereIsAlternativeAssistantCard_Test(AssistantsCards cardPlayed) {
-        Collection<AssistantsCards> playedByOpponent= combinationOfThreeAssistantsCards();
-       Wizard wizard = new Wizard("player_test"); //It is sure that wizard.assistantsDeck has an alternative
-       boolean isThereAlternative = wizard.checkIfThereIsAlternativeAssistantsCard( playedByOpponent);
-       Assertions.assertTrue(isThereAlternative);   //Verified that there is an alternative
+        Collection<AssistantsCards> playedByOpponent = combinationOfThreeAssistantsCards();
+        Wizard wizard = new Wizard("player_test"); //It is sure that wizard.assistantsDeck has an alternative
+        boolean isThereAlternative = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
+        Assertions.assertTrue(isThereAlternative);   //Verified that there is an alternative
 
         wizard.getAssistantsDeck().playableAssistants.removeIf(a -> !a.equals(cardPlayed));
 
-        if(playedByOpponent.contains(cardPlayed)){
+        if (playedByOpponent.contains(cardPlayed)) {
             boolean isThereAlternative_false = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
             Assertions.assertFalse(isThereAlternative_false);
         }
 
 
+    }
+    @ParameterizedTest
+    @ValueSource(ints = {7,9})
+    void placeStudentOnArchipelago_ExceptionTest() {
 
     }
 
-    @Disabled("Disabled until Board is created")
-    @Test
-    void placeStudentOnArchipelago() {
+    @ParameterizedTest
+    @ValueSource(ints = {7,9})
+    void placeStudentOnTable_Test(int limit) {
+        int movable = 3;
+        Wizard wizard = new Wizard("player_test");
+        StudentBag studentBag = new StudentBag();
+        fillBoardEntrance(studentBag, wizard.getBoard(), limit);
+        List<Student> s = new ArrayList<>();
+        s.addAll(wizard.getBoard().getStudentsInEntrance());
+        for(int i= 0; i<limit; i++){
+            try {
+                Student student = s.remove(0);
+                if(wizard.checkIfStudentIsMovable(student, limit, movable)) {
+                    TableOfStudents table = wizard.getBoard().getTables().stream().filter(t -> t.getColor().equals(student.getColor())).findAny().get();
+                    wizard.placeStudentOnTable(student, limit, movable);
+                    Assertions.assertFalse(wizard.getBoard().getStudentsInEntrance().contains(student));
+                    Assertions.assertTrue(table.getStudentsInTable().contains(student));
+                }
+            } catch (ExceptionGame ignored) {
+            }
+        }
+
     }
 
-    @Disabled("Disabled until Board is created")
-    @Test
-    void placeStudentOnTable() {
+    @ParameterizedTest
+    @ValueSource(ints = {7,9})
+    void checkIfStudentIsMovable_Test(int limit) {
+        int movable = 4;
+        Wizard wizard = new Wizard("player_test");
+        StudentBag studentBag = new StudentBag();
 
-    }
-
-    @Disabled("Disabled until Board is created")
-    @Test
-    void checkIfStudentIsMovable(Student s) {
+        for(int i = 0; i<limit-movable; i++){
+            Student student = studentBag.drawStudent();
+            wizard.getBoard().getStudentsInEntrance().add(student);
+        }
+        for (Student s : wizard.getBoard().getStudentsInEntrance()) {
+            Assertions.assertThrows(ExceptionGame.class, ()-> wizard.checkIfStudentIsMovable(s, limit, movable));
+        }
+        fillBoardEntrance(studentBag, wizard.getBoard(), limit);
+        for (Color c : Color.values()){
+            Student student = new Student(c);
+            Assertions.assertThrows(ExceptionGame.class, ()->wizard.checkIfStudentIsMovable(student, limit, movable));
+        }
+        for (Student s : wizard.getBoard().getStudentsInEntrance()) {
+            try {
+                Assertions.assertTrue(wizard.checkIfStudentIsMovable(s, limit, movable));
+            } catch (ExceptionGame ignored) {
+            }
+        }
     }
 
     public Collection<AssistantsCards> combinationOfThreeAssistantsCards(){
@@ -105,5 +146,12 @@ class WizardTest {
         System.out.println();
 
         return combination;
+    }
+
+    public void fillBoardEntrance(StudentBag studentBag, Board board, int limit){
+        for(int i = 0; board.getStudentsInEntrance().size()<limit; i++) {
+            Student student = studentBag.drawStudent();
+            board.getStudentsInEntrance().add(student);
+        }
     }
 }

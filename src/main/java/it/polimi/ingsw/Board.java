@@ -5,45 +5,49 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class Board {
-    private Collection<Tower> towersInBoard= new HashSet<>();
-    private Collection<Professor> professorInTable= new HashSet<>();
-    private Collection<TableOfStudents> tables= new HashSet<>();
-    private Collection<Student> studentsInEntrance= new HashSet<>();
-    private final int limitStudentInEntrance;
+    private final Collection<Tower> towersInBoard= new HashSet<>();
+    private final Collection<Professor> professorInTable= new HashSet<>();
+    private final Collection<TableOfStudents> tables= new HashSet<>();
+    private final Collection<Student> studentsInEntrance= new HashSet<>();
+    //private int limitStudentInEntrance;
 
-    public Board(int limitStudentInEntrance) {
-        this.limitStudentInEntrance = limitStudentInEntrance;
+    public Board() {
         for (Color c: Color.values()) {
             tables.add(new TableOfStudents(c));
         }
     }
 
-    public Collection getTowersInBoard() {
+    public Collection<Tower> getTowersInBoard() {
         return towersInBoard;
     }
 
-    public Collection getProfessorInTable() {
+    public Collection<Professor> getProfessorInTable() {
         return professorInTable;
     }
 
-    public Collection getTables() {
+    public Collection<TableOfStudents> getTables() {
         return tables;
     }
 
-    public Collection getStudentsInEntrance() {
+    public Collection<Student> getStudentsInEntrance() {
         return studentsInEntrance;
     }
 
-    public int getLimitStudentInEntrance() {
+  /*  public int getLimitStudentInEntrance() {
         return limitStudentInEntrance;
     }
 
-    public void setProfessorInTable(Collection professorInTable) {
-        this.professorInTable = professorInTable;
+   */
+
+    public void setProfessorInTable(Professor prof) {
+        professorInTable.add(prof);
     }
 
-    public void collectCoins(){}
+    /*
+    public void collectCoins(){
 
+    }
+*/
     public void addStudentInTable(Student stud){
         Color c=stud.getColor();
         for (TableOfStudents t : tables ) {
