@@ -52,7 +52,7 @@ public class IslandTest {
             Student stud2 = new Student(c);
             island.getStudentInIsland().add(stud);
             island.getStudentInIsland().add(stud2);
-        //    Assertions.assertEquals(stud.getColor(), c);
+            Assertions.assertEquals(stud.getColor(), island.getStudentFilteredByColor(c));
             Assertions.assertEquals(2, island.getStudentFilteredByColor(c).size());
         }
     }

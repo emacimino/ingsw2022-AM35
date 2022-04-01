@@ -1,9 +1,6 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Archipelago is used to facilitate merge between islands and contains Mother Nature's position
