@@ -1,4 +1,9 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Wizard;
+
+import it.polimi.ingsw.*;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.SchoolsLands.Archipelago;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -141,7 +146,7 @@ public class Wizard {
      * @return if in the deck of the Wizard there is an assistant's card different from the cards already played by the opponents, the method returns true
      */
     public boolean checkIfThereIsAlternativeAssistantsCard( Collection<AssistantsCards> playedCardsByOpponent){
-       for( AssistantsCards a : assistantsDeck.playableAssistants){
+       for( AssistantsCards a : assistantsDeck.getPlayableAssistants()){
            if(!playedCardsByOpponent.contains(a)){
                return true;
            }

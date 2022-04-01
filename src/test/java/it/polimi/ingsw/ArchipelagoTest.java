@@ -1,12 +1,17 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Professor;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.SchoolsLands.Archipelago;
+import it.polimi.ingsw.SchoolsLands.Island;
+import it.polimi.ingsw.Wizard.Tower;
+import it.polimi.ingsw.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 class ArchipelagoTest {

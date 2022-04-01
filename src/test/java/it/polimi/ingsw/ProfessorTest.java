@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Professor;
+import it.polimi.ingsw.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

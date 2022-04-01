@@ -2,7 +2,9 @@ package it.polimi.ingsw;
 
 
 
-import org.junit.After;
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Charachter.StudentBag;
 import org.junit.jupiter.api.*;
 import org.junit.Test;
 

@@ -1,5 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Charachter.StudentBag;
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Wizard.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -38,7 +44,7 @@ class WizardTest {
         else
             Assertions.assertTrue(wizard.playableAssistantsCard(cardPlayed,playedByOpponent));
 
-        wizard.getAssistantsDeck().playableAssistants.removeIf(a -> !a.equals(cardPlayed));
+        wizard.getAssistantsDeck().getPlayableAssistants().removeIf(a -> !a.equals(cardPlayed));
         if(wizard.checkIfAssistantsCardAlreadyPlayed(cardPlayed,playedByOpponent) && !wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent))
             Assertions.assertTrue(wizard.playableAssistantsCard(cardPlayed,playedByOpponent));
     }
@@ -67,7 +73,7 @@ class WizardTest {
         boolean isThereAlternative = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
         Assertions.assertTrue(isThereAlternative);   //Verified that there is an alternative
 
-        wizard.getAssistantsDeck().playableAssistants.removeIf(a -> !a.equals(cardPlayed));
+        wizard.getAssistantsDeck().getPlayableAssistants().removeIf(a -> !a.equals(cardPlayed));
 
         if (playedByOpponent.contains(cardPlayed)) {
             boolean isThereAlternative_false = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
@@ -152,7 +158,7 @@ class WizardTest {
         Random r = new Random();
 
         for(int i = 0; i<3; i++){
-            AssistantsCards a = assistantsDeck.playableAssistants.remove(r.nextInt(assistantsDeck.playableAssistants.size()));
+            AssistantsCards a = assistantsDeck.getPlayableAssistants().remove(r.nextInt(assistantsDeck.getPlayableAssistants().size()));
             combination.add(a);
             System.out.println("Assistant Card: value = " + a.getValue() + "; step = " + a.getStep() );
         }

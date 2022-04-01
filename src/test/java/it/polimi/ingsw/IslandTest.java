@@ -1,5 +1,11 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.SchoolsLands.Island;
+import it.polimi.ingsw.Wizard.Tower;
+import it.polimi.ingsw.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

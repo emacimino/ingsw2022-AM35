@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Wizard;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
  *Instantiate a deck of Assistants for every Wizard
  */
 public class AssistantsDeck {
-    ArrayList<AssistantsCards> playableAssistants;
-    ArrayList<AssistantsCards> usedAssistants;
+   private final ArrayList<AssistantsCards> playableAssistants;
+   private final ArrayList<AssistantsCards> usedAssistants;
 
     /**
      *Instantiate a deck of Assistants

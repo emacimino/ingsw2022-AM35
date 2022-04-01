@@ -1,4 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.SchoolsLands;
+
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Charachter.StudentBag;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Charachter;
+
+import it.polimi.ingsw.Wizard.Wizard;
 
 /**
  *

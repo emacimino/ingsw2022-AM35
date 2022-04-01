@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Exception;
 
 /**
  * ExceptionGame, which extends class Exception, is thrown every time there is an irregular move in the Game

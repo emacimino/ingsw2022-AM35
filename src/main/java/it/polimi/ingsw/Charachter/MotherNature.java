@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Charachter;
 
 public class MotherNature {
     private int position;

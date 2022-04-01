@@ -1,5 +1,9 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Wizard;
 
+
+import it.polimi.ingsw.Charachter.Color;
+import it.polimi.ingsw.Charachter.Professor;
+import it.polimi.ingsw.Charachter.Student;
 
 import java.util.Collection;
 import java.util.HashSet;
