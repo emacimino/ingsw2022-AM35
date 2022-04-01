@@ -1,8 +1,15 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.FactoryMatch;
+
+import it.polimi.ingsw.Charachter.MotherNature;
+import it.polimi.ingsw.Charachter.Student;
+import it.polimi.ingsw.Charachter.StudentBag;
+import it.polimi.ingsw.Exception.ExceptionGame;
+import it.polimi.ingsw.SchoolsLands.Cloud;
+import it.polimi.ingsw.Wizard.AssistantsCards;
+import it.polimi.ingsw.Wizard.Wizard;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class Game {
@@ -28,7 +35,7 @@ public class Game {
         }
     }
 
-    public Wizard getWizardFromPlayer(Player player) throws ExceptionGame{
+    public Wizard getWizardFromPlayer(Player player) throws ExceptionGame {
         for (Wizard w : wizards){
             if(player.getUsername().equals(w.getUsername()))
                 return w;
