@@ -1,8 +1,8 @@
 package it.polimi.ingsw;
 
 public class Player {
-    private String name;
-    private String username;
+    private final String name;
+    private final String username;
 
     /**
      * constructor of Player Class

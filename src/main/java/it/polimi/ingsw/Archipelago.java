@@ -81,18 +81,21 @@ public class Archipelago {
         isle.get(0).getStudentInIsland().add(student);
     }
 
+    public Collection<Student> getStudentFromArchipelago(){
+        Collection<Student> students = new ArrayList<>();
+        for(Island isle : isle){
+            students.addAll(isle.getStudentInIsland());
+        }
+        return students;
+    }
+
     public void placeWizardsTower(Wizard wizard) throws ExceptionGame{
         for(Island island: isle){
             Optional<Tower> t = wizard.getBoard().getTowersInBoard().stream().reduce((first, second) -> first);
-            try{
-                Tower tower = t.get();
-                wizard.getBoard().getTowersInBoard().remove(tower);
-                island.setTower(tower);
-            }catch(NoSuchElementException e){
-                throw new ExceptionGame("Wizard of player " + wizard.getUsername()+"has no towers in board");
+            Tower tower = t.orElseThrow(()-> new ExceptionGame("Wizard of player " + wizard.getUsername()+"has no towers in board"));
+            wizard.getBoard().getTowersInBoard().remove(tower);
+            island.setTower(tower);
 
-
-            }
         }
 
     }
