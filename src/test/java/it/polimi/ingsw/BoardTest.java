@@ -5,9 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
     @Test
+    void CreateBoard(){
+        Board b1 = new Board();
+        for (Color c:
+             Color.values()) {
+            assertNotNull(b1.getTables());
+        }}
+     @Test
     void CreateBoardAndFillTables(){
         Board b1 = new Board();
         for (Color c: Color.values()) {
@@ -20,6 +28,4 @@ public class BoardTest {
            Assertions.assertTrue(b1.getProfessorInTable().contains(p1));
         }
     }
-
-
 }
