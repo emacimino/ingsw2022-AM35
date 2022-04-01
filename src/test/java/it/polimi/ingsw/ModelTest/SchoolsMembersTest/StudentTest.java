@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ModelTest.SchoolsLandsTest.SchoolsMembersTest;
+package it.polimi.ingsw.ModelTest.SchoolsMembersTest;
 
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;

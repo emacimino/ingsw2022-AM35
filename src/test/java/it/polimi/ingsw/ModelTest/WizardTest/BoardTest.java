@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ModelTest.SchoolsLandsTest.WizardTest;
+package it.polimi.ingsw.ModelTest.WizardTest;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
