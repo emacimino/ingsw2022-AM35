@@ -9,7 +9,6 @@ public class Board {
     private final Collection<Professor> professorInTable= new HashSet<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
-    //private int limitStudentInEntrance;
 
     public Board() {
         for (Color c: Color.values()) {
@@ -33,21 +32,16 @@ public class Board {
         return studentsInEntrance;
     }
 
-  /*  public int getLimitStudentInEntrance() {
-        return limitStudentInEntrance;
-    }
-
-   */
 
     public void setProfessorInTable(Professor prof) {
         professorInTable.add(prof);
     }
 
-    /*
+
     public void collectCoins(){
 
     }
-*/
+
     public void addStudentInTable(Student stud){
         Color c=stud.getColor();
         for (TableOfStudents t : tables ) {

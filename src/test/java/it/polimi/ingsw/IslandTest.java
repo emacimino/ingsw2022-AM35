@@ -5,11 +5,12 @@ import org.junit.jupiter.api.Test;
 
 
 public class IslandTest {
+    int[] ints = {3, 7};
     @Test
      void island_ExceptionTest() {
         Island island = new Island();
         Assertions.assertThrows(ExceptionGame.class, () -> island.getTower());
-        Wizard w1 = new Wizard("player_test");
+        Wizard w1 = new Wizard("player_test", ints[0], ints[1]);
         Tower t = new Tower();
         t.setProperty(w1);
         island.setTower(t);
@@ -26,7 +27,7 @@ public class IslandTest {
     void setTower_Test() {
         Island island = new Island();
         Tower t1 = new Tower();
-        Wizard wizard1 = new Wizard("player_test_1");
+        Wizard wizard1 = new Wizard("player_test_1", ints[0], ints[1]);
         t1.setProperty(wizard1);
         island.setTower(t1);
         try {
@@ -35,7 +36,7 @@ public class IslandTest {
         }
 
         Tower t2 = new Tower();
-        Wizard wizard2 = new Wizard("player_test_2");
+        Wizard wizard2 = new Wizard("player_test_2", ints[0], ints[1] );
         t2.setProperty(wizard2);
         island.setTower(t2);
         try {
@@ -52,7 +53,6 @@ public class IslandTest {
             Student stud2 = new Student(c);
             island.getStudentInIsland().add(stud);
             island.getStudentInIsland().add(stud2);
-        //    Assertions.assertEquals(stud.getColor(), c);
             Assertions.assertEquals(2, island.getStudentFilteredByColor(c).size());
         }
     }

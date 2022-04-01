@@ -58,8 +58,7 @@ public class Cloud {
         if(studentOnCloud.isEmpty())
             throw new ExceptionGame("The Cloud is already empty");
         else {
-            Collection<Student> returnStudents = new ArrayList<>();
-            returnStudents.addAll(studentOnCloud);
+            Collection<Student> returnStudents = new ArrayList<>(studentOnCloud);
             studentOnCloud.removeAll(returnStudents);
             return returnStudents;
         }

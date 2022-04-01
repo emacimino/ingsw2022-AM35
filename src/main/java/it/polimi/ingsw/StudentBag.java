@@ -9,7 +9,7 @@ public class StudentBag {
     private final List<Student> studentsInBag;
 
     /**
-     * StudentBag is the consctructo of the Class StudentBag which set 26 Student
+     * StudentBag is the construct of the Class StudentBag which set 26 Student
      * for each value present in the Class Color
      */
 

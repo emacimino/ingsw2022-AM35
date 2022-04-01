@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class Island {
-    private Collection<Student> studentInIsland= new HashSet<>();
+    private final Collection<Student> studentInIsland= new HashSet<>();
     private Tower tower;
     private boolean interdictionCard;
 
