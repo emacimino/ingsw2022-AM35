@@ -10,22 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
     @Test
     void CreateBoard(){
-        Board b1 = new Board(7);
+        Board b1 = new Board();
         for (Color c:
              Color.values()) {
             assertNotNull(b1.getTables());
+        }}
+     @Test
+    void CreateBoardAndFillTables(){
+        Board b1 = new Board();
+        for (Color c: Color.values()) {
+            Student stud = new Student(c);
+            Professor p1= new Professor(c);
+            b1.addStudentInTable(stud);
+            TableOfStudents table = b1.getTables().stream().filter(t -> t.getColor().equals(c)).findAny().get();
+            Assertions.assertTrue(table.getStudentsInTable().contains(stud));
+           b1.setProfessorInTable(p1);
+           Assertions.assertTrue(b1.getProfessorInTable().contains(p1));
         }
     }
-
-/*    @Test
-    void fillBoardWithStudents(){
-        Board b1 = new Board(7);
-        for (Color c:
-                Color.values()) {
-            Student student = new Student(c);
-            b1.addStudentInTable(student);
-            assertTrue(b1.getTables().stream().anyMatch( (TableOfStudents t) -> {t.getColor().equals(c);t.getStudentsInTable().contains(student);return true;}));
-        }
-    }
-*/
 }

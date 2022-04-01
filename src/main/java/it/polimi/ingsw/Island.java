@@ -15,7 +15,7 @@ public class Island {
     /**
      * @return an HashSet of students present on the island
      */
-    public Collection getStudentInIsland() {
+    public Collection<Student> getStudentInIsland() {
         return studentInIsland;
     }
 
@@ -24,10 +24,11 @@ public class Island {
      * @param c color of the students you are looking for
      * @return an HashSet of student which color is c
      */
-    public Collection getStudentFilteredByColor(Color c){
+    public Collection<Student> getStudentFilteredByColor(Color c){
         Collection<Student> filteredStudents= new HashSet<>();
         for (Student s:studentInIsland) {
-            if(s.getColor()==c)filteredStudents.add(s);
+            if(s.getColor()==c)
+                filteredStudents.add(s);
         }
         return filteredStudents;
     }
@@ -45,7 +46,14 @@ public class Island {
     }
 
     public void setTower(Tower tower) {
-        this.tower = tower;
+        try {
+            Wizard wizard = this.tower.getProperty();
+            wizard.getBoard().getTowersInBoard().add(this.tower);
+            this.tower = tower;
+        }catch(NullPointerException e){
+            this.tower = tower;
+        }
+
     }
 
     public boolean isInterdictionCard() {

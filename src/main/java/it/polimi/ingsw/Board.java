@@ -8,10 +8,10 @@ import java.util.HashSet;
  * Board is the board you are given in the beginning and belongs only to you
  */
 public class Board {
-    private Collection<Tower> towersInBoard= new HashSet<>();
-    public Collection<Professor> professorInTable= new HashSet<>();
-    private Collection<TableOfStudents> tables= new HashSet<>();
-    private Collection<Student> studentsInEntrance= new HashSet<>();
+    private final Collection<Tower> towersInBoard= new HashSet<>();
+    public final Collection<Professor> professorInTable= new HashSet<>();
+    private final Collection<TableOfStudents> tables= new HashSet<>();
+    private final Collection<Student> studentsInEntrance= new HashSet<>();
 
     /**
      * constructs the class
