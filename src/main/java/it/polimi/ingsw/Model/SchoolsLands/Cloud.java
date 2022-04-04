@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * This class represents the Cloud Card of the Game
+ */
 public class Cloud {
     private final int numOfStudentOnCloud;
     private final Collection<Student> studentOnCloud = new ArrayList<>();
@@ -20,6 +23,7 @@ public class Cloud {
     }
 
     /**
+     * returns the number of student allowed on the cloud
      * @return number of student on cloud
      */
     public int getNumOfStudentOnCloud() {
@@ -27,11 +31,11 @@ public class Cloud {
     }
 
     /**
-     * Put students randomly drawn from the student bag on the cloud
+     * Put students randomly drawn from the student bag on the cloud, if the cloud is full the method throws an exception
      * @param studentBag is the student bag of the game
      * @throws ExceptionGame the exception is thrown when the cloud is full or the student bag is empty
      */
-    public void setStudentOnCloud(StudentBag studentBag) throws ExceptionGame{
+    public void setStudentsOnCloud(StudentBag studentBag) throws ExceptionGame{
         if(!studentOnCloud.isEmpty())
             throw new ExceptionGame("The Cloud is full");
         else{
@@ -47,6 +51,7 @@ public class Cloud {
     }
 
     /**
+     * This method returns the students on the cloud
      * @return collection of students on cloud
      */
     public Collection<Student> getStudentOnCloud() {
@@ -54,9 +59,9 @@ public class Cloud {
     }
 
     /**
-     * Remove the students from the clouds
+     * Remove the students from the clouds, if the cloud is already empty, the method throws an exception
      * @return the collection of students removed from the cloud
-     * @throws ExceptionGame Exception is thrown when the cloud is already empty
+     * @throws ExceptionGame is thrown when the cloud is already empty
      */
     public Collection<Student> removeStudentFromCloud() throws ExceptionGame{
         if(studentOnCloud.isEmpty())
