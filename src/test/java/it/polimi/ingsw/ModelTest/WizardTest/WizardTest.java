@@ -21,7 +21,12 @@ import java.util.Random;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WizardTest {
 
-    int[] ints = {9, 4};
+    int[] ints = {7, 3};
+
+    /**
+     * This methodTest tests that the method playAssistantCard's exception are thrown correctly
+     * @param cardPlayed is the assistant's card played
+     */
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     @DisplayName("playAssistantCardThrowsException_Test (Method setRoundAssistantCard was tested in local since is a private method)")
@@ -34,6 +39,10 @@ class WizardTest {
     }
 
 
+    /**
+     * This methodTest test the playableAssistantCard method
+     * @param cardPlayed is the assistant's card played
+     */
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     void playableAssistantCard_Test(AssistantsCards cardPlayed) {
@@ -49,6 +58,10 @@ class WizardTest {
             Assertions.assertTrue(wizard.playableAssistantsCard(cardPlayed,playedByOpponent));
     }
 
+    /**
+     * This methodTest tests checkIfAssistantCardAlreadyPlayed method
+     * @param cardPlayed is the assistant's card played
+     */
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     void checkIfAssistantCardAlreadyPlayed_Test(AssistantsCards cardPlayed) {
@@ -65,13 +78,17 @@ class WizardTest {
     }
 
 
+    /**
+     * This methodTest tests checkIfThereIsAlternativeAssistantCard method
+     * @param cardPlayed is the assistant's card played
+     */
     @ParameterizedTest
     @EnumSource(AssistantsCards.class)
     void checkIfThereIsAlternativeAssistantCard_Test(AssistantsCards cardPlayed) {
         Collection<AssistantsCards> playedByOpponent = combinationOfThreeAssistantsCards();
-        Wizard wizard = new Wizard("player_test", ints[0], ints[1]); //It is sure that wizard.assistantsDeck has an alternative
+        Wizard wizard = new Wizard("player_test", ints[0], ints[1]);
         boolean isThereAlternative = wizard.checkIfThereIsAlternativeAssistantsCard(playedByOpponent);
-        Assertions.assertTrue(isThereAlternative);   //Verified that there is an alternative
+        Assertions.assertTrue(isThereAlternative);
 
         wizard.getAssistantsDeck().getPlayableAssistants().removeIf(a -> !a.equals(cardPlayed));
 
@@ -83,36 +100,44 @@ class WizardTest {
 
     }
 
+    /**
+     * This methodTest tests that the method placeStudentOnArchipelago's exception are thrown correctly
+     * @param c is the color passed
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void placeStudentOnArchipelago_ExceptionTest(Color c) {
         Wizard wizard = new Wizard("player_test", ints[0], ints[1]);
-        Student student_1 = new Student(c);
-        Student student_2 = new Student(c);
-        Collection<Student> s = new ArrayList<>();
-        s.add(student_1);
-        s.add(student_2);
+        StudentBag studentBag = new StudentBag();
+        fillBoardEntrance(studentBag, wizard.getBoard());
+        List<Student> s = new ArrayList<>(wizard.getBoard().getStudentsInEntrance());
         Archipelago archipelago = new Archipelago();
+        Student student_1 = new Student(c);
         Assertions.assertThrows(ExceptionGame.class, ()->wizard.placeStudentOnArchipelago(student_1,archipelago));
+        for(int i= 0; i<ints[1]; i++) {
+            Assertions.assertDoesNotThrow(()-> {
+                Student student = s.remove(0);
+                wizard.placeStudentOnArchipelago(student, archipelago);
+                Assertions.assertTrue(archipelago.getStudentFromArchipelago().contains(student));
+            });
+        }
+        Student student = s.remove(0);
+        Assertions.assertThrows(ExceptionGame.class, ()-> wizard.placeStudentOnArchipelago(student, archipelago));
 
-        try {
-            wizard.placeStudentInEntrance(s);
-            wizard.placeStudentOnArchipelago(student_1, archipelago);
-            Assertions.assertTrue(archipelago.getStudentFromArchipelago().contains(student_1));
-        }catch (ExceptionGame e){}
 
     }
 
+    /**
+     * This methodTest tests the placeStudentOnTable method
+     */
     @Test
     void placeStudentOnTable_Test() {
-        int movable = 3;
         Wizard wizard = new Wizard("player_test", ints[0], ints[1]);
         StudentBag studentBag = new StudentBag();
         fillBoardEntrance(studentBag, wizard.getBoard());
-        List<Student> s = new ArrayList<>();
-        s.addAll(wizard.getBoard().getStudentsInEntrance());
-        for(int i= 0; i<ints[0]; i++){
-            try {
+        List<Student> s = new ArrayList<>(wizard.getBoard().getStudentsInEntrance());
+        for(int i= 0; i<ints[1]; i++){
+            Assertions.assertDoesNotThrow(()-> {
                 Student student = s.remove(0);
                 if(wizard.checkIfStudentIsMovable(student)) {
                     TableOfStudents table = wizard.getBoard().getTables().stream().filter(t -> t.getColor().equals(student.getColor())).findAny().get();
@@ -120,13 +145,17 @@ class WizardTest {
                     Assertions.assertFalse(wizard.getBoard().getStudentsInEntrance().contains(student));
                     Assertions.assertTrue(table.getStudentsInTable().contains(student));
                 }
-            } catch (ExceptionGame ignored) {
-            }
+            });
         }
+        Student student = s.remove(0);
+        Assertions.assertThrows(ExceptionGame.class, ()-> wizard.placeStudentOnTable(student));
 
     }
 
 
+    /**
+     * Thid methodTest tests the checkIfStudentIsMovable method
+     */
     @Test
     void checkIfStudentIsMovable_Test() {
         Wizard wizard = new Wizard("player_test", ints[0], ints[1]);
@@ -145,13 +174,16 @@ class WizardTest {
             Assertions.assertThrows(ExceptionGame.class, ()->wizard.checkIfStudentIsMovable(student));
         }
         for (Student s : wizard.getBoard().getStudentsInEntrance()) {
-            try {
-                Assertions.assertTrue(wizard.checkIfStudentIsMovable(s));
-            } catch (ExceptionGame ignored) {
-            }
+            Assertions.assertDoesNotThrow(()->
+                Assertions.assertTrue(wizard.checkIfStudentIsMovable(s))
+            );
         }
     }
 
+    /**
+     * This method returns a combination of three assistant's cards
+     * @return a combination of three assistant's cards
+     */
     public Collection<AssistantsCards> combinationOfThreeAssistantsCards(){
         Collection<AssistantsCards> combination = new ArrayList<>();
         AssistantsDeck assistantsDeck = new AssistantsDeck();
@@ -167,6 +199,11 @@ class WizardTest {
         return combination;
     }
 
+    /**
+     * This method fills the entrance of the board
+     * @param studentBag is the studentBag from where the students are drawn
+     * @param board is the board to fill
+     */
     public void fillBoardEntrance(StudentBag studentBag, Board board){
         for(int i = 0; board.getStudentsInEntrance().size()<ints[0]; i++) {
             Student student = studentBag.drawStudent();

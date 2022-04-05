@@ -12,45 +12,48 @@ import org.junit.jupiter.api.Test;
 
 public class IslandTest {
     int[] ints = {3, 7};
+
+    /**
+     * This methodTest tests that the exception thrown by the methods of the class are correct
+     */
     @Test
      void island_ExceptionTest() {
         Island island = new Island();
-        Assertions.assertThrows(ExceptionGame.class, () -> island.getTower());
+        Assertions.assertThrows(ExceptionGame.class, island::getTower);
         Wizard w1 = new Wizard("player_test", ints[0], ints[1]);
-        Tower t = new Tower();
-        t.setProperty(w1);
+        Tower t = new Tower(w1);
         island.setTower(t);
-        try{
-            System.out.println(island.getTower().getProperty());
-        }catch (ExceptionGame e){}
-        try {
-            Assertions.assertEquals(w1, island.getTower().getProperty());
-        } catch (ExceptionGame e) {
-        }
+        Assertions.assertDoesNotThrow(()->
+            System.out.println(island.getTower().getProperty())
+        );
+        Assertions.assertDoesNotThrow(()->
+            Assertions.assertEquals(w1, island.getTower().getProperty())
+        );
     }
 
+    /**
+     * This methodTest tests the setTower method
+     */
     @Test
     void setTower_Test() {
         Island island = new Island();
-        Tower t1 = new Tower();
         Wizard wizard1 = new Wizard("player_test_1", ints[0], ints[1]);
-        t1.setProperty(wizard1);
+        Tower t1 = new Tower(wizard1);
         island.setTower(t1);
-        try {
-            Assertions.assertEquals(wizard1, island.getTower().getProperty());
-        } catch (ExceptionGame e) {
-        }
+        Assertions.assertDoesNotThrow(()->
+            Assertions.assertEquals(wizard1, island.getTower().getProperty()));
 
-        Tower t2 = new Tower();
         Wizard wizard2 = new Wizard("player_test_2", ints[0], ints[1] );
-        t2.setProperty(wizard2);
+        Tower t2 = new Tower(wizard2);
         island.setTower(t2);
-        try {
-            Assertions.assertEquals(wizard2, island.getTower().getProperty());
-        } catch (ExceptionGame e) {
-        }
+        Assertions.assertDoesNotThrow(()->
+            Assertions.assertEquals(wizard2, island.getTower().getProperty())
+        );
     }
 
+    /**
+     * This methodTest tests the getStudentFilteredByColor method
+     */
     @Test
     void getStudentFilteredByColor_Test(){
         Island island = new Island();

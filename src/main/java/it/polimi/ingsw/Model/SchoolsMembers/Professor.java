@@ -29,4 +29,11 @@ public class Professor {
     public Wizard getProperty() {
         return property;
     }
+
+    @Override
+    public String toString() {
+        return "Professor{" +
+                "color=" + color +
+                '}';
+    }
 }

@@ -12,24 +12,33 @@ public class StudentBagTest {
 
     private final StudentBag studentBag = new StudentBag();
 
+    /**
+     * This method empties the studentBag
+     */
     @Test
     @DisplayName("Test Of StudentBag.drawStudent")
     public void emptyStudentBagTest(){
         int initialSize = studentBag.getStudentsInBag().size();
         for(int i=0; i<initialSize ; i++) {
             drawStudentTest();
-            studentInBagAfter();
         }
     }
 
+    /**
+     * This methodTest tests that an exception is thrown when drawStudent is called when the studentBag is empty
+     */
     @Test
     public void StudentBagIsEmpty_TestException(){
         Assertions.assertThrows(IllegalArgumentException.class, ()->{
             int initializeSize = studentBag.getStudentsInBag().size();
             for(int i = 0 ; i<initializeSize + 1; i++){
-                     drawStudentTest();}} );
+                     studentBag.drawStudent();}
+        });
     }
 
+    /**
+     * This methodTest tests the drawStudent method
+     */
     @Test
    public void drawStudentTest(){
         int sizeBefore = studentBag.getStudentsInBag().size();
@@ -39,12 +48,6 @@ public class StudentBagTest {
         Assertions.assertTrue(studentBag.getNumberOfStudentsInBag(c) < 26);
         Assertions.assertFalse(studentBag.getStudentsInBag().contains(student));
    }
-
-
-    public void studentInBagAfter(){
-        System.out.println(studentBag);
-    }
-
 
 
 }

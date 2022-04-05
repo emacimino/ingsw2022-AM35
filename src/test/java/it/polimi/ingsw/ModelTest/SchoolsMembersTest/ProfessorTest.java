@@ -10,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ProfessorTest {
     int[] ints = {9, 4};
+
+    /**
+     * This methodTest tests the Professor Class
+     */
     @Test
     void IfProfessorExistsAsItIsSupposedToReturnsTrue() {
         Wizard pippo = new Wizard("pippo", ints[0], ints[1]);

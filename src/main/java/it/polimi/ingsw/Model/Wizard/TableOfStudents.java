@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Wizard;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
@@ -19,7 +20,7 @@ public class TableOfStudents {
      */
     public TableOfStudents(Color color) {
         this.color = color;
-        limitOfStudents=9;
+        limitOfStudents=10;
         }
 
     /**
@@ -39,7 +40,10 @@ public class TableOfStudents {
     /**
      * @param student is the student that is going to be added to the Table
      */
-    public void setStudentsInTable(Student student) {
-        studentsInTable.add(student);
+    public void setStudentsInTable(Student student) throws ExceptionGame{
+        if(studentsInTable.size()<10)
+            studentsInTable.add(student);
+        else
+            throw new ExceptionGame("Reached the limit of students in the table of color: "+ this.color);
     }
 }

@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 
 class StudentTest {
 
+    /**
+     * This method tests the Student Class
+     */
     @Test
     void studentTest() {
         for (Color c: Color.values()) {

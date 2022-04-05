@@ -13,22 +13,27 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 class ArchipelagoTest {
     int[] ints = {9, 4};
 
+    /**
+     * This methodTest tests the calculationInfluenceInArchipelago method
+     * @param c color to use as parameter
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void calculationInfluenceInArchipelago_Test(Color c){
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_Test", ints[0], ints[1]);
         Assertions.assertEquals(0, archipelago.calculateInfluenceInArchipelago(wizard));
-        Tower tower = new Tower();
-        tower.setProperty(wizard);
+        Tower tower = new Tower(wizard);
         wizard.getBoard().getTowersInBoard().add(tower);
-        try {
-            archipelago.placeWizardsTower(wizard);
-        }catch (ExceptionGame e){}
+        Assertions.assertDoesNotThrow(()->
+            archipelago.placeWizardsTower(wizard)
+        );
         Assertions.assertEquals(1, archipelago.calculateInfluenceInArchipelago(wizard));
 
         Professor prof = new Professor(c);
@@ -43,37 +48,41 @@ class ArchipelagoTest {
         Assertions.assertEquals(2, archipelago.calculateInfluenceInArchipelago(wizard));
     }
 
+    /**
+     * This methodTest tests the placeWizardsTower method
+     */
     @Test
     void placeWizardsTower_Test(){
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_string", ints[0], ints[1]);
-        Tower t1 = new Tower();
-        t1.setProperty(wizard);
+        Tower t1 = new Tower(wizard);
         wizard.getBoard().getTowersInBoard().add(t1);
-        boolean isPresent = false;
-        try{
+        AtomicBoolean isPresent = new AtomicBoolean(false);
+        Assertions.assertDoesNotThrow(()-> {
             archipelago.placeWizardsTower(wizard);
             for(Island isle : archipelago.getIsle())
                 if(isle.getTower().equals(t1))
-                    isPresent = true;
-            Assertions.assertTrue(isPresent);
-        }catch(ExceptionGame e){}
+                    isPresent.set(true);
+            Assertions.assertTrue(isPresent.get());
+        });
 
-        Tower t2 = new Tower();
-        t2.setProperty(wizard);
+        Tower t2 = new Tower(wizard);
         Island island = new Island();
         archipelago.getIsle().add(island);
         wizard.getBoard().getTowersInBoard().add(t1);
-        isPresent = false;
-        try{
+        isPresent.set(false);
+        Assertions.assertDoesNotThrow(()-> {
             archipelago.placeWizardsTower(wizard);
             for(Island isle : archipelago.getIsle())
                 if(isle.getTower().equals(t1))
-                    isPresent = true;
-            Assertions.assertTrue(isPresent);
-        }catch(ExceptionGame e){}
+                    isPresent.set(true);
+            Assertions.assertTrue(isPresent.get());
+        });
     }
 
+    /**
+     * This methodTest tests placeWizardsTower method
+     */
     @Test
     void placeWizardsTower_ExceptionTest(){
         Wizard wizard = new Wizard("player_test", ints[0], ints[1]);
@@ -81,6 +90,9 @@ class ArchipelagoTest {
         Assertions.assertThrows(ExceptionGame.class, ()->archipelago.placeWizardsTower(wizard));
     }
 
+    /**
+     * This methodTest tests the mergeArchipelago method
+     */
     @Test
     void mergeArchipelago_Test(){
         Archipelago archipelago_1 = new Archipelago();
@@ -92,6 +104,10 @@ class ArchipelagoTest {
         Assertions.assertTrue(archipelago_1.getIsle().contains(isle));
     }
 
+    /**
+     * This methodTest tests the getStudentFromArchipelago method
+     * @param c is the color to pass to the method
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void getStudentFromArchipelago_Test(Color c){
