@@ -21,13 +21,15 @@ public class TableOfStudentsTest {
         }
     }
     @Test
-    void TableLoadingandReturn(){
+    void TableLoadingAndReturn(){
         for (Color c:
              Color.values()) {
             TableOfStudents tos = new TableOfStudents(c);
             for (int i = 0; i < 9; i++) {
                 Student s = new Student(c);
-                tos.setStudentsInTable(s);
+                Assertions.assertDoesNotThrow(()->
+                   tos.setStudentsInTable(s)
+               );
             }
             assertEquals(9, tos.getStudentsInTable().size());
         }

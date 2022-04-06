@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.SchoolsMembers;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+
 public class MotherNature {
     private int position;
 
@@ -15,7 +17,10 @@ public class MotherNature {
      *
      * @param position indicate where to place mother nature
      */
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPosition(int position) throws ExceptionGame {
+        if(this.position != position)
+            this.position = position;
+        else
+            throw new ExceptionGame("Mother nature is already placed in this archipelago");
     }
 }

@@ -50,9 +50,7 @@ public class Archipelago {
      * @param archipelago is the archipelago that will be merged (hence stripped of its islands)
      */
     public void mergeArchipelago(Archipelago archipelago){
-        for (Island island: archipelago.isle) {
-            isle.add(island);
-        }
+        this.isle.addAll(archipelago.isle);
         archipelago.getIsle().removeAll(isle);
     }
 

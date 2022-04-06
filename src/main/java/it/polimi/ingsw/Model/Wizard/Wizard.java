@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Wizard;
 
-import it.polimi.ingsw.Model.Coin;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -17,7 +16,7 @@ public class Wizard {
     private final Board board = new Board();
     private final AssistantsDeck assistantsDeck= new AssistantsDeck();
     private final String username;
-    private final Collection<Coin> coins = new HashSet<>();
+    private int coins = 0;
     private final Collection<Archipelago> archipelagosOfWizard = new HashSet<>();
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
@@ -53,13 +52,6 @@ public class Wizard {
         return assistantsDeck;
     }
 
-    /**
-     * This method returns the collection of coins of the wizard
-     * @return collection of Coin
-     */
-    public Collection<Coin> getCoins() {
-        return coins;
-    }
 
     /**
      * This method returns the Assistant's card played by the wizard in the current round
@@ -167,7 +159,7 @@ public class Wizard {
             archipelago.addStudentInArchipelago(student);
             board.getStudentsInEntrance().remove(student);
         }else{
-            throw new ExceptionGame("Can't move Student \n");
+            throw new ExceptionGame("Can't move Student");
         }
     }
 
@@ -200,7 +192,7 @@ public class Wizard {
             if(board.getStudentsInEntrance().size() > limitOfStudentInEntrance - numOfStudentMovable){
                     return true;
             }else{
-                throw new ExceptionGame("Already move " + numOfStudentMovable + "students");
+                throw new ExceptionGame("Already move " + numOfStudentMovable + " students");
             }
         }else
             throw new ExceptionGame("Student is not in Board Entrance");
