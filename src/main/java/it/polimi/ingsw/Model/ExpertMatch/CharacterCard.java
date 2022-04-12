@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 
 import java.util.ArrayList;
 
-public interface CharacterCard  {
+public interface StudentEffectsCard  {
 
     public void useCharacterCard();
 

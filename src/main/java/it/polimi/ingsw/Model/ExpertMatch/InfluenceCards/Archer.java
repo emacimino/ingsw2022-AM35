@@ -15,18 +15,14 @@ public class Archer implements CharacterCard {
                 if(!w.getBoard().getProfessorInTable().isEmpty()) {
                     influence += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
                 }
-            }
-            return influence;
-        }
-
-
-    @Override
-    public void useCharacterCard(Wizard wizard, Archipelago archipelago) {
-
+        return influence;
     }
 
     @Override
     public void usedCard() {
 
     }
-}
+        }
+
+
+

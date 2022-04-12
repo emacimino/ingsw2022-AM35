@@ -25,7 +25,8 @@ public class jester implements CharacterCard {
 
     @Override
     public void useCharacterCard(Wizard w) {
+        System.out.println(w.getBoard().getStudentsInEntrance().stream());
 
-        w.getBoard().getStudentsInEntrance();
+
     }
 }

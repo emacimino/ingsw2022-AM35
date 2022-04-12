@@ -28,8 +28,9 @@ public class Chef implements CharacterCard {
             if(!w.getBoard().getProfessorInTable().isEmpty() && !w.getBoard().getProfessorInTable().contains(professor.getColor())) {
                 influence += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
             }
-        }
         return influence;
+        }
+
     }
 
 

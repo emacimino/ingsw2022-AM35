@@ -16,7 +16,6 @@ public class ExpertMatch {
    private CharacterCard CharacterOne = deckCharacterCard.drawCharacterCard();
    private CharacterCard CharacterTwo = deckCharacterCard.drawCharacterCard();
    private CharacterCard CharacterThree = deckCharacterCard.drawCharacterCard();
-   private Collection<Coin> coins;
 
 
     public void expertMatch(Match match){
