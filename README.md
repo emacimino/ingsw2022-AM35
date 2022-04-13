@@ -1,16 +1,16 @@
 # Ingsw2022-AM35
 
-| Functionality    |                       State                        |
-|:-----------------|:--------------------------------------------------:|
-| Basic rules      | 🔴 |
-| Complete rules   | 🔴 |
-| Socket           | 🔴 |
-| GUI              | 🔴 |
-| CLI              | 🔴 |
-| Multiple games   | 🔴 |
-| Persistence      | 🔴 |
-| Advanced Gods    | 🔴 |
-| Undo             | 🔴 |
+| Functionality     |                       State                        |
+|:------------------|:--------------------------------------------------:|
+| Basic rules       | 🟡 |
+| Complete rules    | 🟡 |
+| Socket            | 🔴 |
+| GUI               | 🔴 |
+| CLI               | 🔴 |
+| Multiple games    | 🔴 |
+| Persistence       | 🔴 |
+| 4 Player match    | 🔴 |
+| 12 Character Card            | 🔴 |
 
 
 Students:
