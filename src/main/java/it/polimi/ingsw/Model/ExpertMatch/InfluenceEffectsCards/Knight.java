@@ -1,23 +1,14 @@
-package it.polimi.ingsw.Model.ExpertMatch.InfluenceCards;
+package it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards;
 
-import it.polimi.ingsw.Model.Coin;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * CharachterCard knight
  */
-public class Knight implements CharacterCard {
+public class Knight{
 
     private int cost = 2;
-
 
     /**
      * This method is used to calculate influence (relative to the Wizard w) on the archipelago and takes into account towers and students when the knight card is used
@@ -29,15 +20,8 @@ public class Knight implements CharacterCard {
         return archipelago.calculateInfluenceInArchipelago(w) + 2;
     }
 
-    @Override
     public void useCharacterCard(Wizard wizard, Archipelago archipelago) {
         knightCalculateInfluenceInArchipelago(wizard, archipelago);
     }
-
-    @Override
-    public void usedCard() {
-
-    }
-
 
 }
