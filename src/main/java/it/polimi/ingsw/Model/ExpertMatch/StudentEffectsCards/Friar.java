@@ -12,7 +12,7 @@ public class Friar extends StudentEffect{
     private int cost = 1;
 
     public Friar(StudentBag studentBag) {
-        
+
     }
 
     public void placeStudentOnIsland(boolean studentIsHere, Archipelago archipelago, Student student) throws ExceptionGame {
@@ -30,6 +30,10 @@ public class Friar extends StudentEffect{
         friar.placeStudentOnIsland(StudentsOnCard.contains(chosenStudent),archipelago, chosenStudent);
         friar.drawStudent(1,studentBag);
         cost++;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }
 

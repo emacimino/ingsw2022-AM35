@@ -25,4 +25,7 @@ public class Knight{
         cost ++;
     }
 
+    public int getCost() {
+        return cost;
+    }
 }
