@@ -22,6 +22,7 @@ public class Knight{
 
     public void useCharacterCard(Wizard wizard, Archipelago archipelago) {
         knightCalculateInfluenceInArchipelago(wizard, archipelago);
+        cost ++;
     }
 
 }
