@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import org.junit.jupiter.api.*;
-import org.junit.Test;
 
 public class StudentBagTest {
 

@@ -67,7 +67,7 @@ public class Archipelago {
                     influence++;
                 }
             }
-            catch(ExceptionGame ignored){}
+            catch(ExceptionGame ignored){} //on the island there is no tower
 
             if(!w.getBoard().getProfessorInTable().isEmpty()) {
                 influence += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
