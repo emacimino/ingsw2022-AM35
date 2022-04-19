@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CharacterCard extends DeckCharacterCard {
     ArrayList<CharacterCard> deckOfCharacterCards = new ArrayList<>();
-    public CharacterCard(StudentBag studentBag, W) {
+    public CharacterCard(StudentBag studentBag) {
         CharacterCard Friar = new Friar(studentBag);
         CharacterCard Knight = new Knight(wizard,archipelago);
 

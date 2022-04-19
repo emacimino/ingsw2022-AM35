@@ -207,6 +207,14 @@ public class Wizard {
     }
 
     /**
+     *
+     * @return the number of coins that belongs to the wizard
+     */
+    public int getCoins() {
+        return coins;
+    }
+
+    /**
      * Override of the toString method
      * @return String
      */
@@ -215,6 +223,13 @@ public class Wizard {
         return "Wizard{" +
                 "username='" + username + '\'' +
                 '}';
+    }
+
+    /**
+     * Add a coin when is needed.
+     */
+    public void addACoin() {
+        coins++;
     }
 }
 
