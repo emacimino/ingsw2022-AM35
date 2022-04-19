@@ -13,10 +13,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MatchAndFactoryTest {
     private FactoryMatch factoryMatch = new FactoryMatch();
@@ -191,6 +188,28 @@ public class MatchAndFactoryTest {
             match2players.getGame().getMotherNature().setPosition(0);
             int oldPositionMotherNature = match2players.getPositionOfMotherNature();
             match2players.moveMotherNature(playerOne, match2players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)%match2players.getGame().getArchipelagos().size()));
+        });
+    }
+
+    @Test
+    /**
+     * This method tests the students and professors interactions in Table
+     */
+    void matchCreationCross(){
+        gameSetter(match2players);
+        Professor p = new Professor(Color.YELLOW);
+        Student stud = new Student(Color.YELLOW);
+        Student stud1 = new Student(Color.YELLOW);
+        Collection<Student> s =new HashSet<Student>(2);
+        s.add(stud);
+        s.add(stud1);
+        Assertions.assertDoesNotThrow(() -> {
+            match2players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(p);
+            Assertions.assertTrue(match2players.getGame().getWizardFromPlayer(playerOne).getBoard().isProfessorPresent(Color.YELLOW));
+            match2players.getGame().getWizardFromPlayer(playerTwo).placeStudentInEntrance(s);
+            match2players.moveStudentOnBoard(playerTwo, stud);
+            match2players.moveStudentOnBoard(playerTwo, stud1);
+            Assertions.assertTrue(match2players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable().contains(p));
         });
     }
 }
