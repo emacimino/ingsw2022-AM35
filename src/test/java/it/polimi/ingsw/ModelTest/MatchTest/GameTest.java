@@ -8,14 +8,14 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
+import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * GameTest is the class that tests the method of the Game Class
@@ -158,8 +158,8 @@ public class GameTest {
         Assertions.assertDoesNotThrow(()->{
             game.getWizardFromPlayer(players.get(0)).getBoard().setProfessorInTable(new Professor(Color.BLUE));
             game.getWizardFromPlayer(players.get(1)).getBoard().setProfessorInTable(new Professor(Color.GREEN));
-            int influenceWizard_0 = game.getWizardInfluenceInArchipelago(players.get(0), archipelago);
-            int influenceWizard_1 = game.getWizardInfluenceInArchipelago(players.get(1), archipelago);
+            int influenceWizard_0 = game.getWizardInfluenceInArchipelago(game.getWizardFromPlayer(players.get(0)), archipelago);
+            int influenceWizard_1 = game.getWizardInfluenceInArchipelago(game.getWizardFromPlayer(players.get(1)), archipelago);
             Assertions.assertEquals(2, influenceWizard_0);
             Assertions.assertEquals(1, influenceWizard_1);
         });
@@ -244,22 +244,40 @@ public class GameTest {
     void placeMotherNature_Test(){
         int[] nums = {7,3};
         Game game = createGame(nums[0], nums[1]);
+        List<Player> players = createPlayers(3);
+        game.setWizards(players);
         Assertions.assertDoesNotThrow(()->{
             game.setArchipelagos();
             int positionMotherNature = game.getMotherNature().getPosition();
-            Archipelago archipelago = game.getArchipelagos().get(positionMotherNature);
-            Assertions.assertThrows(ExceptionGame.class, ()-> game.placeMotherNature(archipelago));
-            Archipelago archipelago1 = game.getArchipelagos().get(positionMotherNature + 1);
+            Wizard wizard_0 = game.getWizardFromPlayer(players.get(0));
+            Archipelago archipelago = game.getArchipelagos().get(positionMotherNature); //Mother Nature's archipelago
+            Assertions.assertThrows(ExceptionGame.class, ()-> game.placeMotherNature(players.get(0), archipelago));
+            Archipelago archipelago1 = game.getArchipelagos().get((positionMotherNature + game.getArchipelagos().size() + 1) %game.getArchipelagos().size()); //archipelago after Mother Nature's archipelago
             Assertions.assertDoesNotThrow(()->{
-                game.placeMotherNature(archipelago1);
+                //player has not played an assistant's card yet
+                Assertions.assertThrows(ExceptionGame.class, () -> game.placeMotherNature(players.get(0), archipelago1)); //sets Mother Nature in the next archipelago
+                //player play an assistant's card
+                wizard_0.playAssistantsCard(wizard_0.getAssistantsDeck().getPlayableAssistants().get(0), new ArrayList<AssistantsCards>()); //step allowed = 1
+                //retry the method
+                game.placeMotherNature(players.get(0), archipelago1);
                 Assertions.assertFalse(game.getArchipelagos().get(positionMotherNature).isMotherNaturePresence());
-                Assertions.assertTrue(game.getArchipelagos().get(positionMotherNature+1).isMotherNaturePresence());
-                Assertions.assertEquals(game.getMotherNature().getPosition(), positionMotherNature+1);
+                Assertions.assertTrue(game.getArchipelagos().get((positionMotherNature + game.getArchipelagos().size()+ 1)%game.getArchipelagos().size()).isMotherNaturePresence());
+                Assertions.assertEquals(game.getMotherNature().getPosition(), (positionMotherNature+1 + game.getArchipelagos().size())%game.getArchipelagos().size());
+                //player play another assistant's card
+                int newPositionMotherNature = game.getMotherNature().getPosition();
+                wizard_0.playAssistantsCard(wizard_0.getAssistantsDeck().getPlayableAssistants().get(4), new ArrayList<AssistantsCards>()); //step allowed 3
+                Assertions.assertThrows(ExceptionGame.class, () -> game.placeMotherNature(players.get(0), game.getArchipelagos().get((newPositionMotherNature + game.getArchipelagos().size()+ 4)%game.getArchipelagos().size())));
+                game.placeMotherNature(players.get(0), game.getArchipelagos().get((newPositionMotherNature + game.getArchipelagos().size()+ 2)%game.getArchipelagos().size()));
+                Assertions.assertFalse(game.getArchipelagos().get(newPositionMotherNature).isMotherNaturePresence());
+                Assertions.assertTrue(game.getArchipelagos().get((newPositionMotherNature + game.getArchipelagos().size()+ 2)%game.getArchipelagos().size()).isMotherNaturePresence());
+                Assertions.assertEquals(game.getMotherNature().getPosition(), (newPositionMotherNature + game.getArchipelagos().size()+ 2)%game.getArchipelagos().size());
             });
 
         });
 
     }
+
+
 
     /**
      * This methodTest tests takeCareOfMerge method
@@ -277,6 +295,10 @@ public class GameTest {
             game.setTowers(6);
             int actualArchipelagoIndex = 0;
             Archipelago actualArchipelago = game.getArchipelagos().get(actualArchipelagoIndex);
+
+            //try the method without having place a tower in the archipelago
+            game.takeCareOfTheMerge(actualArchipelago);
+
             actualArchipelago.placeWizardsTower(wizard1);
 
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()-1)% game.getArchipelagos().size()).placeWizardsTower(wizard1);
@@ -298,4 +320,50 @@ public class GameTest {
             Assertions.assertEquals(7, game.getArchipelagos().size());
         });
     }
+
+    @Test
+    void getWizardWithLeastTowers_Test(){
+        int[] nums = {9,4};
+        int numPlayers = 3;
+        Game game = createGame(nums[0], nums[1]);
+        game.setWizards(createPlayers(numPlayers));
+        Assertions.assertDoesNotThrow(()->{
+            game.setArchipelagos();
+            Wizard wizard1 = game.getWizards().get(0);
+            Wizard wizard2 = game.getWizards().get(1);
+            game.setTowers(6);
+            int actualArchipelagoIndex = 0;
+            Archipelago actualArchipelago = game.getArchipelagos().get(actualArchipelagoIndex);
+            //place 2 tower from the board of wizard1
+            actualArchipelago.placeWizardsTower(wizard1);
+            game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()-1)% game.getArchipelagos().size()).placeWizardsTower(wizard1);
+            //place 1 tower from the board of wizard2
+            game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+1)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
+            System.out.println(wizard1.getBoard().getTowersInBoard().size());
+            System.out.println(wizard2.getBoard().getTowersInBoard().size());
+            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
+
+            //check if wizard1 is the wizard with the least towers
+            Assertions.assertEquals(wizard1, game.getWizardsWithLeastTowers().get(0));
+
+            //place another tower from the board of wizard2 (wizard1 and wizard2 have the same number of towers on its boards)
+            game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+2)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
+
+            System.out.println(wizard1.getBoard().getTowersInBoard().size());
+            System.out.println(wizard2.getBoard().getTowersInBoard().size());
+            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
+            //check if the both wizard1 and wizard2 are the wizards with the least towers
+            Assertions.assertEquals(game.getWizards().subList(0,2), game.getWizardsWithLeastTowers());
+
+            //place another tower from the board of wizard2 (wizard2 is now the wizard with the least towers)
+            game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+3)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
+            System.out.println(wizard1.getBoard().getTowersInBoard().size());
+            System.out.println(wizard2.getBoard().getTowersInBoard().size());
+            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
+            //check if wizard2 is the wizard with the least towers
+            Assertions.assertEquals(wizard2, game.getWizardsWithLeastTowers().get(0));
+
+        });
+    }
+
 }

@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.Wizard.*;
 import java.util.*;
 
 /**
- * Game class rappresents the state of the match, it contains the implements the objects of the game Eriantys
+ * Game class represents the state of the match, it contains the implements the objects of the game Eriantys
  */
 public class Game{
     private final List<Wizard> wizards = new ArrayList<>();
@@ -114,13 +114,11 @@ public class Game{
     /**
      * This method returns the influence of the player in the archipelago passed as parameters of the method
      * if the player does not have a corresponding wizard in the game, the method throws an exception
-     * @param player is the player
+     * @param wizard is the wizard
      * @param archipelago is the archipelago
      * @return the influence of the player in the archipelago
-     * @throws ExceptionGame is thrown if the player does not have a corresponding wizard in the game
      */
-    public int getWizardInfluenceInArchipelago(Player player, Archipelago archipelago) throws ExceptionGame{
-        Wizard wizard = getWizardFromPlayer(player);
+    public int getWizardInfluenceInArchipelago(Wizard wizard, Archipelago archipelago){
         return archipelago.calculateInfluenceInArchipelago(wizard);
     }
 
@@ -128,7 +126,7 @@ public class Game{
      * This method returns the wizard who has most students of the color passed as parameter, if there are more than one wizard with the same largest
      * number of students, the method throws an exception
      * @param c is the color
-     * @return the wizard whith the most students of color c
+     * @return the wizard with the most students of color c
      * @throws ExceptionGame is thrown when there are more than one wizard with the same largest number of students of color c
      */
     public Wizard selectWizardWithMostStudents(Color c) throws ExceptionGame{
@@ -193,7 +191,7 @@ public class Game{
      * not movable
      */
     public void placeStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame{
-        getWizardFromPlayer(player).placeStudentOnArchipelago(student, archipelago);
+            getWizardFromPlayer(player).placeStudentOnArchipelago(student, archipelago);
     }
 
     /**
@@ -215,15 +213,22 @@ public class Game{
      * @throws ExceptionGame is thrown when the archipelago is not present in the game or mother nature
      * is asked to be placed in the same position where she was already
      */
-    public void placeMotherNature(Archipelago archipelago) throws ExceptionGame{
-        if(archipelagos.contains(archipelago)) {
+    public void placeMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        if (archipelagos.contains(archipelago)) {
             int newPosition = archipelagos.indexOf(archipelago);
             int oldPosition = motherNature.getPosition();
-            archipelagos.get(oldPosition).setMotherNaturePresence(false);
-            motherNature.setPosition(newPosition);
-            archipelago.setMotherNaturePresence(true);
+            Wizard wizard = getWizardFromPlayer(player);
+            if( wizard.getRoundAssistantsCard() != null) {
+                if (((newPosition + archipelagos.size()) - oldPosition) % archipelagos.size() <= wizard.getRoundAssistantsCard().getStep()) {
+                    archipelagos.get(oldPosition).setMotherNaturePresence(false);
+                    motherNature.setPosition(newPosition);
+                    archipelago.setMotherNaturePresence(true);
+                } else
+                    throw new ExceptionGame("This archipelago is not allowed by the assistant's card");
+            }else
+                throw new ExceptionGame("Wizard does not have an Assistant's card");
         }else
-            throw new ExceptionGame("This archipelago is not in the game");
+            throw new ExceptionGame("This archipelago is not part of the game");
     }
 
     /**
@@ -246,41 +251,53 @@ public class Game{
      * @param wizard is the wizard
      * @throws ExceptionGame is thrown if there was an error in the built of the towers
      */
-    public void buildTower(Archipelago archipelago, Wizard wizard) throws ExceptionGame{
-        archipelago.placeWizardsTower(wizard);
+    public void buildTower( Wizard wizard, Archipelago archipelago) throws ExceptionGame{
+        boolean isMostInfluence = true;
+        for(Wizard w : wizards){
+            if(!w.equals(wizard) && getWizardInfluenceInArchipelago(w, archipelago) >= getWizardInfluenceInArchipelago(wizard, archipelago))
+                isMostInfluence = false;
+        }
+        if(isMostInfluence) {
+            archipelago.placeWizardsTower(wizard);
+        }
     }
 
     /**
      * This method controls the correct merge of the archipelagos, starting from the one passed as parameter
      * if it is not possible to merge two archipelagos the method throws an exception
      * @param archipelago is the starting archipelagos
-     * @throws ExceptionGame is thrown when is not possible to merge the archipelagos
      */
-    public void takeCareOfTheMerge(Archipelago archipelago) throws ExceptionGame{
+    public void takeCareOfTheMerge(Archipelago archipelago){ //problema con nextIsle se faccio merge di previous isle
         int actualIsle = archipelagos.indexOf(archipelago);
-        int previousIsle = ((archipelagos.size() + actualIsle) - 1)%archipelagos.size();
-        int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
-        Wizard wizardActualIsle = archipelago.getIsle().get(0).getTower().getProperty();
 
         try {
-            Wizard wizardPreviousIsle = archipelagos.get(previousIsle).getIsle().get(0).getTower().getProperty();
-            if( wizardActualIsle.equals(wizardPreviousIsle)){
-                archipelago.mergeArchipelago(archipelagos.get(previousIsle));
-                archipelagos.remove(archipelagos.get(previousIsle));
-            }else
-                System.out.println("Previous isle is controlled by another wizard");
-        }catch(ExceptionGame e1) {
-            System.out.println("Previous Isle not controlled by any wizard");
-        }
-        try{
-            Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
-            if(wizardActualIsle.equals(wizardNextIsle)){
-                archipelago.mergeArchipelago(archipelagos.get(nextIsle));
-                archipelagos.remove(archipelagos.get(nextIsle));
-            }else
-                System.out.println("Next isle is controlled by another wizard");
-        }catch(ExceptionGame e2) {
-            System.out.println("Next Isle not controlled by any wizard");
+            Wizard wizardActualIsle = archipelago.getIsle().get(0).getTower().getProperty();
+
+            try {
+                int previousIsle = ((archipelagos.size() + actualIsle) - 1)%archipelagos.size();
+                Wizard wizardPreviousIsle = archipelagos.get(previousIsle).getIsle().get(0).getTower().getProperty();
+                if (wizardActualIsle.equals(wizardPreviousIsle)) {
+                    archipelago.mergeArchipelago(archipelagos.get(previousIsle));
+                    archipelagos.remove(archipelagos.get(previousIsle));
+                } else
+                    System.out.println("Previous isle is controlled by another wizard");
+            } catch (ExceptionGame e1) {
+                System.out.println("Previous Isle not controlled by any wizard");
+            }
+            try {
+
+                int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
+                Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
+                if (wizardActualIsle.equals(wizardNextIsle)) {
+                    archipelago.mergeArchipelago(archipelagos.get(nextIsle));
+                    archipelagos.remove(archipelagos.get(nextIsle));
+                } else
+                    System.out.println("Next isle is controlled by another wizard");
+            } catch (ExceptionGame e2) {
+                System.out.println("Next Isle is not controlled by any wizard");
+            }
+        }catch(ExceptionGame e0){
+            System.out.println("The current Isle is not controlled by any wizard");
         }
     }
 
@@ -288,7 +305,8 @@ public class Game{
      * This method set randomly the first player of the match
      */
     public void setRandomlyFirstPlayer(){
-        Collections.shuffle(wizards);
+        Random random = new Random();
+        Collections.rotate(wizards, random.nextInt(wizards.size()));
     }
 
     /**
@@ -339,7 +357,7 @@ public class Game{
 
     /**
      * This method returns the archipelagos of the game
-     * @return archipealgos
+     * @return archipelagos
      */
     public List<Archipelago> getArchipelagos() {
         return archipelagos;
@@ -351,6 +369,35 @@ public class Game{
      */
     public MotherNature getMotherNature() {
         return motherNature;
+    }
+
+    /**
+     * This method returns the assistant's cards played during the round
+     * @return a collection of AssistantsCard
+     */
+    public Collection<AssistantsCards> getAssistantsCardsPlayedInRound() {
+        return assistantsCardsPlayedInRound;
+    }
+
+    public List<Wizard> getWizardsWithLeastTowers(){
+        List<Wizard> wizardsWithLeastTowers = new ArrayList<>();
+        Wizard comparator = wizards.get(0);
+        int least_towers = comparator.getBoard().getTowersInBoard().size();
+        for(int i = 1; i<wizards.size(); i++) {
+            if (wizards.get(i).getBoard().getTowersInBoard().size() < least_towers) {
+                least_towers = wizards.get(i).getBoard().getTowersInBoard().size();
+                comparator = wizards.get(i);
+            }
+        }
+
+        wizardsWithLeastTowers.add(comparator);
+        for(int i = wizards.indexOf(comparator) + 1; i<wizards.size(); i++) {
+            if (wizards.get(i).getBoard().getTowersInBoard().size() == least_towers) {
+                wizardsWithLeastTowers.add(wizards.get(i));
+            }
+        }
+        return wizardsWithLeastTowers;
+
     }
 }
 
