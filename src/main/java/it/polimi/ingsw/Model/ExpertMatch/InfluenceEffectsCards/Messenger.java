@@ -1,18 +1,13 @@
-package it.polimi.ingsw.Model.ExpertMatch.InfluenceCards;
+package it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards;
 
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Messenger implements CharacterCard {
+public class Messenger {
 
-    @Override
+    private int cost = 3;
+
     public void useCharacterCard(Wizard wizard, Archipelago archipelago) {
         archipelago.calculateInfluenceInArchipelago(wizard);
-    }
-
-    @Override
-    public void usedCard() {
-
     }
 }

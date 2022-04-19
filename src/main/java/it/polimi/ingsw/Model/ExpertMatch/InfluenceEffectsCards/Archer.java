@@ -1,13 +1,11 @@
-package it.polimi.ingsw.Model.ExpertMatch.InfluenceCards;
+package it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards;
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Archer implements CharacterCard {
-    @Override
+public class Archer{
+    private int cost = 3;
+
     public int useCharacterCard(Wizard w, Island island) {
 
             int influence=0;
@@ -17,12 +15,7 @@ public class Archer implements CharacterCard {
                 }
         return influence;
     }
-
-    @Override
-    public void usedCard() {
-
-    }
-        }
+}
 
 
 

@@ -26,10 +26,10 @@ public enum AssistantsCards {
     /**
      * @return the value of one card
      */
-    public double getValue() { return value; }
+    public int getValue() { return value; }
 
     /**
      * @return the step that MotherNature can do by playing that card
      */
-    public double getStep() { return step; }
+    public int getStep() { return step; }
 }
