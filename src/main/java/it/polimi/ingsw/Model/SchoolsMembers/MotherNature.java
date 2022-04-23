@@ -18,9 +18,9 @@ public class MotherNature {
      * @param position indicate where to place mother nature
      */
     public void setPosition(int position) throws ExceptionGame {
-        if(this.position != position)
+       // if(this.position != position)
             this.position = position;
-        else
-            throw new ExceptionGame("Mother nature is already placed in this archipelago");
+      //  else
+        //    throw new ExceptionGame("Mother nature is already placed in this archipelago");
     }
 }

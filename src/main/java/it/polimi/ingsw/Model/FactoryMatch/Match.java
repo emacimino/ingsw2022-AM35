@@ -231,7 +231,6 @@ public class Match {
         else if (game.getArchipelagos().size() <= 3)
             endOfTheMatch = true;
 
-        System.out.println("End of The Match: " + endOfTheMatch);
         if (endOfTheMatch) {
             System.out.println("Wizard: " + w + " has won the match\n" +
                     "Please, create a new match if you want to replay");
