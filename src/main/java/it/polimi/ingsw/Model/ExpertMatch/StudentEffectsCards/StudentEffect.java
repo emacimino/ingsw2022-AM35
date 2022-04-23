@@ -14,6 +14,7 @@ public abstract class StudentEffect extends CharacterCard {
         super(studentBag);
     }
 
+
     public void drawStudent(int numberOfStudent, StudentBag studentBag){
         for (int i = 0; i < numberOfStudent; i++) {
             StudentsOnCard.add(studentBag.drawStudent());

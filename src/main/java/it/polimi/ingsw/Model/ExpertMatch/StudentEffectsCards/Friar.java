@@ -1,18 +1,22 @@
 package it.polimi.ingsw.Model.ExpertMatch.StudentEffectsCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Friar extends StudentEffect{
+import java.util.ArrayList;
+
+public class Friar extends StudentEffect {
     private String name;
     private int cost = 1;
+    private ArrayList<Student> StudentsOnCard = new ArrayList<>();
 
     public Friar(StudentBag studentBag) {
-
+        super();
     }
 
     public void placeStudentOnIsland(boolean studentIsHere, Archipelago archipelago, Student student) throws ExceptionGame {

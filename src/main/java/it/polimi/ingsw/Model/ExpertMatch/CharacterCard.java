@@ -7,12 +7,10 @@ import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import java.util.ArrayList;
 
 public class CharacterCard extends DeckCharacterCard {
-    ArrayList<CharacterCard> deckOfCharacterCards = new ArrayList<>();
+
+    StudentBag studentBag;
     public CharacterCard(StudentBag studentBag) {
-        CharacterCard Friar = new Friar(studentBag);
-        CharacterCard Knight = new Knight(wizard,archipelago);
-
-
+        this.studentBag = studentBag;
     }
 
     public void createDeck(){

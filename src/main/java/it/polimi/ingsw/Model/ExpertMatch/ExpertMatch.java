@@ -54,9 +54,10 @@ public class ExpertMatch extends MatchDecorator{
 
     public CharacterCard drawCharacterCard(){
         Random random = new Random();
-        private String[] draw = {"Chara"}
+        String[] draw;
         CharacterCard characterCard;
-                
+
+
         return characterCard.remove(random.nextInt(studentsInBag.size()));
     }
 

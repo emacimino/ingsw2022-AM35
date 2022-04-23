@@ -31,7 +31,7 @@ public class DeckCharacterCard {
         Random random = new Random();
         //temp = deckOfCharacterCards.(random.nextInt(studentsInBag.size()))
         //deckOfCharachterCardForThisMatch.add(deckOfCharacterCards.(random.nextInt(studentsInBag.size()))
-        deckOfCharacterCardForThisMatch.add(deckOfCharacterCards.stream().toString(random.nextInt(deckOfCharacterCards.size()))
+        deckOfCharacterCardForThisMatch.add(deckOfCharacterCards.stream().toString(random.nextInt(deckOfCharacterCards.size())))
 
         return deckOfCharacterCardForThisMatch;
     }

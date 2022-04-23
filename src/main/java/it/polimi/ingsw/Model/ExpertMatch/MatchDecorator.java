@@ -8,7 +8,7 @@ public abstract class MatchDecorator extends Match{
     protected Match match;
     String requireExpertMatch = "ExpertMatch";
 
-    public void ExpertMatchDecorator(Match match, String expertMatch) throws ExceptionGame{
+    public ExpertMatch ExpertMatchDecorator(Match match, String expertMatch) throws ExceptionGame{
         if(expertMatch.equals(requireExpertMatch))
             return new ExpertMatch(match);
         else

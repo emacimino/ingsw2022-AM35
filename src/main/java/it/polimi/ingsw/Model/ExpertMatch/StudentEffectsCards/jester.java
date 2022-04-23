@@ -15,24 +15,16 @@ import java.util.Scanner;
  */
 public class Jester extends StudentEffect{
     private int cost = 1;
-    ArrayList<Student> StudentsOnCard = new ArrayList<>();
-    ArrayList<Student> StudentsOnEntrance = new ArrayList<>();
+    ArrayList<Student> StudentsOnCard;
+    ArrayList<Student> StudentsOnEntrance;
 
-    public Jester(ArrayList<Student> studentsOnCard, ArrayList<Student> studentsOnEntrance) {
+    public Jester(ArrayList<Student> studentsOnCard, ArrayList<Student> studentsOnEntrance, StudentBag studentBag) {
+        super(studentBag);
         StudentsOnCard = studentsOnCard;
         StudentsOnEntrance = studentsOnEntrance;
     }
 
-  /*  public void jester(StudentBag studentBag, Board board){
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnCard.add(studentBag.drawStudent());
-        StudentsOnEntrance = (ArrayList<Student>) board.getStudentsInEntrance();
-    }
-*/
+
     public void useCharacterCard(Jester jester, Wizard w,StudentBag studentBag) throws ExceptionGame{
         for (Student student : jester.StudentsOnCard = jester.drawStudent(6, studentBag)) {
             

@@ -6,53 +6,37 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+/** Implements the effect from Character card Chef
+ * It calculates the influence without the students of one color
+ */
 public class Chef {
 
     private int cost = 3;
 
+    /**
+     * Is called when the character card Chef is used
+     * @param wizard that have to calculate the influence
+     * @param island where the influence has to be calculated
+     * @param color of the students that the method has to ignore
+     * @return the correct influence
+     */
+    public int useCharacterCard(Wizard wizard, Island island, Color color) {
 
-    public int useCharacterCard(Wizard w,Island island, Color color) {
+        int influence = 0;
 
-        Wizard wizard = selectWizardWithMostStudents(color);
-        for(Professor p : professors)
-            if(p.getColor().equals(c)) {
-                wizard.getBoard().setProfessorInTable(p);
-                professors.remove(p);
-                return;
-            }
-        for(Wizard w : wizards)
-            if(w.getBoard().isProfessorPresent(c)){
-                try {
-                    Professor professor = w.getBoard().removeProfessorFromTable(c);
-                    wizard.getBoard().setProfessorInTable(professor);
-                }catch(ExceptionGame e){
-                    throw new ExceptionGame("This wizard:" + w + ", does not have the professor of color" + c, e);
-                }
-            }
+        for (Professor professor : wizard.getBoard().getProfessorInTable()) {
+            if (wizard.getBoard().isProfessorPresent(color) && !professor.getColor().equals(color)) {
+                influence += wizard.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
 
+            } else if (!wizard.getBoard().isProfessorPresent(color)) {
 
-
-
-
-        Professor professor = new Professor(color);
-        int influence=0;
-
-            try{
-                if(island.getTower().getProperty().equals(w)){
-                    influence++;
-                }
-            }
-            catch(ExceptionGame ignored){}
-
-            if(!w.getBoard().getProfessorInTable().contains(professor.getColor())) {
-
-                influence += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
+                influence += wizard.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
             }
 
-        return influence;
         }
-
+        return influence;
     }
+}
 
 
 
