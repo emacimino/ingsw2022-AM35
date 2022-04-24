@@ -193,10 +193,7 @@ class WizardTest {
         for(int i = 0; i<3; i++){
             AssistantsCards a = assistantsDeck.getPlayableAssistants().remove(r.nextInt(assistantsDeck.getPlayableAssistants().size()));
             combination.add(a);
-            System.out.println("Assistant Card: value = " + a.getValue() + "; step = " + a.getStep() );
         }
-        System.out.println();
-
         return combination;
     }
 

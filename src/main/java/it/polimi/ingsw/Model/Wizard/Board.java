@@ -6,16 +6,14 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
-import java.util.Collection;
-import java.util.EmptyStackException;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Board is the board you are given in the beginning and belongs only to you
  */
 public class Board {
     private final Collection<Tower> towersInBoard= new HashSet<>();
-    private final Collection<Professor> professorInTable= new HashSet<>();
+    private final List<Professor> professorInTable= new ArrayList<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
     private final int limitStudentOnTable = 10;
@@ -39,7 +37,7 @@ public class Board {
     /**
      * @return an HashSet of professors in table
      */
-    public Collection<Professor> getProfessorInTable() {
+    public List<Professor> getProfessorInTable() {
         return professorInTable;
     }
 

@@ -3,56 +3,66 @@ package it.polimi.ingsw.ModelTest.MatchTest;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.*;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
+
 
 public class MatchAndFactoryTest {
-    private FactoryMatch factoryMatch = new FactoryMatch();
-    private Match match2players = factoryMatch.newMatch(2);
-    private Player playerOne = new Player("nameOne", "usernameOne");
-    private Player playerTwo = new Player("nameTwo", "usernameTwo");
+    private final FactoryMatch factoryMatch = new FactoryMatch();
+    private final Match match2players = factoryMatch.newMatch(2);
+    private final Player playerOne = new Player("nameOne", "usernameOne");
+    private final Player playerTwo = new Player("nameTwo", "usernameTwo");
+    private final Player playerThree = new Player("nameThree", "usernameThree");
 
 
-    public void gameSetter(Match match){
+    public void gameSetter(){
         List<Player> players = new ArrayList<>();
         players.add(playerOne);
         players.add(playerTwo);
+        players.add(playerThree);
         Assertions.assertDoesNotThrow(() ->
                 match2players.setGame(players)
         );
     }
+    public void printGame(){
+        System.out.println("Archipelagos "+ match2players.getGame().getArchipelagos().size());
+        System.out.println(match2players.getGame().getWizards() + "\n");
+        for( Wizard w : match2players.getGame().getWizards()){
+            System.out.println(w);
+            System.out.println("towers " + w.getBoard().getTowersInBoard().size());
+            System.out.println("assistantCard " + w.getRoundAssistantsCard());
+            System.out.println("number of students in entrance " + w.getBoard().getStudentsInEntrance().size());
+
+        }
+    }
     @Test
     void verifyMatch2Players() {
-        gameSetter(match2players);
+        gameSetter();
         Assertions.assertEquals(2, match2players.getNumberOfPlayers());
         Assertions.assertEquals(3, match2players.getNumberOfMovableStudents());
         Assertions.assertEquals(2, match2players.getNumberOfClouds());
         Assertions.assertEquals(8, match2players.getNumberOfTowers());
         Assertions.assertEquals(7, match2players.getNumberOfStudentInEntrance());
         Assertions.assertEquals(3, match2players.getNumberOfStudentsOnCLoud());
-        Wizard w = match2players.getGame().getWizards().get(0);
         for(Wizard wizard : match2players.getGame().getWizards()) {
             Assertions.assertDoesNotThrow(() ->
-                Assertions.assertTrue(match2players.getPlayers().contains(match2players.getPlayerFromWizard(w)))
+                Assertions.assertTrue(match2players.getPlayers().contains(match2players.getPlayerFromWizard(wizard)))
             );
         }
+
+        Assertions.assertThrows(ExceptionGame.class, ()->match2players.setTeamsOne(playerOne,playerTwo));
+        Assertions.assertThrows(ExceptionGame.class, ()->match2players.setTeamsTwo(playerOne,playerTwo));
+        Assertions.assertThrows(ExceptionGame.class, match2players::getTeams);
     }
 
     @Test
     void playAssistantsCard_Test(){
-        gameSetter(match2players);
+        gameSetter();
         Assertions.assertDoesNotThrow(() -> {
 
                     List<AssistantsCards> assistantsCards_1 = match2players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
@@ -75,14 +85,12 @@ public class MatchAndFactoryTest {
 
     @RepeatedTest(24)
     void moveMotherNature_Test(){
-        gameSetter(match2players);
-        int currentPosition = match2players.getGame().getMotherNature().getPosition();
+        gameSetter();
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = match2players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
             List<AssistantsCards> assistantsCards_2 = match2players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
 
             match2players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
-            System.out.println(match2players.getGame().getWizardFromPlayer(playerOne).getRoundAssistantsCard().getStep());
             match2players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
 
             int oldPositionMotherNature = match2players.getPositionOfMotherNature();
@@ -128,8 +136,7 @@ public class MatchAndFactoryTest {
 
     @Test
     void checkVictory_NoTowers_Test(){
-        gameSetter(match2players);
-        int currentPosition = match2players.getGame().getMotherNature().getPosition();
+        gameSetter();
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = match2players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
             List<AssistantsCards> assistantsCards_2 = match2players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
@@ -147,8 +154,7 @@ public class MatchAndFactoryTest {
 
     @Test
     void checkVictory_NoStudents_Test(){
-        gameSetter(match2players);
-        int currentPosition = match2players.getGame().getMotherNature().getPosition();
+        gameSetter();
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = match2players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
             List<AssistantsCards> assistantsCards_2 = match2players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
@@ -158,7 +164,6 @@ public class MatchAndFactoryTest {
 
             //remove all student from student bag
             match2players.getGame().getStudentBag().getStudentsInBag().removeAll(match2players.getGame().getStudentBag().getStudentsInBag());
-            System.out.println( match2players.getGame().getStudentBag().getNumberOfStudents());
             //call moveMotherNature
             Assertions.assertEquals(match2players.getGame().getWizards(), match2players.getGame().getWizardsWithLeastTowers());
 
@@ -168,10 +173,9 @@ public class MatchAndFactoryTest {
         });
     }
 
-    @Test
+    @RepeatedTest(30)
     void checkVictory_LessThenThreeArchipelagos_Test() {
-        gameSetter(match2players);
-        int currentPosition = match2players.getGame().getMotherNature().getPosition();
+        gameSetter();
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = match2players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
             List<AssistantsCards> assistantsCards_2 = match2players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
