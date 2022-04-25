@@ -37,7 +37,8 @@ public class StudentBag {
      */
     public Student drawStudent() throws IllegalArgumentException {
         Random random = new Random();
-            return studentsInBag.remove(random.nextInt(studentsInBag.size()));
+        int toRemove = random.nextInt(studentsInBag.size());
+            return studentsInBag.remove(toRemove);
 
     }
 

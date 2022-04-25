@@ -23,9 +23,7 @@ public class IslandTest {
         Wizard w1 = new Wizard("player_test", ints[0], ints[1]);
         Tower t = new Tower(w1);
         island.setTower(t);
-        Assertions.assertDoesNotThrow(()->
-            System.out.println(island.getTower().getProperty())
-        );
+        Assertions.assertDoesNotThrow(()->island.getTower().getProperty());
         Assertions.assertDoesNotThrow(()->
             Assertions.assertEquals(w1, island.getTower().getProperty())
         );

@@ -15,7 +15,7 @@ public class Game{
     private final Collection<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
     private final List<Archipelago> archipelagos = new ArrayList<>();
     private final StudentBag studentBag = new StudentBag();
-    private final Collection<Professor> professors = new ArrayList<>();
+    private final List<Professor> professors = new ArrayList<>();
     private final Collection<Cloud> clouds = new ArrayList<>();
     private final MotherNature motherNature = new MotherNature();
     private final int limitOfStudentInEntrance;
@@ -217,9 +217,14 @@ public class Game{
         if (archipelagos.contains(archipelago)) {
             int newPosition = archipelagos.indexOf(archipelago);
             int oldPosition = motherNature.getPosition();
+            int numberOfSteps = ((newPosition + archipelagos.size()) - oldPosition) % archipelagos.size();
             Wizard wizard = getWizardFromPlayer(player);
             if( wizard.getRoundAssistantsCard() != null) {
-                if (((newPosition + archipelagos.size()) - oldPosition) % archipelagos.size() <= wizard.getRoundAssistantsCard().getStep()) {
+                if (numberOfSteps >0 && numberOfSteps <= wizard.getRoundAssistantsCard().getStep()) {
+                    archipelagos.get(oldPosition).setMotherNaturePresence(false);
+                    motherNature.setPosition(newPosition);
+                    archipelago.setMotherNaturePresence(true);
+                }else if(oldPosition == newPosition && archipelagos.size() < wizard.getRoundAssistantsCard().getStep()){
                     archipelagos.get(oldPosition).setMotherNaturePresence(false);
                     motherNature.setPosition(newPosition);
                     archipelago.setMotherNaturePresence(true);
@@ -252,14 +257,7 @@ public class Game{
      * @throws ExceptionGame is thrown if there was an error in the built of the towers
      */
     public void buildTower( Wizard wizard, Archipelago archipelago) throws ExceptionGame{
-        boolean isMostInfluence = true;
-        for(Wizard w : wizards){
-            if(!w.equals(wizard) && getWizardInfluenceInArchipelago(w, archipelago) >= getWizardInfluenceInArchipelago(wizard, archipelago))
-                isMostInfluence = false;
-        }
-        if(isMostInfluence) {
-            archipelago.placeWizardsTower(wizard);
-        }
+        archipelago.placeWizardsTower(wizard);
     }
 
     /**
@@ -267,7 +265,7 @@ public class Game{
      * if it is not possible to merge two archipelagos the method throws an exception
      * @param archipelago is the starting archipelagos
      */
-    public void takeCareOfTheMerge(Archipelago archipelago){ //problema con nextIsle se faccio merge di previous isle
+    public void takeCareOfTheMerge(Archipelago archipelago){
         int actualIsle = archipelagos.indexOf(archipelago);
 
         try {
@@ -279,20 +277,19 @@ public class Game{
                 if (wizardActualIsle.equals(wizardPreviousIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(previousIsle));
                     archipelagos.remove(archipelagos.get(previousIsle));
-                } else
-                    System.out.println("Previous isle is controlled by another wizard");
+                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+                }
             } catch (ExceptionGame e1) {
                 System.out.println("Previous Isle not controlled by any wizard");
             }
             try {
-
                 int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
                 Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardNextIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(nextIsle));
                     archipelagos.remove(archipelagos.get(nextIsle));
-                } else
-                    System.out.println("Next isle is controlled by another wizard");
+                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+                }
             } catch (ExceptionGame e2) {
                 System.out.println("Next Isle is not controlled by any wizard");
             }
@@ -316,10 +313,11 @@ public class Game{
     public void setRandomlyStudentsInEntrance(){
         Collection<Student> s = new ArrayList<>();
         for (Wizard w : wizards){
-            for(int i = 0; i<limitOfStudentInEntrance; i++) {
+            while (w.getBoard().getStudentsInEntrance().size() + s.size() < limitOfStudentInEntrance){
                 s.add(studentBag.drawStudent());
             }
             w.placeStudentInEntrance(s);
+            s.removeAll(s);
         }
     }
 
@@ -351,7 +349,7 @@ public class Game{
      * This method returns the professors of the game
      * @return professors
      */
-    public Collection<Professor> getProfessors() {
+    public List<Professor> getProfessors() {
         return professors;
     }
 

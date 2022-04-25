@@ -339,9 +339,7 @@ public class GameTest {
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()-1)% game.getArchipelagos().size()).placeWizardsTower(wizard1);
             //place 1 tower from the board of wizard2
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+1)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
-            System.out.println(wizard1.getBoard().getTowersInBoard().size());
-            System.out.println(wizard2.getBoard().getTowersInBoard().size());
-            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
+
 
             //check if wizard1 is the wizard with the least towers
             Assertions.assertEquals(wizard1, game.getWizardsWithLeastTowers().get(0));
@@ -349,17 +347,12 @@ public class GameTest {
             //place another tower from the board of wizard2 (wizard1 and wizard2 have the same number of towers on its boards)
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+2)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
 
-            System.out.println(wizard1.getBoard().getTowersInBoard().size());
-            System.out.println(wizard2.getBoard().getTowersInBoard().size());
-            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
             //check if the both wizard1 and wizard2 are the wizards with the least towers
             Assertions.assertEquals(game.getWizards().subList(0,2), game.getWizardsWithLeastTowers());
 
             //place another tower from the board of wizard2 (wizard2 is now the wizard with the least towers)
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()+3)% game.getArchipelagos().size()).placeWizardsTower(wizard2);
-            System.out.println(wizard1.getBoard().getTowersInBoard().size());
-            System.out.println(wizard2.getBoard().getTowersInBoard().size());
-            System.out.println(game.getWizards().get(2).getBoard().getTowersInBoard().size()+"\n");
+
             //check if wizard2 is the wizard with the least towers
             Assertions.assertEquals(wizard2, game.getWizardsWithLeastTowers().get(0));
 
