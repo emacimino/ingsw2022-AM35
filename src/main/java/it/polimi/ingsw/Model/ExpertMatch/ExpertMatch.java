@@ -7,6 +7,8 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -15,9 +17,9 @@ import java.util.Random;
 public class ExpertMatch extends MatchDecorator{
     protected ExpertMatch expertMatch;
     private DeckCharacterCard deckCharacterCard;
-    private CharacterCard CharacterOne = deckCharacterCard.drawCharacterCard();
-    private CharacterCard CharacterTwo = deckCharacterCard.drawCharacterCard();
-    private CharacterCard CharacterThree = deckCharacterCard.drawCharacterCard();
+    public String CharacterOne = deckCharacterCard.drawCharacterCard();
+    public String CharacterTwo = deckCharacterCard.drawCharacterCard();
+    public String CharacterThree = deckCharacterCard.drawCharacterCard();
 
     /**
      * Constructor of ExpertMatch
@@ -25,14 +27,14 @@ public class ExpertMatch extends MatchDecorator{
      */
     public ExpertMatch(Match match) {
         super();
-        expertMatch.setFirstCoin();
+        this.setFirstCoin();
     }
+
 
     /**
      * The override add a check to the number of student that are placed on the board when a student is moved
      * @param player is the player which moves the student
      * @param student is the student
-     * @throws ExceptionGame
      */
     @Override
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
@@ -52,23 +54,17 @@ public class ExpertMatch extends MatchDecorator{
             wizard.addACoin();
     }
 
-    public CharacterCard drawCharacterCard(){
-        Random random = new Random();
-        String[] draw;
-        CharacterCard characterCard;
-
-
-        return characterCard.remove(random.nextInt(studentsInBag.size()));
+    /**
+     *
+     * @return the CharacterCards for one match from the deck
+     */
+    public HashSet<String> getCharacterCards(){
+        HashSet<String> tmp = new HashSet<>();
+        tmp.add(CharacterOne);
+        tmp.add(CharacterTwo);
+        tmp.add(CharacterThree);
+        return tmp;
     }
 
-    /*
-+expertMatch( Match): void
-+drawCharacterCard(): void
-+setFirstCoin(): void
-            (@override)+moveStudentOnBoard(Player, Student): void
 
-+useCoins(CharacterCard): void
-
-+playCharacterCard(Player, CharacterCard): void
-*/
 }

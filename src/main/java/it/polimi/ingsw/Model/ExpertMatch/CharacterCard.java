@@ -6,14 +6,14 @@ import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 
 import java.util.ArrayList;
 
-public class CharacterCard extends DeckCharacterCard {
-
-    StudentBag studentBag;
+public abstract class CharacterCard extends FactoryCharacterCard {
+    protected int cost;
+    protected StudentBag studentBag;
     public CharacterCard(StudentBag studentBag) {
         this.studentBag = studentBag;
     }
 
-    public void createDeck(){
-
+    protected void usedCard(){
+        cost++;
     }
 }

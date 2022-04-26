@@ -1,14 +1,14 @@
 package it.polimi.ingsw.Model.ExpertMatch;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-
-import static java.lang.Math.random;
 
 public class DeckCharacterCard {
     ArrayList<String> deckOfCharacterCards = new ArrayList<>();
+
+    public DeckCharacterCard() {
+        this.setDeckOfCharacterCards();
+    }
 
     public void setDeckOfCharacterCards() {
         deckOfCharacterCards.add("friar");
@@ -21,18 +21,9 @@ public class DeckCharacterCard {
         deckOfCharacterCards.add("Jester");
     }
 
-    public ArrayList<String> getDeckOfCharacterCards() {
-        return deckOfCharacterCards;
+
+    public String drawCharacterCard() {
+      return deckOfCharacterCards.get(new Random().nextInt(0,deckOfCharacterCards.size()));
     }
 
-    public Set<String> getDeckOfCharacterCardsForThisMatch() {
-        Set<String> deckOfCharacterCardForThisMatch = new HashSet<>();
-        String temp;
-        Random random = new Random();
-        //temp = deckOfCharacterCards.(random.nextInt(studentsInBag.size()))
-        //deckOfCharachterCardForThisMatch.add(deckOfCharacterCards.(random.nextInt(studentsInBag.size()))
-        deckOfCharacterCardForThisMatch.add(deckOfCharacterCards.stream().toString(random.nextInt(deckOfCharacterCards.size())))
-
-        return deckOfCharacterCardForThisMatch;
-    }
 }

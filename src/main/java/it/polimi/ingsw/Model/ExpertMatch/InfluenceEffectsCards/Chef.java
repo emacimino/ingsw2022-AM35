@@ -4,14 +4,20 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
+import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
 /** Implements the effect from Character card Chef
  * It calculates the influence without the students of one color
  */
-public class Chef {
+public class Chef extends InfluenceEffectCard{
+
 
     private int cost = 3;
+
+    public Chef(StudentBag studentBag) {
+        super(studentBag);
+    }
 
     /**
      * Is called when the character card Chef is used

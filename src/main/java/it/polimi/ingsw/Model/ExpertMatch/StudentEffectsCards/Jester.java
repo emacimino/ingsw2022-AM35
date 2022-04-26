@@ -25,7 +25,7 @@ public class Jester extends StudentEffect{
     }
 
 
-    public void useCharacterCard(Jester jester, Wizard w,StudentBag studentBag) throws ExceptionGame{
+  /*  public void useCharacterCard(Jester jester, Wizard w,StudentBag studentBag) throws ExceptionGame{
         for (Student student : jester.StudentsOnCard = jester.drawStudent(6, studentBag)) {
             
         }
@@ -77,6 +77,6 @@ public class Jester extends StudentEffect{
                 }
         }
 
-    }
+    }*/
 }
 

@@ -8,7 +8,11 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 /**
  * CharachterCard knight
  */
-public class Knight{
+public class Knight extends InfluenceEffectCard{
+
+    public Knight(StudentBag studentBag) {
+        super(studentBag);
+    }
 
     private int cost = 2;
 

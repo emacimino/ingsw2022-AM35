@@ -21,9 +21,6 @@ public abstract class StudentEffect extends CharacterCard {
         }
     }
 
-    public void placeStudentOn(){
-
-    }
 
     public int getCost() {
         return cost;
