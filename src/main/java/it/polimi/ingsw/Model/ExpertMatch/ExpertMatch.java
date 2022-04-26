@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class ExpertMatch extends MatchDecorator{
     protected ExpertMatch expertMatch;
-    private DeckCharacterCard deckCharacterCard;
+    private DeckCharacterCard deckCharacterCard = new DeckCharacterCard();
     public String CharacterOne = deckCharacterCard.drawCharacterCard();
     public String CharacterTwo = deckCharacterCard.drawCharacterCard();
     public String CharacterThree = deckCharacterCard.drawCharacterCard();
