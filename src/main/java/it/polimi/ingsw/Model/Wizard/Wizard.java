@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Wizard is the class who is related to the username of the Player and manage to play the assistant's card
@@ -231,5 +232,7 @@ public class Wizard {
     public void addACoin() {
         coins++;
     }
+
+
 }
 

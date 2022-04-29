@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
+import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.FactoryMatch.Match;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
@@ -10,7 +13,7 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
  */
 public class Knight extends InfluenceEffectCard{
 
-    public Knight(StudentBag studentBag) {
+    public Knight(Game studentBag) {
         super(studentBag);
     }
 
@@ -26,9 +29,14 @@ public class Knight extends InfluenceEffectCard{
         return archipelago.calculateInfluenceInArchipelago(w) + 2;
     }
 
-    public void useCharacterCard(Wizard wizard, Archipelago archipelago) {
-        knightCalculateInfluenceInArchipelago(wizard, archipelago);
-        cost ++;
+    public int useCharacterCard(Wizard wizard, Archipelago archipelago) {
+        cost++;
+        return knightCalculateInfluenceInArchipelago(wizard, archipelago);
+    }
+
+    @Override
+    public int usedKnightCard(Wizard wizard, Archipelago archipelago) {
+        return this.useCharacterCard(wizard,archipelago);
     }
 
     public int getCost() {

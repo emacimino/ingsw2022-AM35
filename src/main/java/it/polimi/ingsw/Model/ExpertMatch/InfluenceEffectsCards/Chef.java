@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
+import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.FactoryMatch.Match;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
@@ -15,7 +19,7 @@ public class Chef extends InfluenceEffectCard{
 
     private int cost = 3;
 
-    public Chef(StudentBag studentBag) {
+    public Chef(Game studentBag) {
         super(studentBag);
     }
 
@@ -40,7 +44,13 @@ public class Chef extends InfluenceEffectCard{
             }
 
         }
+        this.cost++;
         return influence;
+    }
+
+    @Override
+    public int usedChefCard(Wizard wizard, Island island, Color color) {
+        return this.useCharacterCard(wizard,island,color);
     }
 }
 

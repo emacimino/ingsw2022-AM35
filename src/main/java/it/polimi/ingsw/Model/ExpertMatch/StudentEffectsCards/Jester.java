@@ -1,14 +1,13 @@
 package it.polimi.ingsw.Model.ExpertMatch.StudentEffectsCards;
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
-import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  *
@@ -16,67 +15,41 @@ import java.util.Scanner;
 public class Jester extends StudentEffect{
     private int cost = 1;
     ArrayList<Student> StudentsOnCard;
-    ArrayList<Student> StudentsOnEntrance;
 
-    public Jester(ArrayList<Student> studentsOnCard, ArrayList<Student> studentsOnEntrance, StudentBag studentBag) {
-        super(studentBag);
-        StudentsOnCard = studentsOnCard;
-        StudentsOnEntrance = studentsOnEntrance;
+    public Jester(Game game) {
+        super(game);
+        this.setStudentsOnCard();
     }
 
+    @Override
+    public void drawStudent(int numberOfStudent, StudentBag studentBag) {
+        super.drawStudent(numberOfStudent, studentBag);
+    }
 
-  /*  public void useCharacterCard(Jester jester, Wizard w,StudentBag studentBag) throws ExceptionGame{
-        for (Student student : jester.StudentsOnCard = jester.drawStudent(6, studentBag)) {
-            
+    public void setStudentsOnCard() {
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+        StudentsOnCard.add(game.getStudentBag().drawStudent());
+    }
+
+    public ArrayList<Student> getStudentsOnCard() {
+        return StudentsOnCard;
+    }
+
+    public void useCharacterCard(Wizard wizard, List<Student> StudentOnEntranceToBeSwitched, List<Student> StudentOnCardToBeSwitched ){
+        List<Student> tmp = wizard.getBoard().modifyEntranceByCharacterCard(StudentOnEntranceToBeSwitched, StudentOnCardToBeSwitched);
+        for(Student student: tmp){
+            this.StudentsOnCard.add(student);
         }
+    }
 
-        //System.out.println(w.getBoard().getStudentsInEntrance().stream());
-        //ArrayList<Student> StudentsFromEntranceToBeTrade = new ArrayList<>();
-        //ArrayList<Student> StudentsFromCardToBeTrade = new ArrayList<>();
-        String sStud;
-
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Choose a Student to trade from the ones on the card by his color : ");
-            Scanner scanIn = new Scanner(System.in);
-            sStud = scanIn.nextLine();
-            for (Student stud : StudentsOnCard) {
-                if (stud.getColor().equals(sStud))
-                    StudentsFromCardToBeTrade.add(stud);
-                else
-                    throw new ExceptionGame("Student not founded");
-            }
-            scanIn.close();
-        }
-
-        for (int i = 0; i < 3; i++) {
-            System.out.println("Choose a Student to trade from the ones in entrance by his color : ");
-            Scanner scanIn = new Scanner(System.in);
-            sStud = scanIn.nextLine();
-            for (Student stud : StudentsOnEntrance) {
-                    if (stud.getColor().equals(sStud))
-                        StudentsFromEntranceToBeTrade.add(stud);
-                    else
-                        throw new ExceptionGame("Student not founded");
-                }
-            scanIn.close();
-            }
-
-        for(Student stud : StudentsFromEntranceToBeTrade){
-            for(Student student : StudentsOnEntrance)
-                if(stud.getColor().equals(student.getColor())){
-                    StudentsOnEntrance.remove(stud);
-                    StudentsOnCard.add(stud);
-                }
-        }
-
-        for(Student stud : StudentsFromCardToBeTrade){
-            for(Student student : StudentsOnCard)
-                if(stud.getColor().equals(student.getColor())){
-                    StudentsOnCard.remove(stud);
-                    StudentsOnEntrance.add(stud);
-                }
-        }
-
-    }*/
+    @Override
+    public void usedJesterCard(Wizard wizard, List<Student> StudentOnEntranceToBeSwitched, List<Student> StudentOnCardToBeSwitched) {
+        this.useCharacterCard(wizard, StudentOnEntranceToBeSwitched, StudentOnCardToBeSwitched);
+        cost++;
+    }
 }
 

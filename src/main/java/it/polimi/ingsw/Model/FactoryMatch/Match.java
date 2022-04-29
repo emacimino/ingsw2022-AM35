@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Match {
+public class Match implements MatchInterface {
     protected int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
