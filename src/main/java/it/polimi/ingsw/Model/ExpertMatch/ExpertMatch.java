@@ -86,7 +86,7 @@ public class ExpertMatch extends MatchDecorator {
 
     @Override
     public Game getGame() {
-        return getGame();
+        return match.getGame();
     }
 
     @Override
@@ -96,37 +96,37 @@ public class ExpertMatch extends MatchDecorator {
 
     @Override
     public List<Player> getActionPhaseOrderOfPlayers() {
-        return getActionPhaseOrderOfPlayers();
+        return match.getActionPhaseOrderOfPlayers();
     }
 
     @Override
     public int getNumberOfMovableStudents() {
-        return getNumberOfMovableStudents();
+        return match.getNumberOfMovableStudents();
     }
 
     @Override
     public int getNumberOfClouds() {
-        return getNumberOfClouds();
+        return match.getNumberOfClouds();
     }
 
     @Override
     public int getNumberOfStudentsOnCLoud() {
-        return getNumberOfStudentsOnCLoud();
+        return match.getNumberOfStudentsOnCLoud();
     }
 
     @Override
     public int getNumberOfStudentInEntrance() {
-        return getNumberOfStudentInEntrance();
+        return match.getNumberOfStudentInEntrance();
     }
 
     @Override
     public int getNumberOfTowers() {
-        return getNumberOfTowers();
+        return match.getNumberOfTowers();
     }
 
     @Override
     public int getPositionOfMotherNature() {
-        return getPositionOfMotherNature();
+        return match.getPositionOfMotherNature();
     }
 
     @Override
@@ -141,7 +141,7 @@ public class ExpertMatch extends MatchDecorator {
 
     @Override
     public List<List<Player>> getTeams() throws ExceptionGame {
-        return getTeams();
+        return match.getTeams();
     }
 
     /**
