@@ -13,27 +13,12 @@ public class ServerMain {
 */
         //int portNumber = Integer.parseInt(args[0]);
         int portNumber = 1234;
+        boolean listening = true;
         try (
                 ServerSocket serverSocket = new ServerSocket(portNumber);
-                Socket clientSocket = serverSocket.accept();
-                PrintWriter out =
-                        new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
         ) {
-
-            String inputLine, outputLine;
-
-            // Initiate conversation with client
-            JsonObjectsHandler obh = new JsonObjectsHandler();
-            outputLine = obh.processInput("");
-            out.println(outputLine);
-
-            while ((inputLine = in.readLine()) != null) {
-                outputLine = obh.processInput(inputLine);
-                out.println(outputLine);
-                if (outputLine.equals("Game Over"))
-                    break;
+            while (listening) {
+                new MultiThreadServer(serverSocket.accept()).start();
             }
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port "
