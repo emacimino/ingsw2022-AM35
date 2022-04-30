@@ -117,4 +117,22 @@ public class Board {
                 t.setStudentsInTable(stud);
         }
     }
+
+    /**
+     *
+     */
+    public List<Student> modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
+        List<Student> tmp = new ArrayList<>();
+        for (Student student: toBeTradeFromEntrance) {
+            this.studentsInEntrance.remove(student);
+            tmp.add(student);
+        }
+        for(Student student: toBeTradeFromCard){
+            this.studentsInEntrance.add(student);
+        }
+        for (Student student: tmp){
+            toBeTradeFromCard.add(student);
+        }
+        return toBeTradeFromCard;
+    }
 }

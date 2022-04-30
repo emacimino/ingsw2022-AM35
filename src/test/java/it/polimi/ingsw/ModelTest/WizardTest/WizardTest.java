@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -206,5 +207,13 @@ class WizardTest {
             Student student = studentBag.drawStudent();
             board.getStudentsInEntrance().add(student);
         }
+    }
+
+    @Test
+    void addACoin() {
+        Wizard wizard = new Wizard("userTest",3,3);
+        assertEquals(0,wizard.getCoins());
+        wizard.addACoin();
+        assertEquals(1,wizard.getCoins());
     }
 }
