@@ -6,13 +6,13 @@ import java.io.*;
 public class ServerMain {
     public static void main(String[] args) throws IOException {
 
-        if (args.length != 1) {
+       /* if (args.length != 1) {
             System.err.println("Usage: java KnockKnockServer <port number>");
             System.exit(1);
         }
-
-        int portNumber = Integer.parseInt(args[0]);
-
+*/
+        //int portNumber = Integer.parseInt(args[0]);
+        int portNumber = 1234;
         try (
                 ServerSocket serverSocket = new ServerSocket(portNumber);
                 Socket clientSocket = serverSocket.accept();
@@ -26,7 +26,7 @@ public class ServerMain {
 
             // Initiate conversation with client
             JsonObjectsHandler obh = new JsonObjectsHandler();
-            outputLine = obh.processInput(null);
+            outputLine = obh.processInput("");
             out.println(outputLine);
 
             while ((inputLine = in.readLine()) != null) {

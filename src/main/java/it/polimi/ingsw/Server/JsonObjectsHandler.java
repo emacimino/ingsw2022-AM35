@@ -17,7 +17,6 @@ public class JsonObjectsHandler {
                 state = PINGPONG;
                 theOutput = "Pong";
             }
-            case "Start":{}
 
 
         }
