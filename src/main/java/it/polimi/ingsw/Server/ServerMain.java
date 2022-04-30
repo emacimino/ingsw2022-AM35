@@ -3,16 +3,16 @@ package it.polimi.ingsw.Server;
 import java.net.*;
 import java.io.*;
 
-public class Server {
+public class ServerMain {
     public static void main(String[] args) throws IOException {
 
-        if (args.length != 1) {
+       /* if (args.length != 1) {
             System.err.println("Usage: java KnockKnockServer <port number>");
             System.exit(1);
         }
-
-        int portNumber = Integer.parseInt(args[0]);
-
+*/
+        //int portNumber = Integer.parseInt(args[0]);
+        int portNumber = 1234;
         try (
                 ServerSocket serverSocket = new ServerSocket(portNumber);
                 Socket clientSocket = serverSocket.accept();
@@ -25,14 +25,14 @@ public class Server {
             String inputLine, outputLine;
 
             // Initiate conversation with client
-            KnockKnockProtocol kkp = new KnockKnockProtocol();
-            outputLine = kkp.processInput(null);
+            JsonObjectsHandler obh = new JsonObjectsHandler();
+            outputLine = obh.processInput("");
             out.println(outputLine);
 
             while ((inputLine = in.readLine()) != null) {
-                outputLine = kkp.processInput(inputLine);
+                outputLine = obh.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("Bye."))
+                if (outputLine.equals("Game Over"))
                     break;
             }
         } catch (IOException e) {
