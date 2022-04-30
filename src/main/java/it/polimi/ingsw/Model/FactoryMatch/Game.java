@@ -20,6 +20,9 @@ public class Game{
     private final MotherNature motherNature = new MotherNature();
     private final int limitOfStudentInEntrance;
     private final int numOfStudentMovable;
+    private Color CHEF_EFFECT;
+    private boolean ARCHER_EFFECT;
+    private Wizard BAKER_EFFECT;
 
     /**
      * Constructor of Game class
@@ -29,6 +32,9 @@ public class Game{
     public Game(int limitOfStudentInEntrance, int numOfStudentMovable){
         this.limitOfStudentInEntrance = limitOfStudentInEntrance;
         this.numOfStudentMovable = numOfStudentMovable;
+        CHEF_EFFECT = null;
+        ARCHER_EFFECT = false;
+        BAKER_EFFECT = null;
     }
 
     /**
@@ -119,7 +125,27 @@ public class Game{
      * @return the influence of the player in the archipelago
      */
     public int getWizardInfluenceInArchipelago(Wizard wizard, Archipelago archipelago){
-        return archipelago.calculateInfluenceInArchipelago(wizard);
+        int wizardInfluence = archipelago.calculateInfluenceInArchipelago(wizard);
+        if(CHEF_EFFECT != null){
+            int colorInfluence = 0;
+            for(Island island : archipelago.getIsle()){
+                colorInfluence = island.getStudentFilteredByColor(CHEF_EFFECT).size();
+            }
+            if(wizard.getBoard().isProfessorPresent(CHEF_EFFECT))
+                 wizardInfluence = wizardInfluence - colorInfluence;
+        }
+        if(ARCHER_EFFECT){
+            int towerInfluence = archipelago.calculateInfluenceTowers(wizard);
+            wizardInfluence = wizardInfluence - towerInfluence;
+        }
+        if(BAKER_EFFECT != null){
+            if(BAKER_EFFECT.equals(wizard)){
+                wizardInfluence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
+            }else{
+                wizardInfluence = archipelago.calculateInfluenceTowers(wizard);
+            }
+        }
+        return wizardInfluence;
     }
 
     /**
@@ -397,6 +423,22 @@ public class Game{
         return wizardsWithLeastTowers;
 
     }
+    public Color getChefEffect() {
+        return CHEF_EFFECT;
+    }
+
+    public void setChefEffect(Color CHEF_EFFECT) {
+        this.CHEF_EFFECT = CHEF_EFFECT;
+    }
+
+    public void setArcherEffect(boolean archerEffect){
+        ARCHER_EFFECT = archerEffect;
+    }
+    public boolean getArcherEffect(){
+        return ARCHER_EFFECT;
+    }
+    public void setBakerEffect(Wizard bakerEffect){BAKER_EFFECT = bakerEffect;}
+    public Wizard getBakerEffect(){return BAKER_EFFECT;}
 }
 
 
