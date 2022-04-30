@@ -18,7 +18,6 @@ public class JsonObjectsHandler {
                 theOutput = "Pong";
             }
 
-
         }
         return theOutput;
     }
