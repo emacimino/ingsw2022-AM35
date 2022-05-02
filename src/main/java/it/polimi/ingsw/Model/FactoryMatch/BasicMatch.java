@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BasicMatch implements Match {
+public class BasicMatch{
     protected int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
@@ -159,9 +159,10 @@ public class BasicMatch implements Match {
      * @throws ExceptionGame is thrown if Mother Nature can't be placed in the archipelago passed
      */
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        System.out.println("MoveMotherNature basic");
         game.placeMotherNature(player, archipelago);
         try {
-            buildTower(player, archipelago);
+            this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             System.out.println(e);
@@ -176,7 +177,7 @@ public class BasicMatch implements Match {
     /**
      * This method resets the list of assistant's cards played in the round
      */
-    protected void resetRound() {    //Tested in local
+    public void resetRound() {    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
     }
@@ -190,8 +191,8 @@ public class BasicMatch implements Match {
      */
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
-        for(Player p : players){
-            if(!p.equals(player) && getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
+        for(Player p : getRivals(player)){
+            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
                 isMostInfluence = false;
         }
         if(isMostInfluence) {
@@ -205,7 +206,7 @@ public class BasicMatch implements Match {
      *
      * @param archipelago is the archipelago where Mother Nature was placed
      */
-    protected void lookUpArchipelago(Archipelago archipelago) {
+    public void lookUpArchipelago(Archipelago archipelago) {
         game.takeCareOfTheMerge(archipelago);
     }
 
@@ -223,7 +224,7 @@ public class BasicMatch implements Match {
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    protected void checkVictory() throws ExceptionGame{
+    public void checkVictory() throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
         if (w.size() == 1) {
@@ -383,6 +384,25 @@ public class BasicMatch implements Match {
     public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
         Wizard w = game.getWizardFromPlayer(p);
         return game.getWizardInfluenceInArchipelago(w, archipelago);
+    }
+
+    public List<Player> getRivals(Player player) throws ExceptionGame{
+        List<Player> rivals = new ArrayList<>();
+        for (Player p : getPlayers()){
+            if (!player.equals(p))
+                rivals.add(p);
+        }
+        return rivals;
+    }
+
+    public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
+        Wizard wizard = getGame().getWizardFromPlayer(player);
+        return wizard.getBoard().isProfessorPresent(color);
+    }
+
+    public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
+        System.out.println("This match does not have teams");
+        return player;
     }
 }
 
