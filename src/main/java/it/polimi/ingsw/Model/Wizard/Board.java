@@ -121,18 +121,19 @@ public class Board {
     /**
      *
      */
-    public List<Student> modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
+    public void modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
         List<Student> tmp = new ArrayList<>();
         for (Student student: toBeTradeFromEntrance) {
             this.studentsInEntrance.remove(student);
-            tmp.add(student);
+            tmp.add(student); //tmp contiene gli studenti presi dall ingresso
         }
-        for(Student student: toBeTradeFromCard){
-            this.studentsInEntrance.add(student);
-        }
+        //metto in ingresso gli studenti dalla carta
+        this.studentsInEntrance.addAll(toBeTradeFromCard);
+        toBeTradeFromCard.removeAll(toBeTradeFromCard); //svuoto la carta
+        
+
         for (Student student: tmp){
-            toBeTradeFromCard.add(student);
+            toBeTradeFromCard.add(student); //metto sulla carta cio che ho messo in tmp
         }
-        return toBeTradeFromCard;
     }
 }

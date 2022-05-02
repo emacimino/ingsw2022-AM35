@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.SchoolsLands;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
@@ -68,14 +69,43 @@ public class Archipelago {
                 }
             }
             catch(ExceptionGame ignored){} //on the island there is no tower
-
-            if(!w.getBoard().getProfessorInTable().isEmpty()) {
-                influence += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
-            }
+            influence += calculateInfluenceStudents(w);
         }
+        if(w.getKnightEffect()){
+            influence = influence + 2;
+            w.setKnightEffect(false);
+        }
+        if(w.getMessageEffect() != 0) {
+            influence = influence + w.getMessageEffect();
+            w.setMessageEffect(0);
+        }
+
+
         return influence;
     }
 
+    public int calculateInfluenceStudents(Wizard w){
+        int influenceStudent = 0;
+        for (Island island: isle) {
+            if(!w.getBoard().getProfessorInTable().isEmpty()) {
+                influenceStudent= w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
+            }
+        }
+        return influenceStudent;
+    }
+
+    public int calculateInfluenceTowers(Wizard w){
+        int towerInfluence = 0;
+        for(Island island : isle){
+            try{
+                if(island.getTower() != null && island.getTower().getProperty().equals(w))
+                    towerInfluence ++;
+            }catch (ExceptionGame e){
+                System.out.println("There is no tower in this island");
+            }
+        }
+        return towerInfluence;
+    }
     /**
      * This method receives a student and adds it to the archipelago
      * @param student is the student that's going to be placed on the archipelago
@@ -102,4 +132,6 @@ public class Archipelago {
         }
 
     }
+
+
 }

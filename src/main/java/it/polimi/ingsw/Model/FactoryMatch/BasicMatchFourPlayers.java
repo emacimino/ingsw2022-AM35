@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.FactoryMatch;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
 import java.util.ArrayList;
@@ -9,14 +10,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MatchFourPlayers extends Match{
+public class BasicMatchFourPlayers extends BasicMatch {
     private  Player captainTeamOne;
     private  Player captainTeamTwo;
     private List<Player> teamOne = new ArrayList<>();
     private List<Player> teamTwo = new ArrayList<>();
     private List<Player> captains = new ArrayList<>();
+    private Team teamOne_;
+    private Team teamTwo_;
 
-    public MatchFourPlayers(){
+    public BasicMatchFourPlayers(){
         super.setNumberOfPlayers(4);
         super.setNumberOfMovableStudents(3);
         super.setNumberOfClouds(4);
@@ -93,7 +96,9 @@ public class MatchFourPlayers extends Match{
             return  teamTwo;
         throw new ExceptionGame("Player has no teams");
     }
-    private Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
+
+    @Override
+    public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
         return getCaptainOfTheTeam(getTeamOfPlayer(player));
     }
     private List<Player> getCaptains(){
@@ -117,24 +122,13 @@ public class MatchFourPlayers extends Match{
     }
 
     @Override
-    protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
+    protected void buildTower(Player captain, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
-        Wizard wizard = getGame().getWizardFromPlayer(player);
-        Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(player).get(1));
-        List<Wizard> rivals = new ArrayList<>();
-        for (Player p : getPlayers()){
-            if (!player.equals(p) && !getPlayerFromWizard(companion).equals(p))
-                rivals.add(getGame().getWizardFromPlayer(p));
+        Wizard wizard = getGame().getWizardFromPlayer(captain);
+        Player rivalCaptain = getRivals(captain).get(0);
+        if (getWizardInfluenceInArchipelago(captain, archipelago) <= getWizardInfluenceInArchipelago(rivalCaptain, archipelago)) {
+            isMostInfluence = false;
         }
-        if(companion!=null) {
-                int influenceWizard = getGame().getWizardInfluenceInArchipelago(wizard, archipelago);
-                int influenceCompanion = getGame().getWizardInfluenceInArchipelago(companion, archipelago);
-                int influenceRivals = getGame().getWizardInfluenceInArchipelago(rivals.get(0), archipelago) + getGame().getWizardInfluenceInArchipelago(rivals.get(1), archipelago);
-                if ((influenceWizard + influenceCompanion) <= influenceRivals ) {
-                    isMostInfluence = false;
-                }
-        }else
-            throw new ExceptionGame("Can't find the companion of the player -> " +player);
         if(isMostInfluence) {
             getGame().buildTower(wizard, archipelago);
         }
@@ -142,7 +136,7 @@ public class MatchFourPlayers extends Match{
     }
 
     @Override
-    protected void checkVictory() throws ExceptionGame{
+    public void checkVictory() throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = getCaptainsWithLeastTowers();
         if (w.size() == 1) {
@@ -178,5 +172,42 @@ public class MatchFourPlayers extends Match{
 
     }
 
+    @Override
+    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
+        Wizard wizard = getGame().getWizardFromPlayer(p);
+        int index = getTeamOfPlayer(p).indexOf(p);
+        Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(p).get(1 - index));
+        int influenceWizard = -1;
+        int influenceCompanion = -1;
+        if(companion!=null) {
+            influenceWizard = getGame().getWizardInfluenceInArchipelago(wizard, archipelago);
+            influenceCompanion = getGame().getWizardInfluenceInArchipelago(companion, archipelago);
+        }
+        if(influenceCompanion <0 || influenceWizard <0)
+            throw new ExceptionGame("Error: The companion is null");
+        return (influenceWizard + influenceCompanion);
+    }
+
+    @Override
+    public List<Player> getRivals(Player captain) throws ExceptionGame{
+        List<Player> rivals = new ArrayList<>();
+        int index = getTeamOfPlayer(captain).indexOf(captain);
+        Player companion = getTeamOfPlayer(captain).get(1 - index);
+        for (Player p : getPlayers()){
+            if (!captain.equals(p) && !companion.equals(p))
+                rivals.add(p);
+        }
+        List<Player> rivalCaptain = new ArrayList<>();
+        rivalCaptain.add(getCaptainOfTheTeam(rivals));
+        return rivalCaptain;
+    }
+
+    @Override
+    public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
+        Wizard captain = getGame().getWizardFromPlayer(getCaptainTeamOfPlayer(player));
+        Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(player).get(1));
+        boolean teamControl = companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color);
+        return teamControl;
+    }
 
 }

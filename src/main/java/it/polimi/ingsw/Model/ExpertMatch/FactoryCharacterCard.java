@@ -1,45 +1,31 @@
 package it.polimi.ingsw.Model.ExpertMatch;
 
-import it.polimi.ingsw.Model.ExpertMatch.InfluenceEffectsCards.*;
-import it.polimi.ingsw.Model.ExpertMatch.StudentEffectsCards.*;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.FactoryMatch.Match;
-import it.polimi.ingsw.Model.FactoryMatch.MatchFourPlayers;
-import it.polimi.ingsw.Model.FactoryMatch.MatchThreePlayers;
-import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 
-public class FactoryCharacterCard extends DeckCharacterCard{
+public class FactoryCharacterCard{
 
-    public FactoryCharacterCard(Match match) {
-        super(match);
-    }
-
-    /**
-         * This method returns a specific match based on the number of players passed as parameter
-         * @param nameOfCard is the name of the card
-         * @return a specific card based on the name of card passed as parameter
-         * @throws IllegalArgumentException if the parameter is not accepted
-         */
-     public CharacterCard createACharacterCard(String nameOfCard, Game game) throws IllegalArgumentException{
-         switch (nameOfCard) {
+     public CharacterCard createACharacterCard(String name, Game game) throws IllegalArgumentException{
+         switch (name) {
              case "Archer":
-                 return new Archer(game);
+                 return new Archer(game, name);
              case "Chef":
-                 return new Chef(game);
+                 return new Chef(game, name);
              case "Knight":
-                 return new Knight(game);
+                 return new Knight(game, name);
              case "Messenger":
-                 return new Messenger(game);
+                 return new Messenger(game, name);
              case "Baker":
-                 return new Baker(game);
-             case "Friar":
-                 return new Friar(game);
-             case "Jester":
-                 return new Jester(game);
+                 return new Baker(game, name);
              case "Princess":
-                 return new Princess(game);
-         }
-            throw new IllegalArgumentException("Please, insert a valid name");
+                 return new Princess(game, name);
+             case "Jester":
+                 return new Jester(game, name);
+             case "Friar":
+                 return new Friar(game, name);
 
+             default:
+                 throw new IllegalArgumentException("Invalid name of the card");
+         }
         }
 }

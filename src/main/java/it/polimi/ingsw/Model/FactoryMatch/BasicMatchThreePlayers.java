@@ -1,19 +1,17 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchThreePlayers extends Match{
+public class BasicMatchThreePlayers extends BasicMatch {
     private  int numberOfPlayers;
     private final Game game;
     private final List<Player> players = new ArrayList<>();
     private List<Player> actionPhaseOrderOfPlayers = new ArrayList<>();
 
 
-    public MatchThreePlayers() {
+    public BasicMatchThreePlayers() {
         super.setNumberOfPlayers(3);
         super.setNumberOfMovableStudents(4);
         super.setNumberOfClouds(3);
