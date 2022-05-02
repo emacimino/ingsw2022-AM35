@@ -130,10 +130,18 @@ public class Board {
         //metto in ingresso gli studenti dalla carta
         this.studentsInEntrance.addAll(toBeTradeFromCard);
         toBeTradeFromCard.removeAll(toBeTradeFromCard); //svuoto la carta
-        
+
 
         for (Student student: tmp){
             toBeTradeFromCard.add(student); //metto sulla carta cio che ho messo in tmp
         }
+    }
+
+    public TableOfStudents getTableOfStudent(Color c) throws ExceptionGame{
+        for (TableOfStudents t: tables) {
+            if(t.getColor().equals(c))
+                return t;
+        }
+        throw new ExceptionGame("There is not a table with the color passed");
     }
 }

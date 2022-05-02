@@ -8,10 +8,11 @@ import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentEffect{
 
-   static void drawStudent(ArrayList<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag){
+   static void drawStudent(List<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag){
        for (int i = 0; i < numberOfStudent; i++) {
            studentsOnCard.add(studentBag.drawStudent());
        }
