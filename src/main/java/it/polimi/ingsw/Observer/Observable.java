@@ -1,32 +1,43 @@
 package it.polimi.ingsw.Observer;
 
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.ClientServerNetwork.Server.Message.MatchMessages;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable implements Observer {
+public class Observable {
 
-    List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
-    @Override
+    /**
+     * Adds an observer.
+     *
+     * @param observer is the observer to be added.
+     */
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
-    @Override
+    /**
+     * Removes an observer.
+     *
+     * @param observer is the observer to be removed.
+     */
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
-    @Override
-    public void notifyObserver(Message message) {
-        for (Observer observerForLoop: observers)
-            observerForLoop.update(message);
+    /**
+     *
+     * @param message is the message to be passed to the observers.
+     */
+    protected void notifyObserver(MatchMessages message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
     }
 
-
-    public void update(Message message) {
-
+    public List<Observer> getObservers() {
+        return observers;
     }
 }
