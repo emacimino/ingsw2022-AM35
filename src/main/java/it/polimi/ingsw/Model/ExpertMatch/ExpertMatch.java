@@ -24,7 +24,8 @@ public class ExpertMatch extends MatchDecorator {
     private Color CHEF_EFFECT;
     private boolean ARCHER_EFFECT;
     private Wizard BAKER_EFFECT;
-    private Student PRINCESS_EFFETC;
+    private boolean KNIGHT_EFFECT;
+
     /**
      * Constructor of ExpertMatch
      *
@@ -95,6 +96,8 @@ public class ExpertMatch extends MatchDecorator {
             setChefEffect(null);
         if(getArcherEffect())
             setArcherEffect(false);
+        if(getKnightEffect())
+            setKnightEffect(false);
     }
 
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
@@ -126,11 +129,11 @@ public class ExpertMatch extends MatchDecorator {
             }
             if(basicMatch.playerControlProfessor(p, CHEF_EFFECT)) //problema x 4
                 CardEffectWizardInfluence = CardEffectWizardInfluence - colorInfluence;
-        }
+        }else
         if(ARCHER_EFFECT){
             int towerInfluence = archipelago.calculateInfluenceTowers(wizard); //va bene perchè player p è il captain sempre
             CardEffectWizardInfluence = CardEffectWizardInfluence - towerInfluence;
-        }
+        }else
         if(BAKER_EFFECT != null){   //va bene perché non mi interessa i giocatori singoli
             if(BAKER_EFFECT.equals(wizard)){
                 CardEffectWizardInfluence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
@@ -138,6 +141,9 @@ public class ExpertMatch extends MatchDecorator {
             }else{
                 CardEffectWizardInfluence = archipelago.calculateInfluenceTowers(wizard);
             }
+        }else
+        if(KNIGHT_EFFECT){
+            CardEffectWizardInfluence += 2;
         }
 
         return CardEffectWizardInfluence;
@@ -157,6 +163,14 @@ public class ExpertMatch extends MatchDecorator {
     }
     public void setBakerEffect(Wizard bakerEffect){BAKER_EFFECT = bakerEffect;}
     public Wizard getBakerEffect(){return BAKER_EFFECT;}
+
+    public boolean getKnightEffect() {
+        return KNIGHT_EFFECT;
+    }
+
+    public void setKnightEffect(boolean KNIGHT_EFFECT) {
+        this.KNIGHT_EFFECT = KNIGHT_EFFECT;
+    }
 }
 
 

@@ -6,8 +6,6 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
-import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ArcherTest {
+class KnightTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
     private final ExpertMatch expertMatch = new ExpertMatch(basicMatch2Players);
@@ -61,18 +59,18 @@ class ArcherTest {
 
 
     @RepeatedTest(10)
-    public void setTestMatch1(){
-        Assertions.assertDoesNotThrow(()->{
+    public void setTestMatch1() {
+        Assertions.assertDoesNotThrow(() -> {
             this.setATestMatch();
             wizard1 = expertMatch.getGame().getWizardFromPlayer(player1);
             wizard2 = expertMatch.getGame().getWizardFromPlayer(player2);
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(2));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
-            //sets Archer card in the game in position 0
-            CharacterCard archer = new Archer(expertMatch.getGame(), "Archer");
-            expertMatch.getCharactersForThisGame().add(0, archer);
-            Assertions.assertEquals(3, archer.getCost());
-            int cost = archer.getCost();
+
+            CharacterCard knight = new Knight(expertMatch.getGame(), "Knight");
+            expertMatch.getCharactersForThisGame().add(0, knight);
+            Assertions.assertEquals(2, knight.getCost());
+            int cost = knight.getCost();
             Collection<Student> studentsPlayer1 = expertMatch.getGame().getWizardFromPlayer(player1).getBoard().getStudentsInEntrance();
             Collection<Student> studentsPlayer2 = expertMatch.getGame().getWizardFromPlayer(player2).getBoard().getStudentsInEntrance();
             Student[] students1 = new Student[studentsPlayer1.size()];
@@ -93,21 +91,21 @@ class ArcherTest {
             Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
             Assertions.assertEquals(1, interestArchipelago.calculateInfluenceTowers(wizard1));
 
-            int influenceBeforeEffect = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
+            int influenceBeforeEffect1 = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
+            int influenceBeforeEffect2 = expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago);
             wizard2.addACoin();
-            wizard2.addACoin(); //wizard has 3 coin now
-            Assertions.assertEquals(3, wizard2.getCoins());
-            Assertions.assertEquals(3, archer.getCost());
-            archer.setActiveWizard(wizard2);
-            archer.useCard(expertMatch);
-            Assertions.assertEquals(influenceBeforeEffect-1, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) );
+            Assertions.assertEquals(2, wizard2.getCoins());
+            Assertions.assertEquals(2, knight.getCost());
+            knight.setActiveWizard(wizard2);
+            knight.useCard(expertMatch);
+            Assertions.assertEquals(influenceBeforeEffect2 + 2, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
             Assertions.assertEquals(0, wizard2.getCoins());
-            Assertions.assertEquals(cost + 1, archer.getCost());
+            Assertions.assertEquals(cost + 1, knight.getCost());
 
             int cases = -1;
-            if(expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) > expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
+            if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) > expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
                 cases = 0;
-            else if(expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) < expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
+            else if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) < expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
                 cases = 1;
 
             expertMatch.moveMotherNature(player2, interestArchipelago); //nb se w2 ha piu influenza c'è un cambio di torre
@@ -132,22 +130,24 @@ class ArcherTest {
             positionMN = expertMatch.getPositionOfMotherNature();
             interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player1)) % expertMatch.getGame().getArchipelagos().size());
 
-            System.out.println("situation interested archipelago "+interestArchipelago.getStudentFromArchipelago() );
 
             expertMatch.moveMotherNature(player1, interestArchipelago);
             printGame();
             if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) > expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago)) {
-                   Assertions.assertEquals(numberOfTowerW1 - 1, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(numberOfTowerW1 - 1, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(numberOfTowerW2, wizard2.getBoard().getTowersInBoard().size());
             } else if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) < expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago)) {
-                Assertions.assertEquals(numberOfTowerW1 , wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(numberOfTowerW2, wizard2.getBoard().getTowersInBoard().size());
             } else {
+                Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
                 Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
             }
         });
     }
 
     @RepeatedTest(10)
-    public void match4player_Test(){
+    public void match4player_Test () {
         BasicMatch match4players = factoryMatch.newMatch(4);
         Player player3 = new Player("name3", "username3");
         Player player4 = new Player("name4", "username4");
@@ -155,13 +155,10 @@ class ArcherTest {
         players.add(player3);
         players.add(player4);
         ExpertMatch expertMatch4Players = new ExpertMatch(match4players);
-
-        Assertions.assertThrows(ExceptionGame.class, ()-> expertMatch4Players.setGame(players));
-
-        Assertions.assertDoesNotThrow( ()->{
+        Assertions.assertThrows(ExceptionGame.class, () -> expertMatch4Players.setGame(players));
+        Assertions.assertDoesNotThrow(() -> {
             expertMatch4Players.setTeamsOne(player1, player2);
             expertMatch4Players.setTeamsTwo(player3, player4);
-
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
             Wizard wizard2 = expertMatch4Players.getGame().getWizardFromPlayer(player2);
@@ -171,14 +168,14 @@ class ArcherTest {
             Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-            CharacterCard archer = new Archer(expertMatch4Players.getGame(), "archer");
-            expertMatch4Players.getCharactersForThisGame().add(0, archer);
-            assertEquals(3, archer.getCost());
+            CharacterCard knight = new Knight(expertMatch4Players.getGame(), "Knight");
+            expertMatch4Players.getCharactersForThisGame().add(0, knight);
+            assertEquals(2, knight.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
             assertEquals(1, wizard3.getCoins());
             assertEquals(1, wizard4.getCoins());
-            int cost = archer.getCost();
+            int cost = knight.getCost();
             Collection<Student> studentsPlayer3 = expertMatch4Players.getGame().getWizardFromPlayer(player3).getBoard().getStudentsInEntrance();
             Collection<Student> studentsPlayer4 = expertMatch4Players.getGame().getWizardFromPlayer(player4).getBoard().getStudentsInEntrance();
             List<Student> students3 = new ArrayList<>(studentsPlayer3);
@@ -205,48 +202,48 @@ class ArcherTest {
             Student[] s = new Student[2];
             Student student = interestArchipelago.getStudentFromArchipelago().toArray(s)[0];
             wizard4.addACoin();
-            wizard4.addACoin(); //wizard has 3 coin now
-            assertEquals(3, wizard4.getCoins());
-            assertEquals(3, archer.getCost());
-            interestArchipelago.placeWizardsTower(wizard1);
+            assertEquals(2, wizard4.getCoins());
+            assertEquals(2, knight.getCost());
 
             int influenceBeforeEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceBeforeEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
 
-            archer.setActiveWizard(wizard4);
-            archer.useCard(expertMatch4Players);
+            knight.setActiveWizard(wizard4);
+            knight.setColorEffected(student.getColor());
+            knight.useCard(expertMatch4Players);
             assertEquals(0, wizard4.getCoins());
-            assertEquals(cost + 1, archer.getCost());
+            assertEquals(cost + 1, knight.getCost());
 
-            int influenceAfterEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago) ;
-            Assertions.assertEquals(influenceBeforeEffectTeam1 - 1, influenceAfterEffectTeam1);
-            int influenceAfterEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago) ;
+            int influenceAfterEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
+            int influenceAfterEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
 
             expertMatch4Players.moveMotherNature(player4, interestArchipelago); //NB MN MOVED BY PLAYER4
 
             if (influenceAfterEffectTeam1 > influenceAfterEffectTeam2) {
-                Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
-            }else if (influenceAfterEffectTeam1 < influenceAfterEffectTeam2){
-                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(7, wizard3.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
-            }else{
-                Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
+                assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
+                assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
+            } else if (influenceAfterEffectTeam1 < influenceAfterEffectTeam2) {
+                assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
+                assertEquals(7, wizard3.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
+            } else {
+                assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
+                assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
+                assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
             }
         });
 
     }
-
+    
     public int getSteps(ExpertMatch expertMatch, Player player) throws ExceptionGame{
         Wizard wizard = expertMatch.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
     }
+        
+        
+    
 }
-

@@ -16,8 +16,8 @@ public class BasicMatchFourPlayers extends BasicMatch {
     private List<Player> teamOne = new ArrayList<>();
     private List<Player> teamTwo = new ArrayList<>();
     private List<Player> captains = new ArrayList<>();
-    private Team teamOne_;
-    private Team teamTwo_;
+   // private Team teamOne_;
+   // private Team teamTwo_;
 
     public BasicMatchFourPlayers(){
         super.setNumberOfPlayers(4);
@@ -206,7 +206,7 @@ public class BasicMatchFourPlayers extends BasicMatch {
     public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
         Wizard captain = getGame().getWizardFromPlayer(getCaptainTeamOfPlayer(player));
         Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(player).get(1));
-        boolean teamControl = companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color);
+        boolean teamControl = (companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color));
         return teamControl;
     }
 

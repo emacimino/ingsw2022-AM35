@@ -10,7 +10,7 @@ public class FactoryCharacterCard{
              case "Archer" -> new Archer(game, name);
              case "Chef" -> new Chef(game, name);
              case "Knight" -> new Knight(game, name);
-             case "Messenger" -> new Messenger(game, name);
+          //   case "Messenger" -> new Messenger(game, name);
              case "Baker" -> new Baker(game, name);
              case "Princess" -> new Princess(game, name);
              case "Jester" -> new Jester(game, name);

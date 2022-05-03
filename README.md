@@ -9,7 +9,7 @@
 | CLI               | 🔴 |
 | Multiple games    | 🔴 |
 | Persistence       | 🔴 |
-| 4 Player match    | 🟢 |
+| 4 Player basicMatch    | 🟢 |
 | 12 Character Card            | 🔴 |
 
 

@@ -21,8 +21,8 @@ public class DeckCharacterCard{
         deckOfCharacterCards.add("Princess");//ok
         deckOfCharacterCards.add("Jester");//ok
         deckOfCharacterCards.add("Baker"); //ok
-        deckOfCharacterCards.add("Messenger");
-        deckOfCharacterCards.add("Minstrel");
+       // deckOfCharacterCards.add("Messenger");
+        deckOfCharacterCards.add("Minstrel"); //ok
     }
 
 
