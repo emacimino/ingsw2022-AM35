@@ -79,7 +79,7 @@ public abstract class CharacterCard {
             throw new ExceptionGame("activeWizard hasn't been set");
         }
         activeWizard.reduceCoins(getCost());
-        this.cost++;
+
     }
 
     public Wizard getActiveWizard() {
@@ -111,6 +111,7 @@ public abstract class CharacterCard {
     }
 
     protected void resetCard(){
+        this.cost++;
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
