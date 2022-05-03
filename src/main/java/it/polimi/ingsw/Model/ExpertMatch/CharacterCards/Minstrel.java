@@ -43,13 +43,11 @@ public class Minstrel extends CharacterCard implements StudentEffect{
             throw new ExceptionGame("The list of students to trade have not the same number or there have been selected more than 2 students");
     }
 
-
-
     @Override
     public void tradeStudents(List<Student> fromTables, List<Student> toEntrance, Collection<Student> studentsTable, Collection<Student> studentsEntrance) throws ExceptionGame{
         for(TableOfStudents t: getActiveWizard().getBoard().getTables()) {
-            for(int i = 0; i < fromTables.size(); i++) {
-                t.getStudentsInTable().remove(fromTables.get(i));
+            for (Student fromTable : fromTables) {
+                t.getStudentsInTable().remove(fromTable);
             }
         }
 
