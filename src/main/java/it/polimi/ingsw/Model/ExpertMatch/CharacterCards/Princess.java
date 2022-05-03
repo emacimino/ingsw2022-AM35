@@ -12,7 +12,7 @@ public class Princess extends CharacterCard implements StudentEffect {
     public Princess(Game game, String name) {
         super(game, name);
         setCost(2);
-        setStudentsOnCard();
+        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
     }
 
     @Override
@@ -22,9 +22,6 @@ public class Princess extends CharacterCard implements StudentEffect {
         resetCard();
     }
 
-    private void setStudentsOnCard() {
-        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
-    }
 
     private void usedPrincessCard(Wizard wizard, Student chosenStudent) throws ExceptionGame {
         if(getStudentsOnCard().contains(chosenStudent)) {

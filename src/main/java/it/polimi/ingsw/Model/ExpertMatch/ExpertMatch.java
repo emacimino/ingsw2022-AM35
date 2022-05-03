@@ -131,7 +131,7 @@ public class ExpertMatch extends MatchDecorator {
             int towerInfluence = archipelago.calculateInfluenceTowers(wizard); //va bene perchè player p è il captain sempre
             CardEffectWizardInfluence = CardEffectWizardInfluence - towerInfluence;
         }
-        if(BAKER_EFFECT != null){   //va bene perchè non mi interessa i giocatori singoli
+        if(BAKER_EFFECT != null){   //va bene perché non mi interessa i giocatori singoli
             if(BAKER_EFFECT.equals(wizard)){
                 CardEffectWizardInfluence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
                 System.out.println( " influenza degli studenti : "+ archipelago.getStudentFromArchipelago().size() + ", influenza delle torri di " + wizard + ": " + archipelago.calculateInfluenceInArchipelago(wizard));

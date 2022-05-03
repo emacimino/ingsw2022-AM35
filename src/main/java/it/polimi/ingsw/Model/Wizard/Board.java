@@ -121,7 +121,7 @@ public class Board {
     /**
      *
      */
-    public void modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
+   /* public void modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
         List<Student> tmp = new ArrayList<>();
         for (Student student: toBeTradeFromEntrance) {
             this.studentsInEntrance.remove(student);
@@ -135,7 +135,7 @@ public class Board {
         for (Student student: tmp){
             toBeTradeFromCard.add(student); //metto sulla carta cio che ho messo in tmp
         }
-    }
+    }*/
 
     public TableOfStudents getTableOfStudent(Color c) throws ExceptionGame{
         for (TableOfStudents t: tables) {

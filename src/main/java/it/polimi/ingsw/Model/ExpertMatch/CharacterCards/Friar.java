@@ -14,7 +14,7 @@ public class Friar extends CharacterCard implements StudentEffect {
     public Friar(Game game, String name) {
         super(game, name);
         setCost(1);
-        setStudentsOnCard();
+        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
     }
 
     @Override
@@ -22,10 +22,6 @@ public class Friar extends CharacterCard implements StudentEffect {
         super.useCard(match);
         usedFriarCard(getActiveStudents().get(0));
         resetCard();
-    }
-
-    private void setStudentsOnCard() {
-        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
     }
 
 

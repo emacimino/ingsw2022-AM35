@@ -14,14 +14,15 @@ public class DeckCharacterCard{
     }
 
     private void setDeckOfCharacterCards() {
-        deckOfCharacterCards.add("Friar");
+        deckOfCharacterCards.add("Friar");//ok
         deckOfCharacterCards.add("Knight");
-        deckOfCharacterCards.add("Chef");
+        deckOfCharacterCards.add("Chef");//ok
         deckOfCharacterCards.add("Archer");//ok
-        deckOfCharacterCards.add("Princess");
-        deckOfCharacterCards.add("Jester");
+        deckOfCharacterCards.add("Princess");//ok
+        deckOfCharacterCards.add("Jester");//ok
         deckOfCharacterCards.add("Baker"); //ok
         deckOfCharacterCards.add("Messenger");
+        deckOfCharacterCards.add("Minstrel");
     }
 
 
