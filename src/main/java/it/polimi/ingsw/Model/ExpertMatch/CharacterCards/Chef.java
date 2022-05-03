@@ -20,18 +20,16 @@ public class Chef extends CharacterCard {
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedChefCard(getActiveWizard(), getColorEffected(), match);
+        usedChefCard(match);
+        resetCard();
     }
 
     /**
      * Is called when the character card Chef is used
-     * @param wizard that have to calculate the influence
-     * @param color of the students that the method has to ignore
      */
 
-    private void usedChefCard(Wizard wizard, Color color, ExpertMatch match) {
-        match.setChefEffect(color);
-        resetCard();
+    private void usedChefCard(ExpertMatch match) {
+        match.setChefEffect(getColorEffected());
     }
 
 

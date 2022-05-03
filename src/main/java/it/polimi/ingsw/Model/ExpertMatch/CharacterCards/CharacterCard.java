@@ -24,7 +24,7 @@ public abstract class CharacterCard {
     private Archipelago archipelagoEffected;
     private List<Student> activeStudents;
     private List<Student> passiveStudents;
-    private List<Student> studentsOnCard = new ArrayList<>();
+    private final List<Student> studentsOnCard = new ArrayList<>();
 
     public CharacterCard(Game game, String name) {
         this.name = name;
@@ -118,7 +118,6 @@ public abstract class CharacterCard {
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
-        studentsOnCard = null;
     }
 
     public List<Student> getStudentsOnCard() {

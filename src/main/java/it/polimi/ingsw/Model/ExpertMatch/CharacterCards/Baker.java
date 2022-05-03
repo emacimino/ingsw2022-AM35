@@ -14,13 +14,13 @@ public class Baker extends CharacterCard {
     }
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedBakerCard(getActiveWizard(), match);
+        usedBakerCard( match);
+        resetCard();
     }
 
-    private void usedBakerCard(Wizard wizard, ExpertMatch match) throws ExceptionGame{
-        Player player = match.getPlayerFromWizard(wizard);
+    private void usedBakerCard(ExpertMatch match) throws ExceptionGame{
+        Player player = match.getPlayerFromWizard(getActiveWizard());
         Player captain = match.getCaptainTeamOfPlayer(player);
         match.setBakerEffect(match.getGame().getWizardFromPlayer(captain));
-        resetCard();
     }
 }

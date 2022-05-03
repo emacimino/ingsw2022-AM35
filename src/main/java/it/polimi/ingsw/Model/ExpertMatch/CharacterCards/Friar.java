@@ -20,23 +20,25 @@ public class Friar extends CharacterCard implements StudentEffect {
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
-        usedFriarCard(getArchipelagoEffected(), getActiveStudents().get(0));
+        usedFriarCard(getActiveStudents().get(0));
+        resetCard();
     }
 
     private void setStudentsOnCard() {
-        StudentEffect.drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
+        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
     }
 
 
-    private void usedFriarCard(Archipelago archipelago, Student chosenStudent) throws ExceptionGame {
+    private void usedFriarCard(Student chosenStudent) throws ExceptionGame {
         if(getStudentsOnCard().contains(chosenStudent)) {
-            archipelago.addStudentInArchipelago(chosenStudent);
+            getArchipelagoEffected().addStudentInArchipelago(chosenStudent);
             getStudentsOnCard().remove(chosenStudent);
+
         }
         else
             throw new ExceptionGame("This student is not on the card");
 
-        StudentEffect.drawStudent( getStudentsOnCard(), 1, getGame().getStudentBag());
+        drawStudent( getStudentsOnCard(), 1, getGame().getStudentBag());
     }
 }
 

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 
-
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,16 +10,18 @@ import java.util.List;
 
 public interface StudentEffect{
 
-   static void drawStudent(List<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag){
+    default void drawStudent(List<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag){
        for (int i = 0; i < numberOfStudent; i++) {
            studentsOnCard.add(studentBag.drawStudent());
        }
    }
 
-   static Collection<Student> getStudents(CharacterCard characterCard) throws ExceptionGame {
-       if(characterCard.getStudentsOnCard() != null)
-           return characterCard.getStudentsOnCard();
-       else throw new ExceptionGame("this card doesn't have students on it");
+    default void tradeStudentsFromEntrance(List<Student> fromA, List<Student> toB, List<Student> studentsOnCard, Collection<Student> studentsInEntrance){
+        studentsOnCard.removeAll(fromA);
+        studentsOnCard.addAll(toB);
+
+        studentsInEntrance.removeAll(toB);
+        studentsInEntrance.addAll(fromA);
    }
 
 

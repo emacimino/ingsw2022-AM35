@@ -18,13 +18,14 @@ public class Archer extends CharacterCard {
 
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedArcherCard(getActiveWizard(), match);
+        usedArcherCard(match);
+        resetCard();
+
     }
 
 
-    private void usedArcherCard(Wizard wizard, ExpertMatch match) {
+    private void usedArcherCard(ExpertMatch match) {
         match.setArcherEffect(true);
-        resetCard();
     }
 }
 
