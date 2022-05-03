@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Server.Message;
+package it.polimi.ingsw.ClientServerNetwork.Server.Message;
 
 import com.google.gson.Gson;
 
@@ -11,8 +11,14 @@ public class LoginAnswer implements Message {
         gson.toJson(message);
         return gson;
     }
+
     @Override
-    public Object getMessage() {
+    public String getMessage() {
+        return null;
+    }
+
+    @Override
+    public Object getGsonMessage() {
 
         return this.loginAnswer();
 

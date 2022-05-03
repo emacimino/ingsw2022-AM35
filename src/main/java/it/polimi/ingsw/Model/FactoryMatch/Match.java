@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.Observer.MatchObserver;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,7 @@ public class Match implements MatchInterface {
     private int numberOfStudentsOnCLoud;
     private int numberOfStudentInEntrance;
     private int numberOfTowers;
-
+    private MatchObserver matchObserver;
     /**
      * The constructor of the Class Match which implements a match for two players
      */
@@ -34,6 +35,10 @@ public class Match implements MatchInterface {
         numberOfStudentInEntrance = 7;
         numberOfStudentsOnCLoud = 3;
         game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
+        matchObserver = new MatchObserver(this);
+        for(Player player: players){
+            player.setObserver(this.matchObserver);
+        }
     }
 
     /**
@@ -50,6 +55,9 @@ public class Match implements MatchInterface {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
+        for(Player player: players){
+            player.getObserver().setMatchObserver(this.game);
+        }
     }
 
     /**
