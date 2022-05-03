@@ -123,7 +123,7 @@ class PrincessTest {
                 Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
                 expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
                 expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-                CharacterCard princess = new Princess(expertMatch.getGame(), "Princess");
+                CharacterCard princess = new Princess(expertMatch4Players.getGame(), "Princess");
                 expertMatch4Players.getCharactersForThisGame().add(0, princess);
                 assertEquals(2, princess.getCost());
                 assertEquals(1, wizard1.getCoins());
@@ -146,7 +146,7 @@ class PrincessTest {
 
                 princess.setActiveWizard(wizard4);
                 princess.setActiveStudents(studentsOnCard.subList(0, 1));
-                princess.useCard(expertMatch);
+                princess.useCard(expertMatch4Players);
 
                 Assertions.assertFalse(princess.getStudentsOnCard().contains(s));
                 Assertions.assertEquals(0, wizard4.getCoins());

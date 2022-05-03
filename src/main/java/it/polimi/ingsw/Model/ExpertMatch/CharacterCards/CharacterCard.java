@@ -10,20 +10,21 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CharacterCard {
     protected int cost;
-    protected String name;
-    protected Game game;
-    protected Wizard activeWizard;
-    protected Wizard passiveWizard;
-    protected Color colorEffected;
-    protected Island islandEffected;
-    protected Archipelago archipelagoEffected;
-    protected List<Student> activeStudents;
-    protected List<Student> passiveStudents;
-    protected List<Student> studentsOnCard;
+    private String name;
+    private Game game;
+    private Wizard activeWizard;
+    private Wizard passiveWizard;
+    private Color colorEffected;
+    private Island islandEffected;
+    private Archipelago archipelagoEffected;
+    private List<Student> activeStudents;
+    private List<Student> passiveStudents;
+    private List<Student> studentsOnCard = new ArrayList<>();
 
     public CharacterCard(Game game, String name) {
         this.name = name;
@@ -35,7 +36,6 @@ public abstract class CharacterCard {
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
-        studentsOnCard = null;
     }
 
 
@@ -82,6 +82,34 @@ public abstract class CharacterCard {
         this.cost++;
     }
 
+    public Wizard getActiveWizard() {
+        return activeWizard;
+    }
+
+    public Wizard getPassiveWizard() {
+        return passiveWizard;
+    }
+
+    public Color getColorEffected() {
+        return colorEffected;
+    }
+
+    public Island getIslandEffected() {
+        return islandEffected;
+    }
+
+    public Archipelago getArchipelagoEffected() {
+        return archipelagoEffected;
+    }
+
+    public List<Student> getActiveStudents() {
+        return activeStudents;
+    }
+
+    public List<Student> getPassiveStudents() {
+        return passiveStudents;
+    }
+
     protected void resetCard(){
         passiveWizard =null;
         activeWizard = null;
@@ -97,7 +125,13 @@ public abstract class CharacterCard {
         return studentsOnCard;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public Game getGame() {
+        return game;
+    }
 
     @Override
     public String toString() {

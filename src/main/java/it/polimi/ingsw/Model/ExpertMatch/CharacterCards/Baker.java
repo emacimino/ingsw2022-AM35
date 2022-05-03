@@ -14,7 +14,7 @@ public class Baker extends CharacterCard {
     }
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedBakerCard(activeWizard, match);
+        usedBakerCard(getActiveWizard(), match);
     }
 
     private void usedBakerCard(Wizard wizard, ExpertMatch match) throws ExceptionGame{

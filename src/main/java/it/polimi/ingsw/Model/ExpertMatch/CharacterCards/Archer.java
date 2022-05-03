@@ -18,7 +18,7 @@ public class Archer extends CharacterCard {
 
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedArcherCard(activeWizard, match);
+        usedArcherCard(getActiveWizard(), match);
     }
 
 

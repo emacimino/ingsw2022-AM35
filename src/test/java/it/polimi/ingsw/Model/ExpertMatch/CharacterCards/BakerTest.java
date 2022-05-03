@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.ExpertMatch;
+package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.Archer;
@@ -215,7 +215,6 @@ class BakerTest {
             expertMatch4Players.moveStudentOnBoard(player2, students2[1]);
 
             int positionMN = expertMatch4Players.getPositionOfMotherNature();
-            expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
             positionMN = expertMatch4Players.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
             Student[] s = new Student[2];

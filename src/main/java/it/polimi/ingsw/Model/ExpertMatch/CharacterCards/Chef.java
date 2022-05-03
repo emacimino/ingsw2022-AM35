@@ -20,7 +20,7 @@ public class Chef extends CharacterCard {
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedChefCard(activeWizard, colorEffected, match);
+        usedChefCard(getActiveWizard(), getColorEffected(), match);
     }
 
     /**
