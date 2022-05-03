@@ -10,9 +10,9 @@ import java.util.*;
  * This class represents the Table of students placed just below the professors' seats and is iterated 5 times in the board, one for each color
  */
 public class TableOfStudents {
-    public Color color;
-    public Collection<Student> studentsInTable= new HashSet<>();
-    public int limitOfStudents;
+    private final Color color;
+    private final Collection<Student> studentsInTable= new HashSet<>();
+    private final int limitOfStudents;
 
     /**
      * constructs the class

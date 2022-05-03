@@ -8,13 +8,13 @@ public class FactoryMatch {
      * @return a specific match based on the number of players passed as parameter
      * @throws IllegalArgumentException if the parameter is not accepted
      */
-    public Match newMatch(int numOfPlayers) throws IllegalArgumentException{
+    public BasicMatch newMatch(int numOfPlayers) throws IllegalArgumentException{
         if(numOfPlayers == 2)
-            return new Match();
+            return new BasicMatch();
         else if(numOfPlayers == 3)
-            return new MatchThreePlayers();
+            return new BasicMatchThreePlayers();
         else if(numOfPlayers == 4)
-            return new MatchFourPlayers();
+            return new BasicMatchFourPlayers();
         throw new IllegalArgumentException("Please, insert a number of players between 2 and 4");
 
     }

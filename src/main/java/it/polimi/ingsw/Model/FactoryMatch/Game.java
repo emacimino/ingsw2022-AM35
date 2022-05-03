@@ -21,6 +21,7 @@ public class Game{
     private final int limitOfStudentInEntrance;
     private final int numOfStudentMovable;
 
+
     /**
      * Constructor of Game class
      * @param limitOfStudentInEntrance is the number of Students allowed in the entrance of the board of each wizard
@@ -119,7 +120,9 @@ public class Game{
      * @return the influence of the player in the archipelago
      */
     public int getWizardInfluenceInArchipelago(Wizard wizard, Archipelago archipelago){
-        return archipelago.calculateInfluenceInArchipelago(wizard);
+        int wizardInfluence = archipelago.calculateInfluenceInArchipelago(wizard);
+
+        return wizardInfluence;
     }
 
     /**
@@ -397,6 +400,7 @@ public class Game{
         return wizardsWithLeastTowers;
 
     }
+
 }
 
 

@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Wizard is the class who is related to the username of the Player and manage to play the assistant's card
@@ -22,6 +21,9 @@ public class Wizard {
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
     private final int limitOfStudentInEntrance;
+    private boolean KNIGHT_EFFECT;
+    private int MESSANGER_EFFECT;
+
 
     /**
      * THis is the constructor of the Wizard Class, it needs the username of the player, the limit
@@ -35,6 +37,9 @@ public class Wizard {
         this.username = username;
         this.limitOfStudentInEntrance = limitOfStudentInEntrance;
         this.numOfStudentMovable = numOfStudentMovable;
+        KNIGHT_EFFECT = false;
+        MESSANGER_EFFECT = 0;
+
     }
 
     /**
@@ -215,6 +220,13 @@ public class Wizard {
         return coins;
     }
 
+    public void reduceCoins(int reduce) throws ExceptionGame{
+        if(reduce > getCoins())
+            throw new ExceptionGame("wizard does not have enough coins");
+        this.coins -= reduce;
+
+    }
+
     /**
      * Override of the toString method
      * @return String
@@ -233,6 +245,22 @@ public class Wizard {
         coins++;
     }
 
+    public boolean getKnightEffect(){
+        return KNIGHT_EFFECT;
+    }
+
+    public void setKnightEffect(boolean knightEffect){
+        KNIGHT_EFFECT= knightEffect;
+    }
+
+
+
+    public void setMessageEffect(int messageEffect){
+        MESSANGER_EFFECT = messageEffect;
+    }
+    public int getMessageEffect(){
+        return MESSANGER_EFFECT;
+    }
 
 }
 

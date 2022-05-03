@@ -16,8 +16,8 @@ public class TableOfStudentsTest {
             Student stud = new Student(c);
             TableOfStudents tos= new TableOfStudents(c);
             Assertions.assertEquals(c, tos.getColor());
-            tos.studentsInTable.add(stud);
-            Assertions.assertTrue(tos.studentsInTable.contains(stud));
+            tos.getStudentsInTable().add(stud);
+            Assertions.assertTrue(tos.getStudentsInTable().contains(stud));
         }
     }
     @Test

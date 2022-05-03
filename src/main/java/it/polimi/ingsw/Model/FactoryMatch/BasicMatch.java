@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Match implements MatchInterface {
+public class BasicMatch{
     protected int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Match implements MatchInterface {
     /**
      * The constructor of the Class Match which implements a match for two players
      */
-    public Match() {
+    public BasicMatch() {
         numberOfPlayers = 2;
         numberOfMovableStudents = 3;
         numberOfClouds = 2;
@@ -118,8 +118,12 @@ public class Match implements MatchInterface {
      * @param c is the color
      * @throws ExceptionGame is thrown if there is an illegal situation
      */
-    protected void lookUpProfessor(Color c) throws ExceptionGame {
-        game.placeProfessor(c);
+    protected void lookUpProfessor(Color c){
+        try {
+            game.placeProfessor(c);
+        }catch (ExceptionGame e){
+            System.out.println("Not place the professor: " + e);
+        }
     }
 
     /**
@@ -155,9 +159,10 @@ public class Match implements MatchInterface {
      * @throws ExceptionGame is thrown if Mother Nature can't be placed in the archipelago passed
      */
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        System.out.println("MoveMotherNature basic");
         game.placeMotherNature(player, archipelago);
         try {
-            buildTower(player, archipelago);
+            this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             System.out.println(e);
@@ -172,7 +177,7 @@ public class Match implements MatchInterface {
     /**
      * This method resets the list of assistant's cards played in the round
      */
-    protected void resetRound() {    //Tested in local
+    public void resetRound() {    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
     }
@@ -186,13 +191,12 @@ public class Match implements MatchInterface {
      */
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
-        Wizard wizard = game.getWizardFromPlayer(player);
-        for(Wizard w : game.getWizards()){
-            if(!w.equals(wizard) && game.getWizardInfluenceInArchipelago(w, archipelago) >= game.getWizardInfluenceInArchipelago(wizard, archipelago))
+        for(Player p : getRivals(player)){
+            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
                 isMostInfluence = false;
         }
         if(isMostInfluence) {
-            game.buildTower(wizard, archipelago);
+            game.buildTower(getGame().getWizardFromPlayer(player), archipelago);
         }
 
     }
@@ -202,7 +206,7 @@ public class Match implements MatchInterface {
      *
      * @param archipelago is the archipelago where Mother Nature was placed
      */
-    protected void lookUpArchipelago(Archipelago archipelago) {
+    public void lookUpArchipelago(Archipelago archipelago) {
         game.takeCareOfTheMerge(archipelago);
     }
 
@@ -220,7 +224,7 @@ public class Match implements MatchInterface {
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    protected void checkVictory() throws ExceptionGame{
+    public void checkVictory() throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
         if (w.size() == 1) {
@@ -375,6 +379,30 @@ public class Match implements MatchInterface {
 
     protected void setNumberOfTowers(int numberOfTowers) {
         this.numberOfTowers = numberOfTowers;
+    }
+
+    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
+        Wizard w = game.getWizardFromPlayer(p);
+        return game.getWizardInfluenceInArchipelago(w, archipelago);
+    }
+
+    public List<Player> getRivals(Player player) throws ExceptionGame{
+        List<Player> rivals = new ArrayList<>();
+        for (Player p : getPlayers()){
+            if (!player.equals(p))
+                rivals.add(p);
+        }
+        return rivals;
+    }
+
+    public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
+        Wizard wizard = getGame().getWizardFromPlayer(player);
+        return wizard.getBoard().isProfessorPresent(color);
+    }
+
+    public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
+        System.out.println("This match does not have teams");
+        return player;
     }
 }
 
