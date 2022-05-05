@@ -33,4 +33,9 @@ public class Baker extends CharacterCard implements InfluenceEffectCard{
         }
         return influence;
     }
+
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }

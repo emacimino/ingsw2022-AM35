@@ -110,7 +110,7 @@ public abstract class CharacterCard {
         return passiveStudents;
     }
 
-    protected void resetCard(){
+    public void resetCard(){
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;

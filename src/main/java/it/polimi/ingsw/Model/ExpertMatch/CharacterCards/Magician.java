@@ -15,7 +15,7 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard{
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-
+        match.setActiveMotherNatureCard(this);
         this.cost++;
     }
 
@@ -27,7 +27,7 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard{
             int numberOfArchipelagos = getBasicMatch().getGame().getArchipelagos().size();
             int numberOfSteps = ((positionOfArchipelago + numberOfArchipelagos) - positionMotherNature) % numberOfArchipelagos;
             if(getBasicMatch().getGame().getWizardFromPlayer(player).equals(getActiveWizard())){
-                    if ((numberOfSteps >0 && numberOfSteps <= stepsAllowed + 2 )|| (positionMotherNature == positionOfArchipelago && numberOfArchipelagos < stepsAllowed + 2)) {
+                    if ((numberOfSteps >0 && numberOfSteps <= stepsAllowed + 2 )|| (positionMotherNature == positionOfArchipelago && numberOfArchipelagos <= stepsAllowed + 2)) {
                         getBasicMatch().getGame().getArchipelagos().get(positionMotherNature).setMotherNaturePresence(false);
                         getBasicMatch().getGame().getMotherNature().setPosition(positionOfArchipelago);
                         archipelago.setMotherNaturePresence(true);
@@ -40,4 +40,8 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard{
 
         }
 
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }

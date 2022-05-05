@@ -30,6 +30,8 @@ public class Jester extends CharacterCard implements StudentEffectCard {
                 throw new ExceptionGame("The Jester Card does not contains all the students selected");
         } else
             throw new ExceptionGame("The list of students to trade have not the same number or there have been selected more than 3 students");
+
+    resetCard();
     }
 
 

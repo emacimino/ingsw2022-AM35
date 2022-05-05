@@ -34,4 +34,9 @@ public class Knight extends CharacterCard implements InfluenceEffectCard{
         }
         return normalInfluence + add;
     }
+
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }

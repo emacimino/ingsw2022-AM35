@@ -32,6 +32,7 @@ public class Princess extends CharacterCard implements StudentEffectCard {
         else
             throw new ExceptionGame("This student is not on the card");
         drawStudent(getStudentsOnCard(), 1, getBasicMatch().getGame().getStudentBag());
+        resetCard();
     }
 
 }

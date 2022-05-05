@@ -120,9 +120,8 @@ public class Game{
      * @return the influence of the player in the archipelago
      */
     public int getWizardInfluenceInArchipelago(Wizard wizard, Archipelago archipelago){
-        int wizardInfluence = archipelago.calculateInfluenceInArchipelago(wizard);
 
-        return wizardInfluence;
+        return archipelago.calculateInfluenceInArchipelago(wizard);
     }
 
     /**
@@ -227,7 +226,7 @@ public class Game{
                     archipelagos.get(oldPosition).setMotherNaturePresence(false);
                     motherNature.setPosition(newPosition);
                     archipelago.setMotherNaturePresence(true);
-                }else if(oldPosition == newPosition && archipelagos.size() < wizard.getRoundAssistantsCard().getStep()){
+                }else if(oldPosition == newPosition && archipelagos.size() <= wizard.getRoundAssistantsCard().getStep()){
                     archipelagos.get(oldPosition).setMotherNaturePresence(false);
                     motherNature.setPosition(newPosition);
                     archipelago.setMotherNaturePresence(true);

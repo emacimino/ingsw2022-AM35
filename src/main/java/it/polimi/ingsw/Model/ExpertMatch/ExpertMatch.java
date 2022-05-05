@@ -96,22 +96,24 @@ public class ExpertMatch extends MatchDecorator {
             basicMatch.resetRound();
         }
 
-        if(activeInfluenceCard != null)
+        if(activeInfluenceCard != null) {
+            activeInfluenceCard.resetCard();
             activeInfluenceCard = null;
+        }
+        if(activeMotherNatureCard != null) {
+            activeMotherNatureCard.resetCard();
+            activeMotherNatureCard = null;
+        }
     }
 
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
             if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) { //influenza del player in negativo
-                System.out.println("influence 1 : "+ getWizardInfluenceInArchipelago(p, archipelago) + " influence 2 : " + getWizardInfluenceInArchipelago(player, archipelago));
                 isMostInfluence = false;
             }
         }
-        System.out.println("most influence is " + isMostInfluence);
         if(isMostInfluence) {
-            System.out.println("Captain of player " + player + "is " + basicMatch.getCaptainTeamOfPlayer(player));
-            System.out.println("building tower of " + basicMatch.getCaptainTeamOfPlayer(player));
             basicMatch.getGame().buildTower( getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(player)), archipelago);
         }
 

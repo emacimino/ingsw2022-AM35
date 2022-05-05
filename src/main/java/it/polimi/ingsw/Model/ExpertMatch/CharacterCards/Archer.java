@@ -28,6 +28,11 @@ public class Archer extends CharacterCard implements InfluenceEffectCard{
         int towerInfluence = archipelago.calculateInfluenceTowers(wizard); //va bene perchè player p è il captain sempre
         return normalInfluence - towerInfluence;
     }
+
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }
 
 

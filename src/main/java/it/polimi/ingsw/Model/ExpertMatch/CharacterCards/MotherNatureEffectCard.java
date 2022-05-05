@@ -7,4 +7,6 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 public interface MotherNatureEffectCard {
 
     void effectMotherNatureCard(Player player, Archipelago archipelago) throws ExceptionGame;
+
+    void resetCard();
 }

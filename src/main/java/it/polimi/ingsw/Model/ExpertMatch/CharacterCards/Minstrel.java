@@ -58,6 +58,8 @@ public class Minstrel extends CharacterCard implements StudentEffectCard {
 
         studentsEntrance.removeAll(toEntrance);
         studentsEntrance.addAll(fromTables);
+
+        resetCard();
     }
 
 }

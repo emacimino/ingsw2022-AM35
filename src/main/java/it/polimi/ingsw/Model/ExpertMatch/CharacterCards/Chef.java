@@ -39,7 +39,10 @@ public class Chef extends CharacterCard implements InfluenceEffectCard{
         return normalInfluence;
     }
 
-
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }
 
 

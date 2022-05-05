@@ -17,6 +17,7 @@ public class FactoryCharacterCard{
              case "Jester" -> new Jester(basicMatch, name);
              case "Friar" -> new Friar(basicMatch, name);
              case "Minstrel" -> new Minstrel(basicMatch, name);
+             case "Magician" -> new Magician(basicMatch, name);
              default -> throw new IllegalArgumentException("Invalid name of the card");
          };
         }

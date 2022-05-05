@@ -35,4 +35,9 @@ public class Messenger extends CharacterCard implements InfluenceEffectCard{
         }
         return normalInfluence;
     }
+
+    @Override
+    public void resetCard() {
+        super.resetCard();
+    }
 }
