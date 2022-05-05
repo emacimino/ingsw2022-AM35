@@ -43,7 +43,6 @@ class KnightTest {
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
         System.out.println("number of archipelagos " + expertMatch.getGame().getArchipelagos().size());
-        System.out.println("wizard wit archer effect is " + expertMatch.getArcherEffect());
         System.out.println("professor in game: "+ expertMatch.getGame().getProfessors());
         System.out.println("action order in round: " + expertMatch.getActionPhaseOrderOfPlayers());
         System.out.println("position of MN " + expertMatch.getPositionOfMotherNature());
@@ -67,7 +66,7 @@ class KnightTest {
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(2));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
 
-            CharacterCard knight = new Knight(expertMatch.getGame(), "Knight");
+            CharacterCard knight = new Knight(basicMatch2Players,"Knight");
             expertMatch.getCharactersForThisGame().add(0, knight);
             Assertions.assertEquals(2, knight.getCost());
             int cost = knight.getCost();
@@ -98,7 +97,9 @@ class KnightTest {
             Assertions.assertEquals(2, knight.getCost());
             knight.setActiveWizard(wizard2);
             knight.useCard(expertMatch);
+            System.out.println(expertMatch.getActiveInfluenceCard());
             Assertions.assertEquals(influenceBeforeEffect2 + 2, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
+            Assertions.assertEquals(influenceBeforeEffect1 , expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
             Assertions.assertEquals(0, wizard2.getCoins());
             Assertions.assertEquals(cost + 1, knight.getCost());
 
@@ -109,6 +110,7 @@ class KnightTest {
                 cases = 1;
 
             expertMatch.moveMotherNature(player2, interestArchipelago); //nb se w2 ha piu influenza c'è un cambio di torre
+            Assertions.assertNull(expertMatch.getActiveInfluenceCard());
             int numberOfTowerW2;
             int numberOfTowerW1;
             if (cases == 0) {
@@ -168,7 +170,7 @@ class KnightTest {
             Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-            CharacterCard knight = new Knight(expertMatch4Players.getGame(), "Knight");
+            CharacterCard knight = new Knight(match4players, "Knight");
             expertMatch4Players.getCharactersForThisGame().add(0, knight);
             assertEquals(2, knight.getCost());
             assertEquals(1, wizard1.getCoins());
@@ -208,6 +210,8 @@ class KnightTest {
             int influenceBeforeEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceBeforeEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
 
+            int prova1 = expertMatch4Players.getWizardInfluenceInArchipelago(player2, interestArchipelago);
+            int prova2 = expertMatch4Players.getWizardInfluenceInArchipelago(player4, interestArchipelago);
             knight.setActiveWizard(wizard4);
             knight.setColorEffected(student.getColor());
             knight.useCard(expertMatch4Players);
@@ -217,7 +221,11 @@ class KnightTest {
             int influenceAfterEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceAfterEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
 
+            Assertions.assertEquals(influenceBeforeEffectTeam1 , influenceAfterEffectTeam1);
+            Assertions.assertEquals(influenceBeforeEffectTeam2+ 2 , influenceAfterEffectTeam2);
+
             expertMatch4Players.moveMotherNature(player4, interestArchipelago); //NB MN MOVED BY PLAYER4
+            Assertions.assertNull(expertMatch4Players.getActiveInfluenceCard());
 
             if (influenceAfterEffectTeam1 > influenceAfterEffectTeam2) {
                 assertEquals(8, wizard1.getBoard().getTowersInBoard().size());

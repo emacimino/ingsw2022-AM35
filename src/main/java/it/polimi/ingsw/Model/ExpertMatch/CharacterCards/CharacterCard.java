@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class CharacterCard {
     protected int cost;
     private String name;
-    private Game game;
+    private BasicMatch basicMatch;
     private Wizard activeWizard;
     private Wizard passiveWizard;
     private Color colorEffected;
@@ -26,9 +26,9 @@ public abstract class CharacterCard {
     private List<Student> passiveStudents;
     private final List<Student> studentsOnCard = new ArrayList<>();
 
-    public CharacterCard(Game game, String name) {
+    public CharacterCard(BasicMatch basicMatch, String name) {
         this.name = name;
-        this.game = game;
+        this.basicMatch = basicMatch;
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
@@ -111,7 +111,6 @@ public abstract class CharacterCard {
     }
 
     protected void resetCard(){
-        this.cost++;
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
@@ -129,8 +128,8 @@ public abstract class CharacterCard {
         return name;
     }
 
-    public Game getGame() {
-        return game;
+    public BasicMatch getBasicMatch() {
+        return basicMatch;
     }
 
     @Override
@@ -138,7 +137,6 @@ public abstract class CharacterCard {
         return "CharacterCard{" +
                 "cost=" + cost +
                 ", name='" + name + '\'' +
-                ", game=" + game +
                 ", activeWizard=" + activeWizard +
                 ", passiveWizard=" + passiveWizard +
                 ", colorEffected=" + colorEffected +

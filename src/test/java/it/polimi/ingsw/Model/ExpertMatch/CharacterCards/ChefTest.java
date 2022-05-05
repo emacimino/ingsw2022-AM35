@@ -50,7 +50,7 @@ class ChefTest {
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
         System.out.println("numbero of archipelagos " + expertMatch.getGame().getArchipelagos().size());
-        System.out.println("wizard wit baker effect is " + expertMatch.getBakerEffect());
+
         System.out.println("professor in game: "+ expertMatch.getGame().getProfessors());
         System.out.println("action order in round: " + expertMatch.getActionPhaseOrderOfPlayers());
         System.out.println("position of MN " + expertMatch.getPositionOfMotherNature());
@@ -73,7 +73,7 @@ class ChefTest {
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(0));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
             //sets a Chef card in the game in position 0
-            CharacterCard chef = new Chef(expertMatch.getGame(), "chef");
+            CharacterCard chef = new Chef( basicMatch2Players,"chef");
             expertMatch.getCharactersForThisGame().add(0, chef);
             assertEquals(3, chef.getCost());
             assertEquals(1, wizard1.getCoins());
@@ -144,8 +144,8 @@ class ChefTest {
                 Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
             }
 
-            Assertions.assertNull(expertMatch.getChefEffect());
-            Assertions.assertEquals(null, expertMatch.getChefEffect());
+            Assertions.assertNull(expertMatch.getActiveInfluenceCard());
+            Assertions.assertEquals(null, expertMatch.getActiveInfluenceCard());
 
             positionMN = expertMatch.getPositionOfMotherNature();
             interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
@@ -199,7 +199,7 @@ class ChefTest {
             Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-            CharacterCard chef = new Chef(expertMatch4Players.getGame(), "chef");
+            CharacterCard chef = new Chef(match4players,"chef");
             expertMatch4Players.getCharactersForThisGame().add(0, chef);
             assertEquals(3, chef.getCost());
             assertEquals(1, wizard1.getCoins());

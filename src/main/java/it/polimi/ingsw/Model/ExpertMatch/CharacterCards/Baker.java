@@ -2,25 +2,35 @@ package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Baker extends CharacterCard {
+public class Baker extends CharacterCard implements InfluenceEffectCard{
 
-    public Baker(Game game, String name) {
-        super(game, name);
+    public Baker(BasicMatch basicMatch, String name) {
+        super(basicMatch, name);
         setCost(2);
     }
+    @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        usedBakerCard( match);
-        resetCard();
+        match.setActiveInfluenceCard(this);
+        this.cost++;
     }
 
-    private void usedBakerCard(ExpertMatch match) throws ExceptionGame{
-        Player player = match.getPlayerFromWizard(getActiveWizard());
-        Player captain = match.getCaptainTeamOfPlayer(player);
-        match.setBakerEffect(match.getGame().getWizardFromPlayer(captain));
+    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{
+        Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
+        Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
+        Wizard wizardCaptain = getBasicMatch().getGame().getWizardFromPlayer(captainOfActivePlayer);
+        int influence;
+        if(wizard.equals(wizardCaptain)){
+            influence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
+        } else {
+            influence = archipelago.calculateInfluenceTowers(wizard);
+        }
+        return influence;
     }
 }

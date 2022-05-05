@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
@@ -10,17 +11,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Minstrel extends CharacterCard implements StudentEffect{
+public class Minstrel extends CharacterCard implements StudentEffectCard {
 
-    public Minstrel(Game game, String name) {
-        super(game, name);
+    public Minstrel(BasicMatch basicMatch, String name) {
+        super(basicMatch, name);
         setCost(1);
     }
 
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useMinstrelCard();
-        resetCard();
+        this.cost++;
     }
 
     public void useMinstrelCard() throws ExceptionGame{

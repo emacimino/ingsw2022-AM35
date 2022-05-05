@@ -44,7 +44,6 @@ class PrincessTest {
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
         System.out.println("number of archipelagos " + expertMatch.getGame().getArchipelagos().size());
-        System.out.println("wizard wit archer effect is " + expertMatch.getArcherEffect());
         System.out.println("professor in game: "+ expertMatch.getGame().getProfessors());
         System.out.println("action order in round: " + expertMatch.getActionPhaseOrderOfPlayers());
         System.out.println("position of MN " + expertMatch.getPositionOfMotherNature());
@@ -68,7 +67,7 @@ class PrincessTest {
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(2));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
             //sets Archer card in the game in position 0
-            CharacterCard princess = new Princess(expertMatch.getGame(), "Princess");
+            CharacterCard princess = new Princess(basicMatch2Players, "Princess");
             expertMatch.getCharactersForThisGame().add(0, princess);
             Assertions.assertEquals(2, princess.getCost());
             int cost = princess.getCost();
@@ -123,7 +122,7 @@ class PrincessTest {
                 Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
                 expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
                 expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-                CharacterCard princess = new Princess(expertMatch4Players.getGame(), "Princess");
+                CharacterCard princess = new Princess(match4players, "Princess");
                 expertMatch4Players.getCharactersForThisGame().add(0, princess);
                 assertEquals(2, princess.getCost());
                 assertEquals(1, wizard1.getCoins());

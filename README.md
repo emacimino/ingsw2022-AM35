@@ -10,7 +10,7 @@
 | Multiple games    | 🔴 |
 | Persistence       | 🔴 |
 | 4 Player basicMatch    | 🟢 |
-| 12 Character Card            | 🔴 |
+| 12 Character Card            | 🟡 |
 
 
 Students:

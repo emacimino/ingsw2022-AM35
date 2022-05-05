@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public interface StudentEffect {
+public interface StudentEffectCard {
 
     default void drawStudent(List<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag) {
         for (int i = 0; i < numberOfStudent; i++) {

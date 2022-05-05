@@ -71,16 +71,6 @@ public class Archipelago {
             catch(ExceptionGame ignored){} //on the island there is no tower
             influence += calculateInfluenceStudents(w);
         }
-        if(w.getKnightEffect()){
-            influence = influence + 2;
-            w.setKnightEffect(false);
-        }
-        if(w.getMessageEffect() != 0) {
-            influence = influence + w.getMessageEffect();
-            w.setMessageEffect(0);
-        }
-
-
         return influence;
     }
 

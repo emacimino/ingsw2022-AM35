@@ -4,6 +4,8 @@ package it.polimi.ingsw.Model.ExpertMatch;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.DeckCharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.InfluenceEffectCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.MotherNatureEffectCard;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -21,10 +23,10 @@ import java.util.List;
 public class ExpertMatch extends MatchDecorator {
     private final DeckCharacterCard deckCharacterCard;
     private ArrayList<CharacterCard> charactersForThisGame = new ArrayList<>();
-    private Color CHEF_EFFECT;
-    private boolean ARCHER_EFFECT;
-    private Wizard BAKER_EFFECT;
-    private boolean KNIGHT_EFFECT;
+
+
+    private InfluenceEffectCard activeInfluenceCard;
+    private MotherNatureEffectCard activeMotherNatureCard;
 
     /**
      * Constructor of ExpertMatch
@@ -34,16 +36,15 @@ public class ExpertMatch extends MatchDecorator {
     public ExpertMatch(BasicMatch basicMatch) {
         super(basicMatch); //match della classe MatchDecorator
         deckCharacterCard = new DeckCharacterCard();
-        CHEF_EFFECT = null;
-        ARCHER_EFFECT = false;
-        BAKER_EFFECT = null;
+        activeInfluenceCard = null;
+        activeMotherNatureCard = null;
     }
 
     @Override
     public void setGame(List<Player> players) throws ExceptionGame {
         basicMatch.setGame(players);
         setFirstCoin();
-        charactersForThisGame = deckCharacterCard.drawCharacterCard(getGame());
+        charactersForThisGame = deckCharacterCard.drawCharacterCard(basicMatch);
     }
 
     /**
@@ -78,7 +79,11 @@ public class ExpertMatch extends MatchDecorator {
 
     @Override
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
-        basicMatch.getGame().placeMotherNature(player, archipelago);
+        if(activeMotherNatureCard != null){
+            activeMotherNatureCard.effectMotherNatureCard(player, archipelago);
+        }else {
+            basicMatch.getGame().placeMotherNature(player, archipelago);
+        }
         try {
             buildTower(player, archipelago);
             basicMatch.lookUpArchipelago(archipelago);
@@ -90,14 +95,9 @@ public class ExpertMatch extends MatchDecorator {
         if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
             basicMatch.resetRound();
         }
-        if(getBakerEffect() != null)
-            setBakerEffect(null);
-        if(getChefEffect()!= null)
-            setChefEffect(null);
-        if(getArcherEffect())
-            setArcherEffect(false);
-        if(getKnightEffect())
-            setKnightEffect(false);
+
+        if(activeInfluenceCard != null)
+            activeInfluenceCard = null;
     }
 
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
@@ -119,57 +119,31 @@ public class ExpertMatch extends MatchDecorator {
     }
 
     @Override
-    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
+    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame {
         Wizard wizard = getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(p));
         int CardEffectWizardInfluence = basicMatch.getWizardInfluenceInArchipelago(p, archipelago);
-        if(CHEF_EFFECT != null){
-            int colorInfluence = 0;
-            for(Island island : archipelago.getIsle()){
-                colorInfluence = island.getStudentFilteredByColor(CHEF_EFFECT).size();
-            }
-            if(basicMatch.playerControlProfessor(p, CHEF_EFFECT)) //problema x 4
-                CardEffectWizardInfluence = CardEffectWizardInfluence - colorInfluence;
-        }else
-        if(ARCHER_EFFECT){
-            int towerInfluence = archipelago.calculateInfluenceTowers(wizard); //va bene perchè player p è il captain sempre
-            CardEffectWizardInfluence = CardEffectWizardInfluence - towerInfluence;
-        }else
-        if(BAKER_EFFECT != null){   //va bene perché non mi interessa i giocatori singoli
-            if(BAKER_EFFECT.equals(wizard)){
-                CardEffectWizardInfluence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
-                System.out.println( " influenza degli studenti : "+ archipelago.getStudentFromArchipelago().size() + ", influenza delle torri di " + wizard + ": " + archipelago.calculateInfluenceInArchipelago(wizard));
-            }else{
-                CardEffectWizardInfluence = archipelago.calculateInfluenceTowers(wizard);
-            }
-        }else
-        if(KNIGHT_EFFECT){
-            CardEffectWizardInfluence += 2;
-        }
 
+        if(activeInfluenceCard != null){
+            CardEffectWizardInfluence = activeInfluenceCard.calculateEffectInfluence(wizard, archipelago, CardEffectWizardInfluence);
+        }
         return CardEffectWizardInfluence;
     }
 
-    public Color getChefEffect() {
-        return CHEF_EFFECT;
-    }
-    public void setChefEffect(Color CHEF_EFFECT) {
-        this.CHEF_EFFECT = CHEF_EFFECT;
-    }
-    public void setArcherEffect(boolean archerEffect){
-        ARCHER_EFFECT = archerEffect;
-    }
-    public boolean getArcherEffect(){
-        return ARCHER_EFFECT;
-    }
-    public void setBakerEffect(Wizard bakerEffect){BAKER_EFFECT = bakerEffect;}
-    public Wizard getBakerEffect(){return BAKER_EFFECT;}
 
-    public boolean getKnightEffect() {
-        return KNIGHT_EFFECT;
+    public void setActiveInfluenceCard(InfluenceEffectCard activeInfluenceCard) {
+        this.activeInfluenceCard = activeInfluenceCard;
     }
 
-    public void setKnightEffect(boolean KNIGHT_EFFECT) {
-        this.KNIGHT_EFFECT = KNIGHT_EFFECT;
+    public InfluenceEffectCard getActiveInfluenceCard() {
+        return activeInfluenceCard;
+    }
+
+    public void setActiveMotherNatureCard(MotherNatureEffectCard activeMotherNatureCard) {
+        this.activeMotherNatureCard = activeMotherNatureCard;
+    }
+
+    public MotherNatureEffectCard getActiveMotherNatureCard() {
+        return activeMotherNatureCard;
     }
 }
 

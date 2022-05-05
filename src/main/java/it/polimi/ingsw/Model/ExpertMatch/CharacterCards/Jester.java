@@ -2,24 +2,21 @@ package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
-import java.util.Collection;
-import java.util.List;
+public class Jester extends CharacterCard implements StudentEffectCard {
 
-public class Jester extends CharacterCard implements StudentEffect {
-
-    public Jester(Game game, String name) {
-        super(game, name);
+    public Jester(BasicMatch basicMatch, String name) {
+        super(basicMatch, name);
         setCost(1);
-        drawStudent(getStudentsOnCard(), 6, getGame().getStudentBag());
+        drawStudent(getStudentsOnCard(), 6, basicMatch.getGame().getStudentBag());
     }
 
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useJesterCard();
-        resetCard();
+        this.cost++;
     }
 
     private void useJesterCard() throws ExceptionGame {
