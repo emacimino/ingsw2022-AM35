@@ -2,10 +2,7 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 
 public enum GameStateMessage {
     PING,
-    PONG,
-    LOGIN_REPLY,
-    LOGIN_REQUEST,
-    NUMBEROFPLAYERS,
+    LOGIN,
     PLANNING,
     ATTACK,
     END_OF_TURN,

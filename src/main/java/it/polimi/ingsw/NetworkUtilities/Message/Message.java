@@ -1,10 +1,6 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
-import java.io.Serializable;
-
-public class Message implements Serializable {
-    private static final long serialVersionUID = 6345566953463396637L;
-
+public class Message{
     private String message;
     private GameStateMessage type;
 

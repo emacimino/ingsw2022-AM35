@@ -1,35 +1,24 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
-import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.NetworkUtilities.Message.TypeOfMessage;
+import it.polimi.ingsw.View.ActualView;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameController implements Observer, Serializable {
-    private BasicMatch match;
+public class GameController implements Serializable {
+
     private Game game;
-    private Map<String, ViewInterface> viewMap = new HashMap<>();
+    private Map<String, ActualView> viewMap = new HashMap<>();
 
-    public GameController(int numOfPlayers) {
-        initializeGameController(numOfPlayers);
-    }
+    private TypeOfMessage typeOfMessage;
 
-    private void initializeGameController(int numOfPlayers) {
-        this.match = new FactoryMatch().newMatch(numOfPlayers);
-        //gestire l'expertMatch
-        this.game = match.getGame();
-        for(String user: viewMap.)
-    }
-
-
-    @Override
-    public void update(Message message) {
+    public GameController gameController(){
 
     }
+
 
 }
