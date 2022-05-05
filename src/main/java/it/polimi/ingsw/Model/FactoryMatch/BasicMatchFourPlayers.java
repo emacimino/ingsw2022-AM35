@@ -16,8 +16,8 @@ public class BasicMatchFourPlayers extends BasicMatch {
     private List<Player> teamOne = new ArrayList<>();
     private List<Player> teamTwo = new ArrayList<>();
     private List<Player> captains = new ArrayList<>();
-    private Team teamOne_;
-    private Team teamTwo_;
+    //private Team teamOne_;
+    //private Team teamTwo_;
 
     public BasicMatchFourPlayers(){
         super.setNumberOfPlayers(4);
