@@ -14,6 +14,7 @@ import java.util.*;
 public class Archipelago {
     private List<Island> isle= new ArrayList<>();
     private boolean motherNaturePresence;
+    private boolean prohibition = false;
 
     /**
      * construct the class
@@ -123,5 +124,11 @@ public class Archipelago {
 
     }
 
+    public boolean isProhibition() {
+        return prohibition;
+    }
 
+    public void setProhibition(boolean prohibition) {
+        this.prohibition = prohibition;
+    }
 }

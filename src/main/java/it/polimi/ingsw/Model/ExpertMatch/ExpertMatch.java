@@ -2,10 +2,7 @@ package it.polimi.ingsw.Model.ExpertMatch;
 
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.DeckCharacterCard;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.InfluenceEffectCard;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.MotherNatureEffectCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -23,10 +20,9 @@ import java.util.List;
 public class ExpertMatch extends MatchDecorator {
     private final DeckCharacterCard deckCharacterCard;
     private ArrayList<CharacterCard> charactersForThisGame = new ArrayList<>();
-
-
     private InfluenceEffectCard activeInfluenceCard;
     private MotherNatureEffectCard activeMotherNatureCard;
+    private ProhibitionEffectCard activeProhibitionCard;
 
     /**
      * Constructor of ExpertMatch
@@ -79,6 +75,19 @@ public class ExpertMatch extends MatchDecorator {
 
     @Override
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        if(activeProhibitionCard!=null)
+            if(archipelago.isProhibition()){
+                activeProhibitionCard.resetAProhibitionEffect(archipelago);
+                basicMatch.checkVictory();
+                if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
+                    throw new ExceptionGame("Every player has played in this round phase");
+                if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
+                    basicMatch.resetRound();
+                }
+                return;
+
+            }
+
         if(activeMotherNatureCard != null){
             activeMotherNatureCard.effectMotherNatureCard(player, archipelago);
         }else {
@@ -92,6 +101,8 @@ public class ExpertMatch extends MatchDecorator {
         } finally {
             basicMatch.checkVictory();
         }
+        if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
+            throw new ExceptionGame("Every player has played in this round phase");
         if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
             basicMatch.resetRound();
         }
@@ -146,6 +157,18 @@ public class ExpertMatch extends MatchDecorator {
 
     public MotherNatureEffectCard getActiveMotherNatureCard() {
         return activeMotherNatureCard;
+    }
+
+    public ProhibitionEffectCard getActiveProhibitionCard() {
+        return activeProhibitionCard;
+    }
+
+    public void setActiveProhibitionCard(ProhibitionEffectCard activeProhibitionCard) {
+        this.activeProhibitionCard = activeProhibitionCard;
+    }
+
+    public DeckCharacterCard getDeckCharacterCard() {
+        return deckCharacterCard;
     }
 }
 

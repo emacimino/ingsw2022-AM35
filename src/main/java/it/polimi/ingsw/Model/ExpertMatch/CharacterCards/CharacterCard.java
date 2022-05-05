@@ -20,10 +20,11 @@ public abstract class CharacterCard {
     private Wizard activeWizard;
     private Wizard passiveWizard;
     private Color colorEffected;
-    private Island islandEffected;
     private Archipelago archipelagoEffected;
     private List<Student> activeStudents;
     private List<Student> passiveStudents;
+    private int prohibitionPass;
+
     private final List<Student> studentsOnCard = new ArrayList<>();
 
     public CharacterCard(BasicMatch basicMatch, String name) {
@@ -32,10 +33,10 @@ public abstract class CharacterCard {
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
-        islandEffected = null;
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
+        prohibitionPass = 0;
     }
 
 
@@ -58,10 +59,6 @@ public abstract class CharacterCard {
         this.colorEffected = colorEffected;
     }
 
-    public void setIslandEffected(Island islandEffected) {
-        this.islandEffected = islandEffected;
-    }
-
     public void setArchipelagoEffected(Archipelago archipelagoEffected) {
         this.archipelagoEffected = archipelagoEffected;
     }
@@ -72,6 +69,10 @@ public abstract class CharacterCard {
 
     public void setPassiveStudents(List<Student> passiveStudents) {
         this.passiveStudents = passiveStudents;
+    }
+
+    public void setProhibitionPass(int prohibitionPass) {
+        this.prohibitionPass = prohibitionPass;
     }
 
     public void useCard(ExpertMatch match) throws ExceptionGame{
@@ -94,9 +95,6 @@ public abstract class CharacterCard {
         return colorEffected;
     }
 
-    public Island getIslandEffected() {
-        return islandEffected;
-    }
 
     public Archipelago getArchipelagoEffected() {
         return archipelagoEffected;
@@ -110,11 +108,14 @@ public abstract class CharacterCard {
         return passiveStudents;
     }
 
+    public int getProhibitionPass() {
+        return prohibitionPass;
+    }
+
     public void resetCard(){
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
-        islandEffected = null;
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
@@ -132,6 +133,8 @@ public abstract class CharacterCard {
         return basicMatch;
     }
 
+
+
     @Override
     public String toString() {
         return "CharacterCard{" +
@@ -140,11 +143,11 @@ public abstract class CharacterCard {
                 ", activeWizard=" + activeWizard +
                 ", passiveWizard=" + passiveWizard +
                 ", colorEffected=" + colorEffected +
-                ", islandEffected=" + islandEffected +
                 ", archipelagoEffected=" + archipelagoEffected +
                 ", activeStudents=" + activeStudents +
                 ", passiveStudents=" + passiveStudents +
                 ", studentsOnCard=" + studentsOnCard +
                 '}';
     }
+
 }

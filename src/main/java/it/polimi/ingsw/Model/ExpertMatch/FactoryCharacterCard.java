@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 
+import java.util.HashSet;
+
 public class FactoryCharacterCard{
 
      public CharacterCard createACharacterCard(BasicMatch basicMatch, String name) throws IllegalArgumentException{
@@ -18,6 +20,9 @@ public class FactoryCharacterCard{
              case "Friar" -> new Friar(basicMatch, name);
              case "Minstrel" -> new Minstrel(basicMatch, name);
              case "Magician" -> new Magician(basicMatch, name);
+             case "Banker" -> new Banker(basicMatch, name);
+
+
              default -> throw new IllegalArgumentException("Invalid name of the card");
          };
         }
