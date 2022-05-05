@@ -26,7 +26,7 @@ public class DeckCharacterCard{
         deckOfCharacterCards.add("Minstrel"); //ok
         deckOfCharacterCards.add("Magician"); //ok
         deckOfCharacterCards.add("Banker"); //ok
-       // deckOfCharacterCards.add("Herbalist");
+        deckOfCharacterCards.add("Herbalist");
     }
 
 
