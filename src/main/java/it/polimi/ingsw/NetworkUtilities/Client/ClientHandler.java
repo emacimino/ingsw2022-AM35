@@ -1,14 +1,16 @@
 package it.polimi.ingsw.NetworkUtilities.Client;
 
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientHandler {
-    private ServerSocket serverSocket;
-    private Socket client;
+public class ClientHandler implements ClientHandlerInterface, Runnable{
+    private final ServerSocket serverSocket;
+    private final Socket client;
 
     private boolean connected;
 
@@ -26,4 +28,34 @@ public class ClientHandler {
         this.outputStream = new ObjectOutputStream(client.getOutputStream());
 
     }
+    @Override
+    public void run() {
+        handleClientConnection();
+    }
+
+
+    private void handleClientConnection() {
+        while ((!Thread.currentThread().isInterrupted())){
+//message to be implemented
+        }
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connected;
+        }
+
+    @Override
+    public void disconnect() throws IOException {
+        if(connected) {
+            client.close();
+            connected = false;
+        }
+    }
+
+    @Override
+    public void sendMessage(Message message) {
+
+    }
+    
 }
