@@ -9,12 +9,12 @@ public class Server {
     private GameController gameController;
 
     private final Map<String, ClientHandler> clientHandlerMap;
-
+//implements the creation of a match
     public Server() {
         initializeServer();
     }
 
     private void initializeServer() {
-        gameController = new GameController();
+        gameController = new GameController(match);
     }
 }

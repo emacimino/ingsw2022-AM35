@@ -22,7 +22,6 @@ public class BasicMatch{
     private int numberOfStudentsOnCLoud;
     private int numberOfStudentInEntrance;
     private int numberOfTowers;
-    private GameController gameController;
 
     /**
      * The constructor of the Class Match which implements a match for two players
@@ -35,7 +34,6 @@ public class BasicMatch{
         numberOfStudentInEntrance = 7;
         numberOfStudentsOnCLoud = 3;
         game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
-        gameController = new GameController(this);
     }
 
     /**
