@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
+import it.polimi.ingsw.Observer.MatchObserver;
+
 public class Player {
     private final String name;
     private final String username;
+    private MatchObserver observer;
 
     /**
      * constructor of Player Class
@@ -30,11 +33,23 @@ public class Player {
         return name;
     }
 
+    /**
+     *
+     * @return the observer associated to the player for the controller
+     */
+    public MatchObserver getObserver() {
+        return observer;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 '}';
+    }
+
+    public void setObserver(MatchObserver observer) {
+        this.observer = observer;
     }
 }
