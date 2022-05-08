@@ -7,12 +7,13 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.Observer.MatchObserver;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BasicMatch{
+public class Match implements MatchInterface {
     protected int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
@@ -22,11 +23,11 @@ public class BasicMatch{
     private int numberOfStudentsOnCLoud;
     private int numberOfStudentInEntrance;
     private int numberOfTowers;
-
+    private MatchObserver matchObserver;
     /**
      * The constructor of the Class Match which implements a match for two players
      */
-    public BasicMatch() {
+    public Match() {
         numberOfPlayers = 2;
         numberOfMovableStudents = 3;
         numberOfClouds = 2;
@@ -34,6 +35,10 @@ public class BasicMatch{
         numberOfStudentInEntrance = 7;
         numberOfStudentsOnCLoud = 3;
         game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
+        matchObserver = new MatchObserver(this);
+        for(Player player: players){
+            player.setObserver(this.matchObserver);
+        }
     }
 
     /**
@@ -50,6 +55,9 @@ public class BasicMatch{
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
+        for(Player player: players){
+            player.getObserver().setMatchObserver(this.game);
+        }
     }
 
     /**
@@ -118,12 +126,8 @@ public class BasicMatch{
      * @param c is the color
      * @throws ExceptionGame is thrown if there is an illegal situation
      */
-    protected void lookUpProfessor(Color c){
-        try {
-            game.placeProfessor(c);
-        }catch (ExceptionGame e){
-            System.out.println("Not place the professor: " + e);
-        }
+    protected void lookUpProfessor(Color c) throws ExceptionGame {
+        game.placeProfessor(c);
     }
 
     /**
@@ -159,10 +163,9 @@ public class BasicMatch{
      * @throws ExceptionGame is thrown if Mother Nature can't be placed in the archipelago passed
      */
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
-        System.out.println("MoveMotherNature basic");
         game.placeMotherNature(player, archipelago);
         try {
-            this.buildTower(player, archipelago);
+            buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             System.out.println(e);
@@ -177,7 +180,7 @@ public class BasicMatch{
     /**
      * This method resets the list of assistant's cards played in the round
      */
-    public void resetRound() {    //Tested in local
+    protected void resetRound() {    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
     }
@@ -191,12 +194,13 @@ public class BasicMatch{
      */
     protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
-        for(Player p : getRivals(player)){
-            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
+        Wizard wizard = game.getWizardFromPlayer(player);
+        for(Wizard w : game.getWizards()){
+            if(!w.equals(wizard) && game.getWizardInfluenceInArchipelago(w, archipelago) >= game.getWizardInfluenceInArchipelago(wizard, archipelago))
                 isMostInfluence = false;
         }
         if(isMostInfluence) {
-            game.buildTower(getGame().getWizardFromPlayer(player), archipelago);
+            game.buildTower(wizard, archipelago);
         }
 
     }
@@ -206,7 +210,7 @@ public class BasicMatch{
      *
      * @param archipelago is the archipelago where Mother Nature was placed
      */
-    public void lookUpArchipelago(Archipelago archipelago) {
+    protected void lookUpArchipelago(Archipelago archipelago) {
         game.takeCareOfTheMerge(archipelago);
     }
 
@@ -224,7 +228,7 @@ public class BasicMatch{
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    public void checkVictory() throws ExceptionGame{
+    protected void checkVictory() throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
         if (w.size() == 1) {
@@ -379,30 +383,6 @@ public class BasicMatch{
 
     protected void setNumberOfTowers(int numberOfTowers) {
         this.numberOfTowers = numberOfTowers;
-    }
-
-    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
-        Wizard w = game.getWizardFromPlayer(p);
-        return game.getWizardInfluenceInArchipelago(w, archipelago);
-    }
-
-    public List<Player> getRivals(Player player) throws ExceptionGame{
-        List<Player> rivals = new ArrayList<>();
-        for (Player p : getPlayers()){
-            if (!player.equals(p))
-                rivals.add(p);
-        }
-        return rivals;
-    }
-
-    public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
-        Wizard wizard = getGame().getWizardFromPlayer(player);
-        return wizard.getBoard().isProfessorPresent(color);
-    }
-
-    public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
-        System.out.println("This match does not have teams");
-        return player;
     }
 }
 
