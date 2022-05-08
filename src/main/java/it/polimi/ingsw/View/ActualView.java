@@ -3,10 +3,12 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.Observer.Observer;
 
 import java.util.List;
 
-public class ActualView implements ViewInterface {
+public class ActualView implements ViewInterface, Observer {
     @Override
     public void setUsername(String username) {
 
@@ -49,6 +51,26 @@ public class ActualView implements ViewInterface {
 
     @Override
     public void moveMotherNature(int steps) {
+
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObserver(Message message) {
+
+    }
+
+    @Override
+    public void update(Message message) {
 
     }
 }

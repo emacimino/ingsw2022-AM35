@@ -9,12 +9,10 @@ import java.net.Socket;
 
 public class SocketServer implements Runnable{
 
-    private final Server server;
     private final int port;
     private ServerSocket serverSocket;
 
-    public SocketServer(Server server, int port) {
-        this.server = server;
+    public SocketServer(int port) {
         this.port = port;
     }
 

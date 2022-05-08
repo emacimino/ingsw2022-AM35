@@ -1,5 +1,6 @@
 package it.polimi.ingsw.NetworkUtilities.Client;
 
+import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.io.IOException;
@@ -16,6 +17,8 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+    private Object inputLock;
+    private Object outputLock;
 
     public ClientHandler(ServerSocket serverSocket, Socket client) throws IOException {
 
@@ -30,13 +33,22 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
     }
     @Override
     public void run() {
-        handleClientConnection();
+        try {
+            handleClientConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void handleClientConnection() {
+    private void handleClientConnection() throws IOException, ClassNotFoundException {
         while ((!Thread.currentThread().isInterrupted())){
-//message to be implemented
+            synchronized (inputLock){
+                Message message = (Message) inputStream.readObject();
+                if(message!=null && message.getType()== GameStateMessage.LOGIN)
+            }
         }
     }
 
@@ -55,7 +67,12 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
 
     @Override
     public void sendMessage(Message message) {
-
+        try{
+            outputStream.writeObject(message);
+            outputStream.reset();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
     
 }
