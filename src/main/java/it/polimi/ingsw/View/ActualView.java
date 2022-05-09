@@ -3,12 +3,24 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.NetworkUtilities.Client.ClientHandler;
 
 import java.util.List;
 
 public class ActualView implements ViewInterface {
+    private final ClientHandler clientHandler;
+
+    public ActualView(ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+    }
+
     @Override
-    public void setUsername(String username) {
+    public void loginRequest(){
+        this.clientHandler
+    }
+
+    @Override
+    public void setUsername() {
 
     }
 
