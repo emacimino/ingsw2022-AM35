@@ -2,11 +2,12 @@ package it.polimi.ingsw.NetworkUtilities.Client;
 
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
-public abstract class Client extends Observer {
+public interface Client {
 
-    public abstract void sendAMessage(Message message);
+    public void sendMessage(Message message);
 
-    public abstract void readAMessage(Message message);
+    public void readMessage(Message message);
 
-    public abstract void disconnect();
+    public void disconnect();
+
 }

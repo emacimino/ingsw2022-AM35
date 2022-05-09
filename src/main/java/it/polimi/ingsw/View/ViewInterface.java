@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface ViewInterface {
 
-    void setUsername(String username);
+    void loginRequest();
+
+    void setUsername();
 
     void setNumOfPlayers(int numOfPlayers);
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.NetworkUtilities.Client;
 
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.View.ActualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,9 +9,10 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientHandler {
+public class ClientHandler  implements Client{
     private ServerSocket serverSocket;
     private Socket client;
+    private ActualView actualView;
 
     private boolean connected;
 
@@ -27,11 +29,33 @@ public class ClientHandler {
         this.inputStream = new ObjectInputStream(client.getInputStream());
         this.outputStream = new ObjectOutputStream(client.getOutputStream());
 
+        actualView = new ActualView(this);
     }
 
-    public Message sendAMessage(){
-        
+    @Override
+    public void sendMessage(Message message) {
+        try{
+            outputStream.writeObject(message);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    @Override
+    public void readMessage(Message message) {
+        try {
+            Object o = inputStream.readObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    @Override
+    public void disconnect() {
+
+    }
 }
