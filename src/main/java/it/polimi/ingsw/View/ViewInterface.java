@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ViewInterface {
 
-    void loginRequest();
+    void loginRequest(String username);
 
     void setUsername();
 

@@ -2,24 +2,28 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 
 import java.io.Serializable;
 
-public class Message implements Serializable {
+public abstract class Message implements Serializable {
     private static final long serialVersionUID = 6345566953463396637L;
 
-    private String message;
+    private Object message1, message2;
     private GameStateMessage type;
 
-    public Message(String message, GameStateMessage type) {
-        this.message = message;
+    public Message(Object message, GameStateMessage type) {
+        this.message1 = message;
         this.type = type;
     }
 
-    public String getMessage() {
+
+
+    public Object getMessage() {
         return message;
     }
 
     public GameStateMessage getType() {
         return type;
     }
+
+
 
     @Override
     public String toString() {
