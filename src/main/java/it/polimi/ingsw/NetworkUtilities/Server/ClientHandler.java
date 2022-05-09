@@ -47,8 +47,8 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
         while ((!Thread.currentThread().isInterrupted())){
             synchronized (inputLock){
                 Message message = (Message) inputStream.readObject();
-                if(message!=null && message.getType()== GameStateMessage.PING){
-                    Server.addAClient(message.getMessage(),this);
+                if(message!=null && message.getType()== GameStateMessage.LOGIN_REQUEST){
+                    Server.addAClient(message.getMessage().toString(),this);
                     System.out.println(message.getType().toString());
                 }
             }
