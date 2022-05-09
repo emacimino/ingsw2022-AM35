@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.View.ViewInterface;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ public class GameController implements Observer, Serializable {
         this.match = new FactoryMatch().newMatch(numOfPlayers);
         //gestire l'expertMatch
         this.game = match.getGame();
+        for(String user: viewMap.)
     }
 
 

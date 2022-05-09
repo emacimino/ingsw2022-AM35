@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Observer;
+package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;

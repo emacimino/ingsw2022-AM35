@@ -9,6 +9,16 @@ import it.polimi.ingsw.Observer.Observer;
 import java.util.List;
 
 public class ActualView implements ViewInterface, Observer {
+
+    public ActualView(String username) {
+        initializeView(username);
+    }
+
+    private void initializeView(String username) {
+
+
+    }
+
     @Override
     public void setUsername(String username) {
 
@@ -51,21 +61,6 @@ public class ActualView implements ViewInterface, Observer {
 
     @Override
     public void moveMotherNature(int steps) {
-
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void notifyObserver(Message message) {
 
     }
 

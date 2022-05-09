@@ -1,8 +1,5 @@
 package it.polimi.ingsw.NetworkUtilities.Server;
 
-import it.polimi.ingsw.NetworkUtilities.Client.ClientHandler;
-import it.polimi.ingsw.NetworkUtilities.Client.SocketClient;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,12 +25,16 @@ public class SocketServer implements Runnable{
         while (!Thread.currentThread().isInterrupted()){
             try {
                 Socket client = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(this.serverSocket,client);
+                ClientHandler clientHandler = new ClientHandler(this,client);
                 Thread thread = new Thread(clientHandler); //add a name to this connection
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void addAClient(String username){
+
     }
 }
