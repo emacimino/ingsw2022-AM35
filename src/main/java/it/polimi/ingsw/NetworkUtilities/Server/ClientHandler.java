@@ -16,11 +16,11 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
 
     private boolean connected;
 
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
     private Object inputLock;
     private Object outputLock;
-    private ActualView actualView;
+    private final ActualView actualView;
 
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
         this.socketServer = socketServer;
