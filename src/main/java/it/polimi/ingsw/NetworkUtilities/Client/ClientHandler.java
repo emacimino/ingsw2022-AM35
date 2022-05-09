@@ -1,5 +1,7 @@
 package it.polimi.ingsw.NetworkUtilities.Client;
 
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -26,4 +28,10 @@ public class ClientHandler {
         this.outputStream = new ObjectOutputStream(client.getOutputStream());
 
     }
+
+    public Message sendAMessage(){
+        
+    }
+
+
 }

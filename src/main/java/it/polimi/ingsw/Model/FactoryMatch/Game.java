@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.*;
 import it.polimi.ingsw.Model.SchoolsMembers.*;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Observer;
 
-import it.polimi.ingsw.ClientServerNetwork.Server.Message.MatchMessages;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class Observable implements Observer{
      *
      * @param message is the message to be passed to the observers.
      */
-    protected void notifyObserver(MatchMessages message) {
+    protected void notifyObserver(Message message) {
         for (Observer observer : observers) {
             observer.update(message);
         }
@@ -41,13 +41,10 @@ public class Observable implements Observer{
         return observers;
     }
 
-    @Override
-    public void update(Object object) {
 
-    }
 
     @Override
-    public void update(it.polimi.ingsw.NetworkUtilities.Message.Message message) {
+    public void update(Message message) {
 
     }
 }
