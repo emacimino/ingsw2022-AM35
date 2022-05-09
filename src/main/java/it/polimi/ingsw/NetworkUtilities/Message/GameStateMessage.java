@@ -5,7 +5,7 @@ public enum GameStateMessage {
     PONG,
     LOGIN_REPLY,
     LOGIN_REQUEST,
-    NUMBEROFPLAYERS,
+    NUMBER_OF_PLAYERS,
     PLANNING,
     ATTACK,
     END_OF_TURN,
