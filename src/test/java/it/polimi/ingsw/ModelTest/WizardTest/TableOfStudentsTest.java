@@ -1,5 +1,6 @@
 package it.polimi.ingsw.ModelTest.WizardTest;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
@@ -22,16 +23,17 @@ public class TableOfStudentsTest {
     }
     @Test
     void TableLoadingAndReturn(){
-        for (Color c:
-             Color.values()) {
+        for (Color c: Color.values()) {
             TableOfStudents tos = new TableOfStudents(c);
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 10; i++) {
                 Student s = new Student(c);
                 Assertions.assertDoesNotThrow(()->
                    tos.setStudentsInTable(s)
                );
             }
-            assertEquals(9, tos.getStudentsInTable().size());
+            assertEquals(10, tos.getStudentsInTable().size());
+            Student student = new Student(c) ;
+            Assertions.assertThrows(ExceptionGame.class, ()-> tos.setStudentsInTable(student));
         }
     }
 }

@@ -95,7 +95,7 @@ public class Match implements MatchInterface {
 
     /**
      * This method sets the player passed as a parameter in the correct position of the list of players of the action phase
-     *
+
      * @param player          is the current player
      * @param assistantsCards is the round's assistant's card played by the player
      * @throws ExceptionGame is thrown if the player is an irregular player
@@ -124,7 +124,6 @@ public class Match implements MatchInterface {
      * This method checks if the professor of the color passed need to be moved
      *
      * @param c is the color
-     * @throws ExceptionGame is thrown if there is an illegal situation
      */
     protected void lookUpProfessor(Color c) throws ExceptionGame {
         game.placeProfessor(c);

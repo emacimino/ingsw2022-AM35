@@ -16,26 +16,27 @@ import java.util.List;
 public abstract class CharacterCard {
     protected int cost;
     private String name;
-    private Game game;
+    private BasicMatch basicMatch;
     private Wizard activeWizard;
     private Wizard passiveWizard;
     private Color colorEffected;
-    private Island islandEffected;
     private Archipelago archipelagoEffected;
     private List<Student> activeStudents;
     private List<Student> passiveStudents;
+    private int prohibitionPass;
+
     private final List<Student> studentsOnCard = new ArrayList<>();
 
-    public CharacterCard(Game game, String name) {
+    public CharacterCard(BasicMatch basicMatch, String name) {
         this.name = name;
-        this.game = game;
+        this.basicMatch = basicMatch;
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
-        islandEffected = null;
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
+        prohibitionPass = 0;
     }
 
 
@@ -58,10 +59,6 @@ public abstract class CharacterCard {
         this.colorEffected = colorEffected;
     }
 
-    public void setIslandEffected(Island islandEffected) {
-        this.islandEffected = islandEffected;
-    }
-
     public void setArchipelagoEffected(Archipelago archipelagoEffected) {
         this.archipelagoEffected = archipelagoEffected;
     }
@@ -74,12 +71,16 @@ public abstract class CharacterCard {
         this.passiveStudents = passiveStudents;
     }
 
+    public void setProhibitionPass(int prohibitionPass) {
+        this.prohibitionPass = prohibitionPass;
+    }
+
     public void useCard(ExpertMatch match) throws ExceptionGame{
         if(activeWizard == null){
             throw new ExceptionGame("activeWizard hasn't been set");
         }
         activeWizard.reduceCoins(getCost());
-        this.cost++;
+
     }
 
     public Wizard getActiveWizard() {
@@ -94,9 +95,6 @@ public abstract class CharacterCard {
         return colorEffected;
     }
 
-    public Island getIslandEffected() {
-        return islandEffected;
-    }
 
     public Archipelago getArchipelagoEffected() {
         return archipelagoEffected;
@@ -110,11 +108,14 @@ public abstract class CharacterCard {
         return passiveStudents;
     }
 
-    protected void resetCard(){
+    public int getProhibitionPass() {
+        return prohibitionPass;
+    }
+
+    public void resetCard(){
         passiveWizard =null;
         activeWizard = null;
         colorEffected = null;
-        islandEffected = null;
         archipelagoEffected = null;
         activeStudents = null;
         passiveStudents = null;
@@ -128,24 +129,25 @@ public abstract class CharacterCard {
         return name;
     }
 
-    public Game getGame() {
-        return game;
+    public BasicMatch getBasicMatch() {
+        return basicMatch;
     }
+
+
 
     @Override
     public String toString() {
         return "CharacterCard{" +
                 "cost=" + cost +
                 ", name='" + name + '\'' +
-                ", game=" + game +
                 ", activeWizard=" + activeWizard +
                 ", passiveWizard=" + passiveWizard +
                 ", colorEffected=" + colorEffected +
-                ", islandEffected=" + islandEffected +
                 ", archipelagoEffected=" + archipelagoEffected +
                 ", activeStudents=" + activeStudents +
                 ", passiveStudents=" + passiveStudents +
                 ", studentsOnCard=" + studentsOnCard +
                 '}';
     }
+
 }

@@ -8,12 +8,16 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Baker extends CharacterCard implements InfluenceEffectCard{
+/** Implements the effect from Character card Messenger
+ * Calculate influence on an additional archipelago
+ */
+public class Messenger extends CharacterCard implements InfluenceEffectCard{
 
-    public Baker(BasicMatch basicMatch, String name) {
+    public Messenger(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
-        setCost(2);
+        setCost(3);
     }
+
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
@@ -21,17 +25,15 @@ public class Baker extends CharacterCard implements InfluenceEffectCard{
         this.cost++;
     }
 
-    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{
+    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{ //wizard del capitano
         Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
         Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
         Wizard wizardCaptain = getBasicMatch().getGame().getWizardFromPlayer(captainOfActivePlayer);
-        int influence;
+        int influenceArchipelago = getBasicMatch().getWizardInfluenceInArchipelago(captainOfActivePlayer, getArchipelagoEffected());
         if(wizard.equals(wizardCaptain)){
-            influence = archipelago.getStudentFromArchipelago().size() + archipelago.calculateInfluenceTowers(wizard);
-        } else {
-            influence = archipelago.calculateInfluenceTowers(wizard);
+            normalInfluence += influenceArchipelago;
         }
-        return influence;
+        return normalInfluence;
     }
 
     @Override

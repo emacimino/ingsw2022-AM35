@@ -36,7 +36,7 @@ class JesterTest {
         expertMatch.setGame(setPlayers(player1, player2));
     }
 
-    @RepeatedTest(1)
+    @RepeatedTest(10)
     public void setTestMatch1() {
         Assertions.assertDoesNotThrow(() -> {
             this.setATestMatch();
@@ -45,7 +45,7 @@ class JesterTest {
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(2));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
 
-            CharacterCard jester = new Jester(expertMatch.getGame(), "Jester");
+            CharacterCard jester = new Jester(basicMatch2Players, "Jester");
             expertMatch.getCharactersForThisGame().add(0, jester);
             Assertions.assertEquals(1, jester.getCost());
 
@@ -110,7 +110,7 @@ class JesterTest {
             Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-            CharacterCard jester = new Jester(expertMatch4Players.getGame(), "Jester");
+            CharacterCard jester = new Jester(match4players, "Jester");
             expertMatch4Players.getCharactersForThisGame().add(0, jester);
             assertEquals(1, jester.getCost());
             assertEquals(1, wizard1.getCoins());

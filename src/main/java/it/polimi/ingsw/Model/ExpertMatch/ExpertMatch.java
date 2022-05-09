@@ -2,13 +2,13 @@ package it.polimi.ingsw.Model.ExpertMatch;
 
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.FactoryMatch.Match;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
+import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
 import java.util.ArrayList;
@@ -18,34 +18,29 @@ import java.util.List;
  * this class extends the MatchDecorator to implements the ExpertMode
  */
 public class ExpertMatch extends MatchDecorator {
-    private DeckCharacterCard deckCharacterCard;
-    ArrayList<CharacterCard> charactersForThisGame = new ArrayList<>();
-    private final Match match;
+    private final DeckCharacterCard deckCharacterCard;
+    private ArrayList<CharacterCard> charactersForThisGame = new ArrayList<>();
+    private InfluenceEffectCard activeInfluenceCard;
+    private MotherNatureEffectCard activeMotherNatureCard;
+    private ProhibitionEffectCard activeProhibitionCard;
 
     /**
      * Constructor of ExpertMatch
      *
-     * @param match is the match that has to be modified to play in ExpertMode
+     * @param basicMatch is the match that has to be modified to play in ExpertMode
      */
-    public ExpertMatch(Match match) {
-        this.match=match;
-        deckCharacterCard = new DeckCharacterCard(match);
+    public ExpertMatch(BasicMatch basicMatch) {
+        super(basicMatch); //match della classe MatchDecorator
+        deckCharacterCard = new DeckCharacterCard();
+        activeInfluenceCard = null;
+        activeMotherNatureCard = null;
     }
 
+    @Override
     public void setGame(List<Player> players) throws ExceptionGame {
-        match.setGame(players);
-        this.setFirstCoin();
-        charactersForThisGame = deckCharacterCard.drawCharacterCard();
-    }
-
-    @Override
-    public Player getPlayerFromWizard(Wizard wizard) throws ExceptionGame {
-        return match.getPlayerFromWizard(wizard);
-    }
-
-    @Override
-    public void playAssistantsCard(Player player, AssistantsCards assistantsCards) throws ExceptionGame {
-      match.playAssistantsCard(player, assistantsCards);
+        basicMatch.setGame(players);
+        setFirstCoin();
+        charactersForThisGame = deckCharacterCard.drawCharacterCard(basicMatch);
     }
 
     /**
@@ -56,105 +51,125 @@ public class ExpertMatch extends MatchDecorator {
      */
     @Override
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
-        match.moveStudentOnBoard(player, student);
-        if (match.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 3 ||
-                match.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 6 ||
-                match.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 9) {
-            match.getGame().getWizardFromPlayer(player).addACoin();
+        basicMatch.moveStudentOnBoard(player, student);
+        if (basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 3 ||
+                basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 6 ||
+                basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 9) {
+                basicMatch.getGame().getWizardFromPlayer(player).addACoin();
         }
-    }
-
-    @Override
-    public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
-        match.moveStudentOnArchipelago(player,student,archipelago);
-    }
-
-    @Override
-    public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
-        match.moveMotherNature(player,archipelago);
-    }
-
-    @Override
-    public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
-        match.chooseCloud(player,cloud);
-    }
-
-    @Override
-    public int getNumberOfPlayers() {
-        return match.getNumberOfPlayers();
-    }
-
-    @Override
-    public Game getGame() {
-        return match.getGame();
-    }
-
-    @Override
-    public List<Player> getPlayers() {
-        return match.getPlayers();
-    }
-
-    @Override
-    public List<Player> getActionPhaseOrderOfPlayers() {
-        return match.getActionPhaseOrderOfPlayers();
-    }
-
-    @Override
-    public int getNumberOfMovableStudents() {
-        return match.getNumberOfMovableStudents();
-    }
-
-    @Override
-    public int getNumberOfClouds() {
-        return match.getNumberOfClouds();
-    }
-
-    @Override
-    public int getNumberOfStudentsOnCLoud() {
-        return match.getNumberOfStudentsOnCLoud();
-    }
-
-    @Override
-    public int getNumberOfStudentInEntrance() {
-        return match.getNumberOfStudentInEntrance();
-    }
-
-    @Override
-    public int getNumberOfTowers() {
-        return match.getNumberOfTowers();
-    }
-
-    @Override
-    public int getPositionOfMotherNature() {
-        return match.getPositionOfMotherNature();
-    }
-
-    @Override
-    public void setTeamsOne(Player player1, Player player2) throws ExceptionGame {
-        match.setTeamsOne(player1,player2);
-    }
-
-    @Override
-    public void setTeamsTwo(Player player1, Player player2) throws ExceptionGame {
-        match.setTeamsTwo(player1,player2);
-    }
-
-    @Override
-    public List<List<Player>> getTeams() throws ExceptionGame {
-        return match.getTeams();
     }
 
     /**
      * Add a coin to every wizard when we set the Match to Expert Mode
      */
-    public void setFirstCoin() {
-        for (Wizard wizard : match.getGame().getWizards())
+    private void setFirstCoin() {
+        for (Wizard wizard : basicMatch.getGame().getWizards())
             wizard.addACoin();
     }
 
+    @Override
+    public ArrayList<CharacterCard> getCharactersForThisGame() {
+        return charactersForThisGame;
+    }
 
 
+    @Override
+    public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        if(activeProhibitionCard!=null)
+            if(archipelago.isProhibition()){
+                activeProhibitionCard.resetAProhibitionEffect(archipelago);
+                basicMatch.checkVictory();
+                if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
+                    throw new ExceptionGame("Every player has played in this round phase");
+                if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
+                    basicMatch.resetRound();
+                }
+                return;
 
+            }
+
+        if(activeMotherNatureCard != null){
+            activeMotherNatureCard.effectMotherNatureCard(player, archipelago);
+        }else {
+            basicMatch.getGame().placeMotherNature(player, archipelago);
+        }
+        try {
+            buildTower(player, archipelago);
+            basicMatch.lookUpArchipelago(archipelago);
+        } catch (ExceptionGame e) {
+            System.out.println(e);
+        } finally {
+            basicMatch.checkVictory();
+        }
+        if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
+            throw new ExceptionGame("Every player has played in this round phase");
+        if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
+            basicMatch.resetRound();
+        }
+
+        if(activeInfluenceCard != null) {
+            activeInfluenceCard.resetCard();
+            activeInfluenceCard = null;
+        }
+        if(activeMotherNatureCard != null) {
+            activeMotherNatureCard.resetCard();
+            activeMotherNatureCard = null;
+        }
+    }
+
+    protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
+        boolean isMostInfluence = true;
+        for(Player p : getRivals(player)){
+            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) { //influenza del player in negativo
+                isMostInfluence = false;
+            }
+        }
+        if(isMostInfluence) {
+            basicMatch.getGame().buildTower( getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(player)), archipelago);
+        }
+
+
+    }
+
+    @Override
+    public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame {
+        Wizard wizard = getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(p));
+        int CardEffectWizardInfluence = basicMatch.getWizardInfluenceInArchipelago(p, archipelago);
+
+        if(activeInfluenceCard != null){
+            CardEffectWizardInfluence = activeInfluenceCard.calculateEffectInfluence(wizard, archipelago, CardEffectWizardInfluence);
+        }
+        return CardEffectWizardInfluence;
+    }
+
+
+    public void setActiveInfluenceCard(InfluenceEffectCard activeInfluenceCard) {
+        this.activeInfluenceCard = activeInfluenceCard;
+    }
+
+    public InfluenceEffectCard getActiveInfluenceCard() {
+        return activeInfluenceCard;
+    }
+
+    public void setActiveMotherNatureCard(MotherNatureEffectCard activeMotherNatureCard) {
+        this.activeMotherNatureCard = activeMotherNatureCard;
+    }
+
+    public MotherNatureEffectCard getActiveMotherNatureCard() {
+        return activeMotherNatureCard;
+    }
+
+    public ProhibitionEffectCard getActiveProhibitionCard() {
+        return activeProhibitionCard;
+    }
+
+    public void setActiveProhibitionCard(ProhibitionEffectCard activeProhibitionCard) {
+        this.activeProhibitionCard = activeProhibitionCard;
+    }
+
+    public DeckCharacterCard getDeckCharacterCard() {
+        return deckCharacterCard;
+    }
 }
 
 

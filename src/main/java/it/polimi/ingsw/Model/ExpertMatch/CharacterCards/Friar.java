@@ -4,24 +4,21 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
-import java.util.ArrayList;
+public class Friar extends CharacterCard implements StudentEffectCard {
 
-public class Friar extends CharacterCard implements StudentEffect {
-
-    public Friar(Game game, String name) {
-        super(game, name);
+    public Friar(BasicMatch basicMatch, String name) {
+        super(basicMatch, name);
         setCost(1);
-        drawStudent(getStudentsOnCard(), 4, getGame().getStudentBag());
+        drawStudent(getStudentsOnCard(), 4, basicMatch.getGame().getStudentBag());
     }
 
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
         usedFriarCard(getActiveStudents().get(0));
-        resetCard();
+        this.cost++;
     }
 
 
@@ -34,7 +31,9 @@ public class Friar extends CharacterCard implements StudentEffect {
         else
             throw new ExceptionGame("This student is not on the card");
 
-        drawStudent( getStudentsOnCard(), 1, getGame().getStudentBag());
+        drawStudent( getStudentsOnCard(), 1, getBasicMatch().getGame().getStudentBag());
+
+        resetCard();
     }
 }
 
