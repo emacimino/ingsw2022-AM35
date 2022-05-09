@@ -5,7 +5,7 @@ public class NumberOfPlayer extends Message{
     private final int numberOfPlayers;
 
     public NumberOfPlayer(String message, int numberOfPlayers) {
-        super("Number Of players : " + numberOfPlayers , GameStateMessage.NUMBEROFPLAYERS);
+        super("Number Of players : " + numberOfPlayers , GameStateMessage.NUMBER_OF_PLAYERS);
         this.numberOfPlayers = numberOfPlayers;
     }
 
