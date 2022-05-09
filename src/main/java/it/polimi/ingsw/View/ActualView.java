@@ -3,7 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Client.ClientHandler;
+import it.polimi.ingsw.NetworkUtilities.Server.ClientHandler;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class ActualView implements ViewInterface {
 
     @Override
     public void loginRequest(){
-        this.clientHandler
+        //this.clientHandler
     }
 
     @Override

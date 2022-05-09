@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
@@ -22,7 +23,6 @@ public class BasicMatch{
     private int numberOfStudentsOnCLoud;
     private int numberOfStudentInEntrance;
     private int numberOfTowers;
-    private GameController gameController;
 
     /**
      * The constructor of the Class Match which implements a match for two players
@@ -35,7 +35,6 @@ public class BasicMatch{
         numberOfStudentInEntrance = 7;
         numberOfStudentsOnCLoud = 3;
         game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
-        gameController = new GameController(this);
     }
 
     /**
@@ -152,7 +151,7 @@ public class BasicMatch{
     }
 
     /**
-     * This method places Mother Nature, if possible, in the archipelago passed as parameter, followed by the update of the state of the archipelagos of the Game.
+     * This method places Mother Nature, if possible, in the archipelago passed as parameter, followed by the updateMessage of the state of the archipelagos of the Game.
      * The method checks if there is a situation which indicate the end of the match
      *
      * @param player      is the player that move Mother Nature

@@ -1,19 +1,22 @@
 package it.polimi.ingsw.NetworkUtilities.Server;
 
-import it.polimi.ingsw.NetworkUtilities.Client.ClientHandler;
+import it.polimi.ingsw.Controller.GameController;
 
 import java.util.Map;
 
 public class Server {
     private GameController gameController;
 
-    private final Map<String, ClientHandler> clientHandlerMap;
+    //private final Map<String, ClientHandler> clientHandlerMap;
 
     public Server() {
         initializeServer();
     }
 
     private void initializeServer() {
-        gameController = new GameController();
+    }
+
+    public static void addAClient(String username, ClientHandler clientHandler) {
+
     }
 }

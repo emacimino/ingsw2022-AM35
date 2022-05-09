@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Observable implements Observer{
 
-    private final List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
     /**
      * Adds an observer.
@@ -40,7 +40,6 @@ public class Observable implements Observer{
     public List<Observer> getObservers() {
         return observers;
     }
-
 
 
     @Override
