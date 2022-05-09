@@ -245,22 +245,6 @@ public class Wizard {
         coins++;
     }
 
-    public boolean getKnightEffect(){
-        return KNIGHT_EFFECT;
-    }
-
-    public void setKnightEffect(boolean knightEffect){
-        KNIGHT_EFFECT= knightEffect;
-    }
-
-
-
-    public void setMessageEffect(int messageEffect){
-        MESSANGER_EFFECT = messageEffect;
-    }
-    public int getMessageEffect(){
-        return MESSANGER_EFFECT;
-    }
 
 }
 
