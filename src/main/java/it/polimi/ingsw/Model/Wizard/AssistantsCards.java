@@ -32,4 +32,9 @@ public enum AssistantsCards {
      * @return the step that MotherNature can do by playing that card
      */
     public int getStep() { return step; }
+
+    @Override
+    public String toString() {
+        return (String) value;
+    }
 }

@@ -9,4 +9,5 @@ public enum GameStateMessage {
     PLANNING,
     ATTACK,
     END_OF_TURN,
+    ASSISTANTCARD
 }

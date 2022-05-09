@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Client.ClientHandler;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 import java.util.List;
 
@@ -15,8 +16,8 @@ public class ActualView implements ViewInterface {
     }
 
     @Override
-    public void loginRequest(){
-        this.clientHandler
+    public void loginRequest(String username){
+        this.clientHandler.sendMessage(new LoginRequest(username));
     }
 
     @Override
@@ -26,7 +27,7 @@ public class ActualView implements ViewInterface {
 
     @Override
     public void setNumOfPlayers(int numOfPlayers) {
-
+        this.clientHandler.sendMessage(new NumberOfPlayer("", numOfPlayers));
     }
 
     @Override
@@ -36,12 +37,12 @@ public class ActualView implements ViewInterface {
 
     @Override
     public void setTypeOfMatch(String typeOfMatch) {
-
+        this.clientHandler.sendMessage(new Message());
     }
 
     @Override
     public void playAssistantCard(AssistantsCards assistantsCards) {
-
+        this.clientHandler.sendMessage(new AssistantCard(assistantsCards.toString(), GameStateMessage.ASSISTANTCARD));
     }
 
     @Override
