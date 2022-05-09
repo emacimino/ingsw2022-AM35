@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Observer.MatchObserver;
-
 public class Player {
     private final String name;
     private final String username;

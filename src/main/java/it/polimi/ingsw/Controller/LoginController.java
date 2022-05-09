@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Observer.MatchObserver;
 import it.polimi.ingsw.Observer.Observable;
 
 public class LoginController extends Observable {

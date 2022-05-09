@@ -5,7 +5,7 @@ import it.polimi.ingsw.ClientServerNetwork.Server.Message.MatchMessages;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable {
+public class Observable implements Observer{
 
     private final List<Observer> observers = new ArrayList<>();
 
@@ -39,5 +39,15 @@ public class Observable {
 
     public List<Observer> getObservers() {
         return observers;
+    }
+
+    @Override
+    public void update(Object object) {
+
+    }
+
+    @Override
+    public void update(it.polimi.ingsw.NetworkUtilities.Message.Message message) {
+
     }
 }
