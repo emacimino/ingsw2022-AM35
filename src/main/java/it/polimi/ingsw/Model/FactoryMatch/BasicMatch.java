@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
+import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
@@ -251,7 +252,7 @@ public class BasicMatch{
         }
         System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            System.out.println("Wizard: " + winner + " has won the match\n" +
+            throw new ExceptionEndGame("Wizard: " + winner + " has won the match\n" +
                     "Please, create a new match if you want to replay");
         }
 
