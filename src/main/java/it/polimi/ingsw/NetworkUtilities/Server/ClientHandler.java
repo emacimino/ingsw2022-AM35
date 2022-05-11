@@ -7,7 +7,6 @@ import it.polimi.ingsw.View.ActualView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientHandler implements ClientHandlerInterface, Runnable{
@@ -48,7 +47,7 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
             synchronized (inputLock){
                 Message message = (Message) inputStream.readObject();
                 if(message!=null && message.getType()== GameStateMessage.LOGIN_REQUEST){
-                    Server.addAClient(message.getMessage().toString(),this);
+                    Server.addAClient(message.getContent().toString(),this);
                     System.out.println(message.getType().toString());
                 }
             }

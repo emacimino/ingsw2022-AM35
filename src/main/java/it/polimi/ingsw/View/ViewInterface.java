@@ -18,11 +18,11 @@ public interface ViewInterface {
 
     void setTypeOfMatch(String typeOfMatch);
 
-    void playAssistantCard(AssistantsCards assistantsCards);
+    void playAssistantCard(String username, AssistantsCards assistantsCards);
 
     void playCharacterCard(CharacterCard card);
 
-    void placeStudentOnBoard(List<Student> studentsToBoard);
+    void placeStudentsOnBoard(List<Student> studentsToBoard);
 
     void placeStudentOnArchipelago(List<Student> studentsToArchipelago);
 

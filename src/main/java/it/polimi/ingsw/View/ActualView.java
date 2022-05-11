@@ -42,8 +42,8 @@ public class ActualView implements ViewInterface {
     }
 
     @Override
-    public void playAssistantCard(AssistantsCards assistantsCards) {
-        this.clientHandler.sendMessage(new AssistantCard(assistantsCards.toString(), GameStateMessage.ASSISTANTCARD));
+    public void playAssistantCard(String username, AssistantsCards assistantsCards) {
+        this.clientHandler.sendMessage(new AssistantCard(username ,assistantsCards.toString()));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ActualView implements ViewInterface {
     }
 
     @Override
-    public void placeStudentOnBoard(List<Student> studentsToBoard) {
+    public void placeStudentsOnBoard(List<Student> studentsToBoard) {
 
     }
 

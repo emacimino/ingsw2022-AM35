@@ -1,6 +1,4 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
-import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
 
 public class LoginReply extends Message{
 
@@ -9,8 +7,8 @@ public class LoginReply extends Message{
     private final boolean connectionSuccess;
     private final String username;
 
-    public LoginReply(boolean loginRequestSuccess, boolean connectionSuccess, String username){
-        super("Username: "+username, GameStateMessage.LOGIN_REPLY);
+    public LoginReply(String nickname, boolean loginRequestSuccess, boolean connectionSuccess, String username){
+        super(nickname, "Username: "+username, GameStateMessage.LOGIN_REPLY);
         this.username = username;
         this.connectionSuccess = connectionSuccess;
         this.loginRequestSuccess = loginRequestSuccess;
