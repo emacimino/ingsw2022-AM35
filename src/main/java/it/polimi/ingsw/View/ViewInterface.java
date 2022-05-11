@@ -3,28 +3,31 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.Observer.Observer;
 
 import java.util.List;
 
-public interface ViewInterface {
+//la view osserva il modello, se ci sono modifiche al modello il modello notificherà la view
+public abstract class ViewInterface extends Observable implements Observer {
 
-    void loginRequest(String username);
+    abstract void loginRequest(String username);
 
-    void setUsername();
+   abstract void setUsername();
 
-    void setNumOfPlayers(int numOfPlayers);
+    abstract void setNumOfPlayers(int numOfPlayers);
 
-    void participateToAnExistingMatch(boolean participate);
+    abstract void participateToAnExistingMatch(boolean participate);
 
-    void setTypeOfMatch(String typeOfMatch);
+    abstract void setTypeOfMatch(String typeOfMatch);
 
-    void playAssistantCard(AssistantsCards assistantsCards);
+    abstract void playAssistantCard(AssistantsCards assistantsCards);
 
-    void playCharacterCard(CharacterCard card);
+    abstract void playCharacterCard(CharacterCard card);
 
-    void placeStudentOnBoard(List<Student> studentsToBoard);
+    abstract void placeStudentOnBoard(List<Student> studentsToBoard);
 
-    void placeStudentOnArchipelago(List<Student> studentsToArchipelago);
+    abstract void placeStudentOnArchipelago(List<Student> studentsToArchipelago);
 
-    void moveMotherNature(int steps);
+    abstract void moveMotherNature(int steps);
 }

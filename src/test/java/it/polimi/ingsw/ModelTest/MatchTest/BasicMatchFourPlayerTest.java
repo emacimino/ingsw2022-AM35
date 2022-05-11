@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -242,8 +243,9 @@ public class BasicMatchFourPlayerTest {
         });
     }
 
-    @Test
+    @RepeatedTest(15)
     void checkVictory_NoStudents_Test(){
+        System.out.println();
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = basicMatch4Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
@@ -257,6 +259,12 @@ public class BasicMatchFourPlayerTest {
             basicMatch4Players.playAssistantsCard(playerFour, assistantsCards_4.get(9));//5 steps
             //remove all student from student bag
             basicMatch4Players.getGame().getStudentBag().getStudentsInBag().removeAll(basicMatch4Players.getGame().getStudentBag().getStudentsInBag());
+            Assertions.assertTrue(basicMatch4Players.getGame().getStudentBag().getStudentsInBag().isEmpty());
+            basicMatch4Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(new Professor(Color.BLUE));
+            basicMatch4Players.getGame().getWizardFromPlayer(playerTwo).getBoard().setProfessorInTable(new Professor(Color.RED));
+            basicMatch4Players.getGame().getWizardFromPlayer(playerFour).getBoard().setProfessorInTable(new Professor(Color.GREEN));
+            basicMatch4Players.getGame().getWizardFromPlayer(playerThree).getBoard().setProfessorInTable(new Professor(Color.PINK));
+            basicMatch4Players.getGame().getWizardFromPlayer(playerFour).getBoard().setProfessorInTable(new Professor(Color.YELLOW));
             //call moveMotherNature
             int oldPositionMotherNature = basicMatch4Players.getPositionOfMotherNature();
             basicMatch4Players.moveMotherNature(playerFour, basicMatch4Players.getGame().getArchipelagos().get((oldPositionMotherNature + getSteps(playerThree))% basicMatch4Players.getGame().getArchipelagos().size()));

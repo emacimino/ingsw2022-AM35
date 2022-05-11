@@ -9,7 +9,7 @@ import it.polimi.ingsw.NetworkUtilities.Server.ClientHandler;
 
 import java.util.List;
 
-public class ActualView implements ViewInterface {
+public class ActualView extends ViewInterface {
     private final ClientHandler clientHandler;
 
     public ActualView(ClientHandler clientHandler) {

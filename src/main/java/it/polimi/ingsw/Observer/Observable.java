@@ -5,7 +5,9 @@ import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable implements Observer{
+//gli oggetti osservati si tengono una lista di oggetti osservable che osservano l'oggetto che avrà il compito di notificarli
+//in caso di cambiamento e invocare i loro update
+public class Observable{
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -42,7 +44,6 @@ public class Observable implements Observer{
     }
 
 
-    @Override
     public void update(Message message) {
 
     }

@@ -359,26 +359,4 @@ public class GameTest {
         });
     }
 
-    /**
-     * This method tests the creation of clouds, students placement and get method
-     */
-    @Test
-    public void StudentsAndCloudsInteraction(){
-        int[] param = {9,4};
-        int numPlayers = 2;
-        Game game = createGame(param[0], param[1]);
-        game.setWizards(createPlayers(numPlayers));
-        Assertions.assertDoesNotThrow(()->{
-            game.setArchipelagos();
-            Wizard wizard1 = game.getWizards().get(0);
-            Wizard wizard2 = game.getWizards().get(1);
-            game.setTowers(6);
-            int actualArchipelagoIndex = 0;
-            Archipelago actualArchipelago = game.getArchipelagos().get(actualArchipelagoIndex);
-            game.setClouds(2,3);
-            game.setRandomStudentsOnCloud();
-            game.getClouds();
-            });
-    }
-
 }

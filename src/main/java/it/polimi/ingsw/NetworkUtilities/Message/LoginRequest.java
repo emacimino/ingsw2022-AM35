@@ -1,6 +1,6 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
-import java.awt.*;
+
 
 public class LoginRequest extends Message{
     private static final long serialVersionUID = 9196970831074769370L;
