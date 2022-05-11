@@ -1,0 +1,18 @@
+{
+  "port": 1234,
+
+
+  "ping": "Hello Server",
+  "pong": "Hello Client",
+
+  "ask_info" : ["insert the name" , "insert the username"],
+  "error_username" : "change username",
+  "ask_if_existing_match" : "Do you want to join an already existing match?",
+  "ask_number_players" : "With how many players do you want to play?",
+
+  "login" : [{
+    "info" : ["insert the name" , "insert the username"],
+    "error_username" : "change username"
+  }]
+
+}
