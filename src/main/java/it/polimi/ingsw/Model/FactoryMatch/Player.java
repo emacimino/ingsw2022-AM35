@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model.FactoryMatch;
 public class Player {
     private final String name;
     private final String username;
-    private MatchObserver observer;
 
     /**
      * constructor of Player Class
@@ -31,13 +30,6 @@ public class Player {
         return name;
     }
 
-    /**
-     *
-     * @return the observer associated to the player for the controller
-     */
-    public MatchObserver getObserver() {
-        return observer;
-    }
 
     @Override
     public String toString() {
@@ -47,7 +39,4 @@ public class Player {
                 '}';
     }
 
-    public void setObserver(MatchObserver observer) {
-        this.observer = observer;
-    }
 }
