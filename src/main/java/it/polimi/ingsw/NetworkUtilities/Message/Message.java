@@ -7,18 +7,20 @@ public abstract class Message implements Serializable {
     @Serial
     private static final long serialVersionUID = 6345566953463396637L;
 
-    private Object message;
+    private String nickname;
+    private Object content;
     private GameStateMessage type;
 
-    public Message(Object message, GameStateMessage type) {
-        this.message = message;
+    public Message(String nickname, Object content, GameStateMessage type) {
+        this.nickname = nickname;
+        this.content = content;
         this.type = type;
     }
 
 
 
-    public Object getMessage() {
-        return message;
+    public Object getContent() {
+        return content;
     }
 
     public GameStateMessage getType() {
@@ -29,7 +31,7 @@ public abstract class Message implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "message='" + message + '\'' +
+                "message='" + content + '\'' +
                 ", type=" + type +
                 '}';
     }
