@@ -9,10 +9,12 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BasicMatch{
-    private int numberOfPlayers;
+    protected int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
     private List<Player> actionPhaseOrderOfPlayers = new ArrayList<>();
@@ -41,8 +43,6 @@ public class BasicMatch{
      * @throws ExceptionGame is thrown if this method is called during an execution of a match
      */
     public void setGame(List<Player> players) throws ExceptionGame {
-        if(players.size()>numberOfPlayers)
-            throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
         game.setWizards(players);
         game.setTowers(numberOfTowers);
@@ -159,6 +159,7 @@ public class BasicMatch{
      * @throws ExceptionGame is thrown if Mother Nature can't be placed in the archipelago passed
      */
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
+        System.out.println("MoveMotherNature basic");
         game.placeMotherNature(player, archipelago);
         try {
             this.buildTower(player, archipelago);
@@ -226,33 +227,16 @@ public class BasicMatch{
     public void checkVictory() throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
-        List<Wizard>  winner = new ArrayList<>();
-        System.out.println("size of winners "+w.size());
-        if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
+        if (w.size() == 1) {
+            if (w.get(0).getBoard().getTowersInBoard().isEmpty())
+                endOfTheMatch = true;
+        } else if (game.getStudentBag().getNumberOfStudents() == 0)
             endOfTheMatch = true;
-            winner.add(w.get(0));
-        }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
+        else if (game.getArchipelagos().size() <= 3)
             endOfTheMatch = true;
-            System.out.println("num towers "+ w.get(0) + " : " + w.get(0).getBoard().getTowersInBoard().size());
-            winner.add(w.get(0));
-            System.out.println("studentbag empty or assistant card playable empty, one winner");
-        }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
-            endOfTheMatch = true;
-            w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());
-            if(w.get(0).getBoard().getProfessorInTable().size() > w.get(1).getBoard().getProfessorInTable().size())
-                winner.add(w.get(0));
-            else{
-                int numProf = w.get(0).getBoard().getProfessorInTable().size();
-                for(Wizard wizard : w){
-                    if(wizard.getBoard().getProfessorInTable().size() == numProf)
-                        winner.add(wizard);
-                }
-            }
 
-        }
-        System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            System.out.println("Wizard: " + winner + " has won the match\n" +
+            System.out.println("Wizard: " + w + " has won the match\n" +
                     "Please, create a new match if you want to replay");
         }
 

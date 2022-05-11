@@ -3,7 +3,6 @@ package it.polimi.ingsw.ModelTest.MatchTest;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.*;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -15,7 +14,6 @@ import java.util.List;
 
 public class BasicMatchAndFactoryTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
-    private final BasicMatch basicMatch3Players = factoryMatch.newMatch(3);
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
     private final Player playerOne = new Player("nameOne", "usernameOne");
     private final Player playerTwo = new Player("nameTwo", "usernameTwo");
@@ -26,21 +24,15 @@ public class BasicMatchAndFactoryTest {
         List<Player> players = new ArrayList<>();
         players.add(playerOne);
         players.add(playerTwo);
+        players.add(playerThree);
         Assertions.assertDoesNotThrow(() ->
                 basicMatch2Players.setGame(players)
         );
-        players.add(playerThree);
-        if(basicMatch3Players.getNumberOfPlayers() == players.size())
-            Assertions.assertDoesNotThrow(() ->
-                 basicMatch3Players.setGame(players)
-            );
-        else
-            Assertions.assertThrows(ExceptionGame.class, ()->basicMatch3Players.setGame(players));
     }
     public void printGame(){
-        System.out.println("Archipelagos "+ basicMatch3Players.getGame().getArchipelagos().size());
-        System.out.println(basicMatch3Players.getGame().getWizards() + "\n");
-        for( Wizard w : basicMatch3Players.getGame().getWizards()){
+        System.out.println("Archipelagos "+ basicMatch2Players.getGame().getArchipelagos().size());
+        System.out.println(basicMatch2Players.getGame().getWizards() + "\n");
+        for( Wizard w : basicMatch2Players.getGame().getWizards()){
             System.out.println(w);
             System.out.println("towers " + w.getBoard().getTowersInBoard().size());
             System.out.println("assistantCard " + w.getRoundAssistantsCard());
@@ -69,43 +61,23 @@ public class BasicMatchAndFactoryTest {
     }
 
     @Test
-    void verifyMatch3Players() {
-        gameSetter();
-        Assertions.assertEquals(3, basicMatch3Players.getNumberOfPlayers());
-        Assertions.assertEquals(4, basicMatch3Players.getNumberOfMovableStudents());
-        Assertions.assertEquals(3, basicMatch3Players.getNumberOfClouds());
-        Assertions.assertEquals(6, basicMatch3Players.getNumberOfTowers());
-        Assertions.assertEquals(9, basicMatch3Players.getNumberOfStudentInEntrance());
-        Assertions.assertEquals(4, basicMatch3Players.getNumberOfStudentsOnCLoud());
-        for(Wizard wizard : basicMatch3Players.getGame().getWizards()) {
-            Assertions.assertDoesNotThrow(() ->
-                    Assertions.assertTrue(basicMatch3Players.getPlayers().contains(basicMatch3Players.getPlayerFromWizard(wizard)))
-            );
-        }
-
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.setTeamsOne(playerOne,playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.setTeamsTwo(playerOne,playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, basicMatch3Players::getTeams);
-    }
-
-    @Test
     void playAssistantsCard_Test(){
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
 
-                    List<AssistantsCards> assistantsCards_1 = basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
-                    List<AssistantsCards> assistantsCards_2 = basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
-                    basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(1));
+                    List<AssistantsCards> assistantsCards_1 = basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
+                    List<AssistantsCards> assistantsCards_2 = basicMatch2Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
+                    basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(1));
                     Assertions.assertThrows(ExceptionGame.class, ()->
-                            basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(1))
+                            basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(1))
                     );
-                    basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(0));
+                    basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(0));
                     Assertions.assertEquals(9, assistantsCards_1.size());
                     Assertions.assertEquals(9, assistantsCards_2.size());
-                    Assertions.assertEquals(playerOne, basicMatch3Players.getActionPhaseOrderOfPlayers().get(1));
-                    Assertions.assertEquals(playerTwo, basicMatch3Players.getActionPhaseOrderOfPlayers().get(0));
+                    Assertions.assertEquals(playerOne, basicMatch2Players.getActionPhaseOrderOfPlayers().get(1));
+                    Assertions.assertEquals(playerTwo, basicMatch2Players.getActionPhaseOrderOfPlayers().get(0));
                     Assertions.assertThrows(ExceptionGame.class, ()->
-                            basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(1))
+                            basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(1))
                     );
                 }
         );
@@ -115,50 +87,50 @@ public class BasicMatchAndFactoryTest {
     void moveMotherNature_Test(){
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
-            List<AssistantsCards> assistantsCards_1 = basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
-            List<AssistantsCards> assistantsCards_2 = basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_1 = basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_2 = basicMatch2Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
 
-            basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
-            basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
+            basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
+            basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
 
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
+            int oldPositionMotherNature = basicMatch2Players.getPositionOfMotherNature();
             //Try to move MN with more steps that are allowed for the playerOne
-            Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch3Players.getGame().getArchipelagos().size())));
+            Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch2Players.getGame().getArchipelagos().size())));
             //retry to move MN with a number of steps allowed for playerOne
 
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()));
+            basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch2Players.getGame().getArchipelagos().size()));
             //try to move MN on the same island
-            Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size())));
+            Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch2Players.getGame().getArchipelagos().size())));
             //sets the game in order to put a professor on the board of playerOne and have influence on the isle where MN will be in the next move (oldPositionMotherNature +2)
-            for(Student s : basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch3Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
-                boolean professorNotTaken = basicMatch3Players.getGame().getProfessors().stream().anyMatch(p -> p.getColor()==s.getColor());
+            for(Student s : basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch2Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
+                boolean professorNotTaken = basicMatch2Players.getGame().getProfessors().stream().anyMatch(p -> p.getColor()==s.getColor());
                 if(professorNotTaken) {
-                    Professor professor = basicMatch3Players.getGame().getProfessors().stream().filter(p -> p.getColor()==s.getColor()).findAny().get();
-                    basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(professor);
+                    Professor professor = basicMatch2Players.getGame().getProfessors().stream().filter(p -> p.getColor()==s.getColor()).findAny().get();
+                    basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(professor);
                 }
             }
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch3Players.getGame().getArchipelagos().size()));
+            basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch2Players.getGame().getArchipelagos().size()));
             //check if the tower is build correctly
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerOne), basicMatch3Players.getGame().getArchipelagos().get(basicMatch3Players.getPositionOfMotherNature()).getIsle().get(0).getTower().getProperty());
+            Assertions.assertEquals(basicMatch2Players.getGame().getWizardFromPlayer(playerOne), basicMatch2Players.getGame().getArchipelagos().get(basicMatch2Players.getPositionOfMotherNature()).getIsle().get(0).getTower().getProperty());
             //sets again the game in order to put a professor on the board of playerOne and have influence on the isle where MN will be in the next move (oldPositionMotherNature +3)
-            for(Student s : basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 3)% basicMatch3Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
-                boolean professorNotTaken = basicMatch3Players.getGame().getProfessors().stream().anyMatch(p -> p.getColor()==s.getColor());
+            for(Student s : basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 3)% basicMatch2Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
+                boolean professorNotTaken = basicMatch2Players.getGame().getProfessors().stream().anyMatch(p -> p.getColor()==s.getColor());
                 if(professorNotTaken) {
-                    Professor professor = basicMatch3Players.getGame().getProfessors().stream().filter(p -> p.getColor()==s.getColor()).findAny().get();
-                    basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(professor);
+                    Professor professor = basicMatch2Players.getGame().getProfessors().stream().filter(p -> p.getColor()==s.getColor()).findAny().get();
+                    basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(professor);
                 }
             }
-            Archipelago archipelagoMerged = basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 3)% basicMatch3Players.getGame().getArchipelagos().size());
-            Archipelago previousArchipelagoMerged = basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch3Players.getGame().getArchipelagos().size());
-            Assertions.assertTrue(basicMatch3Players.getGame().getArchipelagos().contains(previousArchipelagoMerged));
-            basicMatch3Players.moveMotherNature(playerOne, archipelagoMerged);
+            Archipelago archipelagoMerged = basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 3)% basicMatch2Players.getGame().getArchipelagos().size());
+            Archipelago previousArchipelagoMerged = basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 2)% basicMatch2Players.getGame().getArchipelagos().size());
+            Assertions.assertTrue(basicMatch2Players.getGame().getArchipelagos().contains(previousArchipelagoMerged));
+            basicMatch2Players.moveMotherNature(playerOne, archipelagoMerged);
             //check if the tower is build correctly and the merge is done
 
-            Assertions.assertEquals(11, basicMatch3Players.getGame().getArchipelagos().size()); //size is decremented
-            Assertions.assertTrue(basicMatch3Players.getGame().getArchipelagos().contains(archipelagoMerged));
-            Assertions.assertFalse(basicMatch3Players.getGame().getArchipelagos().contains(previousArchipelagoMerged));
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerOne), basicMatch3Players.getGame().getArchipelagos().get(basicMatch3Players.getGame().getArchipelagos().indexOf(archipelagoMerged)).getIsle().get(0).getTower().getProperty());
-            Assertions.assertEquals(2, basicMatch3Players.getGame().getArchipelagos().get(basicMatch3Players.getGame().getArchipelagos().indexOf(archipelagoMerged)).getIsle().size());
+            Assertions.assertEquals(11, basicMatch2Players.getGame().getArchipelagos().size()); //size is decremented
+            Assertions.assertTrue(basicMatch2Players.getGame().getArchipelagos().contains(archipelagoMerged));
+            Assertions.assertFalse(basicMatch2Players.getGame().getArchipelagos().contains(previousArchipelagoMerged));
+            Assertions.assertEquals(basicMatch2Players.getGame().getWizardFromPlayer(playerOne), basicMatch2Players.getGame().getArchipelagos().get(basicMatch2Players.getGame().getArchipelagos().indexOf(archipelagoMerged)).getIsle().get(0).getTower().getProperty());
+            Assertions.assertEquals(2, basicMatch2Players.getGame().getArchipelagos().get(basicMatch2Players.getGame().getArchipelagos().indexOf(archipelagoMerged)).getIsle().size());
         });
     }
 
@@ -166,44 +138,37 @@ public class BasicMatchAndFactoryTest {
     void checkVictory_NoTowers_Test(){
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
-            List<AssistantsCards> assistantsCards_1 = basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
-            List<AssistantsCards> assistantsCards_2 = basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_1 = basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_2 = basicMatch2Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
 
-            basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
-            basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
+            basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
+            basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
 
             //remove all the tower from playerOne and call CheckVictory from moveMotherNature
-            basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard().removeAll(basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard());
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerOne), basicMatch3Players.getGame().getWizardsWithLeastTowers().get(0));
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()));
+            basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard().removeAll(basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard());
+            Assertions.assertEquals(basicMatch2Players.getGame().getWizardFromPlayer(playerOne), basicMatch2Players.getGame().getWizardsWithLeastTowers().get(0));
+            int oldPositionMotherNature = basicMatch2Players.getPositionOfMotherNature();
+            basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch2Players.getGame().getArchipelagos().size()));
         });
     }
 
-    @RepeatedTest(15)
+    @Test
     void checkVictory_NoStudents_Test(){
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
+            List<AssistantsCards> assistantsCards_1 = basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_2 = basicMatch2Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
 
-            List<AssistantsCards> assistantsCards_1 = basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
-            List<AssistantsCards> assistantsCards_2 = basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
-
-            basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
-            basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
+            basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
+            basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
 
             //remove all student from student bag
-            basicMatch3Players.getGame().getStudentBag().getStudentsInBag().removeAll(basicMatch3Players.getGame().getStudentBag().getStudentsInBag());
-            //add a professors
-            basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(new Professor(Color.BLUE));
-            basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getBoard().setProfessorInTable(new Professor(Color.RED));
-            basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().setProfessorInTable(new Professor(Color.GREEN));
-            basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().setProfessorInTable(new Professor(Color.PINK));
-
+            basicMatch2Players.getGame().getStudentBag().getStudentsInBag().removeAll(basicMatch2Players.getGame().getStudentBag().getStudentsInBag());
             //call moveMotherNature
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizards(), basicMatch3Players.getGame().getWizardsWithLeastTowers());
+            Assertions.assertEquals(basicMatch2Players.getGame().getWizards(), basicMatch2Players.getGame().getWizardsWithLeastTowers());
 
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()));
+            int oldPositionMotherNature = basicMatch2Players.getPositionOfMotherNature();
+            basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch2Players.getGame().getArchipelagos().size()));
 
         });
     }
@@ -212,24 +177,24 @@ public class BasicMatchAndFactoryTest {
     void checkVictory_LessThenThreeArchipelagos_Test() {
         gameSetter();
         Assertions.assertDoesNotThrow(() -> {
-            List<AssistantsCards> assistantsCards_1 = basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
-            List<AssistantsCards> assistantsCards_2 = basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_1 = basicMatch2Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
+            List<AssistantsCards> assistantsCards_2 = basicMatch2Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
 
-            basicMatch3Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
-            basicMatch3Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
+            basicMatch2Players.playAssistantsCard(playerOne, assistantsCards_1.get(0)); //1 step
+            basicMatch2Players.playAssistantsCard(playerTwo, assistantsCards_2.get(4)); //3 step
 
             //remove 9 archipelagos from the initial 12
-            basicMatch3Players.getGame().getArchipelagos().removeAll(basicMatch3Players.getGame().getArchipelagos().subList(0, 9));
+            basicMatch2Players.getGame().getArchipelagos().removeAll(basicMatch2Players.getGame().getArchipelagos().subList(0, 9));
              //call motherNature
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizards(), basicMatch3Players.getGame().getWizardsWithLeastTowers());
+            Assertions.assertEquals(basicMatch2Players.getGame().getWizards(), basicMatch2Players.getGame().getWizardsWithLeastTowers());
 
-            for(Archipelago a : basicMatch3Players.getGame().getArchipelagos()){
+            for(Archipelago a : basicMatch2Players.getGame().getArchipelagos()){
                 a.setMotherNaturePresence(false);
             }
-            basicMatch3Players.getGame().getArchipelagos().get(0).setMotherNaturePresence(true);
-            basicMatch3Players.getGame().getMotherNature().setPosition(0);
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()));
+            basicMatch2Players.getGame().getArchipelagos().get(0).setMotherNaturePresence(true);
+            basicMatch2Players.getGame().getMotherNature().setPosition(0);
+            int oldPositionMotherNature = basicMatch2Players.getPositionOfMotherNature();
+            basicMatch2Players.moveMotherNature(playerOne, basicMatch2Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch2Players.getGame().getArchipelagos().size()));
         });
     }
 }
