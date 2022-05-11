@@ -10,11 +10,11 @@ public class SocketServer implements Runnable{
 
     private final int port;
     private ServerSocket serverSocket;
+    private Server server;
 
     public SocketServer(int port) {
         this.port = port;
     }
-
 
 
     @Override

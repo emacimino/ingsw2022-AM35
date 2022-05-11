@@ -22,9 +22,9 @@ public class SocketClient implements Client{
 
     public SocketClient(String address, int port) throws IOException {
         client.connect(new InetSocketAddress(address,port));
-        sendMessage(new Ping());
         this.inputStream = new ObjectInputStream(client.getInputStream());
         this.outputStream = new ObjectOutputStream(client.getOutputStream());
+        sendMessage(new Ping());
     }
 
     @Override

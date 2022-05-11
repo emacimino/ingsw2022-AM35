@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
 
+import it.polimi.ingsw.Observer.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 

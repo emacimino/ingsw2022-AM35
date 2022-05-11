@@ -4,13 +4,14 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class BasicMatchFourPlayers extends BasicMatch {
+public class BasicMatchFourPlayers extends BasicMatch{
     private  Player captainTeamOne;
     private  Player captainTeamTwo;
     private List<Player> teamOne = new ArrayList<>();

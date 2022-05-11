@@ -1,5 +1,6 @@
 package it.polimi.ingsw.View;
 
+import it.polimi.ingsw.Controller.GameController;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -8,13 +9,15 @@ import it.polimi.ingsw.NetworkUtilities.Server.ClientHandler;
 
 
 import java.util.List;
+import java.util.Observable;
 
-public class ActualView implements ViewInterface {
+public class ActualView extends Observable implements ViewInterface {
     private final ClientHandler clientHandler;
 
     public ActualView(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }
+
 
     @Override
     public void loginRequest(String username){

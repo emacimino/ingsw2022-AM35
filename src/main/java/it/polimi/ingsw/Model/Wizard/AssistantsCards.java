@@ -33,8 +33,4 @@ public enum AssistantsCards {
      */
     public int getStep() { return step; }
 
-    @Override
-    public String toString() {
-        return (String) value;
-    }
 }

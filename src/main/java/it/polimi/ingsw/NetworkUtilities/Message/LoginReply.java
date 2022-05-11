@@ -1,9 +1,9 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
-import it.polimi.ingsw.Model.*;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
+
+import java.io.Serial;
 
 public class LoginReply extends Message{
-
+    @Serial
     private static final long serialVersionUID = 2194735574340893334L;
     private final boolean loginRequestSuccess;
     private final boolean connectionSuccess;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.NetworkUtilities.Server;
 
+import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.View.ActualView;
@@ -7,7 +8,6 @@ import it.polimi.ingsw.View.ActualView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientHandler implements ClientHandlerInterface, Runnable{
@@ -18,9 +18,9 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
 
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
-    private Object inputLock;
-    private Object outputLock;
-    private final ActualView actualView;
+    private final Object inputLock = new Object();
+    private final Object outputLock = new Object();
+
 
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
         this.socketServer = socketServer;
@@ -30,7 +30,6 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
 
         this.inputStream = new ObjectInputStream(client.getInputStream());
         this.outputStream = new ObjectOutputStream(client.getOutputStream());
-        this.actualView = new ActualView(this);
 
     }
     @Override
@@ -48,7 +47,7 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
             synchronized (inputLock){
                 Message message = (Message) inputStream.readObject();
                 if(message!=null && message.getType()== GameStateMessage.LOGIN_REQUEST){
-                    Server.addAClient(message.getMessage().toString(),this);
+                    //Server.addAClient(message.getMessage().toString(),this);
                     System.out.println(message.getType().toString());
                 }
             }

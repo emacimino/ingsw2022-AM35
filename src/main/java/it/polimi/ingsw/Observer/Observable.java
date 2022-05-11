@@ -5,9 +5,9 @@ import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable implements Observer{
+public class Observable{
 
-    private List<Observer> observers = new ArrayList<>();
+    private final List<Observer> observers = new ArrayList<>();
 
     /**
      * Adds an observer.
@@ -41,9 +41,4 @@ public class Observable implements Observer{
         return observers;
     }
 
-
-    @Override
-    public void update(Message message) {
-
-    }
 }
