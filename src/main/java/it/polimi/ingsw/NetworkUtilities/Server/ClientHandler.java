@@ -1,16 +1,17 @@
 package it.polimi.ingsw.NetworkUtilities.Server;
 
-import it.polimi.ingsw.Controller.ClientController;
+//import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.View.ActualView;
+import it.polimi.ingsw.Observer.Observer;
+//import it.polimi.ingsw.View.ActualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientHandler implements ClientHandlerInterface, Runnable{
+public class ClientHandler implements ClientHandlerInterface, Runnable, Observer {
     private final SocketServer socketServer;
     private final Socket client;
 
@@ -47,8 +48,7 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
             synchronized (inputLock){
                 Message message = (Message) inputStream.readObject();
                 if(message!=null && message.getType()== GameStateMessage.LOGIN_REQUEST){
-                    //Server.addAClient(message.getMessage().toString(),this);
-                    System.out.println(message.getType().toString());
+
                 }
             }
         }
@@ -76,5 +76,13 @@ public class ClientHandler implements ClientHandlerInterface, Runnable{
             exception.printStackTrace();
         }
     }
-    
+
+    public Message readMessage() throws IOException, ClassNotFoundException {
+        return (Message)inputStream.readObject();
+    }
+
+    @Override
+    public void update(Message message) {
+
+    }
 }

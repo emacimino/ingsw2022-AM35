@@ -11,9 +11,7 @@ import java.util.List;
 //la view osserva il modello, se ci sono modifiche al modello il modello notificherà la view
 public abstract class ViewInterface extends Observable implements Observer {
 
-    abstract void loginRequest(String username);
-
-   abstract void setUsername();
+    public abstract void loginRequest(String name, String username);
 
     abstract void setNumOfPlayers(int numOfPlayers);
 
@@ -21,7 +19,7 @@ public abstract class ViewInterface extends Observable implements Observer {
 
     abstract void setTypeOfMatch(String typeOfMatch);
 
-    abstract void playAssistantCard(AssistantsCards assistantsCards);
+    public abstract void playAssistantCard(AssistantsCards assistantsCards);
 
     abstract void playCharacterCard(CharacterCard card);
 
@@ -30,4 +28,6 @@ public abstract class ViewInterface extends Observable implements Observer {
     abstract void placeStudentOnArchipelago(List<Student> studentsToArchipelago);
 
     abstract void moveMotherNature(int steps);
+
+
 }

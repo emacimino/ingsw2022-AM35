@@ -10,4 +10,8 @@ public class StudentOnBoard extends Message{
     public StudentOnBoard(String username, List<Student> students){
         super(username, students, GameStateMessage.STUDENTONBOARD);
     }
+
+    public StudentOnBoard(List<String> studentsToBoardString) {
+        super();
+    }
 }

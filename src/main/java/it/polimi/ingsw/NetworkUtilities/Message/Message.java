@@ -17,6 +17,10 @@ public abstract class Message implements Serializable {
         this.type = type;
     }
 
+    public Message(String nickname, GameStateMessage Reply) {
+        this.nickname = nickname;
+        this.type = Reply;
+    }
 
 
     public Object getContent() {
