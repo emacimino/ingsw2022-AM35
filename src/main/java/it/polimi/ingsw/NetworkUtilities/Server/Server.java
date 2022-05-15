@@ -22,7 +22,6 @@ public class Server{
     private final Map<String, ClientHandler> clientHandlerMap;
 
     public Server() {
-        this.executorService = Executors.newFixedThreadPool(128);
         this.clientHandlerMap = new ConcurrentHashMap<>();}
 
 

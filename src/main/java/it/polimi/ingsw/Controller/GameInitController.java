@@ -94,19 +94,7 @@ public class GameInitController implements Serializable,Observer {
             case ASSISTANT_CARD:
                 actualView.askPlayAssistantCard(((PositionMessage) message).getPositionList());
                 break;
-            case BUILD_FX:
-                actualView.askBuildFx(((PositionMessage) message).getPositionList());
-                break;
-            case WIN_FX:
-                win();
-                break;
-            case ERROR:
-                ErrorMessage errMsg = (ErrorMessage) message;
-                Server.LOGGER.warning(errMsg.getError());
-                break;
-            default:
-                Server.LOGGER.warning("Invalid effect request!");
-                break;
+            case STUDENT_IN_ARCHIPELAGO:
         }
 
 }
