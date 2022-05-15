@@ -1,6 +1,5 @@
 package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -21,6 +20,9 @@ public class ActualView extends ViewInterface {
         this.username = username;
     }
 
+    public ClientHandler getClientHandler() {
+        return clientHandler;
+    }
 
     @Override
     public void loginRequest(String name,String username){
@@ -46,7 +48,7 @@ public class ActualView extends ViewInterface {
 
     @Override
     public void playAssistantCard(AssistantsCards assistantsCards) {
-        this.clientHandler.sendMessage(new AssistantCard(assistantsCards.getValue()));
+        this.clientHandler.sendMessage(new AssistantCardMessage(username,assistantsCards));
     }
 
     @Override
@@ -79,7 +81,7 @@ public class ActualView extends ViewInterface {
     }
 
     @Override
-    public void update(Message message) throws ExceptionGame {
-
+    public void update(Message message) {
+        clientHandler.sendMessage(message);
     }
 }

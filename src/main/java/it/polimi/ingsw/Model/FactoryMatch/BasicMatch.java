@@ -8,12 +8,12 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Observer.Observable;
 
 import java.util.*;
 
-public class BasicMatch{
+public class BasicMatch extends Observable {
     private int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
@@ -86,6 +86,7 @@ public class BasicMatch{
         Wizard wizard = game.getWizardFromPlayer(player);
         wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCards);
+        notifyObserver(new AssistantCardMessage(player.getUsername(),assistantsCards));
     }
 
     /**
@@ -123,6 +124,7 @@ public class BasicMatch{
     protected void lookUpProfessor(Color c){
         try {
             game.placeProfessor(c);
+            notifyObserver(new MovedProfessor("","Moved professor of color:" + c, GameStateMessage.MOVED_PROFESSOR));
         }catch (ExceptionGame e){
             System.out.println("Not place the professor: " + e);
         }
@@ -138,6 +140,7 @@ public class BasicMatch{
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
+        notifyObserver(new StudentOnBoard(player.getUsername(),student,GameStateMessage.STUDENT_ON_BOARD));
     }
 
     /**
@@ -150,6 +153,7 @@ public class BasicMatch{
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
+        notifyObserver(new StudentInArchipelago(player.getUsername(), student ,GameStateMessage.STUDENT_IN_ARCHIPELAGO));
     }
 
     /**
@@ -163,8 +167,12 @@ public class BasicMatch{
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
+            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
+            if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
+                notifyObserver(new TowerBuilt( player.getUsername(), archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player)), GameStateMessage.TOWER_BUILT ));
+            }
         } catch (ExceptionGame e) {
             System.out.println(e);
         } finally {

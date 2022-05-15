@@ -5,6 +5,9 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.MoveMotherNature;
+import it.polimi.ingsw.NetworkUtilities.Message.TeamMessage;
 import it.polimi.ingsw.Observer.Observer;
 
 import java.util.*;
@@ -57,6 +60,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         captains.add(captainTeamOne);
         teamOne.add(player1);
         teamOne.add(player2);
+        notifyObserver(new TeamMessage(player1.getUsername(),player2.getUsername(), GameStateMessage.TEAM));
     }
 
     @Override
@@ -69,12 +73,13 @@ public class BasicMatchFourPlayers extends BasicMatch{
         captains.add(captainTeamTwo);
         teamTwo.add(player1);
         teamTwo.add(player2);
+        notifyObserver(new TeamMessage(player1.getUsername(),player2.getUsername(), GameStateMessage.TEAM));
     }
 
     @Override
     public List<List<Player>> getTeams() throws ExceptionGame{
         List<List<Player>> teamsList = new ArrayList<>();
-        List<Player> copyOne=new ArrayList<>();
+        List<Player> copyOne = new ArrayList<>();
         List<Player> copyTwo = new ArrayList<>();
         Collections.copy(copyOne, teamOne);
         teamsList.add(copyOne);
@@ -120,6 +125,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         if(player.equals(super.getActionPhaseOrderOfPlayers().get(super.getActionPhaseOrderOfPlayers().size()-1))){
             resetRound();
         }
+        notifyObserver(new MoveMotherNature(player.getUsername(), archipelago,GameStateMessage.MOVE_MOTHER_NATURE));
     }
 
     @Override

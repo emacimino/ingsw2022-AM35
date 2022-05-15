@@ -14,20 +14,22 @@ public class SocketServer implements Runnable{
 
     private static int PORT = 25342;
     private ServerSocket serverSocket;
-    private Server server;
 
-    public SocketServer(Server server) throws IOException {
-        this.server = server;
-    }
+    public SocketServer(){
 
-
-    @Override
-    public void run() {
         try {
             serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.run();
+    }
+
+
+    @Override
+    public void run() {
+
         while (!Thread.currentThread().isInterrupted()){
             try {
                 Socket client = serverSocket.accept();
@@ -39,19 +41,6 @@ public class SocketServer implements Runnable{
                 e.printStackTrace();
             }
         }
-    }
-
-    public void addClient(String username, ClientHandler clientHandler){
-        server.addAClient(username, clientHandler);
-
-    }
-
-    public void receiveAMessage(Message message) {
-        server.receiveAmessage(message);
-    }
-
-    public void disconnect(ClientHandler clientHandler){
-        server.disconnect(clientHandler);
     }
 
 }

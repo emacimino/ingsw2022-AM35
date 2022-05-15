@@ -6,19 +6,24 @@ import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.View.ActualView;
 import it.polimi.ingsw.View.ViewInterface;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class Server {
-    private GameInitController gameController;
+public class Server{
+
+    private List<LobbyController> lobbyControllerList = new ArrayList<>();
+
     private final Map<String, ClientHandler> clientHandlerMap;
 
-    public Server(GameInitController gameController) {
-        this.gameController = gameController;
-        this.clientHandlerMap = new ConcurrentHashMap<>();
-    }
+    public Server() {
+        this.executorService = Executors.newFixedThreadPool(128);
+        this.clientHandlerMap = new ConcurrentHashMap<>();}
 
 
     public void addAClient(String username, ClientHandler clientHandler) {
@@ -36,4 +41,6 @@ public class Server {
 
     public void disconnect(ClientHandler clientHandler) {
     }
+
+
 }

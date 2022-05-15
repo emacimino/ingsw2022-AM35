@@ -2,17 +2,19 @@ package it.polimi.ingsw.NetworkUtilities.Server;
 
 //import it.polimi.ingsw.Controller.ClientController;
 import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.LoginRequest;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 //import it.polimi.ingsw.View.ActualView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ClientHandler implements ClientHandlerInterface, Runnable, Observer {
-    private final SocketServer socketServer;
+public class ClientHandler extends Observable implements ClientHandlerInterface, Runnable{
     private final Socket client;
 
     private boolean connected;
@@ -24,7 +26,6 @@ public class ClientHandler implements ClientHandlerInterface, Runnable, Observer
 
 
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
-        this.socketServer = socketServer;
         this.client = client;
 
         connected = true;
@@ -36,6 +37,7 @@ public class ClientHandler implements ClientHandlerInterface, Runnable, Observer
     @Override
     public void run() {
         try {
+            addObserver();
             handleClientConnection();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -46,12 +48,24 @@ public class ClientHandler implements ClientHandlerInterface, Runnable, Observer
     private void handleClientConnection() throws IOException, ClassNotFoundException {
         while ((!Thread.currentThread().isInterrupted())){
             synchronized (inputLock){
-                Message message = (Message) inputStream.readObject();
-                if(message!=null && message.getType()== GameStateMessage.LOGIN_REQUEST){
-
+                Message message = readMessage();
+                switch (message.getType()){
+                    case LOGIN_REQUEST -> sendMessage(message);
+                    case ASK_NUM_OF_PLAYERS -> iu;
+                    case CREATE_A_MATCH -> ok;
+                    case PARTICIPATE_TO_A_MATCH -> ji;
+                    case ASSISTANT_CARD -> okp;
+                    case STUDENT_ON_BOARD -> fe;
+                    case STUDENT_IN_ARCHIPELAGO -> mk;
+                    case MOVE_MOTHER_NATURE -> okk;
+                    }
                 }
             }
         }
+
+    public void addClient(String username, ClientHandler clientHandler){
+        server.addAClient(username, clientHandler);
+
     }
 
     @Override
@@ -81,8 +95,4 @@ public class ClientHandler implements ClientHandlerInterface, Runnable, Observer
         return (Message)inputStream.readObject();
     }
 
-    @Override
-    public void update(Message message) {
-
-    }
 }

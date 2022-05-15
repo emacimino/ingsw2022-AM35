@@ -34,7 +34,7 @@ public class PlanningController implements Observer {
         Map<String,Integer> values = new HashMap<>();
         ActualView actualView = (ActualView) viewMap.get(playerInTurn.getUsername());
         for (Player player: roundPlayingOrder) {
-            if (message.getType().equals(GameStateMessage.ASSISTANTCARD)) {
+            if (message.getType().equals(GameStateMessage.ASSISTANT_CARD)) {
                 values.put(playerInTurn.getUsername(),(Integer) message.getContent());
                 match.playAssistantsCard(playerInTurn, (AssistantsCards) message.getContent());
             } else {
@@ -43,26 +43,5 @@ public class PlanningController implements Observer {
         }
     }
 
-        switch (message.getType()) {
-            case ASSISTANTCARD:
-                virtualView.askMoveFx(((PositionMessage) message).getPositionList());
-                break;
-            case BUILD_FX:
-                virtualView.askBuildFx(((PositionMessage) message).getPositionList());
-                break;
-            case WIN_FX:
-                win();
-                break;
-            case ERROR:
-                ErrorMessage errMsg = (ErrorMessage) message;
-                Server.LOGGER.warning(errMsg.getError());
-                break;
-            case END_OF_TURN:
 
-            default:
-                Server.LOGGER.warning("Invalid effect request!");
-                break;
         }
-
-    }
-}
