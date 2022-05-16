@@ -105,11 +105,12 @@ public class Server {
                 if (clientConnection.isExpert()) {
                     match = new ExpertMatch(match);
                 }
-                Controller controller = new Controller(match,waitingList.keySet());
+                Controller controller = new Controller(match, waitingList.keySet());
                 for (String clientName: waitingList.keySet()) {
                     ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
                     match.addObserver(clientView);
                     clientView.addObserver(controller);
+                    controller.addView(clientName, clientView);
                 }
                 ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
                 matchInServer.put(matchCounter, clientsInMatch);
@@ -122,4 +123,5 @@ public class Server {
         }
     }
 }
+
 

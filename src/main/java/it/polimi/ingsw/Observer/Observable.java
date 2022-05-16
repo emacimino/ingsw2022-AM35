@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Observer;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +37,5 @@ public class Observable{
         }
     }
 
-    public List<Observer> getObservers() {
-        return observers;
-    }
 
 }

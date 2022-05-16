@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Game class represents the state of the match, it contains the implements the objects of the game Eriantys
  */
-public class Game{
+public class Game implements Cloneable{
     private final List<Wizard> wizards = new ArrayList<>();
     private final Collection<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
     private final List<Archipelago> archipelagos = new ArrayList<>();
@@ -400,6 +400,16 @@ public class Game{
 
     }
 
+    @Override
+    public Game clone() {
+        try {
+            Game clone = (Game) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
 
 

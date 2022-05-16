@@ -431,6 +431,10 @@ public class BasicMatch extends Observable {
         return player;
     }
 
+
+    public void startGame() throws CloneNotSupportedException, ExceptionGame {
+        notifyObserver(new CurrentGameMessage((Game) this.clone()));
+    }
 }
 
 
