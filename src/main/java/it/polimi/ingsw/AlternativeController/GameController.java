@@ -1,8 +1,6 @@
 package it.polimi.ingsw.AlternativeController;
 
 import it.polimi.ingsw.AlternativeView.RemoteView;
-import it.polimi.ingsw.AlternativeView.View;
-import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
@@ -12,7 +10,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
-import it.polimi.ingsw.View.ViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,20 +59,21 @@ public class GameController extends Observable {
 
     public void receivedMessage(Message receivedMessage) throws ExceptionGame {
 
-        View view = (View) viewMap.get(receivedMessage.getUsername());
-        switch (receivedMessage.getGamePhase()) {
-            case PLANNING_PHASE -> planningPhaseHandling(receivedMessage, view);
-            case ACTION_PHASE -> actionPhaseHandling(receivedMessage, view);
-            default -> {
-            } // Should never reach this condition
-        }
+        RemoteView view = (RemoteView) viewMap.get(receivedMessage.getUsername());
+        //switch ((GameState) receivedMessage.getGamePhase()) {
+
+          //  case GameState.PLANNING_PHASE -> planningPhaseHandling(receivedMessage, view);
+           // case GameState.ACTION_PHASE -> actionPhaseHandling(receivedMessage, view);
+           // default -> {
+           // } // Should never reach this condition
+       // }
     }
 
 
-    private void planningPhaseHandling(Message receivedMessage, View actualView) throws ExceptionGame {
+    private void planningPhaseHandling(Message receivedMessage, RemoteView actualView) throws ExceptionGame {
         if (receivedMessage.getType() == GameStateMessage.ASSISTANT_CARD) {
             assistantCardsHandling(receivedMessage);
-            notifyObserver(new ActionPhaseTurnMessage(match.getActionPhaseOrderOfPlayers()));
+            //notifyObserver(new ActionPhaseTurnMessage(match.getActionPhaseOrderOfPlayers()));
         } else throw new ExceptionGame("GameStateMessage is not Assistant_Card");
     }
 
@@ -90,8 +88,8 @@ public class GameController extends Observable {
             playerInAction = 1;
     }
 
-    private void actionPhaseHandling(Message receivedMessage, View actualView) throws ExceptionGame {
-        switch (receivedMessage.getType()){
+    private void actionPhaseHandling(Message receivedMessage, RemoteView actualView) throws ExceptionGame {
+        switch (receivedMessage.getType()) {
             case STUDENT_ON_BOARD:
                 match.moveStudentOnBoard(receivedMessage.getPlayer(), (Student) receivedMessage.getContentOne());
                 notifyObserver(receivedMessage);
@@ -119,10 +117,10 @@ public class GameController extends Observable {
                 break;
             case STUDENT_IN_ARCHIPELAGO:
                 match.moveStudentOnArchipelago(receivedMessage.getPlayer(), (Student) receivedMessage.getContentOne(), (Archipelago) receivedMessage.getContentTwo());
-                notifyObserver(if((Archipelago) receivedMessage.getContentTwo().)){
+                //notifyObserver(if((Archipelago) receivedMessage.getContentTwo().)){
 
-            };//find a way to understad if influence in archipelago changed
-            case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
+            ;//find a way to understad if influence in archipelago changed
+           // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
             case GENERIC_MESSAGE:
                 break;
             case ASK_NUM_OF_PLAYERS:

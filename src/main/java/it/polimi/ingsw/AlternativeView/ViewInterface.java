@@ -8,29 +8,21 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 
-public interface ViewInterface extends Observable implements Observer {
+public abstract class ViewInterface extends Observable implements Observer{
 
-    void loginRequest(String name, String username);
+    abstract void playAssistantCard(AssistantsCards assistantsCards);
 
-    void setNumOfPlayers(int numOfPlayers);
+    abstract void playCharacterCard(CharacterCard card);
 
-    void participateToAnExistingMatch(boolean participate);
+    abstract void placeStudentOnBoard(Student studentsToBoard);
 
-    void setTypeOfMatch(String typeOfMatch);
+    abstract void placeStudentOnArchipelago(Student studentsToArchipelago);
 
-    void playAssistantCard(AssistantsCards assistantsCards);
-
-    void playCharacterCard(CharacterCard card);
-
-    void placeStudentOnBoard(Student studentsToBoard);
-
-    void placeStudentOnArchipelago(Student studentsToArchipelago);
-
-    void moveMotherNature(Archipelago archipelago);
+    abstract void moveMotherNature(Archipelago archipelago);
 
 
     @Override
-    default void update(Object message) throws ExceptionGame {
+    public void update(Object message) throws ExceptionGame {
 
     }
 }

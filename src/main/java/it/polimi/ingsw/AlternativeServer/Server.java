@@ -85,20 +85,20 @@ public class Server {
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
 
-        for(int i = 0; i < keys.size(); i++){
-            SocketClientConnection connection =(SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
-            if(clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()){
+        for(int i = 0; i < keys.size(); i++) {
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
+            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
                 waitingList.add(connection);
             }
-            if(waitingList.size() == clientConnection.getNumberOfPlayers()){
+            if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
                 BasicMatch match;
                 FactoryMatch factoryMatch = new FactoryMatch();
                 match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
-                if(clientConnection.isExpert()) {
+                if (clientConnection.isExpert()) {
                     match = new ExpertMatch(match);
                 }
-
-
+            }}}}}
+/*
 
                     ClientConnection c2 = waitingConnection.get(keys.get(1));
                     Player player1 = new Player(keys.get(0), Cell.X);
@@ -167,4 +167,4 @@ public class Server {
         }
     }
 
-}
+*/
