@@ -65,10 +65,6 @@ public class ActualView extends ViewInterface {
         this.clientHandler.sendMessage(new StudentOnBoard(studentsToBoardString));
     }
 
-    @Override
-    public void placeStudentsOnBoard(List<Student> studentsToBoard) {
-
-    }
 
     @Override
     public void placeStudentOnArchipelago(List<Student> studentsToArchipelago) {
@@ -83,5 +79,11 @@ public class ActualView extends ViewInterface {
     @Override
     public void update(Message message) {
         clientHandler.sendMessage(message);
+    }
+
+    public Message receivedMessageFromServer(Message message){
+        switch (message.getType()){
+            case ASK_NUM_OF_PLAYERS -> return new NumberOfPlayer(username,;);
+        }
     }
 }

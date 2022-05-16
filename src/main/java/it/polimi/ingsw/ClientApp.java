@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.NetworkUtilities.Client.Client;
+import it.polimi.ingsw.AlternativeClient.Client;
 
 import java.io.IOException;
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.NetworkUtilities.Client;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.NetworkUtilities.Message.ErrorMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observable;
@@ -37,7 +38,7 @@ public class Client extends Observable implements ClientInterface {
 
 
     @Override
-    public void sendMessage(Message message) throws IOException {
+    public void sendMessage(Message message) throws IOException, ExceptionGame {
         try {
             outputStream.writeObject(message);
             outputStream.reset();

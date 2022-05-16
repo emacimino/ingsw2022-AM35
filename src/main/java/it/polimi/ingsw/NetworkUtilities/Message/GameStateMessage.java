@@ -20,6 +20,6 @@ public enum GameStateMessage {
     MOVED_PROFESSOR,
     TOWER_BUILT,
     ERROR,
-    TEAM
-
+    TEAM,
+    MATCH_INFO;
 }

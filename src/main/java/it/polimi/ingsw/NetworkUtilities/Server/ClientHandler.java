@@ -1,11 +1,8 @@
 package it.polimi.ingsw.NetworkUtilities.Server;
 
 //import it.polimi.ingsw.Controller.ClientController;
-import it.polimi.ingsw.NetworkUtilities.Message.GameStateMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.LoginRequest;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observable;
-import it.polimi.ingsw.Observer.Observer;
 //import it.polimi.ingsw.View.ActualView;
 
 import java.io.IOException;
@@ -15,7 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientHandler extends Observable implements ClientHandlerInterface, Runnable{
-    private final Socket client;
+    private final Socket socket;
+    private final SocketServer socketServer;
 
     private boolean connected;
 
@@ -25,13 +23,14 @@ public class ClientHandler extends Observable implements ClientHandlerInterface,
     private final Object outputLock = new Object();
 
 
-    public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
-        this.client = client;
+    public ClientHandler(SocketServer socketServer, Socket socket) throws IOException {
+        this.socket = socket;
+        this.socketServer = socketServer;
 
         connected = true;
 
-        this.inputStream = new ObjectInputStream(client.getInputStream());
-        this.outputStream = new ObjectOutputStream(client.getOutputStream());
+        this.inputStream = new ObjectInputStream(socket.getInputStream());
+        this.outputStream = new ObjectOutputStream(socket.getOutputStream());
 
     }
     @Override
@@ -76,7 +75,7 @@ public class ClientHandler extends Observable implements ClientHandlerInterface,
     @Override
     public void disconnect() throws IOException {
         if(connected) {
-            client.close();
+            socket.close();
             connected = false;
         }
     }

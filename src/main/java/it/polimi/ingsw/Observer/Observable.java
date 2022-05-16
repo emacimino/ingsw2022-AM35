@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Observer;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Observable{
      *
      * @param message is the message to be passed to the observers.
      */
-    protected void notifyObserver(Message message) {
+    protected void notifyObserver(Object message) throws ExceptionGame {
         for (Observer observer : observers) {
             observer.update(message);
         }

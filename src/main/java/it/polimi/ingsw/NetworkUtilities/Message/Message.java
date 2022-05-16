@@ -2,9 +2,11 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class Message implements Serializable {
     @Serial
@@ -45,6 +47,13 @@ public abstract class Message implements Serializable {
     public Message(Player player, Object content){
         this.player = player;
         this.contentOne = content;
+    }
+
+    public Message(String username, Object contentOne, Object contentTwo, GameStateMessage type) {
+        this.username = username;
+        this.contentOne = contentOne;
+        this.contentTwo = contentTwo;
+        this.type = type;
     }
 
     public Object getContentOne() {
