@@ -63,7 +63,7 @@ public class Server {
         }
     }
 
-    public synchronized void lobby(ClientConnection c) throws ExceptionGame {
+    public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
         String name = null;
         SocketClientConnection clientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());

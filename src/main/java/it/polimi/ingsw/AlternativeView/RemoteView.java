@@ -8,7 +8,8 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
-import it.polimi.ingsw.Observer.Observer;
+
+import java.util.List;
 
 public class RemoteView extends ViewInterface {
 
@@ -23,8 +24,14 @@ public class RemoteView extends ViewInterface {
         return clientConnection;
     }
 
-    public void playAssistantCard(AssistantsCards assistantsCards) {
-        clientConnection.sendMessage(new AssistantCardMessage("",assistantsCards));
+    public void askAssistantCard(List<AssistantsCards> assistantsCards) {
+        clientConnection.sendMessage(new AssistantCardListMessage(assistantsCards));
+    }
+
+
+    @Override
+    public void showGenericMessage(String genericMessage) {
+        clientConnection.sendMessage(new GenericMessage(genericMessage));
     }
 
     public void playCharacterCard(CharacterCard card) {

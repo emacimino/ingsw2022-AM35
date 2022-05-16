@@ -86,7 +86,7 @@ public class BasicMatch extends Observable {
         Wizard wizard = game.getWizardFromPlayer(player);
         wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCards);
-        notifyObserver(new AssistantCardMessage(player.getUsername(),assistantsCards));
+       // notifyObserver(new AssistantCardMessage(player.getUsername(),assistantsCards));
     }
 
     /**
@@ -432,7 +432,7 @@ public class BasicMatch extends Observable {
     }
 
 
-    public void startGame() throws CloneNotSupportedException, ExceptionGame {
+    public void infoMatch() throws CloneNotSupportedException, ExceptionGame {
         notifyObserver(new CurrentGameMessage((Game) this.clone()));
     }
 }

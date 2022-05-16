@@ -104,7 +104,7 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
                 read = in.nextLine();
                 notifyObserver(read);//gives notifications to view
             }
-        } catch (IOException | NoSuchElementException | ExceptionGame e) {
+        } catch (IOException | NoSuchElementException | ExceptionGame | CloneNotSupportedException e) {
             System.err.println("Error! " + e.getMessage());
         }finally{
             close();
