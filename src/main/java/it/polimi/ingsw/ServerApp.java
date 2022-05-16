@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.AlternativeServer.Server;
-import it.polimi.ingsw.NetworkUtilities.Server.SocketServer;
 
 import java.io.IOException;
 

@@ -3,25 +3,14 @@ package it.polimi.ingsw.AlternativeServer;
 import java.util.List;
 
 public class ClientsInMatch {
-    private final boolean isExpert;
-    private final int numberOfPlayers;
-    private final List<ClientConnection> clientConnectionList;
+    private final List<SocketClientConnection> clientConnectionList;
 
-    public ClientsInMatch(boolean isExpert, int numberOfPlayers, List<ClientConnection> clientConnectionList) {
-        this.isExpert = isExpert;
-        this.numberOfPlayers = numberOfPlayers;
+    public ClientsInMatch( List<SocketClientConnection> clientConnectionList) {
         this.clientConnectionList = clientConnectionList;
     }
 
-    public List<ClientConnection> getClientConnectionList() {
+    public List<SocketClientConnection> getClientConnectionList() {
         return clientConnectionList;
     }
 
-    public boolean isExpert() {
-        return isExpert;
-    }
-
-    public int getNumberOfPlayers() {
-        return numberOfPlayers;
-    }
 }

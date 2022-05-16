@@ -1,10 +1,12 @@
 package it.polimi.ingsw.AlternativeServer;
 
+import it.polimi.ingsw.AlternativeController.Controller;
+import it.polimi.ingsw.AlternativeView.RemoteView;
+import it.polimi.ingsw.AlternativeView.ViewInterface;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
-import it.polimi.ingsw.Model.ExpertMatch.MatchDecorator;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,6 +22,7 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
     private Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
+    private int matchCounter = 0;
 
 
     public Server() throws IOException {
@@ -29,7 +32,7 @@ public class Server {
     public synchronized void deregisterConnection(ClientConnection c) {
         List<ClientConnection> opponents = (List<ClientConnection>) matchInServer.get(c.getNumOfMatch());
         if (opponents != null) {
-            for (ClientConnection clientConnection: opponents){
+            for (ClientConnection clientConnection : opponents) {
                 clientConnection.closeConnection();
             }
         }
@@ -60,17 +63,17 @@ public class Server {
         }
     }
 
-    public synchronized void lobby(ClientConnection c){
-        SocketClientConnection clientConnection = (SocketClientConnection)c;
+    public synchronized void lobby(ClientConnection c) throws ExceptionGame {
+        SocketClientConnection clientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         List<SocketClientConnection> waitingList = new ArrayList<>();
         waitingList.add(clientConnection);
-        for(int i = 0; i < keys.size(); i++){
+        for (int i = 0; i < keys.size(); i++) {
             ClientConnection connection = waitingPlayersInLobby.get(keys.get(i));
             connection.asyncSend("Connected User: " + keys.get(i));
         }
 
-        try{
+        try {
             boolean nameNotOk = false;
             do {
                 Scanner in = new Scanner(((SocketClientConnection) c).getSocket().getInputStream());
@@ -81,23 +84,40 @@ public class Server {
                         nameNotOk = true;
                     }
                 }
-            }while(nameNotOk);
+            } while (nameNotOk);
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
 
-        for(int i = 0; i < keys.size(); i++) {
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
-            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
-                waitingList.add(connection);
-            }
-            if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
-                BasicMatch match;
-                FactoryMatch factoryMatch = new FactoryMatch();
-                match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
-                if (clientConnection.isExpert()) {
-                    match = new ExpertMatch(match);
+            for (int i = 0; i < keys.size(); i++) {
+                SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
+                if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
+                    waitingList.add(connection);
                 }
-            }}}}}
+                if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
+                    BasicMatch match;
+                    FactoryMatch factoryMatch = new FactoryMatch();
+                    match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
+                    if (clientConnection.isExpert()) {
+                        match = new ExpertMatch(match);
+                    }
+                    Controller gameController = new Controller(match);
+                    for (SocketClientConnection client : waitingList) {
+                        ViewInterface clientView = new RemoteView(client);
+                        match.addObserver(clientView);
+                    }
+                    ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList);
+                    matchInServer.put(matchCounter, clientsInMatch);
+                    matchCounter++;
+
+                }else{
+                    c.asyncSend("Waiting for another player");
+
+                }
+            }
+        }
+    }
+}
+
 /*
 
                     ClientConnection c2 = waitingConnection.get(keys.get(1));

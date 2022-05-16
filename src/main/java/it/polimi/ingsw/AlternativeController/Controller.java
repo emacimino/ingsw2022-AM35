@@ -15,40 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GameController extends Observable {
+public class Controller extends Observable {
     private BasicMatch match;
-    private Map<String, RemoteView> viewMap;
     private int playerInAction = 1;
     private GameState gameState = GameState.GAME_STARTED;
     private Observable matchObserver;
 
     //Initialize the Game having already a lobby
-    public GameController(int numberOfPlayer, Map<String, RemoteView> viewMap, Observable matchObservers) throws ExceptionGame {
-        this.viewMap = viewMap;
-        handleGame(numberOfPlayer,viewMap,matchObservers);
-        this.matchObserver = matchObservers;
+    public Controller(BasicMatch match) throws ExceptionGame {
+        handleGame();
         setMatchHandler();
     }
 
-    private void handleGame(int numberOfPlayer,Map<String, RemoteView> viewMap, Observable matchObservers) throws ExceptionGame {
-        this.match = new FactoryMatch().newMatch(numberOfPlayer);
-        this.match.setGame(setListOfPlayers());
+    private void handleGame() throws ExceptionGame {
+       // this.match.setGame(setListOfPlayers());
         this.match.getGame().setRandomlyFirstPlayer();
         notifyObserver( new MatchInfoMessage("server",this.match.getPlayers(),this.match.getGame().getArchipelagos(),GameStateMessage.MATCH_INFO));
     }
 
-    private List<Player> setListOfPlayers() {
-        List<Player> playersForThisGame = new ArrayList<>();
-        for(String username: viewMap.keySet()){
-            playersForThisGame.add(new Player(username,username));
-        }
-        return playersForThisGame;
-    }
 
     private void setMatchHandler() throws ExceptionGame {
         if(match.getNumberOfPlayers() == 2 || match.getNumberOfPlayers() == 3){
             notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
         if(match.getNumberOfPlayers() == 4)
+
             notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
             notifyObserver(new MatchFourPlayersInfoMessage("server", match.getTeams(), GameStateMessage.MATCH_INFO));
             for(Player player: match.getPlayers()){
@@ -59,7 +49,7 @@ public class GameController extends Observable {
 
     public void receivedMessage(Message receivedMessage) throws ExceptionGame {
 
-        RemoteView view = (RemoteView) viewMap.get(receivedMessage.getUsername());
+        //RemoteView view = (RemoteView) viewMap.get(receivedMessage.getUsername());
         //switch ((GameState) receivedMessage.getGamePhase()) {
 
           //  case GameState.PLANNING_PHASE -> planningPhaseHandling(receivedMessage, view);
