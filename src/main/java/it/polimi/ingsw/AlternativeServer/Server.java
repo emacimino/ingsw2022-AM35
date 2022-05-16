@@ -64,10 +64,10 @@ public class Server {
     }
 
     public synchronized void lobby(ClientConnection c) throws ExceptionGame {
+        String name = null;
         SocketClientConnection clientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
-        List<SocketClientConnection> waitingList = new ArrayList<>();
-        waitingList.add(clientConnection);
+        Map<String, ClientConnection> waitingList = new HashMap<>();
         for (int i = 0; i < keys.size(); i++) {
             ClientConnection connection = waitingPlayersInLobby.get(keys.get(i));
             connection.asyncSend("Connected User: " + keys.get(i));
@@ -78,113 +78,48 @@ public class Server {
             do {
                 Scanner in = new Scanner(((SocketClientConnection) c).getSocket().getInputStream());
                 ((SocketClientConnection) c).sendMessage("Welcome!\nWhat is your name?");
-                String name = in.nextLine();
+                name = in.nextLine();
+                if(name == null)
+                    nameNotOk = true;
                 for (String username : keys) {
                     if (name.equals(username)) {
-                        nameNotOk = true;
+                            nameNotOk = true;
                     }
                 }
+
             } while (nameNotOk);
+            waitingList.put(name,clientConnection);
+
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-
-            for (int i = 0; i < keys.size(); i++) {
-                SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
-                if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
-                    waitingList.add(connection);
+        }
+        for (int i = 0; i < keys.size(); i++) {
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
+            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
+                waitingList.put(keys.get(i),connection);
+            }
+            if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
+                BasicMatch match;
+                FactoryMatch factoryMatch = new FactoryMatch();
+                match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
+                if (clientConnection.isExpert()) {
+                    match = new ExpertMatch(match);
                 }
-                if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
-                    BasicMatch match;
-                    FactoryMatch factoryMatch = new FactoryMatch();
-                    match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
-                    if (clientConnection.isExpert()) {
-                        match = new ExpertMatch(match);
-                    }
-                    Controller gameController = new Controller(match);
-                    for (SocketClientConnection client : waitingList) {
-                        ViewInterface clientView = new RemoteView(client);
-                        match.addObserver(clientView);
-                    }
-                    ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList);
-                    matchInServer.put(matchCounter, clientsInMatch);
-                    matchCounter++;
-
-                }else{
-                    c.asyncSend("Waiting for another player");
-
+                Controller controller = new Controller(match,waitingList.keySet());
+                for (String clientName: waitingList.keySet()) {
+                    ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
+                    match.addObserver(clientView);
+                    clientView.addObserver(controller);
                 }
+                ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
+                matchInServer.put(matchCounter, clientsInMatch);
+                matchCounter++;
+
+            }else{
+                waitingPlayersInLobby.put(name,c);
+                c.asyncSend("Waiting for another player");
             }
         }
     }
 }
 
-/*
-
-                    ClientConnection c2 = waitingConnection.get(keys.get(1));
-                    Player player1 = new Player(keys.get(0), Cell.X);
-                    Player player2 = new Player(keys.get(0), Cell.O);
-                    View player1View = new RemoteView(player1, keys.get(1), c1);
-                    View player2View = new RemoteView(player2, keys.get(0), c2);
-                    Model model = new Model();
-                    Controller controller = new Controller(model);
-                    model.addObserver(player1View);
-                    model.addObserver(player2View);
-                    player1View.addObserver(controller);
-                    player2View.addObserver(controller);
-                    playingConnection.put(c1, c2);
-                    playingConnection.put(c2, c1);
-                    waitingConnection.clear();
-
-                    c1.asyncSend(model.getBoardCopy());
-                    c2.asyncSend(model.getBoardCopy());
-                    //if(model.getBoardCopy().)
-                    if(model.isPlayerTurn(player1)){
-                        c1.asyncSend(gameMessage.moveMessage);
-                        c2.asyncSend(gameMessage.waitMessage);
-                    } else {
-                        c2.asyncSend(gameMessage.moveMessage);
-                        c1.asyncSend(gameMessage.waitMessage);
-                    }
-                }
-            }
-        }
-        waitingPlayersInLobby.put(clientConnection.getName(), c);
-
-
-
-        if(waitingConnection.size() == 1)
-            c.asyncSend("Waiting for another player");
-
-        keys = new ArrayList<>(waitingConnection.keySet());
-
-        if (waitingConnection.size() == 2) {
-            ClientConnection c1 = waitingConnection.get(keys.get(0));
-            ClientConnection c2 = waitingConnection.get(keys.get(1));
-            Player player1 = new Player(keys.get(0), Cell.X);
-            Player player2 = new Player(keys.get(0), Cell.O);
-            View player1View = new RemoteView(player1, keys.get(1), c1);
-            View player2View = new RemoteView(player2, keys.get(0), c2);
-            Model model = new Model();
-            Controller controller = new Controller(model);
-            model.addObserver(player1View);
-            model.addObserver(player2View);
-            player1View.addObserver(controller);
-            player2View.addObserver(controller);
-            matchInServer.put(c1, c2);
-            matchInServer.put(c2, c1);
-            waitingConnection.clear();
-
-            c1.asyncSend(model.getBoardCopy());
-            c2.asyncSend(model.getBoardCopy());
-            //if(model.getBoardCopy().)
-            if(model.isPlayerTurn(player1)){
-                c1.asyncSend(gameMessage.moveMessage);
-                c2.asyncSend(gameMessage.waitMessage);
-            } else {
-                c2.asyncSend(gameMessage.moveMessage);
-                c1.asyncSend(gameMessage.waitMessage);
-            }
-        }
-    }
-
-*/

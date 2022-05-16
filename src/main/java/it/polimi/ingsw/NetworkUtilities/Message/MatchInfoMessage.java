@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import java.util.List;
 
 public class MatchInfoMessage extends Message {
-    public MatchInfoMessage(String server, List<Player> players, List<Archipelago> archipelagos, GameStateMessage matchInfo) {
+    public MatchInfoMessage(String server, List<List<Player>> players, List<Archipelago> archipelagos, GameStateMessage matchInfo) {
         super(server,players,archipelagos,GameStateMessage.MATCH_INFO);
     }
 }

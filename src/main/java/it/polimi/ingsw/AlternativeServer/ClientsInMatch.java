@@ -1,15 +1,16 @@
 package it.polimi.ingsw.AlternativeServer;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ClientsInMatch {
-    private final List<SocketClientConnection> clientConnectionList;
+    private final Collection<ClientConnection> clientConnectionList;
 
-    public ClientsInMatch( List<SocketClientConnection> clientConnectionList) {
+    public ClientsInMatch(Collection<ClientConnection> clientConnectionList) {
         this.clientConnectionList = clientConnectionList;
     }
 
-    public List<SocketClientConnection> getClientConnectionList() {
+    public Collection<ClientConnection> getClientConnectionList() {
         return clientConnectionList;
     }
 

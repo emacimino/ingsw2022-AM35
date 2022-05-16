@@ -102,7 +102,7 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
             in = new Scanner(socket.getInputStream());
             while(isActive()){//waiting for client input to add new connections
                 read = in.nextLine();
-                notifyObserver(read);
+                notifyObserver(read);//gives notifications to view
             }
         } catch (IOException | NoSuchElementException | ExceptionGame e) {
             System.err.println("Error! " + e.getMessage());

@@ -18,9 +18,9 @@ public class BasicMatchAndFactoryTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch3Players = factoryMatch.newMatch(3);
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
-    private final Player playerOne = new Player("nameOne", "usernameOne");
-    private final Player playerTwo = new Player("nameTwo", "usernameTwo");
-    private final Player playerThree = new Player("nameThree", "usernameThree");
+    private final Player playerOne = new Player("usernameOne");
+    private final Player playerTwo = new Player("usernameTwo");
+    private final Player playerThree = new Player("usernameThree");
 
 
     public void gameSetter(){

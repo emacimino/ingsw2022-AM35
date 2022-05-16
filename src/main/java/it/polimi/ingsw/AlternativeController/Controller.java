@@ -10,40 +10,56 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.Observer.Observer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Controller extends Observable {
+public class Controller implements Observer {
     private BasicMatch match;
     private int playerInAction = 1;
     private GameState gameState = GameState.GAME_STARTED;
     private Observable matchObserver;
+    private Collection<String> playersUsername;
 
     //Initialize the Game having already a lobby
-    public Controller(BasicMatch match) throws ExceptionGame {
+    public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame {
+        this.playersUsername = playersUsername;
+        this.match = match;
         handleGame();
         setMatchHandler();
     }
 
     private void handleGame() throws ExceptionGame {
-       // this.match.setGame(setListOfPlayers());
+        List<Player> players = setListOfPlayers(this.playersUsername);
+        if(match.getNumberOfPlayers() == 4){
+            match.setTeamsOne(players.get(0), players.get(1));
+            match.setTeamsOne(players.get(2), players.get(3));
+        }
+        this.match.setGame(players);
         this.match.getGame().setRandomlyFirstPlayer();
-        notifyObserver( new MatchInfoMessage("server",this.match.getPlayers(),this.match.getGame().getArchipelagos(),GameStateMessage.MATCH_INFO));
+        update( new MatchInfoMessage("server",this.match.getPlayers(),this.match.getGame().getArchipelagos(),GameStateMessage.MATCH_INFO));
+        }
+
+
+if(match.getNumberOfPlayers() == 4){
+        notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
+        notifyObserver(new MatchFourPlayersInfoMessage("server", match.getTeams(), GameStateMessage.MATCH_INFO));
+        for(Player player: match.getPlayers()){
+        notifyObserver(new TeamCaptainForEveryPlayerInfo("server",match.getCaptainTeamOfPlayer(player),GameStateMessage.MATCH_INFO));
+        }
+private List<Player> setListOfPlayers(Collection<String> playersUsername) {
+        List<Player> players = new ArrayList<>();
+        for (String username: playersUsername){
+            players.add(new Player(username));
+        }
+        return players;
     }
 
 
     private void setMatchHandler() throws ExceptionGame {
         if(match.getNumberOfPlayers() == 2 || match.getNumberOfPlayers() == 3){
             notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
-        if(match.getNumberOfPlayers() == 4)
 
-            notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
-            notifyObserver(new MatchFourPlayersInfoMessage("server", match.getTeams(), GameStateMessage.MATCH_INFO));
-            for(Player player: match.getPlayers()){
-                notifyObserver(new TeamCaptainForEveryPlayerInfo("server", match.getCaptainTeamOfPlayer(player), GameStateMessage.MATCH_INFO));
-            }
         }
     }
 
@@ -131,4 +147,8 @@ public class Controller extends Observable {
 
     }
 
+    @Override
+    public void update(Object message) throws ExceptionGame {
+
+    }
 }

@@ -22,10 +22,10 @@ public class BasicMatchFourPlayerTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch4Players = factoryMatch.newMatch(4);
     private final List<Player> players = new ArrayList<>();
-    private final Player playerOne = new Player("nameOne", "usernameOne");
-    private final Player playerTwo = new Player("nameTwo", "usernameTwo");
-    private final Player playerThree = new Player("nameThree", "usernameThree");
-    private final Player playerFour = new Player("nameFour", "usernameFour");
+    private final Player playerOne = new Player("usernameOne");
+    private final Player playerTwo = new Player("usernameTwo");
+    private final Player playerThree = new Player("usernameThree");
+    private final Player playerFour = new Player("usernameFour");
 
     public int getSteps(Player player) throws ExceptionGame{
         Wizard wizard = basicMatch4Players.getGame().getWizardFromPlayer(player);
