@@ -129,9 +129,7 @@ public class Controller implements Observer {
                 }
                 break;
             }
-            case MOVE_MOTHER_NATURE:
 
-                break;
             case CHOOSE_CLOUD: {
                 try {
                     match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
