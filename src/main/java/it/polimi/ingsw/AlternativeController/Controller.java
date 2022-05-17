@@ -1,5 +1,6 @@
 package it.polimi.ingsw.AlternativeController;
 
+import it.polimi.ingsw.AlternativeView.RemoteView;
 import it.polimi.ingsw.AlternativeView.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
@@ -51,7 +52,7 @@ public class Controller implements Observer {
         }
 
 
-    public void onMessageReceived(Message receivedMessage){
+    public void onMessageReceived(Message receivedMessage) throws ExceptionGame {
 
         switch (gameState){
             case PLANNING_PHASE:
@@ -141,9 +142,12 @@ public class Controller implements Observer {
                 turnController.setTurnPhase(TurnPhase.END_TURN);
                 turnController.nextPlayerActionPhase();
                 break;
-            }
-            case CHARACTER_CARD:{
-
+            case MOVE_MOTHER_NATURE:
+                try {
+                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNature) receivedMessage).getArchipelago());
+                }catch (ExceptionGame exceptionGame){
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
+                }
                 break;
             }
 

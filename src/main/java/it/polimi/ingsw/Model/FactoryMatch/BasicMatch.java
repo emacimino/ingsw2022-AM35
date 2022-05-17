@@ -1,4 +1,6 @@
 package it.polimi.ingsw.Model.FactoryMatch;
+
+import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
@@ -175,6 +177,7 @@ public class BasicMatch extends Observable {
             e.printStackTrace();
         } finally {
             checkVictory();
+
         }
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();
