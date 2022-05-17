@@ -1,6 +1,5 @@
 package it.polimi.ingsw.AlternativeController;
 
-import it.polimi.ingsw.AlternativeView.RemoteView;
 import it.polimi.ingsw.AlternativeView.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
@@ -15,7 +14,7 @@ public class Controller implements Observer {
     private final BasicMatch match;
     private GameState gameState;
     private Collection<String> playersUsername;
-    private Map<String,ViewInterface> viewMap = new HashMap<>();
+    private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
     private Player firstPlanningPhasePlayer;
 
@@ -33,7 +32,7 @@ public class Controller implements Observer {
 
     private void initGame() throws ExceptionGame, CloneNotSupportedException {
         List<Player> players = setListOfPlayers(this.playersUsername);
-        if(match.getNumberOfPlayers() == 4){
+        if (match.getNumberOfPlayers() == 4) {
             match.setTeamsOne(players.get(0), players.get(1));
             match.setTeamsOne(players.get(2), players.get(3));
         }
@@ -46,15 +45,16 @@ public class Controller implements Observer {
         pickFirstPlayerPlanningPhaseHandler(firstPlanningPhasePlayer);
 
     }
-        public void pickFirstPlayerPlanningPhaseHandler(Player player){
-            turnController.setActivePlayer(player);
-            turnController.setTurnPhase(TurnPhase.PLAY_ASSISTANT);
-        }
+
+    public void pickFirstPlayerPlanningPhaseHandler(Player player) {
+        turnController.setActivePlayer(player);
+        turnController.setTurnPhase(TurnPhase.PLAY_ASSISTANT);
+    }
 
 
     public void onMessageReceived(Message receivedMessage) {
 
-        switch (gameState){
+        switch (gameState) {
             case PLANNING_PHASE:
                 planningPhaseHandling(receivedMessage);
             case ACTION_PHASE:
@@ -69,7 +69,7 @@ public class Controller implements Observer {
 
     private List<Player> setListOfPlayers(Collection<String> playersUsername) {
         List<Player> players = new ArrayList<>();
-        for (String username: playersUsername){
+        for (String username : playersUsername) {
             players.add(new Player(username));
         }
         return players;
@@ -79,30 +79,30 @@ public class Controller implements Observer {
     private synchronized void planningPhaseHandling(Message receivedMessage) {
         Player activePlayer = turnController.getActivePlayer();
         if (receivedMessage.getType() == GameStateMessage.ASSISTANT_CARD) {
-           AssistantsCards assistantsCard= ((AssistantCardMessage) receivedMessage).getAssistantsCard();
-           try{
-               match.playAssistantsCard(activePlayer, assistantsCard);
-               turnController.nextPlayerPlanningPhase();
-               if(match.getActionPhaseOrderOfPlayers().size() == viewMap.size()){
-                   this.gameState = GameState.ACTION_PHASE;
+            AssistantsCards assistantsCard = ((AssistantCardMessage) receivedMessage).getAssistantsCard();
+            try {
+                match.playAssistantsCard(activePlayer, assistantsCard);
+                turnController.nextPlayerPlanningPhase();
+                if (match.getActionPhaseOrderOfPlayers().size() == viewMap.size()) {
+                    this.gameState = GameState.ACTION_PHASE;
                     pickFirstPlayerActionPhaseHandler();
-               }
-           }catch(ExceptionGame e){
-               ViewInterface view = viewMap.get(activePlayer.getUsername());
-               view.showGenericMessage("Please, insert a valid Assistant card");
-               try {
-                   List<AssistantsCards> availableAssistantsCards = match.getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants();
-                   view.askAssistantCard(availableAssistantsCards);
-               }catch (ExceptionGame er){
-                   view.showGenericMessage(er.getMessage());
+                }
+            } catch (ExceptionGame e) {
+                ViewInterface view = viewMap.get(activePlayer.getUsername());
+                view.showGenericMessage("Please, insert a valid Assistant card");
+                try {
+                    List<AssistantsCards> availableAssistantsCards = match.getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants();
+                    view.askAssistantCard(availableAssistantsCards);
+                } catch (ExceptionGame er) {
+                    view.showGenericMessage(er.getMessage());
 
-               }
-           }
+                }
+            }
 
         }
     }
 
-    private void pickFirstPlayerActionPhaseHandler(){
+    private void pickFirstPlayerActionPhaseHandler() {
         turnController.setActionOrderOfPlayers(match.getActionPhaseOrderOfPlayers());
         turnController.setTurnPhase(TurnPhase.MOVE_STUDENTS);
 
@@ -131,7 +131,7 @@ public class Controller implements Observer {
             }
             case CHOOSE_CLOUD: {
                 try {
-                    match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
+                    match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage) receivedMessage).getCloud());
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
@@ -139,27 +139,30 @@ public class Controller implements Observer {
                 turnController.setTurnPhase(TurnPhase.END_TURN);
                 turnController.nextPlayerActionPhase();
                 break;
-            case MOVE_MOTHER_NATURE:
+            }
+            case MOVE_MOTHER_NATURE: {
                 try {
-                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNature) receivedMessage).getArchipelago());
-                }catch (ExceptionGame exceptionGame){
+                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNatureMessage) receivedMessage).getArchipelago());
+                } catch (ExceptionGame exceptionGame) {
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
                 }
                 break;
             }
-
             //find a way to understand if influence in archipelago changed
-           // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
+            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
             default: {
                 throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
             }
         }
 
+
     }
+
 
     public void addView(String username, ViewInterface view){
         viewMap.put(username, view);
     }
+
     @Override
     public void update(Object message)  {
         onMessageReceived((Message) message);
