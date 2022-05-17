@@ -54,6 +54,7 @@ public class RemoteView extends ViewInterface {
     }
 
     public void moveMotherNature(Archipelago archipelago) {
+        clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
     }
 
 

@@ -52,7 +52,7 @@ public class Controller implements Observer {
         }
 
 
-    public void onMessageReceived(Message receivedMessage) throws ExceptionGame {
+    public void onMessageReceived(Message receivedMessage) {
 
         switch (gameState){
             case PLANNING_PHASE:
@@ -129,7 +129,6 @@ public class Controller implements Observer {
                 }
                 break;
             }
-
             case CHOOSE_CLOUD: {
                 try {
                     match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
