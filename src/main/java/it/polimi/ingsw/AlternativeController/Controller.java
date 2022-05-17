@@ -123,6 +123,7 @@ public class Controller implements Observer {
                     }
 
                 } catch (ExceptionGame exceptionGame) {
+                    exceptionGame.printStackTrace();
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
                 }
                 break;
@@ -130,14 +131,23 @@ public class Controller implements Observer {
             case MOVE_MOTHER_NATURE:
 
                 break;
-            case CHOOSE_CLOUD:
-                ;
+            case CHOOSE_CLOUD: {
+                try {
+                    match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
+                }
+                turnController.setTurnPhase(TurnPhase.END_TURN);
+                turnController.nextPlayerActionPhase();
+                break;
+            }
             case CHARACTER_CARD:{
 
                 break;
             }
 
-            //find a way to understad if influence in archipelago changed
+            //find a way to understand if influence in archipelago changed
            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
             default: {
                 throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
