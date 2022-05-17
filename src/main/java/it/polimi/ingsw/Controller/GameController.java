@@ -2,7 +2,6 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
-import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewInterface;
