@@ -13,7 +13,7 @@ import java.util.Map;
 public class GameController implements Serializable,Observer {
 
     private static final long serialVersionUID = -3248504358856237848L;
-    private Model model;
+  
     private BasicMatch match;
     private ViewInterface view;
     private Map<String, ViewInterface> viewMap;
