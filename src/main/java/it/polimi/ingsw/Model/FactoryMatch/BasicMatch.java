@@ -53,6 +53,8 @@ public class BasicMatch extends Observable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -86,7 +88,7 @@ public class BasicMatch extends Observable {
         Wizard wizard = game.getWizardFromPlayer(player);
         wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCards);
-       // notifyObserver(new AssistantCardMessage(player.getUsername(),assistantsCards));
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -124,9 +126,8 @@ public class BasicMatch extends Observable {
     protected void lookUpProfessor(Color c){
         try {
             game.placeProfessor(c);
-            notifyObserver(new MovedProfessor("","Moved professor of color:" + c, GameStateMessage.MOVED_PROFESSOR));
         }catch (ExceptionGame e){
-            System.out.println("Not place the professor: " + e);
+            e.printStackTrace();
         }
     }
 
@@ -171,10 +172,9 @@ public class BasicMatch extends Observable {
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
             if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
-                notifyObserver(new CurrentGameMessage(getGame()));
             }
         } catch (ExceptionGame e) {
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             checkVictory();
 
@@ -182,6 +182,8 @@ public class BasicMatch extends Observable {
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();
         }
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -229,6 +231,8 @@ public class BasicMatch extends Observable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -246,7 +250,7 @@ public class BasicMatch extends Observable {
             endOfTheMatch = true;
             System.out.println("num towers "+ w.get(0) + " : " + w.get(0).getBoard().getTowersInBoard().size());
             winner.add(w.get(0));
-            System.out.println("studentbag empty or assistant card playable empty, one winner");
+            System.out.println("student bag empty or assistant card playable empty, one winner");
         }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());
@@ -263,8 +267,15 @@ public class BasicMatch extends Observable {
         }
         System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            throw new ExceptionEndGame("Wizard: " + winner + " has won the match\n" +
-                    "Please, create a new match if you want to replay");
+            List<Player> winnerPlayers = winner.stream().map(wiz -> {
+                try {
+                    return getPlayerFromWizard(wiz);
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }).toList();
+            notifyObserver(new EndMatchMessage(winnerPlayers));
         }
 
     }
@@ -433,7 +444,7 @@ public class BasicMatch extends Observable {
     }
 
 
-    public void infoMatch() throws CloneNotSupportedException, ExceptionGame {
+    public void infoMatch() throws CloneNotSupportedException{
         notifyObserver(new CurrentGameMessage((Game) this.clone()));
     }
 }

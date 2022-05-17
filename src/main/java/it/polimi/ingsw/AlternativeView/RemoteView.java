@@ -44,11 +44,13 @@ public class RemoteView extends ViewInterface {
 
     @Override
     public void placeStudentOnBoard(Student studentsToBoard) {
+        notifyObserver(new MoveStudentMessage(studentsToBoard, null));
 
     }
 
 
     public void placeStudentOnArchipelago(Student studentsToArchipelago) {
+
     }
 
     public void moveMotherNature(Archipelago archipelago) {

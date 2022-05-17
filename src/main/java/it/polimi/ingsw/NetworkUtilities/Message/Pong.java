@@ -5,7 +5,7 @@ public class Pong extends Message{
     private final String ping = "Pong";
 
     public Pong(String nickname){
-        super(nickname, "Pong", GameStateMessage.PONG);
+
     }
 
 }

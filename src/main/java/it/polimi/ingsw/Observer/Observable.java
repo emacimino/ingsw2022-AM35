@@ -31,7 +31,7 @@ public class Observable{
      *
      * @param message is the message to be passed to the observers.
      */
-    protected void notifyObserver(Object message) throws ExceptionGame {
+    protected void notifyObserver(Object message) {
         for (Observer observer : observers) {
             observer.update(message);
         }

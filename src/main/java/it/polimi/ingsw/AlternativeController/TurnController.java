@@ -28,8 +28,8 @@ public class TurnController {
     }
 
     public void nextPlayerActionPhase(){
-        int setActivePlayer = (actionOrderOfPlayers.indexOf(activePlayer)+ 1) % controller.getMatch().getNumberOfPlayers();
-        activePlayer = actionOrderOfPlayers.get(setActivePlayer);
+        actionOrderOfPlayers.remove(activePlayer);
+        activePlayer = actionOrderOfPlayers.get(0);
     }
 
     public void setActivePlayer(Player player) {

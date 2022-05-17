@@ -109,21 +109,38 @@ public class Controller implements Observer {
     }
 
     private void actionPhaseHandling(Message receivedMessage) {
+
         switch (receivedMessage.getType()) {
-            case STUDENT_ON_BOARD:
+            case MOVE_STUDENT: {
+                MoveStudentMessage message = (MoveStudentMessage) receivedMessage;
                 try {
-                    match.moveStudentOnBoard(turnController.getActivePlayer(), ((MoveStudentOnBoardMessage) receivedMessage).getStudent());
-               //da gestire se arrivo al terzo studente mosso, non voglio avere come trigger solo il lancio di eccezoine
-                }catch (ExceptionGame exceptionGame){
+                    if (message.getArchipelago() != null) {
+                        match.moveStudentOnArchipelago(turnController.getActivePlayer(), message.getStudent(), message.getArchipelago());
+                    } else {
+                        match.moveStudentOnBoard(turnController.getActivePlayer(), message.getStudent());
+                    }
+                    if (message.getNumberOfStudentMoved() == 3) {
+                        turnController.setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
+                    }
+
+                } catch (ExceptionGame exceptionGame) {
+                    exceptionGame.printStackTrace();
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
                 }
                 break;
-            case STUDENT_IN_ARCHIPELAGO:
+            }
+            case MOVE_MOTHER_NATURE:
+
+                break;
+            case CHOOSE_CLOUD: {
                 try {
-                    match.moveStudentOnArchipelago(turnController.getActivePlayer(), ((MoveStudentInArchipelago) receivedMessage).getStudent(), (((MoveStudentInArchipelago) receivedMessage).getArchipelago()));
-                }catch (ExceptionGame exceptionGame){
-                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
+                    match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
                 }
+                turnController.setTurnPhase(TurnPhase.END_TURN);
+                turnController.nextPlayerActionPhase();
                 break;
             case MOVE_MOTHER_NATURE:
                 try {
@@ -132,12 +149,13 @@ public class Controller implements Observer {
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
                 }
                 break;
-            case CHOOSE_CLOUD:
+            }
 
-            ;//find a way to understad if influence in archipelago changed
+            //find a way to understand if influence in archipelago changed
            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
-            default:
+            default: {
                 throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
+            }
         }
 
     }
@@ -146,7 +164,7 @@ public class Controller implements Observer {
         viewMap.put(username, view);
     }
     @Override
-    public void update(Object message) throws ExceptionGame {
+    public void update(Object message)  {
         onMessageReceived((Message) message);
     }
 }
