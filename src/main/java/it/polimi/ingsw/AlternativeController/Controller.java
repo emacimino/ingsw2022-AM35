@@ -5,8 +5,6 @@ import it.polimi.ingsw.AlternativeView.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observer;
@@ -27,7 +25,6 @@ public class Controller implements Observer {
         this.playersUsername = playersUsername;
         this.match = match;
         initGame();
-        setMatchHandler();
     }
 
     public BasicMatch getMatch() {
@@ -51,13 +48,7 @@ public class Controller implements Observer {
     }
         public void pickFirstPlayerPlanningPhaseHandler(Player player){
             turnController.setActivePlayer(player);
-            RemoteView remoteView = (RemoteView) viewMap.get(player.getUsername());
-            remoteView.showGenericMessage("It's your turn, pick an assistant card");
-            try {
-                remoteView.askAssistantCard(getMatch().getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants());
-            } catch (ExceptionGame e) {
-                e.printStackTrace();
-            }
+            turnController.setTurnPhase(TurnPhase.PLAY_ASSISTANT);
         }
 
 
@@ -67,7 +58,7 @@ public class Controller implements Observer {
             case PLANNING_PHASE:
                 planningPhaseHandling(receivedMessage);
             case ACTION_PHASE:
-                ;
+                actionPhaseHandling(receivedMessage);
             case END_OF_TURN:
                 ;
             default: //should never reach this condition
@@ -85,29 +76,8 @@ public class Controller implements Observer {
     }
 
 
-    private void setMatchHandler() throws ExceptionGame {
-        //if(match.getNumberOfPlayers() == 2 || match.getNumberOfPlayers() == 3){
-            //notifyObserver(new MatchInfoMessage("server", match.getPlayers(),match.getGame().getArchipelagos(), GameStateMessage.MATCH_INFO));
-
-       // }
-    }
-
-    public void receivedMessage(Message receivedMessage) throws ExceptionGame {
-
-        //RemoteView view = (RemoteView) viewMap.get(receivedMessage.getUsername());
-        //switch ((GameState) receivedMessage.getGamePhase()) {
-
-          //  case GameState.PLANNING_PHASE -> planningPhaseHandling(receivedMessage, view);
-           // case GameState.ACTION_PHASE -> actionPhaseHandling(receivedMessage, view);
-           // default -> {
-           // } // Should never reach this condition
-       // }
-    }
-
-
     private synchronized void planningPhaseHandling(Message receivedMessage) {
         Player activePlayer = turnController.getActivePlayer();
-
         if (receivedMessage.getType() == GameStateMessage.ASSISTANT_CARD) {
            AssistantsCards assistantsCard= ((AssistantCardMessage) receivedMessage).getAssistantsCard();
            try{
@@ -115,7 +85,7 @@ public class Controller implements Observer {
                turnController.nextPlayerPlanningPhase();
                if(match.getActionPhaseOrderOfPlayers().size() == viewMap.size()){
                    this.gameState = GameState.ACTION_PHASE;
-                    turnController.setActionOrderOfPlayers(match.getActionPhaseOrderOfPlayers());
+                    pickFirstPlayerActionPhaseHandler();
                }
            }catch(ExceptionGame e){
                ViewInterface view = viewMap.get(activePlayer.getUsername());
@@ -132,36 +102,35 @@ public class Controller implements Observer {
         }
     }
 
+    private void pickFirstPlayerActionPhaseHandler(){
+        turnController.setActionOrderOfPlayers(match.getActionPhaseOrderOfPlayers());
+        turnController.setTurnPhase(TurnPhase.MOVE_STUDENTS);
 
-    private void actionPhaseHandling(Message receivedMessage, RemoteView actualView) throws ExceptionGame {
+    }
+
+    private void actionPhaseHandling(Message receivedMessage) {
         switch (receivedMessage.getType()) {
             case STUDENT_ON_BOARD:
-                match.moveStudentOnBoard(receivedMessage.getPlayer(), (Student) receivedMessage.getContentOne());
-                //notifyObserver(receivedMessage);
-            case ATTACK:
-                break;
-            case END_OF_TURN:
+                try {
+                    match.moveStudentOnBoard(turnController.getActivePlayer(), ((MoveStudentOnBoardMessage) receivedMessage).getStudent());
+               //da gestire se arrivo al terzo studente mosso, non voglio avere come trigger solo il lancio di eccezoine
+                }catch (ExceptionGame exceptionGame){
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
+                }
                 break;
             case STUDENT_IN_ARCHIPELAGO:
-                match.moveStudentOnArchipelago(receivedMessage.getPlayer(), (Student) receivedMessage.getContentOne(), (Archipelago) receivedMessage.getContentTwo());
-                //notifyObserver(if((Archipelago) receivedMessage.getContentTwo().)){
+                try {
+                    match.moveStudentOnArchipelago(turnController.getActivePlayer(), ((MoveStudentInArchipelago) receivedMessage).getStudent(), (((MoveStudentInArchipelago) receivedMessage).getArchipelago()));
+                }catch (ExceptionGame exceptionGame){
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
+                }
+                break;
+            case MOVE_MOTHER_NATURE:
+                break;
+            case CHOOSE_CLOUD:
 
             ;//find a way to understad if influence in archipelago changed
            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
-            case GENERIC_MESSAGE:
-                break;
-            case ASK_NUM_OF_PLAYERS:
-                break;
-            case MOVED_PROFESSOR:
-                break;
-            case TOWER_BUILT:
-                break;
-            case ERROR:
-                break;
-            case TEAM:
-                break;
-            case MATCH_INFO:
-                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
         }
@@ -173,6 +142,6 @@ public class Controller implements Observer {
     }
     @Override
     public void update(Object message) throws ExceptionGame {
-
+        onMessageReceived((Message) message);
     }
 }

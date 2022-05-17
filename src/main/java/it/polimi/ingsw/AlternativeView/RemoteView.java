@@ -28,6 +28,10 @@ public class RemoteView extends ViewInterface {
         clientConnection.sendMessage(new AssistantCardListMessage(assistantsCards));
     }
 
+    public void askToMoveStudentFromEntrance(List<Student> students){
+        clientConnection.sendMessage(new StudentsListMessage(students));
+
+    }
 
     @Override
     public void showGenericMessage(String genericMessage) {
@@ -38,12 +42,13 @@ public class RemoteView extends ViewInterface {
         //    clientConnection.sendMessage(new CharacterCard("",card));
     }
 
+    @Override
     public void placeStudentOnBoard(Student studentsToBoard) {
-        clientConnection.sendMessage(new StudentOnBoard("",studentsToBoard,GameStateMessage.STUDENT_ON_BOARD));
+
     }
 
+
     public void placeStudentOnArchipelago(Student studentsToArchipelago) {
-        clientConnection.sendMessage(new StudentInArchipelago("",studentsToArchipelago,GameStateMessage.STUDENT_ON_BOARD));
     }
 
     public void moveMotherNature(Archipelago archipelago) {
@@ -54,5 +59,9 @@ public class RemoteView extends ViewInterface {
     @Override
     public void update(Object message) throws ExceptionGame {
         clientConnection.sendMessage((Message) message);
+    }
+
+    public void sendMessage(Message message){
+        clientConnection.sendMessage(message);
     }
 }

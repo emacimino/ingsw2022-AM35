@@ -1,7 +1,13 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
 public class ErrorMessage extends Message {
-    public ErrorMessage(Object o, String message_not_sent) {
-        super(null,message_not_sent,GameStateMessage.ERROR);
+    private final String error;
+    public ErrorMessage(String message) {
+        setType(GameStateMessage.ERROR);
+        this.error = message;
+    }
+
+    public String getError() {
+        return error;
     }
 }

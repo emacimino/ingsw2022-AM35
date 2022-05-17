@@ -140,7 +140,7 @@ public class BasicMatch extends Observable {
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
-        notifyObserver(new StudentOnBoard(player.getUsername(),student,GameStateMessage.STUDENT_ON_BOARD));
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -153,7 +153,7 @@ public class BasicMatch extends Observable {
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
-        notifyObserver(new StudentInArchipelago(player.getUsername(), student ,GameStateMessage.STUDENT_IN_ARCHIPELAGO));
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
