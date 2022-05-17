@@ -27,7 +27,7 @@ public abstract class ViewInterface extends Observable implements Observer{
 
 
     @Override
-    public void update(Object message) throws ExceptionGame {
+    public void update(Object message) {
 
     }
 

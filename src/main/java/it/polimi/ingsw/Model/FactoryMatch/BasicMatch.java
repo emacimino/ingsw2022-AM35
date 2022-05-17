@@ -181,6 +181,8 @@ public class BasicMatch extends Observable {
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();
         }
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -228,6 +230,8 @@ public class BasicMatch extends Observable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -262,8 +266,7 @@ public class BasicMatch extends Observable {
         }
         System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            throw new ExceptionEndGame("Wizard: " + winner + " has won the match\n" +
-                    "Please, create a new match if you want to replay");
+            notifyObserver(new EndMatchMessage(winner));
         }
 
     }
