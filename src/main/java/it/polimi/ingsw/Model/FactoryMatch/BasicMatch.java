@@ -171,12 +171,13 @@ public class BasicMatch extends Observable {
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
             if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
-                notifyObserver(new TowerBuilt( player.getUsername(), archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player)), GameStateMessage.TOWER_BUILT ));
+                notifyObserver(new CurrentGameMessage(getGame()));
             }
         } catch (ExceptionGame e) {
             System.out.println(e);
         } finally {
             checkVictory();
+
         }
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();

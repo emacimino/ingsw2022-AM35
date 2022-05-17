@@ -125,7 +125,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         if(player.equals(super.getActionPhaseOrderOfPlayers().get(super.getActionPhaseOrderOfPlayers().size()-1))){
             resetRound();
         }
-        notifyObserver(new MoveMotherNature(player.getUsername(), archipelago,GameStateMessage.MOVE_MOTHER_NATURE));
+        notifyObserver(new MoveMotherNature(archipelago));
     }
 
     @Override

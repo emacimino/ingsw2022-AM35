@@ -126,6 +126,11 @@ public class Controller implements Observer {
                 }
                 break;
             case MOVE_MOTHER_NATURE:
+                try {
+                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNature) receivedMessage).getArchipelago());
+                }catch (ExceptionGame exceptionGame){
+                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
+                }
                 break;
             case CHOOSE_CLOUD:
 
