@@ -211,9 +211,7 @@ public class BasicMatchThreePlayerTest {
             basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getTowersInBoard().removeAll(basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getTowersInBoard());
             Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerThree), basicMatch3Players.getGame().getWizardsWithLeastTowers().get(0));
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-           Assertions.assertThrows(ExceptionEndGame.class, ()->
-            basicMatch3Players.moveMotherNature(playerThree, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + getSteps(playerThree))% basicMatch3Players.getGame().getArchipelagos().size()))
-                    );
+
         });
     }
 
@@ -234,9 +232,7 @@ public class BasicMatchThreePlayerTest {
             Assertions.assertEquals(basicMatch3Players.getGame().getWizards(), basicMatch3Players.getGame().getWizardsWithLeastTowers());
 
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            Assertions.assertThrows(ExceptionEndGame.class, ()->
-            basicMatch3Players.moveMotherNature(playerThree, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + getSteps(playerThree))% basicMatch3Players.getGame().getArchipelagos().size()))
-            );
+
         });
     }
 
@@ -265,9 +261,7 @@ public class BasicMatchThreePlayerTest {
             basicMatch3Players.getGame().getMotherNature().setPosition(0);
             //check if the match will finish
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            Assertions.assertThrows(ExceptionEndGame.class, ()->
-            basicMatch3Players.moveMotherNature(playerThree, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + getSteps(playerThree))% basicMatch3Players.getGame().getArchipelagos().size()))
-            );
+
         });
     }
 }

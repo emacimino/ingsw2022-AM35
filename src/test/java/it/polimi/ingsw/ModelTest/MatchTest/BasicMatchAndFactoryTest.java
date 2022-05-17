@@ -177,9 +177,6 @@ public class BasicMatchAndFactoryTest {
             basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard().removeAll(basicMatch3Players.getGame().getWizardFromPlayer(playerOne).getBoard().getTowersInBoard());
             Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerOne), basicMatch3Players.getGame().getWizardsWithLeastTowers().get(0));
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-            Assertions.assertThrows(ExceptionEndGame.class, ()->
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()))
-                    );
         });
     }
 
@@ -206,9 +203,6 @@ public class BasicMatchAndFactoryTest {
             Assertions.assertEquals(basicMatch3Players.getGame().getWizards(), basicMatch3Players.getGame().getWizardsWithLeastTowers());
 
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-           Assertions.assertThrows(ExceptionEndGame.class, ()->
-            basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()))
-            );
         });
     }
 
@@ -233,8 +227,8 @@ public class BasicMatchAndFactoryTest {
             basicMatch3Players.getGame().getArchipelagos().get(0).setMotherNaturePresence(true);
             basicMatch3Players.getGame().getMotherNature().setPosition(0);
             int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
-           Assertions.assertThrows(ExceptionEndGame.class, ()->basicMatch3Players.moveMotherNature(playerOne, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)% basicMatch3Players.getGame().getArchipelagos().size()))
-            );
+
+
         });
     }
 }
