@@ -2,7 +2,6 @@ package it.polimi.ingsw.AlternativeView;
 
 import it.polimi.ingsw.AlternativeServer.ClientConnection;
 import it.polimi.ingsw.AlternativeServer.SocketClientConnection;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -54,7 +53,7 @@ public class RemoteView extends ViewInterface {
     }
 
     public void moveMotherNature(Archipelago archipelago) {
-        clientConnection.sendMessage(new MoveMotherNature(archipelago));
+        clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
     }
 
 

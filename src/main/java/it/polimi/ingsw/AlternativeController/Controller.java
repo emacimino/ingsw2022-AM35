@@ -1,6 +1,5 @@
 package it.polimi.ingsw.AlternativeController;
 
-import it.polimi.ingsw.AlternativeView.RemoteView;
 import it.polimi.ingsw.AlternativeView.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
@@ -52,7 +51,7 @@ public class Controller implements Observer {
         }
 
 
-    public void onMessageReceived(Message receivedMessage) throws ExceptionGame {
+    public void onMessageReceived(Message receivedMessage) {
 
         switch (gameState){
             case PLANNING_PHASE:
@@ -129,9 +128,6 @@ public class Controller implements Observer {
                 }
                 break;
             }
-            case MOVE_MOTHER_NATURE:
-
-                break;
             case CHOOSE_CLOUD: {
                 try {
                     match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage)receivedMessage).getCloud());
@@ -141,15 +137,17 @@ public class Controller implements Observer {
                 }
                 turnController.setTurnPhase(TurnPhase.END_TURN);
                 turnController.nextPlayerActionPhase();
-                break;
+                break;}
+
             case MOVE_MOTHER_NATURE:
+                MoveMotherNatureMessage message = (MoveMotherNatureMessage) receivedMessage;
                 try {
-                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNature) receivedMessage).getArchipelago());
+                    match.moveMotherNature(turnController.getActivePlayer(), message.getArchipelago());
                 }catch (ExceptionGame exceptionGame){
                     viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
                 }
                 break;
-            }
+
 
             //find a way to understand if influence in archipelago changed
            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
