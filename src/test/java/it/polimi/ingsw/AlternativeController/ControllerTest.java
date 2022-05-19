@@ -24,7 +24,8 @@ class ControllerTest {
     private Controller controllerBasicMatch2Players;
     private Controller controllerBasicMatch3Players;
     private TurnController turnControllerBasicMatch2Players;
-    private TurnController turnControllerBasicMatch3Players;
+    private TurnController turnControllerBasicMatch3Players;private final Server server = new Server();
+    private final Socket socket = new Socket("127.0.0.1",62341);
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch3Players = factoryMatch.newMatch(3);
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
@@ -39,8 +40,7 @@ class ControllerTest {
     private final ClientConnection clientConnection3 = new SocketClientConnection(this.socket,this.server);
     private final Map<String,ViewInterface> viewInterfaceMap2Players = new HashMap<>();
     private final Map<String,ViewInterface> viewInterfaceMap3Players = new HashMap<>();
-    private final Server server = new Server();
-    private final Socket socket = new Socket("127.0.0.1",62341);
+
 
 
     private void setListsOfPlayersAndMap(){

@@ -36,7 +36,10 @@ public class Client{
                     if(inputObject instanceof Message){
                         //implement a switch
                     }
-                    else throw new IllegalArgumentException();
+                   // else throw new IllegalArgumentException();
+
+                    System.out.println(inputObject);
+
                 }
             }catch (Exception e){
                 setActive(false);

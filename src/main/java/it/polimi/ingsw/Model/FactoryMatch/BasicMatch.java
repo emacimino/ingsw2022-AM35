@@ -56,7 +56,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
-        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new CurrentGameMessage(game));
 
     }
 
@@ -195,6 +195,7 @@ public class BasicMatch extends Observable implements Serializable {
     public void resetRound() {    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
+        game.setRandomStudentsOnCloud();
     }
 
     /**
@@ -449,6 +450,21 @@ public class BasicMatch extends Observable implements Serializable {
 
     public void infoMatch() throws CloneNotSupportedException{
         notifyObserver(new CurrentGameMessage((Game) this.clone()));
+    }
+
+    @Override
+    public String toString() {
+        return "BasicMatch{" +
+                "numberOfPlayers=" + numberOfPlayers +
+                ", game=" + game +
+                ", players=" + players +
+                ", actionPhaseOrderOfPlayers=" + actionPhaseOrderOfPlayers +
+                ", numberOfMovableStudents=" + numberOfMovableStudents +
+                ", numberOfClouds=" + numberOfClouds +
+                ", numberOfStudentsOnCLoud=" + numberOfStudentsOnCLoud +
+                ", numberOfStudentInEntrance=" + numberOfStudentInEntrance +
+                ", numberOfTowers=" + numberOfTowers +
+                '}';
     }
 }
 

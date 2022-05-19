@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int PORT = 1234;
+    private static final int PORT = 12345;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
@@ -52,9 +52,8 @@ public class Server {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
-                System.out.println("Server is running");
                 connections++;
-                System.out.println("Ready for the new connection - " + connections);
+                System.out.println("Ready for the new connection; current connections = " + connections );
                 //clientHandlerToBeImplemented
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
                 executor.submit(socketConnection);
@@ -66,48 +65,63 @@ public class Server {
 
     public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
         String name = null;
+
         SocketClientConnection clientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
         for (int i = 0; i < keys.size(); i++) {
             ClientConnection connection = waitingPlayersInLobby.get(keys.get(i));
-            connection.asyncSend("Connected User: " + keys.get(i));
+            clientConnection.asyncSend("Connected User: " + keys.get(i));
         }
+
 
         try {
             boolean nameNotOk = false;
             do {
                 Scanner in = new Scanner(((SocketClientConnection) c).getSocket().getInputStream());
                 ((SocketClientConnection) c).sendMessage("Welcome!\nWhat is your name?");
-                name = in.nextLine();
+                name = in.next();
+
                 if(name == null)
                     nameNotOk = true;
-                for (String username : keys) {
-                    if (name.equals(username)) {
+
+                    else if (keys.contains(name)) {
                             nameNotOk = true;
                     }
-                }
+                    else nameNotOk = false;
 
             } while (nameNotOk);
+
             waitingList.put(name,clientConnection);
+
 
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         }
-        for (int i = 0; i < keys.size(); i++) {
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i));
-            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() && connection.isExpert()) {
-                waitingList.put(keys.get(i),connection);
+
+        for (int i = 0; i < keys.size(); i++) { //keys belongs to size of players in lobby
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i)); //tacke connection of whoever is in the lobby
+            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
+                waitingList.put(keys.get(i), connection); //put whoever is matchable in the waiting list
+                waitingPlayersInLobby.remove(keys.get(i)); //and remove it from lobby
             }
-            if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
-                BasicMatch match;
-                FactoryMatch factoryMatch = new FactoryMatch();
-                match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
-                if (clientConnection.isExpert()) {
+        }
+        System.out.println("waiting list:" + waitingList);
+        System.out.println(waitingList.size() + " " +clientConnection.getNumberOfPlayers());
+
+
+        if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
+            BasicMatch match;
+            FactoryMatch factoryMatch = new FactoryMatch();
+            match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
+            if (clientConnection.isExpert()) {
                     match = new ExpertMatch(match);
                 }
-                Controller controller = new Controller(match, waitingList.keySet());
-                for (String clientName: waitingList.keySet()) {
+
+            Controller controller = new Controller(match, waitingList.keySet());
+       //     Map<String, ViewInterface> viewMap = new HashMap<>();
+
+            for (String clientName: waitingList.keySet()) {
                     ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
                     match.addObserver(clientView);
                     clientView.addObserver(controller);
@@ -116,13 +130,15 @@ public class Server {
                 ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
                 matchInServer.put(matchCounter, clientsInMatch);
                 matchCounter++;
+                controller.initGame();
 
-            }else{
-                waitingPlayersInLobby.put(name,c);
+            }else{ // put all the plahyers in waiting list in lobby
+                waitingPlayersInLobby.putAll(waitingList);
+                waitingList.clear();
+                System.out.println(waitingPlayersInLobby );
                 c.asyncSend("Waiting for another player");
             }
         }
-    }
 }
 
 

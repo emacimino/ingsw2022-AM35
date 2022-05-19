@@ -43,12 +43,13 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException exception) {
+
             exception.printStackTrace();
         }
     }
     @Override
     public synchronized void closeConnection() {
-        sendMessage("Connection closed!");
+        sendMessage("Connection closed! I'm in close connection");
         try {
             socket.close();
         } catch (IOException e) {
@@ -59,7 +60,7 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
 
     private void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("De-registering client...");
         server.deregisterConnection(this);
         System.out.println("Done!");
     }
@@ -86,17 +87,18 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
         try{
             in = new Scanner(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            sendMessage("Welcome!\nWhat is your name?");
-            read = in.nextLine();
-            sendMessage("How many players do you want your match to have? Choose from 2 to 4\n");
+            sendMessage("How many players do you want your match to have? Choose from 2 to 4");
             numberOfPlayers = in.nextInt();
             sendMessage("Do you want to play as an expert?");
-            String expert = in.nextLine();
+            String expert = in.next();
             if(expert.equals("yes")){
                 isExpert = true;
             }else if(expert.equals("no")){
                 isExpert = false;
-            }else throw new IllegalArgumentException();
+            } else {
+                System.out.println("pre error");
+              //  throw new IllegalArgumentException();
+            }
 
             server.lobby(this);
             in = new Scanner(socket.getInputStream());
@@ -105,7 +107,7 @@ public class SocketClientConnection extends Observable implements Runnable, Clie
                 notifyObserver(read);//gives notifications to view
             }
         } catch (IOException | NoSuchElementException | ExceptionGame | CloneNotSupportedException e) {
-            System.err.println("Error! " + e.getMessage());
+            System.err.println("Error from SCC! " + e.getMessage());
         }finally{
             close();
         }

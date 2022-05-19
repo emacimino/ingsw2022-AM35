@@ -20,33 +20,31 @@ public class Controller implements Observer {
 
     //Initialize the Game having already a lobby
     public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
-        super();
         this.playersUsername = playersUsername;
         this.match = match;
-        initGame();
     }
 
     public BasicMatch getMatch() {
         return match;
     }
 
-    private void initGame() throws ExceptionGame, CloneNotSupportedException {
+    public void initGame() throws ExceptionGame, CloneNotSupportedException {
         List<Player> players = setListOfPlayers(this.playersUsername);
         if (match.getNumberOfPlayers() == 4) {
             match.setTeamsOne(players.get(0), players.get(1));
             match.setTeamsOne(players.get(2), players.get(3));
         }
         this.match.setGame(players);
+
         gameState = GameState.PLANNING_PHASE;
-        //match.infoMatch();
         turnController = new TurnController(this, viewMap);
-        Random r = new Random();
-        firstPlanningPhasePlayer = this.getMatch().getPlayers().get(r.nextInt(0, this.getMatch().getNumberOfPlayers()));
-        pickFirstPlayerPlanningPhaseHandler(firstPlanningPhasePlayer);
+        pickFirstPlayerPlanningPhaseHandler();
 
     }
 
-    public void pickFirstPlayerPlanningPhaseHandler(Player player) {
+    public void pickFirstPlayerPlanningPhaseHandler() {
+        Random r = new Random();
+        Player player = this.getMatch().getPlayers().get(r.nextInt(0, this.getMatch().getNumberOfPlayers()));
         turnController.setActivePlayer(player);
         turnController.setTurnPhase(TurnPhase.PLAY_ASSISTANT);
     }
@@ -187,5 +185,11 @@ public class Controller implements Observer {
         onMessageReceived((Message) message);
     }
 
+    public void setViewMap(Map<String, ViewInterface> viewMap) {
+        this.viewMap = viewMap;
+    }
 
+    private void printGame(){
+        System.out.println(match);
+    }
 }

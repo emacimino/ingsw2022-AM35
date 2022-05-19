@@ -62,6 +62,7 @@ public class Game implements Cloneable{
         for( int i=0; i<numberOfClouds; i++){
             clouds.add(new Cloud(numberOfStudentsOnCloud));
         }
+        setRandomStudentsOnCloud();
     }
 
     /**
@@ -149,9 +150,13 @@ public class Game implements Cloneable{
      * it is not possible to place students on the clouds
      * @throws ExceptionGame if it is not possible to sets students
      */
-    public void setRandomStudentsOnCloud() throws ExceptionGame{
+    public void setRandomStudentsOnCloud(){
         for(Cloud c : clouds){
-            c.setStudentsOnCloud(studentBag);
+            try {
+                c.setStudentsOnCloud(studentBag);
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -409,6 +414,21 @@ public class Game implements Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "wizards=" + wizards +
+                ", assistantsCardsPlayedInRound=" + assistantsCardsPlayedInRound +
+                ", archipelagos=" + archipelagos +
+                ", studentBag=" + studentBag +
+                ", professors=" + professors +
+                ", clouds=" + clouds +
+                ", motherNature=" + motherNature +
+                ", limitOfStudentInEntrance=" + limitOfStudentInEntrance +
+                ", numOfStudentMovable=" + numOfStudentMovable +
+                '}';
     }
 }
 

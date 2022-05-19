@@ -85,7 +85,7 @@ public class GameTest {
     void setClouds_setStudentsOnCloud_Test(int numClouds){
         int[] nums = {9, 4};
         Game game = createGame(nums[0], nums[1]);
-        game.setClouds(numClouds, nums[1]);
+        Assertions.assertDoesNotThrow(()->game.setClouds(numClouds, nums[1]));
         Assertions.assertEquals(numClouds, game.getClouds().size());
         Assertions.assertDoesNotThrow(()-> {
                     game.setRandomStudentsOnCloud();
