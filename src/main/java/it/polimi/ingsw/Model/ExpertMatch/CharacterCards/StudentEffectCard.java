@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Interface used to assign effects affecting students
+ */
 public interface StudentEffectCard {
 
     default void drawStudent(List<Student> studentsOnCard, int numberOfStudent, StudentBag studentBag) {

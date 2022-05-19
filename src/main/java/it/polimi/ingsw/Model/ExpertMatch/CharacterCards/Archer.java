@@ -14,8 +14,8 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 public class Archer extends CharacterCard implements InfluenceEffectCard{
     /**
      * Constructor of the class, the cost is set to 3 as indicated by the rules
-     * @param basicMatch
-     * @param name
+     * @param basicMatch current match
+     * @param name name of the card
      */
     public Archer(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
@@ -24,8 +24,8 @@ public class Archer extends CharacterCard implements InfluenceEffectCard{
 
     /**
      * This method is the one used when a player wants to play this card
-     * @param match
-     * @throws ExceptionGame
+     * @param match current match
+     * @throws ExceptionGame exception thrown if the active wizard is not set
      */
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
@@ -35,13 +35,12 @@ public class Archer extends CharacterCard implements InfluenceEffectCard{
 
     /**
      * This method calculates the influence changes tied to the card effect
-     * @param wizard
-     * @param archipelago
-     * @param normalInfluence
-     * @return
-     * @throws ExceptionGame
+     * @param wizard wizard using the card
+     * @param archipelago archipelago affected
+     * @param normalInfluence influence before changes
+     * @return influence modified by card
      */
-    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago,  int normalInfluence) throws ExceptionGame{
+    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago,  int normalInfluence){
         int towerInfluence = archipelago.calculateInfluenceTowers(wizard); //va bene perchè player p è il captain sempre
         return normalInfluence - towerInfluence;
     }

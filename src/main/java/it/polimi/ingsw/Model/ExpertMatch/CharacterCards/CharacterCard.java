@@ -34,7 +34,7 @@ public abstract class CharacterCard {
     /**
      * Constructor of the class
      * @param basicMatch current match
-     * @param name
+     * @param name name of the card
      */
     public CharacterCard(BasicMatch basicMatch, String name) {
         this.name = name;
@@ -120,7 +120,7 @@ public abstract class CharacterCard {
 
     /**
      * This method reduces the player's coins by the cost of the card and it checks if a wizard is using the card, if activeWizard has not been set, throws an Exception
-     * @param match teh current match
+     * @param match the current match
      * @throws ExceptionGame if the active wizard is not set
      */
     public void useCard(ExpertMatch match) throws ExceptionGame{

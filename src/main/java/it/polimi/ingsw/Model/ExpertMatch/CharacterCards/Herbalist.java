@@ -7,14 +7,27 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
-public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
+/**Implements the effect from Character card
+ * and uses InfluenceEffectCard interface
+ */
 
+public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
+    /**
+     * Constructor of the class
+     * @param basicMatch current match
+     * @param name name of the card
+     */
     public Herbalist(BasicMatch basicMatch, String name){
         super(basicMatch, name);
         setCost(2);
         setProhibitionPass(4);
     }
 
+    /**
+     * This method lets the player use the card
+     * @param match the current match
+     * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
+     */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
@@ -24,6 +37,10 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
         this.cost++;
     }
 
+    /**
+     * This method is used to calculate the prohibition effect
+     * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
+     */
     public void useProhibitionEffect() throws ExceptionGame{
         if(getProhibitionPass() > 0 ) {
             getArchipelagoEffected().setProhibition(true);
@@ -33,6 +50,11 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
         resetCard();
     }
 
+    /**
+     * Resets a prohibition on an archipelago
+     * @param archipelago targeted archipelago
+     * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
+     */
     @Override
     public void resetAProhibitionEffect(Archipelago archipelago) throws ExceptionGame {
         if(getProhibitionPass() <= getProhibitionPass() ) {
@@ -41,6 +63,10 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
         }
     }
 
+    /**
+     * This method gets the number of prohibition passes
+     * @return an int representing how many prohibition passes are left
+     */
     @Override
     public int getProhibitionPass() {
         return super.getProhibitionPass();
