@@ -1,5 +1,7 @@
 package it.polimi.ingsw.AlternativeClient;
 
+import it.polimi.ingsw.NetworkUtilities.Message.AssistantCardListMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.io.IOException;
@@ -28,17 +30,23 @@ public class Client{
         this.active = active;
     }
 
-    public Thread asyncReadFromSocket(final ObjectInputStream obj){
+    public Thread asyncReadFromSocket(final ObjectInputStream obj){ //da inoltrare alla view (CLI E GUI)
         Thread thread = new Thread(() -> {
             try{
                 while (isActive()){
                     Object inputObject = obj.readObject();
-                    if(inputObject instanceof Message){
-                        //implement a switch
-                    }
-                   // else throw new IllegalArgumentException();
+                    if(inputObject instanceof String) {
+                        System.out.println(inputObject);
+                    }else if(inputObject instanceof Message) {
+                         Message message = (Message)inputObject;
+                         switch (message.getType()){
+                             case GENERIC_MESSAGE -> System.out.println((String) ((GenericMessage)message).getContent());
 
-                    System.out.println(inputObject);
+                             case LIST_ASSISTANT_CARD -> System.out.println(((AssistantCardListMessage)message).getAssistantsCards());
+                         }
+                    }
+                   else throw new IllegalArgumentException();
+
 
                 }
             }catch (Exception e){
@@ -48,6 +56,7 @@ public class Client{
         thread.start();
         return  thread;
     }
+
 
 
     public Thread asyncWriteToSocket(final Scanner scanner, final PrintWriter socketOut){

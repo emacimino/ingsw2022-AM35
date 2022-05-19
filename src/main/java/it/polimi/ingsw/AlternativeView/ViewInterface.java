@@ -32,5 +32,5 @@ public abstract class ViewInterface extends Observable implements Observer{
     }
 
     public abstract void sendMessage(Message message);
-    public abstract void showGenericMessage(String s);
+    public abstract void showGenericMessage(Message message);
 }

@@ -45,6 +45,7 @@ public class Controller implements Observer {
     public void pickFirstPlayerPlanningPhaseHandler() {
         Random r = new Random();
         Player player = this.getMatch().getPlayers().get(r.nextInt(0, this.getMatch().getNumberOfPlayers()));
+        System.out.println("first player: "+ player);
         turnController.setActivePlayer(player);
         turnController.setTurnPhase(TurnPhase.PLAY_ASSISTANT);
     }
@@ -163,12 +164,12 @@ public class Controller implements Observer {
             }
         } catch (ExceptionGame e) {
             ViewInterface view = viewMap.get(activePlayer.getUsername());
-            view.showGenericMessage("Please, insert a valid Assistant card");
+            view.showGenericMessage(new GenericMessage("Please, insert a valid Assistant card"));
             try {
                 List<AssistantsCards> availableAssistantsCards = match.getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants();
                 view.askAssistantCard(availableAssistantsCards);
             } catch (ExceptionGame er) {
-                view.showGenericMessage(er.getMessage());
+                view.showGenericMessage(new GenericMessage(er.getMessage()));
 
             }
         }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.AlternativeView.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
+import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
 
 import java.util.*;
 
@@ -48,16 +49,18 @@ public class TurnController {
     public void setTurnPhase(TurnPhase turnPhase) {
         this.turnPhase = turnPhase;
         switch (turnPhase) {
-            case PLAY_ASSISTANT ->  askingViewToPlayAnAssistantCard();
+            case PLAY_ASSISTANT ->  {
+                askingViewToPlayAnAssistantCard();}
 
             case MOVE_STUDENTS ->   askingViewToMoveAStudent();
 
         }
+        System.out.println("set the phase to "+ turnPhase);
     }
 
     private void askingViewToMoveAStudent() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        remoteView.showGenericMessage("It's your turn, move " + controller.getMatch().getNumberOfMovableStudents() + " students from your board");
+        remoteView.showGenericMessage(new GenericMessage("It's your turn, move " + controller.getMatch().getNumberOfMovableStudents() + " students from your board"));
         try {
             List<Student> studentsFromBoard = controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList();
             remoteView.askToMoveStudentFromEntrance(studentsFromBoard);
@@ -68,7 +71,9 @@ public class TurnController {
 
     private void askingViewToPlayAnAssistantCard() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        remoteView.showGenericMessage("It's your turn, pick an assistant card");
+        System.out.println("asking to play an assistant card");
+        remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
+        System.out.println("after send a generic message");
         try {
             remoteView.askAssistantCard(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
         } catch (ExceptionGame e) {

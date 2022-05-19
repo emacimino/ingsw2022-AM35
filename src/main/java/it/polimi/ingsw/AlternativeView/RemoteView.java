@@ -37,8 +37,8 @@ public class RemoteView extends ViewInterface {
     }
 
     @Override
-    public void showGenericMessage(String genericMessage) {
-        clientConnection.sendMessage(new GenericMessage(genericMessage));
+    public void showGenericMessage(Message genericMessage) {
+        clientConnection.sendMessage(genericMessage);
     }
 
     public void playCharacterCard(CharacterCard card) {

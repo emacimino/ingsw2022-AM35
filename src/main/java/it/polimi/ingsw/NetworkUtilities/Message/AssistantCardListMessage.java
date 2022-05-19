@@ -11,5 +11,10 @@ public class AssistantCardListMessage extends Message {
 
     public AssistantCardListMessage(List<AssistantsCards> assistantsCards) {
         this.assistantsCards = assistantsCards;
+        setType(GameStateMessage.LIST_ASSISTANT_CARD);
+    }
+
+    public List<AssistantsCards> getAssistantsCards() {
+        return assistantsCards;
     }
 }
