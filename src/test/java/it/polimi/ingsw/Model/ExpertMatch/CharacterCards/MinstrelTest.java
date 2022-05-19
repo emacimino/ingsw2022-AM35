@@ -23,8 +23,8 @@ class MinstrelTest {
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
     private final ExpertMatch expertMatch = new ExpertMatch(basicMatch2Players);
     Wizard wizard1, wizard2;
-    private final Player player1 = new Player("name1", "username1");
-    private final Player player2 = new Player("name2", "username2");
+    private final Player player1 = new Player("username1");
+    private final Player player2 = new Player("username2");
 
 
     private List<Player> setPlayers(Player player1, Player player2){
@@ -102,8 +102,8 @@ class MinstrelTest {
     public void match4player_Test(Color c){
         Color color = Color.PINK;
         BasicMatch match4players = factoryMatch.newMatch(4);
-        Player player3 = new Player("name3", "username3");
-        Player player4 = new Player("name4", "username4");
+        Player player3 = new Player("username3");
+        Player player4 = new Player("username4");
         List<Player> players = setPlayers(player1, player2);
         players.add(player3);
         players.add(player4);

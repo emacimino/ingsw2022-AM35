@@ -5,10 +5,13 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Observer.Observer;
 
 import java.util.*;
 
-public class BasicMatchFourPlayers extends BasicMatch {
+public class BasicMatchFourPlayers extends BasicMatch{
+
     private  Player captainTeamOne;
     private  Player captainTeamTwo;
     private List<Player> teamOne = new ArrayList<>();
@@ -44,6 +47,8 @@ public class BasicMatchFourPlayers extends BasicMatch {
         super.getGame().setProfessors();
         super.getGame().setClouds(getNumberOfClouds(), getNumberOfStudentsOnCLoud());
         super.getGame().setRandomlyFirstPlayer();
+        notifyObserver(new CurrentGameMessage(super.getGame()));
+
     }
 
     @Override
@@ -68,12 +73,13 @@ public class BasicMatchFourPlayers extends BasicMatch {
         captains.add(captainTeamTwo);
         teamTwo.add(player1);
         teamTwo.add(player2);
+
     }
 
     @Override
     public List<List<Player>> getTeams() throws ExceptionGame{
         List<List<Player>> teamsList = new ArrayList<>();
-        List<Player> copyOne=new ArrayList<>();
+        List<Player> copyOne = new ArrayList<>();
         List<Player> copyTwo = new ArrayList<>();
         Collections.copy(copyOne, teamOne);
         teamsList.add(copyOne);
@@ -119,6 +125,7 @@ public class BasicMatchFourPlayers extends BasicMatch {
         if(player.equals(super.getActionPhaseOrderOfPlayers().get(super.getActionPhaseOrderOfPlayers().size()-1))){
             resetRound();
         }
+        notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
     @Override
@@ -168,11 +175,16 @@ public class BasicMatchFourPlayers extends BasicMatch {
             } else
                 winner.addAll(w);
         }
-        System.out.println("number of students in bag "+ getGame().getStudentBag().getNumberOfStudents());
-        System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            throw new ExceptionEndGame("Wizard: " + winner + " has won the match\n" +
-                    "Please, create a new match if you want to replay");
+            List<Player> winnerPlayers = winner.stream().map(wiz -> {
+                try {
+                    return getPlayerFromWizard(wiz);
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }).toList();
+            notifyObserver(new EndMatchMessage(winnerPlayers));
         }
 
     }

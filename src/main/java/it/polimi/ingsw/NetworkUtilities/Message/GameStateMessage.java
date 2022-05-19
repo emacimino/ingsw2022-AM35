@@ -3,12 +3,19 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 public enum GameStateMessage {
     PING,
     PONG,
-    LOGIN_REPLY,
-    LOGIN_REQUEST,
     NUMBER_OF_PLAYERS,
-    PLANNING,
-    ATTACK,
     END_OF_TURN,
-    ASSISTANTCARD,
-    STUDENTINARCHIPELAGO
+    ASSISTANT_CARD,
+    LIST_ASSISTANT_CARD,
+    MOVE_STUDENT,
+    MOVE_MOTHER_NATURE,
+    ASK_MOVE_MOTHER_NATURE,
+    CHOOSE_CLOUD,
+    GENERIC_MESSAGE,
+    CHARACTER_CARD,
+    MOVED_PROFESSOR,
+    TOWER_BUILT,
+    ERROR,
+    END_MATCH,
+    MATCH_INFO;
 }

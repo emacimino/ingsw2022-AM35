@@ -112,8 +112,8 @@ public abstract class MatchDecorator extends BasicMatch {
         return basicMatch.getCaptainTeamOfPlayer(player);
     }
 
-   // @Override
-   // public abstract int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame;
+    // @Override
+    // public abstract int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame;
 
     public ArrayList<CharacterCard> getCharactersForThisGame(){ return null;}
 

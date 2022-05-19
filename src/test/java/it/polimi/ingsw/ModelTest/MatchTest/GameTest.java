@@ -40,7 +40,7 @@ public class GameTest {
     public List<Player> createPlayers(int numPlayers){
         List<Player> players = new ArrayList<>();
         for(int i = 0; i< numPlayers; i++)
-            players.add(new Player("name_"+i, "username_" +i));
+            players.add(new Player("username_" +i));
         return players;
     }
 
@@ -53,7 +53,7 @@ public class GameTest {
     void setWizards_getWizardFromPlayer_Test(int num){
         List<Player> players = new ArrayList<>();
         for(int i = 0; i< num; i++)
-            players.add(new Player("name_"+i, "username_" +i));
+            players.add(new Player("username_" +i));
         Game game = new Game(9, 4);
         game.setWizards(players);
             Assertions.assertDoesNotThrow(() -> {
@@ -85,7 +85,7 @@ public class GameTest {
     void setClouds_setStudentsOnCloud_Test(int numClouds){
         int[] nums = {9, 4};
         Game game = createGame(nums[0], nums[1]);
-        game.setClouds(numClouds, nums[1]);
+        Assertions.assertDoesNotThrow(()->game.setClouds(numClouds, nums[1]));
         Assertions.assertEquals(numClouds, game.getClouds().size());
         Assertions.assertDoesNotThrow(()-> {
                     game.setRandomStudentsOnCloud();

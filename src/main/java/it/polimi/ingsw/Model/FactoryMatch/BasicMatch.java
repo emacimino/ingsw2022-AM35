@@ -8,10 +8,15 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Observer.Observable;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class BasicMatch{
+public class BasicMatch extends Observable implements Serializable {
+
+    private final static long serialVersionUID = 9167805616236002194L;
     private int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
@@ -51,6 +56,8 @@ public class BasicMatch{
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
+       // notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -84,6 +91,7 @@ public class BasicMatch{
         Wizard wizard = game.getWizardFromPlayer(player);
         wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCards);
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -122,7 +130,7 @@ public class BasicMatch{
         try {
             game.placeProfessor(c);
         }catch (ExceptionGame e){
-            System.out.println("Not place the professor: " + e);
+            e.printStackTrace();
         }
     }
 
@@ -136,6 +144,7 @@ public class BasicMatch{
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -148,6 +157,7 @@ public class BasicMatch{
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -161,16 +171,22 @@ public class BasicMatch{
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
+            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
+            if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
+            }
         } catch (ExceptionGame e) {
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             checkVictory();
+
         }
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();
         }
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -179,6 +195,7 @@ public class BasicMatch{
     public void resetRound() {    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
+        game.setRandomStudentsOnCloud();
     }
 
     /**
@@ -218,6 +235,8 @@ public class BasicMatch{
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
+        notifyObserver(new CurrentGameMessage(game));
+
     }
 
     /**
@@ -235,7 +254,7 @@ public class BasicMatch{
             endOfTheMatch = true;
             System.out.println("num towers "+ w.get(0) + " : " + w.get(0).getBoard().getTowersInBoard().size());
             winner.add(w.get(0));
-            System.out.println("studentbag empty or assistant card playable empty, one winner");
+            System.out.println("student bag empty or assistant card playable empty, one winner");
         }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());
@@ -252,8 +271,15 @@ public class BasicMatch{
         }
         System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
-            throw new ExceptionEndGame("Wizard: " + winner + " has won the match\n" +
-                    "Please, create a new match if you want to replay");
+            List<Player> winnerPlayers = winner.stream().map(wiz -> {
+                try {
+                    return getPlayerFromWizard(wiz);
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }).toList();
+            notifyObserver(new EndMatchMessage(winnerPlayers));
         }
 
     }
@@ -419,6 +445,26 @@ public class BasicMatch{
     public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
         System.out.println("This match does not have teams");
         return player;
+    }
+
+
+    public void infoMatch() throws CloneNotSupportedException{
+        notifyObserver(new CurrentGameMessage((Game) this.clone()));
+    }
+
+    @Override
+    public String toString() {
+        return "BasicMatch{" +
+                "numberOfPlayers=" + numberOfPlayers +
+                ", game=" + game +
+                ", players=" + players +
+                ", actionPhaseOrderOfPlayers=" + actionPhaseOrderOfPlayers +
+                ", numberOfMovableStudents=" + numberOfMovableStudents +
+                ", numberOfClouds=" + numberOfClouds +
+                ", numberOfStudentsOnCLoud=" + numberOfStudentsOnCLoud +
+                ", numberOfStudentInEntrance=" + numberOfStudentInEntrance +
+                ", numberOfTowers=" + numberOfTowers +
+                '}';
     }
 }
 
