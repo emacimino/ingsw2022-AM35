@@ -38,30 +38,17 @@ public class Server {
         }
         matchInServer.remove(c.getNumOfMatch());
         matchInServer.remove(opponents);
-        Iterator<String> iterator = waitingPlayersInLobby.keySet().iterator();
-        while (iterator.hasNext()) {
-            if (waitingPlayersInLobby.get(iterator.next()) == c) {
-                iterator.remove();
-            }
-        }
+        waitingPlayersInLobby.keySet().removeIf(s -> waitingPlayersInLobby.get(s) == c);
     }
 
     public void run() {
-        int connections = 0;
         System.out.println("Server is running");
         while (true) {
-            try {
-                Socket newSocket = serverSocket.accept();
-                connections++;
-                System.out.println("Ready for the new connection; current connections = " + connections );
-                //clientHandlerToBeImplemented
-                SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-                executor.submit(socketConnection);
-            } catch (IOException e) {
-                System.out.println("Connection Error!");
-            }
+            acceptConnections();
         }
     }
+
+
 
     public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
         String name = null;
@@ -69,64 +56,20 @@ public class Server {
         SocketClientConnection clientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
-        for (int i = 0; i < keys.size(); i++) {
-            ClientConnection connection = waitingPlayersInLobby.get(keys.get(i));
-            clientConnection.asyncSend("Connected User: " + keys.get(i));
+        for (String key : keys) {
+            ClientConnection connection = waitingPlayersInLobby.get(key); //is never used
+            clientConnection.asyncSend("Connected User: " + key);
         }
 
+        pickAName(waitingList,clientConnection,keys);
 
-        try {
-            boolean nameNotOk = false;
-            do {
-                Scanner in = new Scanner(((SocketClientConnection) c).getSocket().getInputStream());
-                ((SocketClientConnection) c).sendMessage("Welcome!\nWhat is your name?");
-                name = in.next();
-
-                if(name == null)
-                    nameNotOk = true;
-
-                    else if (keys.contains(name)) {
-                            nameNotOk = true;
-                    }
-                    else nameNotOk = false;
-
-            } while (nameNotOk);
-
-            waitingList.put(name,clientConnection);
-
-
-        } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error! " + e.getMessage());
-        }
-
-        for (int i = 0; i < keys.size(); i++) { //keys belongs to size of players in lobby
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(keys.get(i)); //tacke connection of whoever is in the lobby
-            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
-                waitingList.put(keys.get(i), connection); //put whoever is matchable in the waiting list
-                waitingPlayersInLobby.remove(keys.get(i)); //and remove it from lobby
-            }
-        }
-        System.out.println("waiting list:" + waitingList);
-        System.out.println(waitingList.size() + " " +clientConnection.getNumberOfPlayers());
+        findCompatiblePlayers(clientConnection,keys,waitingList);
 
 
         if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
-            BasicMatch match;
-            FactoryMatch factoryMatch = new FactoryMatch();
-            match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
-            if (clientConnection.isExpert()) {
-                    match = new ExpertMatch(match);
-                }
+            BasicMatch match = instantiateModel(clientConnection);
+            Controller controller = instantiateController(match, waitingList) ;
 
-            Controller controller = new Controller(match, waitingList.keySet());
-       //     Map<String, ViewInterface> viewMap = new HashMap<>();
-
-            for (String clientName: waitingList.keySet()) {
-                    ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
-                    match.addObserver(clientView);
-                    clientView.addObserver(controller);
-                    controller.addView(clientName, clientView);
-                }
                 ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
                 matchInServer.put(matchCounter, clientsInMatch);
                 matchCounter++;
@@ -139,6 +82,85 @@ public class Server {
                 c.asyncSend("Waiting for another player");
             }
         }
+
+    private Controller instantiateController(BasicMatch match, Map<String, ClientConnection> waitingList) {
+        Controller controller = null;
+        try {
+            controller = new Controller(match, waitingList.keySet());
+        } catch (ExceptionGame | CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        //     Map<String, ViewInterface> viewMap = new HashMap<>();
+
+        for (String clientName: waitingList.keySet()) {
+            ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
+            match.addObserver(clientView);
+            clientView.addObserver(controller);
+            controller.addView(clientName, clientView);
+        }
+        return controller;
+    }
+
+    private BasicMatch instantiateModel(SocketClientConnection clientConnection) {
+        BasicMatch match;
+        FactoryMatch factoryMatch = new FactoryMatch();
+        match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
+        if (clientConnection.isExpert()) {
+            match = new ExpertMatch(match);
+        }
+        return match;
+    }
+
+
+    private void pickAName(Map<String, ClientConnection> waitingList, SocketClientConnection clientConnection, List<String> keys) {
+        String name;
+        try {
+            boolean nameNotOk;
+            do {
+                Scanner in = new Scanner(clientConnection.getSocket().getInputStream());
+                clientConnection.sendMessage("Welcome!\nWhat is your name?");
+                name = in.next();
+            } while (checkName(name,keys));
+
+            waitingList.put(name,clientConnection);
+
+        } catch (IOException | NoSuchElementException e) {
+            System.err.println("Error! " + e.getMessage());
+        }
+    }
+
+    private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
+        for (String key : keys) { //keys belongs to size of players in lobby
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
+            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
+                waitingList.put(key, connection); //put whoever is matchable in the waiting list
+                waitingPlayersInLobby.remove(key); //and remove it from lobby
+            }
+        }
+    }
+
+    private boolean checkName(String name, List<String> keys) {
+        boolean nameNotOk;
+        if(name == null)
+            nameNotOk = true;
+        else nameNotOk = keys.contains(name);
+        return nameNotOk;
+    }
+
+    private void acceptConnections() {
+        try {
+            int connections = 0;
+            Socket newSocket = serverSocket.accept();
+            connections++;
+            System.out.println("Ready for the new connection; current connections = " + connections );
+            //clientHandlerToBeImplemented
+            SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
+            executor.submit(socketConnection);
+        } catch (IOException e) {
+            System.out.println("Connection Error!");
+        }
+    }
+
 }
 
 
