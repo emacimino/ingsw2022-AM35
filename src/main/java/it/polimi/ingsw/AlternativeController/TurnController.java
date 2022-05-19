@@ -49,13 +49,14 @@ public class TurnController {
         this.turnPhase = turnPhase;
         switch (turnPhase) {
             case PLAY_ASSISTANT:{
-                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer);
+                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
                 remoteView.showGenericMessage("It's your turn, pick an assistant card");
                 try {
                     remoteView.askAssistantCard(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
                 }
+                break;
             }
             case MOVE_STUDENTS: {
                 RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
@@ -68,6 +69,17 @@ public class TurnController {
                 }
                 break;
             }
+            case CHOOSE_CLOUD:{
+                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+                try {
+                    remoteView.showGenericMessage("It's your turn, move MotherNature by less than " + controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep() + "steps");
+                    remoteView.askToMoveMotherNature(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep());
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+
         }
     }
 }

@@ -30,7 +30,10 @@ public class RemoteView extends ViewInterface {
 
     public void askToMoveStudentFromEntrance(List<Student> students){
         clientConnection.sendMessage(new StudentsListMessage(students));
+    }
 
+    public void askToMoveMotherNature(int numOfSteps){
+        clientConnection.sendMessage(new AskToMoveMotherNatureMessage(numOfSteps));
     }
 
     @Override
