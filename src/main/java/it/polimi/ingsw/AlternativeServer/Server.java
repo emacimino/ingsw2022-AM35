@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int PORT = 62341;
+    private static final int PORT = 1234;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
@@ -52,6 +52,7 @@ public class Server {
         while (true) {
             try {
                 Socket newSocket = serverSocket.accept();
+                System.out.println("Server is running");
                 connections++;
                 System.out.println("Ready for the new connection - " + connections);
                 //clientHandlerToBeImplemented

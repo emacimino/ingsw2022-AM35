@@ -11,6 +11,7 @@ import it.polimi.ingsw.Observer.Observer;
 import java.util.*;
 
 public class BasicMatchFourPlayers extends BasicMatch{
+
     private  Player captainTeamOne;
     private  Player captainTeamTwo;
     private List<Player> teamOne = new ArrayList<>();

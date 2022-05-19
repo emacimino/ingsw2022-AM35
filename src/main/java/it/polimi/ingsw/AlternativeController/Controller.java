@@ -38,7 +38,7 @@ public class Controller implements Observer {
         }
         this.match.setGame(players);
         gameState = GameState.PLANNING_PHASE;
-        match.infoMatch();
+        //match.infoMatch();
         turnController = new TurnController(this, viewMap);
         Random r = new Random();
         firstPlanningPhasePlayer = this.getMatch().getPlayers().get(r.nextInt(0, this.getMatch().getNumberOfPlayers()));

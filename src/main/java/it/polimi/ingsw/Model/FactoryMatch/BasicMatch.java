@@ -11,9 +11,12 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class BasicMatch extends Observable {
+public class BasicMatch extends Observable implements Serializable {
+
+    private final static long serialVersionUID = 9167805616236002194L;
     private int numberOfPlayers;
     private Game game;
     private List<Player> players = new ArrayList<>();
