@@ -38,7 +38,7 @@ public class Controller implements Observer {
         }
         this.match.setGame(players);
         gameState = GameState.PLANNING_PHASE;
-        match.infoMatch();
+        //match.infoMatch();
         turnController = new TurnController(this, viewMap);
         Random r = new Random();
         firstPlanningPhasePlayer = this.getMatch().getPlayers().get(r.nextInt(0, this.getMatch().getNumberOfPlayers()));
@@ -60,7 +60,7 @@ public class Controller implements Observer {
             case ACTION_PHASE:
                 actionPhaseHandling(receivedMessage);
             case END_OF_TURN:
-                ;
+
             default: //should never reach this condition
                 //Server.Logger.warning(STR_INVALID_STATE);
                 break;
@@ -80,27 +80,12 @@ public class Controller implements Observer {
         Player activePlayer = turnController.getActivePlayer();
         if (receivedMessage.getType() == GameStateMessage.ASSISTANT_CARD) {
             AssistantsCards assistantsCard = ((AssistantCardMessage) receivedMessage).getAssistantsCard();
-            try {
-                match.playAssistantsCard(activePlayer, assistantsCard);
-                turnController.nextPlayerPlanningPhase();
-                if (match.getActionPhaseOrderOfPlayers().size() == viewMap.size()) {
-                    this.gameState = GameState.ACTION_PHASE;
-                    pickFirstPlayerActionPhaseHandler();
-                }
-            } catch (ExceptionGame e) {
-                ViewInterface view = viewMap.get(activePlayer.getUsername());
-                view.showGenericMessage("Please, insert a valid Assistant card");
-                try {
-                    List<AssistantsCards> availableAssistantsCards = match.getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants();
-                    view.askAssistantCard(availableAssistantsCards);
-                } catch (ExceptionGame er) {
-                    view.showGenericMessage(er.getMessage());
-
-                }
-            }
+            playAssistantCard(activePlayer, assistantsCard);
 
         }
     }
+
+
 
     private void pickFirstPlayerActionPhaseHandler() {
         turnController.setActionOrderOfPlayers(match.getActionPhaseOrderOfPlayers());
@@ -111,50 +96,84 @@ public class Controller implements Observer {
     private void actionPhaseHandling(Message receivedMessage) {
 
         switch (receivedMessage.getType()) {
-            case MOVE_STUDENT: {
+            case MOVE_STUDENT -> {
                 MoveStudentMessage message = (MoveStudentMessage) receivedMessage;
-                try {
-                    if (message.getArchipelago() != null) {
-                        match.moveStudentOnArchipelago(turnController.getActivePlayer(), message.getStudent(), message.getArchipelago());
-                    } else {
-                        match.moveStudentOnBoard(turnController.getActivePlayer(), message.getStudent());
-                    }
-                    if (message.getNumberOfStudentMoved() == 3) {
-                        turnController.setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
-                    }
+                moveStudentsForThisTurn(message);
+            }
+            case CHOOSE_CLOUD -> {
+                CloudMessage message = (CloudMessage) receivedMessage;
+                selectCloudForThisTurn(message);
+            }
+            case MOVE_MOTHER_NATURE -> {
+                MoveMotherNatureMessage message = (MoveMotherNatureMessage) receivedMessage;
+                MoveMotherNatureForThisTurn(message);
 
-                } catch (ExceptionGame exceptionGame) {
-                    exceptionGame.printStackTrace();
-                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
-                }
-                break;
             }
-            case CHOOSE_CLOUD: {
-                try {
-                    match.chooseCloud(turnController.getActivePlayer(), ((CloudMessage) receivedMessage).getCloud());
-                } catch (ExceptionGame e) {
-                    e.printStackTrace();
-                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
-                }
-                turnController.setTurnPhase(TurnPhase.END_TURN);
-                turnController.nextPlayerActionPhase();
-                break;
-            }
-            case MOVE_MOTHER_NATURE: {
-                try {
-                    match.moveMotherNature(turnController.getActivePlayer(), ((MoveMotherNatureMessage) receivedMessage).getArchipelago());
-                } catch (ExceptionGame exceptionGame) {
-                    viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
-                }
-                break;
-            }
+
             //find a way to understand if influence in archipelago changed
             // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
-            default: {
+            default ->
                 throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
-            }
+
         }
 
+    }
+
+    private void MoveMotherNatureForThisTurn(MoveMotherNatureMessage message) {
+        try {
+            match.moveMotherNature(turnController.getActivePlayer(), message.getArchipelago());
+        } catch (ExceptionGame exceptionGame) {
+            viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
+        }
+    }
+
+    private void selectCloudForThisTurn(CloudMessage message) {
+        try {
+            match.chooseCloud(turnController.getActivePlayer(), message.getCloud());
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+            viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
+        }
+        turnController.setTurnPhase(TurnPhase.END_TURN);
+        turnController.nextPlayerActionPhase();
+    }
+
+    private void moveStudentsForThisTurn(MoveStudentMessage message) {
+        try {
+            if (message.getArchipelago() != null) {
+                match.moveStudentOnArchipelago(turnController.getActivePlayer(), message.getStudent(), message.getArchipelago());
+            } else {
+                match.moveStudentOnBoard(turnController.getActivePlayer(), message.getStudent());
+            }
+            if (message.getNumberOfStudentMoved() == 3) {
+                turnController.setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
+            }
+
+        } catch (ExceptionGame exceptionGame) {
+            exceptionGame.printStackTrace();
+            viewMap.get(turnController.getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
+        }
+    }
+
+    private void playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
+        try {
+            match.playAssistantsCard(activePlayer, assistantsCard);
+            turnController.nextPlayerPlanningPhase();
+            if (match.getActionPhaseOrderOfPlayers().size() == viewMap.size()) {
+                this.gameState = GameState.ACTION_PHASE;
+                pickFirstPlayerActionPhaseHandler();
+            }
+        } catch (ExceptionGame e) {
+            ViewInterface view = viewMap.get(activePlayer.getUsername());
+            view.showGenericMessage("Please, insert a valid Assistant card");
+            try {
+                List<AssistantsCards> availableAssistantsCards = match.getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants();
+                view.askAssistantCard(availableAssistantsCards);
+            } catch (ExceptionGame er) {
+                view.showGenericMessage(er.getMessage());
+
+            }
+        }
 
     }
 
@@ -167,4 +186,6 @@ public class Controller implements Observer {
     public void update(Object message)  {
         onMessageReceived((Message) message);
     }
+
+
 }

@@ -48,38 +48,31 @@ public class TurnController {
     public void setTurnPhase(TurnPhase turnPhase) {
         this.turnPhase = turnPhase;
         switch (turnPhase) {
-            case PLAY_ASSISTANT:{
-                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-                remoteView.showGenericMessage("It's your turn, pick an assistant card");
-                try {
-                    remoteView.askAssistantCard(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
-                } catch (ExceptionGame e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-            case MOVE_STUDENTS: {
-                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-                remoteView.showGenericMessage("It's your turn, move " + controller.getMatch().getNumberOfMovableStudents() + " students from your board");
-                try {
-                    List<Student> studentsFromBoard = controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList();
-                    remoteView.askToMoveStudentFromEntrance(studentsFromBoard);
-                } catch (ExceptionGame e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-            case CHOOSE_CLOUD:{
-                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-                try {
-                    remoteView.showGenericMessage("It's your turn, move MotherNature by less than " + controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep() + "steps");
-                    remoteView.askToMoveMotherNature(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep());
-                } catch (ExceptionGame e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
+            case PLAY_ASSISTANT ->  askingViewToPlayAnAssistantCard();
 
+            case MOVE_STUDENTS ->   askingViewToMoveAStudent();
+
+        }
+    }
+
+    private void askingViewToMoveAStudent() {
+        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+        remoteView.showGenericMessage("It's your turn, move " + controller.getMatch().getNumberOfMovableStudents() + " students from your board");
+        try {
+            List<Student> studentsFromBoard = controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList();
+            remoteView.askToMoveStudentFromEntrance(studentsFromBoard);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void askingViewToPlayAnAssistantCard() {
+        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+        remoteView.showGenericMessage("It's your turn, pick an assistant card");
+        try {
+            remoteView.askAssistantCard(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
         }
     }
 }
