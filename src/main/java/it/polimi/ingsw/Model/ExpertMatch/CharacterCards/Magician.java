@@ -6,18 +6,40 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
+/**Implements the effect from Character card
+ * and uses MotherNatureEffect interface
+ */
+
 public class Magician extends CharacterCard implements MotherNatureEffectCard{
+    /**
+     * Constructor of the class
+      * @param basicMatch current match
+     * @param name name of the card
+     */
+
     public Magician(BasicMatch basicMatch, String name){
         super(basicMatch, name);
         setCost(1);
     }
 
+    /**
+     * This method let the player use the card
+     * @param match the current match
+     * @throws ExceptionGame
+     */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveMotherNatureCard(this);
         this.cost++;
     }
+
+    /**
+     * This method calculates the effect of the card on mother nature
+     * @param player player using the card
+     * @param archipelago targeted archipelago
+     * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
+     */
 
     public void effectMotherNatureCard(Player player, Archipelago archipelago) throws ExceptionGame{
         if (getBasicMatch().getGame().getArchipelagos().contains(archipelago)) {
@@ -40,6 +62,9 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard{
 
         }
 
+    /**
+     * resets the card
+     */
     @Override
     public void resetCard() {
         super.resetCard();

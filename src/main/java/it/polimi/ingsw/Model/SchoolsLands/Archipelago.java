@@ -85,6 +85,11 @@ public class Archipelago {
         return influenceStudent;
     }
 
+    /**
+     * This method calculates the influence added by the towers
+     * @param w wizard that has a tower on the island
+     * @return the influence calculated
+     */
     public int calculateInfluenceTowers(Wizard w){
         int towerInfluence = 0;
         for(Island island : isle){
