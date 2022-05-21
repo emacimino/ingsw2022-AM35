@@ -34,6 +34,7 @@ public class CLIHandler {
             case CHOOSE_CLOUD -> show = "Please choose a cloud";
             case END_OF_TURN -> show = "Please wait for your turn";
             case GENERIC_MESSAGE -> showGenericMessage(message);
+          //  case GAME_INFO -> showCurrentGame();
             default -> System.out.println(message);
 
         }
@@ -81,8 +82,8 @@ public class CLIHandler {
             System.out.println("Error in the input, please re-insert information regarding the expert field re-correctly");
             return null;
         }
+        System.out.println(Printable.PROF_PINK);
         message = new LoginResponse(username, numberOfPlayers, isExpert);
-        System.out.println(message);
         return message;
     }
 
