@@ -1,15 +1,10 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
-
+import it.polimi.ingsw.Model.FactoryMatch.Game;
 import java.util.List;
 
 public class CLIHandler {
@@ -180,5 +175,34 @@ public class CLIHandler {
 
     private void setPhase(TurnPhase turnPhase){
         this.turnPhase = turnPhase;
+    }
+
+    private void displayCharacterCard(Message message){
+        System.out.println("Character Card available: \n");
+        List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
+        Printable.printCharacterCards(characterCards);
+    }
+
+    private void displayArchipelagos(Message message) throws ExceptionGame {
+        System.out.println("Archipelago: \n");
+        List<Archipelago> archipelagoList = (((ArchipelagoListMessage)message).getArchipelagoList());
+        int i=1;
+        for (Archipelago a:
+             archipelagoList) {
+            System.out.println("Archipelago " + i + ":");
+            displayArchipelagosHelper(a);
+            i++;
+        }
+    }
+
+    private void displayArchipelagosHelper(Archipelago archipelago) throws ExceptionGame {
+        List<Island> islands = archipelago.getIsle();
+        if(archipelago.isMotherNaturePresence()) System.out.println("Mother nature present!");
+        for (Island isle:
+                islands) {
+            System.out.println(isle.getTower().toString());
+            System.out.println(isle.getStudentInIsland().toString());
+            if(isle.isInterdictionCard()) System.out.println("Interdiction effect");
+        }
     }
 }

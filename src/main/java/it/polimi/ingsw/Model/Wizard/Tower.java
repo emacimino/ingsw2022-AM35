@@ -21,4 +21,9 @@ public class Tower {
     public Wizard getProperty() {
         return property;
     }
+
+    @Override
+    public String toString(){
+        return "Tower belongs to: " + getProperty() ;
+    }
 }
