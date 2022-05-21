@@ -19,5 +19,7 @@ public enum TypeMessage {
     TOWER_BUILT,
     ERROR,
     END_MATCH,
+    SHOW_CHARACTER_CARD,
+    PLAY_CHARACTER_CARD,
     GAME_INFO;
 }

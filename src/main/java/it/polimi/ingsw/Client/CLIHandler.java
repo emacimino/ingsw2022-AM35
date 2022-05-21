@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
@@ -89,5 +91,11 @@ public class CLIHandler {
 
     private void setPhase(TurnPhase turnPhase){
         this.turnPhase = turnPhase;
+    }
+
+    private void displayCharacterCard(Message message){
+        System.out.println("Character Card available: \n");
+        List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
+        Printable.printCharacterCards(characterCards);
     }
 }

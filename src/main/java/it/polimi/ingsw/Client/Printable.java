@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+
+import java.util.List;
 
 public class Printable {
 
@@ -78,7 +81,12 @@ public class Printable {
         }
     }
 
-
+    public static void printCharacterCards(List<CharacterCard> characterCards){
+        for (CharacterCard c:
+             characterCards) {
+            c.toString();
+        }
+    }
 
 
 
