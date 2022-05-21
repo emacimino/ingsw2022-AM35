@@ -1,6 +1,12 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
@@ -56,10 +62,8 @@ public class CLIHandler {
     }
 
     private void currentLandsInfo(Game game) {
-
         for (Archipelago archipelago : game.getArchipelagos()) {
             infoArchipelago(archipelago);
-
         }
     }
 
@@ -67,6 +71,9 @@ public class CLIHandler {
         System.out.println("In this archipelago we have:\n" );
         for(Student student: archipelago.getStudentFromArchipelago()){
             printStudent(student);
+        }
+        for(Island island: archipelago.getIsle()){
+            System.out.println("Tower present\n");
         }
         if(archipelago.isMotherNaturePresence()){
             System.out.println("In this archipelago we have motherNature \n" );
@@ -183,26 +190,5 @@ public class CLIHandler {
         Printable.printCharacterCards(characterCards);
     }
 
-    private void displayArchipelagos(Message message) throws ExceptionGame {
-        System.out.println("Archipelago: \n");
-        List<Archipelago> archipelagoList = (((ArchipelagoListMessage)message).getArchipelagoList());
-        int i=1;
-        for (Archipelago a:
-             archipelagoList) {
-            System.out.println("Archipelago " + i + ":");
-            displayArchipelagosHelper(a);
-            i++;
-        }
-    }
 
-    private void displayArchipelagosHelper(Archipelago archipelago) throws ExceptionGame {
-        List<Island> islands = archipelago.getIsle();
-        if(archipelago.isMotherNaturePresence()) System.out.println("Mother nature present!");
-        for (Island isle:
-                islands) {
-            System.out.println(isle.getTower().toString());
-            System.out.println(isle.getStudentInIsland().toString());
-            if(isle.isInterdictionCard()) System.out.println("Interdiction effect");
-        }
-    }
 }
