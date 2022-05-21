@@ -7,13 +7,22 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This Class represents the deck containing all Character cards
+ */
 public class DeckCharacterCard{
     private final ArrayList<String> deckOfCharacterCards = new ArrayList<>();
 
+    /**
+     * Constructor of the class
+     */
     public DeckCharacterCard() {
         setDeckOfCharacterCards();
     }
 
+    /**
+     * This method sets the deck of cards correctly
+     */
     private void setDeckOfCharacterCards() {
         deckOfCharacterCards.add("Friar"); //ok
         deckOfCharacterCards.add("Knight"); //ok
@@ -29,7 +38,11 @@ public class DeckCharacterCard{
         deckOfCharacterCards.add("Herbalist");
     }
 
-
+    /**
+     * This method is used to draw an Array of cards at the start of the match
+     * @param basicMatch current match
+     * @return the deck for the match
+     */
     public ArrayList<CharacterCard> drawCharacterCard(BasicMatch basicMatch) {
         Random random = new Random();
         ArrayList<CharacterCard> deckForAMatch = new ArrayList<>();

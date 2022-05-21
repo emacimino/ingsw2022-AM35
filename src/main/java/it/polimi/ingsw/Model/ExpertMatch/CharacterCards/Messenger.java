@@ -12,12 +12,21 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
  * Calculate influence on an additional archipelago
  */
 public class Messenger extends CharacterCard implements InfluenceEffectCard{
-
+    /**
+     * Constructor of the class
+     * @param basicMatch current match
+     * @param name name of the class
+     */
     public Messenger(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(3);
     }
 
+    /**
+     * This method let the player use the card
+     * @param match the current match
+     * @throws ExceptionGame if the active wizard is not set
+     */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
@@ -25,6 +34,14 @@ public class Messenger extends CharacterCard implements InfluenceEffectCard{
         this.cost++;
     }
 
+    /**
+     * This method is used to calculate the card effect on the influence
+     * @param wizard wizard using the card
+     * @param archipelago targeted archipelago
+     * @param normalInfluence influence before changes
+     * @return the modified influence
+     * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
+     */
     public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{ //wizard del capitano
         Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
         Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
@@ -36,6 +53,9 @@ public class Messenger extends CharacterCard implements InfluenceEffectCard{
         return normalInfluence;
     }
 
+    /**
+     * resets the card
+     */
     @Override
     public void resetCard() {
         super.resetCard();

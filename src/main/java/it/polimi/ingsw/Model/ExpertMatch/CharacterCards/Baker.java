@@ -8,12 +8,25 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+/**Implements the effect from Character card
+ * and uses InfluenceEffectCard interface
+ */
 public class Baker extends CharacterCard implements InfluenceEffectCard{
-
+    /**
+     * constructor
+     * @param basicMatch current match
+     * @param name name of the card
+     */
     public Baker(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(2);
     }
+
+    /**
+     * This method lets the player use the card
+     * @param match the current match
+     * @throws ExceptionGame
+     */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
@@ -21,6 +34,14 @@ public class Baker extends CharacterCard implements InfluenceEffectCard{
         this.cost++;
     }
 
+    /**
+     * This method is used to calculate influence after the card is played
+     * @param wizard wizard using the card
+     * @param archipelago targeted archipelago
+     * @param normalInfluence influence before card usage
+     * @return the modified influence
+     * @throws ExceptionGame signals a move that is not permitted
+     */
     public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{
         Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
         Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
@@ -34,6 +55,9 @@ public class Baker extends CharacterCard implements InfluenceEffectCard{
         return influence;
     }
 
+    /**
+     * resets the card
+     */
     @Override
     public void resetCard() {
         super.resetCard();
