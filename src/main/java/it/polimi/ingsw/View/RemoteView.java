@@ -1,8 +1,7 @@
-package it.polimi.ingsw.AlternativeView;
+package it.polimi.ingsw.View;
 
-import it.polimi.ingsw.AlternativeServer.ClientConnection;
-import it.polimi.ingsw.AlternativeServer.SocketClientConnection;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -14,13 +13,13 @@ import java.util.List;
 public class RemoteView extends ViewInterface {
 
     //pay attention to the message parameters and adjust them
-    private SocketClientConnection clientConnection;
+    private final SocketClientConnection clientConnection;
 
     public RemoteView(SocketClientConnection clientConnection) {
         this.clientConnection = clientConnection;
     }
 
-    public ClientConnection getClientHandler() {
+    public ClientConnection getClientConnection() {
         return clientConnection;
     }
 

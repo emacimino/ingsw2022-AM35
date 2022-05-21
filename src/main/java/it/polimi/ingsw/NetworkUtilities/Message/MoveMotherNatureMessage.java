@@ -1,6 +1,5 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
-import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
 public class MoveMotherNatureMessage extends Message{
@@ -10,7 +9,7 @@ public class MoveMotherNatureMessage extends Message{
 
         public MoveMotherNatureMessage(Archipelago archipelago) {
             this.archipelago = archipelago;
-            setType(GameStateMessage.MOVE_MOTHER_NATURE);
+            setType(TypeMessage.MOVE_MOTHER_NATURE);
         }
 
     public Archipelago getArchipelago() {

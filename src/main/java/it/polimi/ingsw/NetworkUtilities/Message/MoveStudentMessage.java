@@ -7,16 +7,11 @@ public class MoveStudentMessage extends Message{
     private static final long serialVersionUID = 3712768545549517262L;
     private final Student student;
     private final Archipelago archipelago;
-    private static int numberOfStudentMoved = 0;
 
     public MoveStudentMessage(Student student, Archipelago archipelago) {
         this.student = student;
         this.archipelago = archipelago;
-        setType(GameStateMessage.MOVE_STUDENT);
-        if(numberOfStudentMoved > 3)
-            numberOfStudentMoved = 0;
-        else
-            numberOfStudentMoved ++;
+        setType(TypeMessage.MOVE_STUDENT);
     }
 
     public Student getStudent() {
@@ -27,8 +22,5 @@ public class MoveStudentMessage extends Message{
         return archipelago;
     }
 
-    public int getNumberOfStudentMoved() {
-        return numberOfStudentMoved;
-    }
 
 }

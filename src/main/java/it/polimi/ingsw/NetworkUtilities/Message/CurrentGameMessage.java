@@ -11,5 +11,6 @@ public class CurrentGameMessage extends Message {
     private Game game;
     public CurrentGameMessage(Game game) {
         this.game = game;
+        setType(TypeMessage.GAME_INFO);
     }
 }
