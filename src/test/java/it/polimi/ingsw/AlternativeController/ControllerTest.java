@@ -1,10 +1,12 @@
 package it.polimi.ingsw.AlternativeController;
 
-import it.polimi.ingsw.AlternativeServer.ClientConnection;
-import it.polimi.ingsw.AlternativeServer.Server;
-import it.polimi.ingsw.AlternativeServer.SocketClientConnection;
-import it.polimi.ingsw.AlternativeView.RemoteView;
-import it.polimi.ingsw.AlternativeView.ViewInterface;
+import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.TurnController;
+import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.Server.Server;
+import it.polimi.ingsw.Server.SocketClientConnection;
+import it.polimi.ingsw.View.RemoteView;
+import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
-public enum GameStateMessage {
+public enum TypeMessage {
     PING,
     PONG,
     NUMBER_OF_PLAYERS,
+    REQUEST_LOGIN,
     END_OF_TURN,
+    YOUR_TURN,
     ASSISTANT_CARD,
     LIST_ASSISTANT_CARD,
     MOVE_STUDENT,

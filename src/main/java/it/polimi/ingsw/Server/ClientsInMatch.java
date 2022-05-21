@@ -1,7 +1,6 @@
-package it.polimi.ingsw.AlternativeServer;
+package it.polimi.ingsw.Server;
 
 import java.util.Collection;
-import java.util.List;
 
 public class ClientsInMatch {
     private final Collection<ClientConnection> clientConnectionList;

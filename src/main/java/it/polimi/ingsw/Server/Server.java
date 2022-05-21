@@ -1,8 +1,9 @@
-package it.polimi.ingsw.AlternativeServer;
+package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.AlternativeController.Controller;
-import it.polimi.ingsw.AlternativeView.RemoteView;
-import it.polimi.ingsw.AlternativeView.ViewInterface;
+import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
+import it.polimi.ingsw.View.RemoteView;
+import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
@@ -23,6 +24,7 @@ public class Server {
     private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
     private Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
     private int matchCounter = 0;
+    private int connections = 0;
 
 
     public Server() throws IOException {
@@ -34,6 +36,7 @@ public class Server {
         if (opponents != null) {
             for (ClientConnection clientConnection : opponents) {
                 clientConnection.closeConnection();
+                connections--;
             }
         }
         matchInServer.remove(c.getNumOfMatch());
@@ -48,40 +51,41 @@ public class Server {
         }
     }
 
-
-
-    public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
-        String name = null;
-
-        SocketClientConnection clientConnection = (SocketClientConnection) c;
+    public void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
+        SocketClientConnection newClientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
-        for (String key : keys) {
-            ClientConnection connection = waitingPlayersInLobby.get(key); //is never used
-            clientConnection.asyncSend("Connected User: " + key);
+        findCompatiblePlayers(newClientConnection, keys, waitingList);
+        createIfPossibleAMatch(newClientConnection, waitingList);
         }
 
-        pickAName(waitingList,clientConnection,keys);
-
-        findCompatiblePlayers(clientConnection,keys,waitingList);
-
-
-        if (waitingList.size() == clientConnection.getNumberOfPlayers()) {
-            BasicMatch match = instantiateModel(clientConnection);
+    private synchronized void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) throws ExceptionGame, CloneNotSupportedException {
+        if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
+            BasicMatch match = instantiateModel(newClientConnection);
             Controller controller = instantiateController(match, waitingList) ;
+            ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
+            matchInServer.put(matchCounter, clientsInMatch);
+            matchCounter++;
+            controller.initGame();
 
-                ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
-                matchInServer.put(matchCounter, clientsInMatch);
-                matchCounter++;
-                controller.initGame();
+        }else{ // put all the players in waiting list in lobby
+            waitingPlayersInLobby.putAll(waitingList);
+            waitingList.clear();
 
-            }else{ // put all the plahyers in waiting list in lobby
-                waitingPlayersInLobby.putAll(waitingList);
-                waitingList.clear();
-                System.out.println(waitingPlayersInLobby );
-                c.asyncSend("Waiting for another player");
+            newClientConnection.asyncSendMessage(new GenericMessage("Waiting for another player"));
+        }
+    }
+
+    private synchronized void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
+        for (String key : keys) { //keys belong to size of players in lobby
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
+            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
+                waitingList.put(key, connection); //put whoever is matchable in the waiting list
+                waitingPlayersInLobby.remove(key); //and remove it from lobby
             }
         }
+        waitingList.put(clientConnection.getUsername(), clientConnection);
+    }
 
     private Controller instantiateController(BasicMatch match, Map<String, ClientConnection> waitingList) {
         Controller controller = null;
@@ -97,6 +101,8 @@ public class Server {
             match.addObserver(clientView);
             clientView.addObserver(controller);
             controller.addView(clientName, clientView);
+            ((SocketClientConnection) waitingList.get(clientName)).setController(controller);
+
         }
         return controller;
     }
@@ -106,40 +112,13 @@ public class Server {
         FactoryMatch factoryMatch = new FactoryMatch();
         match = factoryMatch.newMatch(clientConnection.getNumberOfPlayers());
         if (clientConnection.isExpert()) {
-            match = new ExpertMatch(match);
+            return new ExpertMatch(match);
         }
         return match;
     }
 
-
-    private void pickAName(Map<String, ClientConnection> waitingList, SocketClientConnection clientConnection, List<String> keys) {
-        String name;
-        try {
-            boolean nameNotOk;
-            do {
-                Scanner in = new Scanner(clientConnection.getSocket().getInputStream());
-                clientConnection.sendMessage("Welcome!\nWhat is your name?");
-                name = in.next();
-            } while (checkName(name,keys));
-
-            waitingList.put(name,clientConnection);
-
-        } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error! " + e.getMessage());
-        }
-    }
-
-    private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
-        for (String key : keys) { //keys belongs to size of players in lobby
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
-            if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
-                waitingList.put(key, connection); //put whoever is matchable in the waiting list
-                waitingPlayersInLobby.remove(key); //and remove it from lobby
-            }
-        }
-    }
-
-    private boolean checkName(String name, List<String> keys) {
+    public synchronized boolean isNameNotOk(String name) {
+        List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         boolean nameNotOk;
         if(name == null)
             nameNotOk = true;
@@ -149,17 +128,20 @@ public class Server {
 
     private void acceptConnections() {
         try {
-            int connections = 0;
+
             Socket newSocket = serverSocket.accept();
             connections++;
             System.out.println("Ready for the new connection; current connections = " + connections );
             //clientHandlerToBeImplemented
             SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
-            executor.submit(socketConnection);
+            executor.submit(socketConnection); //starts the socketClientConnection
         } catch (IOException e) {
             System.out.println("Connection Error!");
         }
     }
+
+
+
 
 }
 
