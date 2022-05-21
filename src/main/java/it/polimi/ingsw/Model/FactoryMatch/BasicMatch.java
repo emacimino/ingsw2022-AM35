@@ -56,7 +56,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
-       // notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new CurrentGameMessage(game));
 
     }
 

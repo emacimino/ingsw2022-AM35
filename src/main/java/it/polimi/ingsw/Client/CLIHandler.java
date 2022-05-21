@@ -1,10 +1,18 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 import java.util.HashMap;
+import it.polimi.ingsw.Model.FactoryMatch.Game;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +23,7 @@ public class CLIHandler {
 
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
-        switch (turnPhase){
+        switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
 
             case PLAY_ASSISTANT -> message = createAssistantCardMessage(inputString);
@@ -26,9 +34,9 @@ public class CLIHandler {
         return message;
     }
 
-    public void showMessage(Message message){
+    public void showMessage(Message message) {
         String show;
-        switch (message.getType()){
+        switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case LIST_ASSISTANT_CARD -> showAssistantsCardOption(message);
             case MOVE_STUDENT -> show = "Please move your students from the entrance";
@@ -37,12 +45,97 @@ public class CLIHandler {
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
             case GENERIC_MESSAGE -> showGenericMessage(message);
-          //  case GAME_INFO -> showCurrentGame();
+            case GAME_INFO -> showCurrentGame(message);
             default -> System.out.println(message);
 
         }
 
     }
+
+    private void showCurrentGame(Message message) {
+        System.out.println("State of current match is :\n");
+        Game game = ((CurrentGameMessage) message).getGame();
+        displayCurrentGameInfoCli(game);
+
+    }
+
+    private void displayCurrentGameInfoCli(Game game) {
+        currentBoardInfo(game);
+        currentLandsInfo(game);
+    }
+
+    private void currentLandsInfo(Game game) {
+        for (Archipelago archipelago : game.getArchipelagos()) {
+            infoArchipelago(archipelago);
+        }
+    }
+
+    private void infoArchipelago(Archipelago archipelago) {
+        System.out.println("In this archipelago we have:\n" );
+        for(Student student: archipelago.getStudentFromArchipelago()){
+            printStudent(student);
+        }
+        for(Island island: archipelago.getIsle()){
+            System.out.println("Tower present\n");
+        }
+        if(archipelago.isMotherNaturePresence()){
+            System.out.println("In this archipelago we have motherNature \n" );
+        }
+        if(archipelago.isProhibition()){
+            System.out.println("In this archipelago a prohibition is present \n" );
+        }
+    }
+
+    private void currentBoardInfo(Game game) {
+        for (Wizard wizard : game.getWizards()) {
+            System.out.println("To " + wizard.getUsername() + " belongs: \n ");
+            printStudentInEntrance(wizard);
+            printStudentInTables(wizard);
+            printStudentInArchipelagoForEveryWizard(wizard);
+        }
+    }
+
+
+    private void printStudentInArchipelagoForEveryWizard(Wizard wizard) {
+        for (Archipelago archipelago : wizard.getArchipelagosOfWizard()) {
+            for (Student student : archipelago.getStudentFromArchipelago())
+                printStudent(student);
+        }
+    }
+
+    private void printStudentInTables(Wizard wizard) {
+        System.out.println("To " + wizard.getUsername() + " tables belongs: \n ");
+
+        for (Color color : Color.values()) {
+            System.out.println(color + "\n");
+            try {
+                for (Student student : wizard.getBoard().getStudentsFromTable(color)) {
+                    printStudent(student);
+                }
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void printStudentInEntrance(Wizard wizard) {
+        System.out.println("In entrance we have: \n ");
+        for (Student student : wizard.getBoard().getStudentsInEntrance()) {
+            printStudent(student);
+        }
+    }
+
+    public void printStudent(Student student) {
+        switch (student.getColor()) {
+            case GREEN -> System.out.println(Printable.STUDENT_GREEN + "\n");
+            case BLUE -> System.out.println(Printable.STUDENT_BLUE + "\n");
+            case PINK -> System.out.println(Printable.STUDENT_PINK + "\n");
+            case RED -> System.out.println(Printable.STUDENT_RED + "\n");
+            case YELLOW -> System.out.println(Printable.STUDENT_YELLOW + "\n");
+        }
+    }
+
+
 
     private void showAssistantsCardOption(Message message) {
         System.out.println("Please select an Assistant Card from the option below: ");
@@ -108,5 +201,12 @@ public class CLIHandler {
             return null;
         }
     }
+
+    private void displayCharacterCard(Message message){
+        System.out.println("Character Card available: \n");
+        List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
+        Printable.printCharacterCards(characterCards);
+    }
+
 
 }
