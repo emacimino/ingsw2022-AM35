@@ -51,15 +51,16 @@ public class Server {
         }
     }
 
-    public void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
+    public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
         SocketClientConnection newClientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
         findCompatiblePlayers(newClientConnection, keys, waitingList);
         createIfPossibleAMatch(newClientConnection, waitingList);
+        c.asyncSendMessage(new GenericMessage("FINE LOBBY"));
         }
 
-    private synchronized void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) throws ExceptionGame, CloneNotSupportedException {
+    private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) throws ExceptionGame, CloneNotSupportedException {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
             BasicMatch match = instantiateModel(newClientConnection);
             Controller controller = instantiateController(match, waitingList) ;
@@ -76,7 +77,7 @@ public class Server {
         }
     }
 
-    private synchronized void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
+    private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
         for (String key : keys) { //keys belong to size of players in lobby
             SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
             if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {

@@ -29,16 +29,18 @@ public class Printable {
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
 
-    public static final String ASSISTANT_ONE = Constants.CARD_ONE + ", Value = 1, Steps = 1";
-    public static final String ASSISTANT_TWO = Constants.CARD_TWO + ", Value = 2, Steps = 1";
-    public static final String ASSISTANT_THREE = Constants.CARD_THREE + ", Value = 3, Steps = 2";
-    public static final String ASSISTANT_FOUR = Constants.CARD_FOUR + ", Value = 4, Steps = 2";
-    public static final String ASSISTANT_FIVE = Constants.CARD_FIVE + ", Value = 5, Steps = 3";
-    public static final String ASSISTANT_SIX = Constants.CARD_SIX + ", Value = 6, Steps = 3";
-    public static final String ASSISTANT_SEVEN = Constants.CARD_SEVEN + ", Value = 7, Steps = 4";
-    public static final String ASSISTANT_EIGHT = Constants.CARD_EIGHT + ", Value = 8, Steps = 4";
-    public static final String ASSISTANT_NINE = Constants.CARD_NINE + ", Value = 9, Steps = 5";
-    public static final String ASSISTANT_TEN = Constants.CARD_TEN + ", Value = 10, Steps = 5";
+    public static final String ASSISTANT_ONE = Constants.ASSISTANT_ONE + ", Value = 1, Steps = 1";
+    public static final String ASSISTANT_TWO = Constants.ASSISTANT_TWO + ", Value = 2, Steps = 1";
+    public static final String ASSISTANT_THREE = Constants.ASSISTANT_THREE + ", Value = 3, Steps = 2";
+    public static final String ASSISTANT_FOUR = Constants.ASSISTANT_FOUR + ", Value = 4, Steps = 2";
+    public static final String ASSISTANT_FIVE = Constants.ASSISTANT_FIVE + ", Value = 5, Steps = 3";
+    public static final String ASSISTANT_SIX = Constants.ASSISTANT_SIX + ", Value = 6, Steps = 3";
+    public static final String ASSISTANT_SEVEN = Constants.ASSISTANT_SEVEN + ", Value = 7, Steps = 4";
+    public static final String ASSISTANT_EIGHT = Constants.ASSISTANT_EIGHT + ", Value = 8, Steps = 4";
+    public static final String ASSISTANT_NINE = Constants.ASSISTANT_NINE + ", Value = 9, Steps = 5";
+    public static final String ASSISTANT_TEN = Constants.ASSISTANT_TEN + ", Value = 10, Steps = 5";
+
+
 
     public static String getAssistantCardCLI(AssistantsCards assistantsCards){
         switch (assistantsCards.getValue()){
@@ -77,8 +79,6 @@ public class Printable {
             }
         }
     }
-
-
 
 
 

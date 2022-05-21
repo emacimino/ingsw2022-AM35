@@ -40,19 +40,22 @@ public class Controller implements Observer {
         gameState = GameState.PLANNING_PHASE;
         turnController = new TurnController(this, viewMap);
         turnController.pickFirstPlayerPlanningPhaseHandler();
-        System.out.println("INIT CONTROLLER");
     }
 
     public void onMessageReceived(Message receivedMessage) {
+        System.out.println(receivedMessage);
         switch (gameState) {
-            case PLANNING_PHASE:
+            case PLANNING_PHASE:{
+                System.out.println("SONO IN ON MESSAGE_RECEIVED");
                 turnController.planningPhaseHandling(receivedMessage);
+
+            }
             case ACTION_PHASE:
                 turnController.actionPhaseHandling(receivedMessage);
 
             default: //should never reach this condition
                 //Server.Logger.warning(STR_INVALID_STATE);
-                break;
+
         }
     }
 

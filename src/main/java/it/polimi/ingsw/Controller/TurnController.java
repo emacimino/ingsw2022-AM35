@@ -1,17 +1,13 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
-import it.polimi.ingsw.Server.ClientConnection;
-import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
-import java.net.Socket;
 import java.util.*;
 
 public class TurnController {
@@ -30,8 +26,9 @@ public class TurnController {
     }
 
     public void nextPlayerPlanningPhase(){
-        int setActivePlayer = (controller.getMatch().getPlayers().indexOf(activePlayer) + 1) % controller.getMatch().getNumberOfPlayers();
-        activePlayer = controller.getMatch().getPlayers().get(setActivePlayer);
+        int indexNewActivePlayer = (controller.getMatch().getPlayers().indexOf(activePlayer) + 1) % controller.getMatch().getNumberOfPlayers();
+        setActivePlayer(controller.getMatch().getPlayers().get(indexNewActivePlayer));
+        setTurnPhase(TurnPhase.PLAY_ASSISTANT);
     }
 
     public void nextPlayerActionPhase(){
@@ -47,11 +44,10 @@ public class TurnController {
         activePlayer = player;
         System.out.println("Active player: "+ player);
         RemoteView remoteView = (RemoteView) viewMap.get(player.getUsername());
-        ClientConnection clientConnection = remoteView.getClientConnection();
-        clientConnection.asyncSendMessage(new yourTurnMessage());
+        remoteView.sendMessage(new YourTurnMessage());
         for(String c : viewMap.keySet()){
             if(!c.equals(player.getUsername()))
-                viewMap.get(c).sendMessage(new endTurnMessage());
+                viewMap.get(c).sendMessage(new EndTurnMessage());
         }
     }
 
@@ -66,8 +62,10 @@ public class TurnController {
         setTurnPhase(TurnPhase.PLAY_ASSISTANT);
     }
     protected synchronized void planningPhaseHandling(Message receivedMessage) {
+        System.out.println("SONO IN PLANNING DI TURN");
+        System.out.println(receivedMessage.getType());
         Player activePlayer = getActivePlayer();
-        if (receivedMessage.getType() == TypeMessage.ASSISTANT_CARD) {
+        if (receivedMessage.getType().equals(TypeMessage.ASSISTANT_CARD)) {
             AssistantsCards assistantsCard = ((AssistantCardMessage) receivedMessage).getAssistantsCard();
             playAssistantCard(activePlayer, assistantsCard);
         }
@@ -121,7 +119,7 @@ public class TurnController {
             e.printStackTrace();
             viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
         }
-        viewMap.get(getActivePlayer().getUsername()).sendMessage(new endTurnMessage());
+        viewMap.get(getActivePlayer().getUsername()).sendMessage(new EndTurnMessage());
         nextPlayerActionPhase();
     }
 
@@ -147,7 +145,9 @@ public class TurnController {
 
     private void playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
         try {
+            System.out.println("SONO DENTRO PLAY ASSISTANT");
             controller.getMatch().playAssistantsCard(activePlayer, assistantsCard);
+            System.out.println("ho giocato ASSISTANT");
             nextPlayerPlanningPhase();
 
         } catch (ExceptionGame e) {
@@ -170,7 +170,7 @@ public class TurnController {
             case MOVE_STUDENTS ->   askingViewToMoveAStudent();
 
         }
-        System.out.println("set the phase to "+ turnPhase);
+        System.out.println("set the phase of " + activePlayer.getUsername()  + " to " + turnPhase);
     }
 
     private void askingViewToMoveAStudent() {
@@ -186,7 +186,6 @@ public class TurnController {
 
     private void askingViewToPlayAnAssistantCard() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        System.out.println("asking to play an assistant card to player " + activePlayer);
         remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
         try {
             remoteView.askAssistantCard(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());

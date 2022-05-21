@@ -82,16 +82,17 @@ public class BasicMatch extends Observable implements Serializable {
      * where his position on the list represents his order position in the action phase
      *
      * @param player          is the current player
-     * @param assistantsCards is the round's assistant's card of the player
+     * @param assistantsCard is the round's assistant's card of the player
      * @throws ExceptionGame is thrown whenever there is an issue with the assistant's card played or the current player
      */
-    public void playAssistantsCard(Player player, AssistantsCards assistantsCards) throws ExceptionGame {
+    public void playAssistantsCard(Player player, AssistantsCards assistantsCard) throws ExceptionGame {
         if (actionPhaseOrderOfPlayers.contains(player))
             throw new ExceptionGame("Player already played an assistant's Card");
         Wizard wizard = game.getWizardFromPlayer(player);
-        wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
-        setPlayerInActionPhase(player, assistantsCards);
-        notifyObserver(new CurrentGameMessage(game));
+        wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
+        setPlayerInActionPhase(player, assistantsCard);
+      //  notifyObserver(new CurrentGameMessage(game));
+         notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**

@@ -22,13 +22,16 @@ public class CLI extends Client{
             try{
                 while (isActive()){
                     String inputLine = scanner.nextLine(); //Scan input from command line
-                    Message message = cliHandler.convertInputToMessage(inputLine); //Create message from input
+                    Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
                     if(message != null) {
                         super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
                         outputStream.flush(); //send message derivate from input to the server
+                    }else if(inputLine.equals("quit")){
+
                     }
                 }
             }catch (Exception e){
+                e.printStackTrace();
                 setActive(false);
             }
         });
@@ -45,6 +48,7 @@ public class CLI extends Client{
                     cliHandler.showMessage(inputFromServer); //manage to show to the user what is need to be shown
                 }
             }catch (Exception e){
+                e.printStackTrace();
                 setActive(false);
             }
         });
