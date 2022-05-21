@@ -1,5 +1,7 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
+import it.polimi.ingsw.Model.FactoryMatch.Game;
+
 import java.io.Serial;
 import java.io.Serializable;
 
