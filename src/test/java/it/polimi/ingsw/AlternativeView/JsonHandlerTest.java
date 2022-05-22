@@ -51,14 +51,14 @@ class JsonHandlerTest {
         }
     }
 
-    @Test
+  /*  @Test
     public void JavaToJsonParser(){
         gameSetter();
         JsonHandler jsonHandler = new JsonHandler();
         jsonHandler.javaToJsonParser(basicMatch2Players.getGame());
         Reader reader = new InputStreamReader(jsonHandler);
         System.out.println(jsonHandler);
-    }
+    }*/
 
 
 }

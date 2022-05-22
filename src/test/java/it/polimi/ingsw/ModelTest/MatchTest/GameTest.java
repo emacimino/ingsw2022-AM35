@@ -78,17 +78,16 @@ public class GameTest {
 
     /**
      * This methodTest tests the setClouds and setStudentsObCloud methods
-     * @param numClouds is the number of clouds of the game
+
      */
-    @ParameterizedTest
-    @ValueSource( ints ={2,3,4})
-    void setClouds_setStudentsOnCloud_Test(int numClouds){
+    @Test
+    void setClouds_setStudentsOnCloud_Test(){
         int[] nums = {9, 4};
+        int numClouds = 3;
         Game game = createGame(nums[0], nums[1]);
         Assertions.assertDoesNotThrow(()->game.setClouds(numClouds, nums[1]));
         Assertions.assertEquals(numClouds, game.getClouds().size());
         Assertions.assertDoesNotThrow(()-> {
-                    game.setRandomStudentsOnCloud();
                     for (Cloud c : game.getClouds()) {
                         Assertions.assertEquals(nums[1], c.getStudentOnCloud().size());
                     }

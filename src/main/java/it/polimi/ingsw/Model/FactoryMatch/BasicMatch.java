@@ -196,10 +196,14 @@ public class BasicMatch extends Observable implements Serializable {
     /**
      * This method resets the list of assistant's cards played in the round
      */
-    public void resetRound() {    //Tested in local
+    public void resetRound(){    //Tested in local
         actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
         game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
-        game.setRandomStudentsOnCloud();
+        try {
+            game.setRandomStudentsOnCloud();
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     /**

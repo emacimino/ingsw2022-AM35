@@ -58,7 +58,7 @@ public class Game implements Cloneable{
      * @param numberOfClouds is the number of clouds in the game
      * @param numberOfStudentsOnCloud is the number of students on each cloud
      */
-    public void setClouds(int numberOfClouds, int numberOfStudentsOnCloud){
+    public void setClouds(int numberOfClouds, int numberOfStudentsOnCloud) throws ExceptionGame {
         for( int i=0; i<numberOfClouds; i++){
             clouds.add(new Cloud(numberOfStudentsOnCloud));
         }
@@ -85,10 +85,9 @@ public class Game implements Cloneable{
             archipelagos.add(new Archipelago());
         Random random = new Random();
         int position = random.nextInt(12);
-        if(position != 0) {
-            motherNature.setPosition(position);
-            archipelagos.get(position).setMotherNaturePresence(true);
-        }
+        motherNature.setPosition(position);
+        archipelagos.get(position).setMotherNaturePresence(true);
+
         for(Archipelago a : archipelagos) {
             if (archipelagos.indexOf(a) != position && archipelagos.indexOf(a) != (position + 6) % 12) {
                 Student student1 = studentBag.drawStudent();
@@ -152,13 +151,9 @@ public class Game implements Cloneable{
      * it is not possible to place students on the clouds
      * @throws ExceptionGame if it is not possible to sets students
      */
-    public void setRandomStudentsOnCloud(){
+    public void setRandomStudentsOnCloud() throws ExceptionGame{
         for(Cloud c : clouds){
-            try {
-                c.setStudentsOnCloud(studentBag);
-            } catch (ExceptionGame e) {
-                e.printStackTrace();
-            }
+            c.setStudentsOnCloud(studentBag);
         }
     }
 
