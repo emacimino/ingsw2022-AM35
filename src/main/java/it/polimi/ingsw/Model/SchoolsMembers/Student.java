@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Model.SchoolsMembers;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
+    private static final long serialVersionUID = -8625622548772539723L;
     private final Color color;
 
     /**
@@ -18,10 +21,9 @@ public class Student {
         return color;
     }
 
-
     @Override
     public String toString() {
-        return "Student: " + "color = " + color + "\n";
+        return "Student: " + "color = " + color ;
     }
 
     public String colorToString(){return color.toString();}

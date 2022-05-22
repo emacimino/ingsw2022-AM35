@@ -4,12 +4,14 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * This class represents the Table of students placed just below the professors' seats and is iterated 5 times in the board, one for each color
  */
-public class TableOfStudents {
+public class TableOfStudents implements Serializable {
+    private static final long serialVersionUID = -6720604615586159342L;
     private final Color color;
     private final Collection<Student> studentsInTable= new HashSet<>();
     private final int limitOfStudents;

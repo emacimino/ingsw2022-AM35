@@ -6,11 +6,11 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 
 public class MoveStudentMessage extends Message{
     private static final long serialVersionUID = 3712768545549517262L;
-    private final Student student;
-    private Archipelago archipelago;
+    private final Integer student;
+    private Integer archipelago;
     private boolean moveToBoard;
 
-    public MoveStudentMessage(Student student, Archipelago archipelago) {
+    public MoveStudentMessage(Integer student, Integer archipelago) {
         this.student = student;
         setType(TypeMessage.MOVE_STUDENT);
         if(archipelago != null) {
@@ -25,13 +25,20 @@ public class MoveStudentMessage extends Message{
         return moveToBoard;
     }
 
-    public Student getStudent() {
+    public Integer getStudent() {
         return student;
     }
 
-    public Archipelago getArchipelago() {
+    public Integer getArchipelago() {
         return archipelago;
     }
 
-
+    @Override
+    public String toString() {
+        return "MoveStudentMessage{" +
+                "student=" + student +
+                ", archipelago=" + archipelago +
+                ", moveToBoard=" + moveToBoard +
+                '}';
+    }
 }

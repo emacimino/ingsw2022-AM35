@@ -1,11 +1,13 @@
 package it.polimi.ingsw.Model.Wizard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *Instantiate a deck of Assistants for every Wizard
  */
-public class AssistantsDeck {
+public class AssistantsDeck implements Serializable {
+    private static final long serialVersionUID = -1755352456373911537L;
    private final ArrayList<AssistantsCards> playableAssistants;
    private final ArrayList<AssistantsCards> usedAssistants;
 

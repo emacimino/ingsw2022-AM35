@@ -3,6 +3,8 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Professor;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.util.List;
@@ -83,6 +85,31 @@ public class Printable {
                 return "ERROR IN SEND ASSISTANT'S CARDS";
             }
         }
+    }
+    public static String getStudentsCLI(Student student){
+        String studentString;
+        switch (student.getColor()) {
+            case GREEN -> studentString = STUDENT_GREEN;
+            case BLUE -> studentString = STUDENT_BLUE;
+            case PINK -> studentString = STUDENT_PINK;
+            case RED -> studentString = STUDENT_RED;
+            case YELLOW -> studentString = STUDENT_YELLOW;
+            default -> studentString = null;
+        }
+        return studentString;
+    }
+
+    public static String getProfessorsCLI(Professor professor){
+        String professorString;
+        switch (professor.getColor()) {
+            case GREEN -> professorString = STUDENT_GREEN;
+            case BLUE -> professorString = STUDENT_BLUE;
+            case PINK -> professorString = STUDENT_PINK;
+            case RED -> professorString = STUDENT_RED;
+            case YELLOW -> professorString = STUDENT_YELLOW;
+            default -> professorString = null;
+        }
+        return professorString;
     }
 
     public static void printCharacterCards(List<CharacterCard> characterCards){

@@ -57,7 +57,6 @@ public class Server {
         Map<String, ClientConnection> waitingList = new HashMap<>();
         findCompatiblePlayers(newClientConnection, keys, waitingList);
         createIfPossibleAMatch(newClientConnection, waitingList);
-        c.asyncSendMessage(new GenericMessage("FINE LOBBY"));
         }
 
     private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) throws ExceptionGame, CloneNotSupportedException {

@@ -1,9 +1,13 @@
 package it.polimi.ingsw.Model.SchoolsMembers;
 
-public enum Color {
+import java.io.Serializable;
+
+public enum Color implements Serializable {
     BLUE,
     GREEN,
     YELLOW,
     RED,
-    PINK
+    PINK;
+
+    private static final long serialVersionUID = 5136358313370733586L;
 }

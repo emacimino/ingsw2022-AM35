@@ -85,8 +85,10 @@ public class Game implements Cloneable{
             archipelagos.add(new Archipelago());
         Random random = new Random();
         int position = random.nextInt(12);
-        if(position != 0)
+        if(position != 0) {
             motherNature.setPosition(position);
+            archipelagos.get(position).setMotherNaturePresence(true);
+        }
         for(Archipelago a : archipelagos) {
             if (archipelagos.indexOf(a) != position && archipelagos.indexOf(a) != (position + 6) % 12) {
                 Student student1 = studentBag.drawStudent();

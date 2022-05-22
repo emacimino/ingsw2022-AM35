@@ -6,31 +6,39 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
+import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
+import java.util.Collection;
 import java.util.HashMap;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import java.util.List;
 import java.util.Map;
 
 public class CLIHandler {
-    List<AssistantsCards> assistantsCardsInTurn;
-    Map<String, AssistantsCards> assistantsCardsMap = new HashMap<>();
+    private List<AssistantsCards> assistantsCardsInTurn;
+    private Map<String, AssistantsCards> assistantsCardsMap = new HashMap<>();
+    private Map<Integer, Student> studentsMap = new HashMap<>();
+    private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
+
 
 
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
-
             case PLAY_ASSISTANT -> message = createAssistantCardMessage(inputString);
-          //  case MOVE_STUDENTS -> message = createMoveStudentMessage(inputString);
-            default -> {message = null;}
+            case MOVE_STUDENTS -> message = createMoveStudentMessage(inputString);
+            case MOVE_MOTHERNATURE -> message = createMoveMotherNatureMessage(inputString);
+            default -> {
+                System.out.println("MAI QUI IN teoria");
+                message = null;}
         }
-
+        System.out.println(message);
         return message;
     }
 
@@ -38,18 +46,26 @@ public class CLIHandler {
         String show;
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
-            case LIST_ASSISTANT_CARD -> showAssistantsCardOption(message);
-            case MOVE_STUDENT -> show = "Please move your students from the entrance";
-            case MOVE_MOTHER_NATURE -> show = "Please, move Mother Nature";
+            case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
+            case STUDENTS_ON_ENTRANCE -> showStudentsOption(message);
+            case ASK_MOVE_MOTHER_NATURE -> showMotherNatureOption(message);
+            case BOARD -> showBoard(message);
+            case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
             case CHOOSE_CLOUD -> show = "Please choose a cloud";
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
             case GENERIC_MESSAGE -> showGenericMessage(message);
             case GAME_INFO -> showCurrentGame(message);
+            case ERROR -> showErrorMessage(message);
             default -> System.out.println(message);
 
         }
 
+    }
+
+    private void showErrorMessage(Message message) {
+        ErrorMessage errorMessage = (ErrorMessage) message;
+        System.out.println(Constants.ANSI_RED + errorMessage.getError() + Constants.ANSI_RESET);
     }
 
     private void showCurrentGame(Message message) {
@@ -66,35 +82,48 @@ public class CLIHandler {
 
     private void currentLandsInfo(Game game) {
         for (Archipelago archipelago : game.getArchipelagos()) {
-            infoArchipelago(archipelago);
+            getInfoArchipelago(archipelago);
         }
     }
 
-    private void infoArchipelago(Archipelago archipelago) {
-        System.out.println("In this archipelago we have:\n" );
+    private void getInfoArchipelago(Archipelago archipelago) {
+        int numTowers = 0;
         for(Student student: archipelago.getStudentFromArchipelago()){
-            printStudent(student);
+            System.out.print(Printable.getStudentsCLI(student) + "  ");
         }
-        for(Island island: archipelago.getIsle()){
-            System.out.println("Tower present\n");
+        for(Island island: archipelago.getIsle()) {
+            if (island.isThereTower())
+                numTowers++;
         }
+        if(numTowers>0) {
+            try {
+                System.out.println(numTowers + "Towers of " + archipelago.getIsle().get(0).getTower().getProperty()+ " present in this Archipelagos\n");
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
+        }
+
         if(archipelago.isMotherNaturePresence()){
-            System.out.println("In this archipelago we have motherNature \n" );
-        }
+            System.out.println("In this archipelago we have motherNature " );
+        }else
+            System.out.println("NO MOTHER NATURE" );
         if(archipelago.isProhibition()){
-            System.out.println("In this archipelago a prohibition is present \n" );
+            System.out.println("In this archipelago a prohibition is present " );
         }
     }
-
+    private void getInfoBoard(Board board){
+        System.out.println("\n\nTO THIS BELONGS:  ");
+        System.out.println("STUDENT in entrance:  ");
+        printStudents(board.getStudentsInEntrance());
+        printStudentInTables(board);
+        System.out.println("\nPROFESSOR in board: \n ");
+        printProfessors(board.getProfessorInTable());
+    }
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
-            System.out.println("To " + wizard.getUsername() + " belongs: \n ");
-            printStudentInEntrance(wizard);
-            printStudentInTables(wizard);
-            printStudentInArchipelagoForEveryWizard(wizard);
+            getInfoBoard(wizard.getBoard());
         }
     }
-
 
     private void printStudentInArchipelagoForEveryWizard(Wizard wizard) {
         for (Archipelago archipelago : wizard.getArchipelagosOfWizard()) {
@@ -102,14 +131,11 @@ public class CLIHandler {
                 printStudent(student);
         }
     }
-
-    private void printStudentInTables(Wizard wizard) {
-        System.out.println("To " + wizard.getUsername() + " tables belongs: \n ");
-
+    private void printStudentInTables(Board board) {
         for (Color color : Color.values()) {
-            System.out.println(color + "\n");
+            System.out.print("\nOn the table " +color + " -> ");
             try {
-                for (Student student : wizard.getBoard().getStudentsFromTable(color)) {
+                for (Student student : board.getStudentsFromTable(color)) {
                     printStudent(student);
                 }
             } catch (ExceptionGame e) {
@@ -117,35 +143,73 @@ public class CLIHandler {
             }
         }
     }
-
-    private void printStudentInEntrance(Wizard wizard) {
-        System.out.println("In entrance we have: \n ");
-        for (Student student : wizard.getBoard().getStudentsInEntrance()) {
+    private void printStudents(Collection<Student> students) {
+        for (Student student : students) {
             printStudent(student);
         }
     }
-
     public void printStudent(Student student) {
         switch (student.getColor()) {
-            case GREEN -> System.out.println(Printable.STUDENT_GREEN + "\n");
-            case BLUE -> System.out.println(Printable.STUDENT_BLUE + "\n");
-            case PINK -> System.out.println(Printable.STUDENT_PINK + "\n");
-            case RED -> System.out.println(Printable.STUDENT_RED + "\n");
-            case YELLOW -> System.out.println(Printable.STUDENT_YELLOW + "\n");
+            case GREEN -> System.out.print(Printable.STUDENT_GREEN + "  ");
+            case BLUE -> System.out.print(Printable.STUDENT_BLUE + "  ");
+            case PINK -> System.out.print(Printable.STUDENT_PINK + "  ");
+            case RED -> System.out.print(Printable.STUDENT_RED + "  ");
+            case YELLOW -> System.out.print(Printable.STUDENT_YELLOW + "  ");
         }
     }
-
+    private void printProfessors(Collection<Professor> professors) {
+        for (Professor p : professors) {
+            printProfessor(p);
+        }
+    }
+    public void printProfessor(Professor professor) {
+        switch (professor.getColor()) {
+            case GREEN -> System.out.println(Printable.PROF_GREEN + "\n");
+            case BLUE -> System.out.println(Printable.PROF_BLUE + "\n");
+            case PINK -> System.out.println(Printable.PROF_PINK + "\n");
+            case RED -> System.out.println(Printable.PROF_RED + "\n");
+            case YELLOW -> System.out.println(Printable.PROF_YELLOW + "\n");
+        }
+    }
 
 
     private void showAssistantsCardOption(Message message) {
         System.out.println("Please select an Assistant Card from the option below: ");
-        List<AssistantsCards> assistantsCardsInTurn = ((AssistantCardListMessage)message).getAssistantsCards();
+        List<AssistantsCards> assistantsCardsInTurn = ((AskAssistantCardMessage)message).getAssistantsCards();
         for(AssistantsCards a : assistantsCardsInTurn){
             assistantsCardsMap.put(Constants.getAssistantCardCLI(a), a);
             System.out.println(Printable.getAssistantCardCLI(a));
         }
     }
+    private void showStudentsOption(Message message){
+        System.out.println("\nPlease select an Student from the option below: ");
+        System.out.println("Indicate the student you cho ose with its number than after the comma choose the Archipelago you want to move the student" +
+                "\n Write just the number if you want move the student on your board ");
+        System.out.println("example: 1,2");
+        StudentsOnEntranceMessage studentsCollectionMessage = (StudentsOnEntranceMessage) message;
+        setStudentMap(studentsCollectionMessage.getStudents());
+        for(int s : studentsMap.keySet()) {
+            System.out.print(s + "->" + Printable.getStudentsCLI(studentsMap.get(s)) + "  ");
+        }
 
+    }
+    private void showMotherNatureOption(Message message) {
+        AskToMoveMotherNatureMessage askToMoveMotherNatureMessage = (AskToMoveMotherNatureMessage) message;
+        System.out.println(askToMoveMotherNatureMessage.getMessage());
+        System.out.println("Insert the index of the Archipelago you want to move Mother Nature");
+    }
+    private void showArchipelagos(Message message){
+        ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
+        setArchipelagosMap(archipelagoListMessage.getArchipelago());
+        for(int i : archipelagosMap.keySet()) {
+            System.out.print("\n"+i  + ")  In this archipelago we have:\n");
+            getInfoArchipelago(archipelagosMap.get(i));
+        }
+    }
+    private void showBoard(Message message){
+        BoardMessage boardMessage = (BoardMessage) message;
+        getInfoBoard(boardMessage.getBoard());
+    }
     private void showGenericMessage(Message message){
         GenericMessage genericMessage = (GenericMessage) message;
         System.out.println(genericMessage.getContent());
@@ -156,7 +220,7 @@ public class CLIHandler {
     }
     private void showYourTurnMessage(Message message){
         YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
-        System.out.println(yourTurnMessage.getContent());
+        System.out.println("\n"+yourTurnMessage.getContent());
     }
     private void requestLogin(){
         System.out.println("Please, procede with the login: ");
@@ -201,11 +265,57 @@ public class CLIHandler {
             return null;
         }
     }
+    private Message createMoveStudentMessage(String student){ //NON VA BENE DEVO RIVEDERE COME SEGNARE GLI ARCHIPELAGI
+        Message message = null;
+        if(!student.contains(",")){
+            Integer indexStud = Integer.parseInt(student);
+            if (studentsMap.containsKey(indexStud))
+                message = new MoveStudentMessage(indexStud, null);
+            else
+                System.out.println("Please write a valid Student");
+
+        }else {
+            String info[] = student.split(",");
+            String stud = info[0];
+            String arch = info[1];
+            Integer indexStud = Integer.parseInt(stud);
+            Integer indexArch = Integer.parseInt(arch);
+            if (studentsMap.containsKey(indexStud) && archipelagosMap.containsKey(indexArch)) {
+                return new MoveStudentMessage(indexStud, indexArch);
+            } else {
+                System.out.println("Please write a valid Student");
+            }
+        }
+        studentsMap.clear();
+        archipelagosMap.clear();
+        return message;
+    }
+    private Message createMoveMotherNatureMessage(String archipelago){
+        Message message= null;
+        Integer indexArch = Integer.parseInt(archipelago);
+        System.out.println(indexArch);
+        if (archipelagosMap.containsKey(indexArch)) {
+            message = new MoveMotherNatureMessage(indexArch);
+            System.out.println(message);
+        }
+        else
+            System.out.println("Please write a valid index of Archipelago");
+
+        return message;
+    }
 
     private void displayCharacterCard(Message message){
         System.out.println("Character Card available: \n");
         List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
         Printable.printCharacterCards(characterCards);
+    }
+    private void setStudentMap(Map<Integer, Student> map){
+        studentsMap.clear();
+        studentsMap.putAll(map);
+    }
+    private void setArchipelagosMap(Map<Integer, Archipelago> map){
+        archipelagosMap.clear();
+        archipelagosMap.putAll(map);
     }
 
 

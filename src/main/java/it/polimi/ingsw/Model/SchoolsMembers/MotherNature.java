@@ -2,7 +2,10 @@ package it.polimi.ingsw.Model.SchoolsMembers;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 
-public class MotherNature {
+import java.io.Serializable;
+
+public class MotherNature implements Serializable {
+    private static final long serialVersionUID = -9004028422001487757L;
     private int position;
 
     /**

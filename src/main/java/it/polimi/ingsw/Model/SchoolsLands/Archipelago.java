@@ -6,14 +6,16 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Archipelago is used to facilitate merge between islands and contains Mother Nature's position
  */
-public class Archipelago {
+public class Archipelago implements Serializable {
+    private static final long serialVersionUID = 8744156061031040215L;
     private List<Island> isle= new ArrayList<>();
-    private boolean motherNaturePresence;
+    private boolean motherNaturePresence = false;
     private boolean prohibition = false;
 
     /**

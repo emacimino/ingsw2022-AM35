@@ -89,13 +89,11 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     @Override
     public void run() {
-      //  Scanner in;
         Message newMessage;
         try{
             login();
-            while(isActive()){//waiting for client input to add new connections
+            while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                System.out.println(newMessage);
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ExceptionGame | CloneNotSupportedException | ClassNotFoundException e) {

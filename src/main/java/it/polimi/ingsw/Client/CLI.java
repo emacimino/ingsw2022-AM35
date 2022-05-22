@@ -25,7 +25,7 @@ public class CLI extends Client{
                     Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
                     if(message != null) {
                         super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
-                        outputStream.flush(); //send message derivate from input to the server
+                        super.outputStream.flush(); //send message derivate from input to the server
                     }else if(inputLine.equals("quit")){
 
                     }
