@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.util.List;
 
+import static it.polimi.ingsw.Client.Constants.ANSI_BRIGHTBLACK;
+import static it.polimi.ingsw.Client.Constants.ANSI_BRIGHTWHITE;
+
 public class Printable {
 
     public static final String BLUE = Constants.ANSI_BLUE;
@@ -22,6 +25,14 @@ public class Printable {
     public static final String LINE_BLOCK =
             "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████";
 
+    public static final String bigTitle=
+            "███████  ███████   ██      ██      ██     ██  ██████  ██    ██   █████\n" +
+            "██       ██    █   ██     █  █     ██ █   ██    ██      █  █    █     \n" +
+            "███████  ██████    ██    █ ██ █    ██  █  ██    ██       ██      ██   \n" +
+            "██       ██   █    ██   ██    ██   ██   █ ██    ██       ██        ██ \n" +
+            "███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████  \n"
+            ;
+
     public static final String STUDENT_BLUE = BLUE +"█"+ RESET;
     public static final String STUDENT_RED = RED + "█"+ RESET;
     public static final String STUDENT_YELLOW = YELLOW + "█"+ RESET;
@@ -33,6 +44,33 @@ public class Printable {
     public static final String PROF_YELLOW = YELLOW + "███"+ RESET;
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
+
+    public static final String TOWER_GREY = RESET +
+            "█████\n" +
+            " ███ \n" +
+            " ███ " + RESET;
+    public static final String TOWER_BLACK = ANSI_BRIGHTBLACK +
+            "█████\n" +
+            " ███ \n" +
+            " ███ " + RESET;
+    public static final String TOWER_BLACK_TOP = ANSI_BRIGHTBLACK +
+            " █████ " + RESET;
+    public static final String TOWER_BLACK_MIDDLE = ANSI_BRIGHTBLACK +
+            "  ███  " + RESET;
+
+    public static final String TOWER_WHITE = ANSI_BRIGHTWHITE +
+            "█████\n" +
+            " ███ \n" +
+            " ███ " + RESET;
+    public static final String TWO_TOWER_BLACK = ANSI_BRIGHTBLACK +
+            "  █████   █████ \n" +
+            "   ███     ███  \n" +
+            "   ███     ███   " + RESET;
+
+
+    public static final String BOARD_LEFT_MARGIN = "##   ";
+    public static final String BOARD_RIGHT_MARGIN = "   ##";
+    public static final String BOARD_TOP_MARGIN = "########";
 
     public static final String ASSISTANT_ONE = Constants.CARD_ONE + ", Value = 1, Steps = 1";
     public static final String ASSISTANT_TWO = Constants.CARD_TWO + ", Value = 2, Steps = 1";
@@ -91,10 +129,48 @@ public class Printable {
     }
 
 
-    public static void printArchipelagoAndItsComponents(Archipelago archipelago){
+    public static void printBoard(int numberOfTowers) {
+        int top_margin_lenght = 5;
+        int firstRowTowers=numberOfTowers - 4 ;
+        for (int i = 0; i < top_margin_lenght; i++) {
+            System.out.print(BOARD_TOP_MARGIN);
+        }
+        System.out.print("\n");
 
+        if(firstRowTowers > 0){
+            for (int i = 0; i < firstRowTowers; i++) {
+                System.out.print(TOWER_BLACK_TOP);
+            }
+            System.out.print("\n");
+            for (int i = 0; i < firstRowTowers; i++) {
+                System.out.print(TOWER_BLACK_MIDDLE);
+            }
+            System.out.print("\n");
+            for (int i = 0; i < firstRowTowers; i++) {
+                System.out.print(TOWER_BLACK_MIDDLE);
+            }
+            numberOfTowers = numberOfTowers - firstRowTowers;
+        }
+        System.out.print("\n");
+        if(numberOfTowers > 0){
+            for (int i = 0; i < numberOfTowers; i++) {
+                System.out.print(TOWER_BLACK_TOP);
+            }
+            System.out.print("\n");
+            for (int i = 0; i < numberOfTowers; i++) {
+                System.out.print(TOWER_BLACK_MIDDLE);
+            }
+            System.out.print("\n");
+            for (int i = 0; i < numberOfTowers; i++) {
+                System.out.print(TOWER_BLACK_MIDDLE);
+            }
+            System.out.print("\n");
+        }
+        for (int i = 0; i < top_margin_lenght; i++) {
+            System.out.print(BOARD_TOP_MARGIN);
+        }
     }
 
-
+//creare funzoine che crea la torre passo passo dato il numero di torri e pone \n alla fine della riga
 
 }
