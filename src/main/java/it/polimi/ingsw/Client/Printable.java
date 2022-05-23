@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 
 import javax.print.attribute.standard.PresentationDirection;
 import java.util.HashMap;
@@ -83,19 +84,15 @@ public class Printable {
             "█████\n" +
             " ███ \n" +
             " ███ " + RESET;
-    public static final String TOWER_BLACK_TOP = ANSI_BRIGHTBLACK +
-            " █████ " + RESET;
-    public static final String TOWER_BLACK_MIDDLE = ANSI_BRIGHTBLACK +
-            "  ███  " + RESET;
-
     public static final String TOWER_WHITE = ANSI_BRIGHTWHITE +
             "█████\n" +
             " ███ \n" +
             " ███ " + RESET;
-    public static final String TWO_TOWER_BLACK = ANSI_BRIGHTBLACK +
-            "  █████   █████ \n" +
-            "   ███     ███  \n" +
-            "   ███     ███   " + RESET;
+    public static final String TOWER_TOP =
+            " █████ ";
+    public static final String TOWER_MIDDLE =
+            "  ███  ";
+
 
 
     public static final String BOARD_LEFT_MARGIN = "##   ";
@@ -172,41 +169,53 @@ public class Printable {
         }
     }
 
+    public void genericBoard(Wizard wizard){
+        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(),);
+        Printable.printBoardProfessorAndTables(p, s);
+        Printable.printEntrance(s);
+    }
 
-    public static void printBoardTowers(int numberOfTowers) {
+    public static void printBoardTowers(int numberOfTowers, String towerColor) {
+        final String privateTowerColor = towerColor;
+        final String color;
+        switch (privateTowerColor) {
+            case "Black" -> color = ANSI_BRIGHTBLACK;
+            case "White" -> color = RESET;
+            case "Gray" -> color = ANSI_BRIGHTWHITE;
+            default -> throw new IllegalStateException("Unexpected value: " + towerColor);
+        }
         int top_margin_lenght = 13;
         int firstRowTowers=numberOfTowers - 4 ;
         for (int i = 0; i < top_margin_lenght; i++) {
             System.out.print(BOARD_TOP_MARGIN);
         }
         System.out.print("\n");
-
         if(firstRowTowers > 0){
             for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print(TOWER_BLACK_TOP);
+                System.out.print( color + TOWER_TOP + RESET);
             }
             System.out.print("\n");
             for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print(TOWER_BLACK_MIDDLE);
+                System.out.print(color + TOWER_MIDDLE + RESET);
             }
             System.out.print("\n");
             for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print(TOWER_BLACK_MIDDLE);
+                System.out.print(color + TOWER_MIDDLE + RESET);
             }
             numberOfTowers = numberOfTowers - firstRowTowers;
         }
         System.out.print("\n");
         if(numberOfTowers > 0){
             for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print(TOWER_BLACK_TOP);
+                System.out.print( color + TOWER_TOP + RESET);
             }
             System.out.print("\n");
             for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print(TOWER_BLACK_MIDDLE);
+                System.out.print(color + TOWER_MIDDLE + RESET);
             }
             System.out.print("\n");
             for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print(TOWER_BLACK_MIDDLE);
+                System.out.print(color + TOWER_MIDDLE + RESET);
             }
             System.out.print("\n");
         }
