@@ -4,12 +4,14 @@ import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
@@ -24,8 +26,7 @@ public class CLIHandler {
     private Map<String, AssistantsCards> assistantsCardsMap = new HashMap<>();
     private Map<Integer, Student> studentsMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
-
-
+    private Map<Integer, Cloud> cloudsMap = new HashMap<>();
 
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
@@ -34,11 +35,11 @@ public class CLIHandler {
             case PLAY_ASSISTANT -> message = createAssistantCardMessage(inputString);
             case MOVE_STUDENTS -> message = createMoveStudentMessage(inputString);
             case MOVE_MOTHERNATURE -> message = createMoveMotherNatureMessage(inputString);
+            case CHOOSE_CLOUD -> message = createChooseCloudMessage(inputString);
             default -> {
-                System.out.println("MAI QUI IN teoria");
+                System.out.println("It is not your turn, please be patient...");
                 message = null;}
         }
-        System.out.println(message);
         return message;
     }
 
@@ -51,7 +52,7 @@ public class CLIHandler {
             case ASK_MOVE_MOTHER_NATURE -> showMotherNatureOption(message);
             case BOARD -> showBoard(message);
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
-            case CHOOSE_CLOUD -> show = "Please choose a cloud";
+            case CLOUD_IN_GAME -> showClouds(message);
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
             case GENERIC_MESSAGE -> showGenericMessage(message);
@@ -97,7 +98,7 @@ public class CLIHandler {
         }
         if(numTowers>0) {
             try {
-                System.out.println(numTowers + "Towers of " + archipelago.getIsle().get(0).getTower().getProperty()+ " present in this Archipelagos\n");
+                System.out.println(numTowers + " Towers of " + archipelago.getIsle().get(0).getTower().getProperty()+ " present in this Archipelagos\n");
             } catch (ExceptionGame e) {
                 e.printStackTrace();
             }
@@ -112,12 +113,14 @@ public class CLIHandler {
         }
     }
     private void getInfoBoard(Board board){
-        System.out.println("\n\nTO THIS BELONGS:  ");
+        System.out.println("\n\nTO THIS WIZARD BELONGS:  ");
         System.out.println("STUDENT in entrance:  ");
         printStudents(board.getStudentsInEntrance());
         printStudentInTables(board);
         System.out.println("\nPROFESSOR in board: \n ");
         printProfessors(board.getProfessorInTable());
+        System.out.println("\n TOWERS in board");
+        printTowers(board.getTowersInBoard());
     }
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
@@ -147,8 +150,9 @@ public class CLIHandler {
         for (Student student : students) {
             printStudent(student);
         }
+        System.out.println();
     }
-    public void printStudent(Student student) {
+    private void printStudent(Student student) {
         switch (student.getColor()) {
             case GREEN -> System.out.print(Printable.STUDENT_GREEN + "  ");
             case BLUE -> System.out.print(Printable.STUDENT_BLUE + "  ");
@@ -162,7 +166,7 @@ public class CLIHandler {
             printProfessor(p);
         }
     }
-    public void printProfessor(Professor professor) {
+    private void printProfessor(Professor professor) {
         switch (professor.getColor()) {
             case GREEN -> System.out.println(Printable.PROF_GREEN + "\n");
             case BLUE -> System.out.println(Printable.PROF_BLUE + "\n");
@@ -170,6 +174,14 @@ public class CLIHandler {
             case RED -> System.out.println(Printable.PROF_RED + "\n");
             case YELLOW -> System.out.println(Printable.PROF_YELLOW + "\n");
         }
+    }
+    private void printCloud(Cloud cloud){
+        for(Student s : cloud.getStudentOnCloud())
+            printStudent(s);
+        System.out.println();
+    }
+    private void printTowers(Collection<Tower> towers){
+        System.out.println("There are " + towers.size() + " towers\n");
     }
 
 
@@ -206,6 +218,14 @@ public class CLIHandler {
             getInfoArchipelago(archipelagosMap.get(i));
         }
     }
+    private void showClouds(Message message){
+        CloudInGame cloudInGame = (CloudInGame) message;
+        setCloudsMap(cloudInGame.getCloudMap());
+        for(int i : cloudsMap.keySet()) {
+            System.out.print("\n"+i  + ")  In this cloud we have:\n");
+            printCloud(cloudsMap.get(i));
+        }
+    }
     private void showBoard(Message message){
         BoardMessage boardMessage = (BoardMessage) message;
         getInfoBoard(boardMessage.getBoard());
@@ -240,7 +260,7 @@ public class CLIHandler {
     }
     private Message createLoginMessage(String login){
         LoginResponse message;
-        String info[] = login.split(",");
+        String[] info = login.split(",");
         try {
             String username = info[0];
             int numberOfPlayers = Integer.parseInt(info[1]);
@@ -267,39 +287,61 @@ public class CLIHandler {
     }
     private Message createMoveStudentMessage(String student){ //NON VA BENE DEVO RIVEDERE COME SEGNARE GLI ARCHIPELAGI
         Message message = null;
-        if(!student.contains(",")){
-            Integer indexStud = Integer.parseInt(student);
-            if (studentsMap.containsKey(indexStud))
-                message = new MoveStudentMessage(indexStud, null);
-            else
-                System.out.println("Please write a valid Student");
-
-        }else {
-            String info[] = student.split(",");
-            String stud = info[0];
-            String arch = info[1];
-            Integer indexStud = Integer.parseInt(stud);
-            Integer indexArch = Integer.parseInt(arch);
-            if (studentsMap.containsKey(indexStud) && archipelagosMap.containsKey(indexArch)) {
-                return new MoveStudentMessage(indexStud, indexArch);
+        try {
+            if (!student.contains(",")) {
+                Integer indexStud = Integer.parseInt(student);
+                if (studentsMap.containsKey(indexStud))
+                    message = new MoveStudentMessage(indexStud, null);
+                else {
+                    System.out.println("Please write a valid Student");
+                    return null;
+                }
             } else {
-                System.out.println("Please write a valid Student");
+                String[] info = student.split(",");
+                String stud = info[0];
+                String arch = info[1];
+                Integer indexStud = Integer.parseInt(stud);
+                Integer indexArch = Integer.parseInt(arch);
+                if (studentsMap.containsKey(indexStud) && archipelagosMap.containsKey(indexArch)) {
+                    return new MoveStudentMessage(indexStud, indexArch);
+                } else {
+                    System.out.println("Please write a valid Student");
+                    return null;
+                }
             }
+            studentsMap.clear();
+            archipelagosMap.clear();
+        }catch (NumberFormatException n){
+            System.out.println("Please write a valid number");
         }
-        studentsMap.clear();
-        archipelagosMap.clear();
         return message;
     }
     private Message createMoveMotherNatureMessage(String archipelago){
         Message message= null;
-        Integer indexArch = Integer.parseInt(archipelago);
-        System.out.println(indexArch);
-        if (archipelagosMap.containsKey(indexArch)) {
-            message = new MoveMotherNatureMessage(indexArch);
-            System.out.println(message);
+        try {
+            Integer indexArch = Integer.parseInt(archipelago);
+            if (archipelagosMap.containsKey(indexArch)) {
+                message = new MoveMotherNatureMessage(indexArch);
+                System.out.println(message);
+            }
+            else
+                System.out.println("Please write a valid index of Archipelago");
+        }catch (NumberFormatException n){
+            System.out.println("Please write a valid number");
         }
-        else
-            System.out.println("Please write a valid index of Archipelago");
+        return message;
+    }
+    private Message createChooseCloudMessage(String cloud){
+        Message message= null;
+        try {
+            int indexCloud = Integer.parseInt(cloud);
+            if (cloudsMap.containsKey(indexCloud)) {
+                message = new CloudMessage(indexCloud);
+            } else
+                System.out.println("Please write a valid index of Archipelago");
+        }catch (NumberFormatException n){
+            System.out.println("Please write a valid number");
+        }
 
         return message;
     }
@@ -316,6 +358,10 @@ public class CLIHandler {
     private void setArchipelagosMap(Map<Integer, Archipelago> map){
         archipelagosMap.clear();
         archipelagosMap.putAll(map);
+    }
+    private void setCloudsMap(Map<Integer, Cloud> map){
+        cloudsMap.clear();
+        cloudsMap.putAll(map);
     }
 
 

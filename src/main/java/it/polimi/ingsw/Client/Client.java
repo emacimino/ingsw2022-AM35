@@ -71,7 +71,7 @@ public abstract class Client{
             case ASK_ASSISTANT_CARD -> this.turnPhase = TurnPhase.PLAY_ASSISTANT;
             case STUDENTS_ON_ENTRANCE ->  this.turnPhase = TurnPhase.MOVE_STUDENTS;
             case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
-            case CHOOSE_CLOUD -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
+            case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
             case REQUEST_LOGIN -> login();
             default -> {

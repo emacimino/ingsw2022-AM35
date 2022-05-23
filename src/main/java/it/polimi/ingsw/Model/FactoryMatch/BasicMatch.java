@@ -11,11 +11,13 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class BasicMatch extends Observable implements Serializable {
 
+    @Serial
     private final static long serialVersionUID = 9167805616236002194L;
     private int numberOfPlayers;
     private Game game;
@@ -177,16 +179,11 @@ public class BasicMatch extends Observable implements Serializable {
             int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
-            if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
-            }
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
             checkVictory();
 
-        }
-        if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
-            resetRound();
         }
       //  notifyObserver(new CurrentGameMessage(game));
         notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
@@ -197,8 +194,8 @@ public class BasicMatch extends Observable implements Serializable {
      * This method resets the list of assistant's cards played in the round
      */
     public void resetRound(){    //Tested in local
-        actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
-        game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
+        actionPhaseOrderOfPlayers.clear();
+        game.getAssistantsCardsPlayedInRound().clear();
         try {
             game.setRandomStudentsOnCloud();
         } catch (ExceptionGame e) {
@@ -243,8 +240,11 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
-        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
 
+        if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
+            resetRound();}
     }
 
     /**

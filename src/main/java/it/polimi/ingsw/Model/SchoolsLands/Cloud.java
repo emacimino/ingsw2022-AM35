@@ -4,13 +4,17 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * This class represents the Cloud Card of the Game
  */
-public class Cloud {
+public class Cloud implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -8678834371728630943L;
     private final int numOfStudentOnCloud;
     private final Collection<Student> studentOnCloud = new ArrayList<>();
 
