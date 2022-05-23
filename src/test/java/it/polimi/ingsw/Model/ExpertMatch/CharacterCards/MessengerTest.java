@@ -67,7 +67,7 @@ class MessengerTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
 
             CharacterCard messenger = new Messenger(basicMatch2Players,"Messenger");
-            expertMatch.getCharactersForThisGame().add(0, messenger);
+            expertMatch.getCharactersForThisGame().put(0, messenger);
             Assertions.assertEquals(3, messenger.getCost());
             int cost = messenger.getCost();
             Collection<Student> studentsPlayer1 = expertMatch.getGame().getWizardFromPlayer(player1).getBoard().getStudentsInEntrance();
@@ -172,7 +172,7 @@ class MessengerTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard messenger = new Messenger(match4players,"Messenger");
-            expertMatch4Players.getCharactersForThisGame().add(0, messenger);
+            expertMatch4Players.getCharactersForThisGame().put(0, messenger);
             assertEquals(3, messenger.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

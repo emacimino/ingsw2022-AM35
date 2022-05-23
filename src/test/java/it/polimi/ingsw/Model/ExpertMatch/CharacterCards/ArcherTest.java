@@ -67,7 +67,7 @@ class ArcherTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
             //sets Archer card in the game in position 0
             CharacterCard archer = new Archer( basicMatch2Players,"Archer");
-            expertMatch.getCharactersForThisGame().add(0, archer);
+            expertMatch.getCharactersForThisGame().put(0, archer);
             Assertions.assertEquals(3, archer.getCost());
             int cost = archer.getCost();
             Collection<Student> studentsPlayer1 = expertMatch.getGame().getWizardFromPlayer(player1).getBoard().getStudentsInEntrance();
@@ -172,7 +172,7 @@ class ArcherTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard archer = new Archer( match4players, "archer");
-            expertMatch4Players.getCharactersForThisGame().add(0, archer);
+            expertMatch4Players.getCharactersForThisGame().put(0, archer);
             assertEquals(3, archer.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

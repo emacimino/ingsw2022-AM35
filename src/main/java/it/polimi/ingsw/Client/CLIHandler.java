@@ -27,6 +27,7 @@ public class CLIHandler {
     private Map<Integer, Student> studentsMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
     private Map<Integer, Cloud> cloudsMap = new HashMap<>();
+    private Map<Integer, CharacterCard> characterCardMap = new HashMap<>();
 
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
@@ -53,6 +54,7 @@ public class CLIHandler {
             case BOARD -> showBoard(message);
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
             case CLOUD_IN_GAME -> showClouds(message);
+            case CHARACTER_CARD_IN_GAME -> showCharacterCardsInGame(message);
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
             case GENERIC_MESSAGE -> showGenericMessage(message);
@@ -230,6 +232,14 @@ public class CLIHandler {
         BoardMessage boardMessage = (BoardMessage) message;
         getInfoBoard(boardMessage.getBoard());
     }
+    private void showCharacterCardsInGame(Message message){
+        CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
+        setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
+        System.out.println("In this game we have the follow Character's Cards");
+        for(int i : characterCardMap.keySet()) {
+            System.out.print("\n"+i  + ")" +  characterCardMap.get(i));
+        }
+    }
     private void showGenericMessage(Message message){
         GenericMessage genericMessage = (GenericMessage) message;
         System.out.println(genericMessage.getContent());
@@ -362,6 +372,10 @@ public class CLIHandler {
     private void setCloudsMap(Map<Integer, Cloud> map){
         cloudsMap.clear();
         cloudsMap.putAll(map);
+    }
+    private void setCharacterCardMap(Map<Integer, CharacterCard> map ){
+        characterCardMap.clear();
+        characterCardMap.putAll(map);
     }
 
 

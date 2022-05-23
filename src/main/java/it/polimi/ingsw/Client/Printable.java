@@ -163,22 +163,15 @@ public class Printable {
     }
 
     public static void printCharacterCards(List<CharacterCard> characterCards){
-        for (CharacterCard c:
-             characterCards) {
-            c.toString();
+        for (CharacterCard c: characterCards) {
+            System.out.println(c);
         }
     }
 
-    public void genericBoard(Wizard wizard){
-        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(),);
-        Printable.printBoardProfessorAndTables(p, s);
-        Printable.printEntrance(s);
-    }
 
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
-        final String privateTowerColor = towerColor;
         final String color;
-        switch (privateTowerColor) {
+        switch (towerColor) {
             case "Black" -> color = ANSI_BRIGHTBLACK;
             case "White" -> color = RESET;
             case "Gray" -> color = ANSI_BRIGHTWHITE;
@@ -231,9 +224,9 @@ public class Printable {
                     printProfessorSeat(professors, color);
                     System.out.print("  #  ");
                             int n = 0;
-                            for (int k = 0; k < students.size(); k++) {
-                                if (students.get(k).getColor() == color) n++;
-                            }
+                    for (Student student : students) {
+                        if (student.getColor() == color) n++;
+                    }
                             for (int i = 0; i < (10 - n); i++) {
                                 System.out.print(RESET + " | ");
                                 System.out.print(" ");

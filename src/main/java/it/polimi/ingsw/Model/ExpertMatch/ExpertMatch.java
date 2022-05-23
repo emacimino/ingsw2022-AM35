@@ -6,20 +6,21 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * this class extends the MatchDecorator to implements the ExpertMode
  */
 public class ExpertMatch extends MatchDecorator {
     private final DeckCharacterCard deckCharacterCard;
-    private ArrayList<CharacterCard> charactersForThisGame = new ArrayList<>();
+    private Map<Integer, CharacterCard> characterCardInMatchMap = new HashMap<>();
     private InfluenceEffectCard activeInfluenceCard;
     private MotherNatureEffectCard activeMotherNatureCard;
     private ProhibitionEffectCard activeProhibitionCard;
@@ -40,7 +41,8 @@ public class ExpertMatch extends MatchDecorator {
     public void setGame(List<Player> players) throws ExceptionGame {
         basicMatch.setGame(players);
         setFirstCoin();
-        charactersForThisGame = deckCharacterCard.drawCharacterCard(basicMatch);
+        characterCardInMatchMap = deckCharacterCard.drawCharacterCard(basicMatch);
+        notifyObserver(new CharacterCardInGameMessage(characterCardInMatchMap));
     }
 
     /**
@@ -67,9 +69,8 @@ public class ExpertMatch extends MatchDecorator {
             wizard.addACoin();
     }
 
-    @Override
-    public ArrayList<CharacterCard> getCharactersForThisGame() {
-        return charactersForThisGame;
+    public Map<Integer, CharacterCard> getCharactersForThisGame() {
+        return characterCardInMatchMap;
     }
 
 
@@ -97,7 +98,7 @@ public class ExpertMatch extends MatchDecorator {
             buildTower(player, archipelago);
             basicMatch.lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
-            System.out.println(e);
+            e.printStackTrace();
         } finally {
             basicMatch.checkVictory();
         }
@@ -165,10 +166,6 @@ public class ExpertMatch extends MatchDecorator {
 
     public void setActiveProhibitionCard(ProhibitionEffectCard activeProhibitionCard) {
         this.activeProhibitionCard = activeProhibitionCard;
-    }
-
-    public DeckCharacterCard getDeckCharacterCard() {
-        return deckCharacterCard;
     }
 }
 

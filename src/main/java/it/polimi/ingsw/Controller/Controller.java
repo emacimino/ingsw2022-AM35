@@ -42,16 +42,13 @@ public class Controller implements Observer {
 
     public synchronized void onMessageReceived(Message receivedMessage) {
         switch (gameState) {
-            case PLANNING_PHASE->{
-                turnController.planningPhaseHandling(receivedMessage);
-            }
-            case ACTION_PHASE ->{
-                turnController.actionPhaseHandling(receivedMessage);
-            }
+            case PLANNING_PHASE-> turnController.planningPhaseHandling(receivedMessage);
+
+            case ACTION_PHASE -> turnController.actionPhaseHandling(receivedMessage);
+
 
             default-> {}//should never reach this condition
             //Server.Logger.warning(STR_INVALID_STATE);
-
         }
     }
 

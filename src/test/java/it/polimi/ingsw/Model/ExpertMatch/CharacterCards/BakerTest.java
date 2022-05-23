@@ -71,7 +71,7 @@ class BakerTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
             //sets a Baker card in the game in position 0
             CharacterCard baker = new Baker( basicMatch2Players,"Baker");
-            expertMatch.getCharactersForThisGame().add(0, baker);
+            expertMatch.getCharactersForThisGame().put(0, baker);
             Assertions.assertEquals(2, baker.getCost());
             Assertions.assertEquals(1, wizard1.getCoins());
             Assertions.assertEquals(1, wizard2.getCoins());
@@ -181,7 +181,7 @@ class BakerTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard baker = new Baker(  match4players,"baker");
-            expertMatch4Players.getCharactersForThisGame().add(0, baker);
+            expertMatch4Players.getCharactersForThisGame().put(0, baker);
             assertEquals(2, baker.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

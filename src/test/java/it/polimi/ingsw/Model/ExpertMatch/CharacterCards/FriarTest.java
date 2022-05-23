@@ -71,7 +71,7 @@ class FriarTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
             //sets Friar card in the game in position 0
             CharacterCard friar = new Friar(basicMatch2Players, "Friar");
-            expertMatch.getCharactersForThisGame().add(0, friar);
+            expertMatch.getCharactersForThisGame().put(0, friar);
             Assertions.assertEquals(1, friar.getCost());
             int cost = friar.getCost();
 
@@ -125,7 +125,7 @@ class FriarTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard friar = new Friar(match4players,  "Friar");
-            expertMatch4Players.getCharactersForThisGame().add(0, friar);
+            expertMatch4Players.getCharactersForThisGame().put(0, friar);
             assertEquals(1, friar.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
