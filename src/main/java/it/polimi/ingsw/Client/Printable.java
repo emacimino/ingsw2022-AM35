@@ -1,12 +1,13 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
+import javax.print.attribute.standard.PresentationDirection;
+import java.util.HashMap;
 import java.util.List;
 
 import static it.polimi.ingsw.Client.Constants.ANSI_BRIGHTBLACK;
@@ -23,6 +24,13 @@ public class Printable {
 
     public static final String PLUS = "+";
 
+    public static final HashMap<Color, String> colorANSI = new HashMap<>(){{
+        put(Color.GREEN, GREEN);
+        put(Color.BLUE, BLUE);
+        put(Color.PINK, PINK);
+        put(Color.RED, RED);
+        put(Color.YELLOW, YELLOW);
+    }};
 
     public static final String LINE_BLOCK =
             "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████";
@@ -35,17 +43,25 @@ public class Printable {
             "███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████  \n"
             ;
 
+    public static final String STUDENT = "█";
     public static final String STUDENT_BLUE = BLUE +"█"+ RESET;
     public static final String STUDENT_RED = RED + "█"+ RESET;
     public static final String STUDENT_YELLOW = YELLOW + "█"+ RESET;
     public static final String STUDENT_GREEN = GREEN +"█"+ RESET;
     public static final String STUDENT_PINK = PINK + "█"+ RESET;
 
+    public static final String PROF = "███";
     public static final String PROF_BLUE = BLUE +"███"+ RESET;
     public static final String PROF_RED = RED + "███"+ RESET;
     public static final String PROF_YELLOW = YELLOW + "███"+ RESET;
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
+
+    public static final String TABLE_OF_STUDENTS_PINK = PINK + " | "+ RESET;
+    public static final String TABLE_OF_STUDENTS_GREEN = GREEN + " | "+ RESET;
+    public static final String TABLE_OF_STUDENTS_BLUE = BLUE + " | "+ RESET;
+    public static final String TABLE_OF_STUDENTS_YELLOW = YELLOW + " | "+ RESET;
+    public static final String TABLE_OF_STUDENTS_RED = RED + " | "+ RESET;
 
     public static final String ASSISTANT_ONE = Constants.ASSISTANT_ONE + ", Value = 1, Steps = 1";
     public static final String ASSISTANT_TWO = Constants.ASSISTANT_TWO + ", Value = 2, Steps = 1";
@@ -85,17 +101,6 @@ public class Printable {
     public static final String BOARD_LEFT_MARGIN = "##   ";
     public static final String BOARD_RIGHT_MARGIN = "   ##";
     public static final String BOARD_TOP_MARGIN = "########";
-
-    public static final String ASSISTANT_ONE = Constants.CARD_ONE + ", Value = 1, Steps = 1";
-    public static final String ASSISTANT_TWO = Constants.CARD_TWO + ", Value = 2, Steps = 1";
-    public static final String ASSISTANT_THREE = Constants.CARD_THREE + ", Value = 3, Steps = 2";
-    public static final String ASSISTANT_FOUR = Constants.CARD_FOUR + ", Value = 4, Steps = 2";
-    public static final String ASSISTANT_FIVE = Constants.CARD_FIVE + ", Value = 5, Steps = 3";
-    public static final String ASSISTANT_SIX = Constants.CARD_SIX + ", Value = 6, Steps = 3";
-    public static final String ASSISTANT_SEVEN = Constants.CARD_SEVEN + ", Value = 7, Steps = 4";
-    public static final String ASSISTANT_EIGHT = Constants.CARD_EIGHT + ", Value = 8, Steps = 4";
-    public static final String ASSISTANT_NINE = Constants.CARD_NINE + ", Value = 9, Steps = 5";
-    public static final String ASSISTANT_TEN = Constants.CARD_TEN + ", Value = 10, Steps = 5";
 
     public static String getAssistantCardCLI(AssistantsCards assistantsCards){
         switch (assistantsCards.getValue()){
@@ -168,8 +173,8 @@ public class Printable {
     }
 
 
-    public static void printBoard(int numberOfTowers) {
-        int top_margin_lenght = 5;
+    public static void printBoardTowers(int numberOfTowers) {
+        int top_margin_lenght = 13;
         int firstRowTowers=numberOfTowers - 4 ;
         for (int i = 0; i < top_margin_lenght; i++) {
             System.out.print(BOARD_TOP_MARGIN);
@@ -208,9 +213,51 @@ public class Printable {
         for (int i = 0; i < top_margin_lenght; i++) {
             System.out.print(BOARD_TOP_MARGIN);
         }
+        System.out.print("\n");
+    }
+
+        public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
+                for (Color color :
+                        Color.values()) {
+                    for (Professor p :
+                            professors) {
+                        if (p.getColor() == color) printProfessor(p);}
+                            int n = 0;
+                            for (int k = 0; k < students.size(); k++) {
+                                if (students.get(k).getColor() == color) n++;
+                            }
+                            for (int i = 0; i < (10 - n); i++) {
+                                System.out.print(colorANSI.get(color) + " | ");
+                                System.out.print(" ");
+                                System.out.print(" | " + RESET);
+                        }
+                            for(int i=0;i<n;i++){
+                                System.out.print(colorANSI.get(color) + " | ");
+                                System.out.print(STUDENT);
+                                System.out.print(" | " + RESET);
+                    }
+                            System.out.print("\n");
+                }
+                System.out.print("\n");
     }
 
 
-//creare funzoine che crea la torre passo passo dato il numero di torri e pone \n alla fine della riga
+    public static void printProfessor(Professor p){
+        System.out.print(colorANSI.get(p.getColor()) + " #| ");
+        System.out.print(PROF);
+        System.out.print(" |# " + RESET);
+    }
+
+    public static void printEntrance(List<Student> students){
+        for (int i = 0; i < 13; i++) {
+            System.out.print(BOARD_TOP_MARGIN);
+        }
+        System.out.print("\n");
+        for (Student s:
+             students) {
+            System.out.print(colorANSI.get(s.getColor()) + STUDENT + RESET + "   ");
+        }
+
+    }
 
 }

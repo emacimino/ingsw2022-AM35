@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
+import javax.print.attribute.HashPrintJobAttributeSet;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,6 @@ public class Constants {
     public static final String ASSISTANT_THREE = "CARD THREE";
     public static final String ASSISTANT_TWO = "CARD TWO";
     public static final String ASSISTANT_ONE = "CARD ONE";
-
 
 
     public static final String HERBALIST = "HERBALIST";
@@ -84,7 +85,6 @@ public class Constants {
             }
         }
     }
-
 
 
 
