@@ -219,15 +219,14 @@ public class Printable {
         public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
                 for (Color color :
                         Color.values()) {
-                    for (Professor p :
-                            professors) {
-                        if (p.getColor() == color) printProfessor(p);}
+                    printProfessorSeat(professors, color);
+                    System.out.print("  #  ");
                             int n = 0;
                             for (int k = 0; k < students.size(); k++) {
                                 if (students.get(k).getColor() == color) n++;
                             }
                             for (int i = 0; i < (10 - n); i++) {
-                                System.out.print(colorANSI.get(color) + " | ");
+                                System.out.print(RESET + " | ");
                                 System.out.print(" ");
                                 System.out.print(" | " + RESET);
                         }
@@ -242,10 +241,18 @@ public class Printable {
     }
 
 
-    public static void printProfessor(Professor p){
-        System.out.print(colorANSI.get(p.getColor()) + " #| ");
-        System.out.print(PROF);
-        System.out.print(" |# " + RESET);
+    public static void printProfessorSeat(List<Professor> p, Color c){
+        for (Professor professor:
+                p){
+            if(professor.getColor() == c){
+                System.out.print(colorANSI.get(c) + " #| ");
+                System.out.print(PROF);
+                System.out.print(" |# " + RESET);
+                return;
+            }
+        }
+        System.out.print(colorANSI.get(c) + " #|   ");
+        System.out.print("  |# " + RESET);
     }
 
     public static void printEntrance(List<Student> students){
