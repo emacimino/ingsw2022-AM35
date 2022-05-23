@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
@@ -37,11 +38,13 @@ public class Printable {
             "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████";
 
     public static final String bigTitle=
-            "███████  ███████   ██      ██      ██     ██  ██████  ██    ██   █████\n" +
-            "██       ██    █   ██     █  █     ██ █   ██    ██      █  █    █     \n" +
-            "███████  ██████    ██    █ ██ █    ██  █  ██    ██       ██      ██   \n" +
-            "██       ██   █    ██   ██    ██   ██   █ ██    ██       ██        ██ \n" +
-            "███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████  \n"
+            """
+                    ███████  ███████   ██      ██      ██     ██  ██████  ██    ██   █████
+                    ██       ██    █   ██     █  █     ██ █   ██    ██      █  █    █    \s
+                    ███████  ██████    ██    █ ██ █    ██  █  ██    ██       ██      ██  \s
+                    ██       ██   █    ██   ██    ██   ██   █ ██    ██       ██        ██\s
+                    ███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████ \s
+                    """
             ;
 
     public static final String STUDENT = "█";
@@ -162,6 +165,15 @@ public class Printable {
         return professorString;
     }
 
+    public static void printGenericBoard(Wizard wizard){
+        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(), wizard.getTowerColor());
+        try {
+            Printable.printBoardProfessorAndTables(wizard);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
+        Printable.printEntrance((List<Student>) wizard.getBoard().getStudentsInEntrance());
+    }
     public static void printCharacterCards(List<CharacterCard> characterCards){
         for (CharacterCard c: characterCards) {
             System.out.println(c);
@@ -218,13 +230,16 @@ public class Printable {
         System.out.print("\n");
     }
 
-        public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
-                for (Color color :
-                        Color.values()) {
+        public static void printBoardProfessorAndTables(Wizard wizard) throws ExceptionGame {
+            List<Professor> professors = wizard.getBoard().getProfessorInTable();
+
+        for (Color color : Color.values()) {
                     printProfessorSeat(professors, color);
                     System.out.print("  #  ");
                             int n = 0;
-                    for (Student student : students) {
+            List<Student> students = (List<Student>) wizard.getBoard().getStudentsFromTable(color);
+
+            for (Student student : students) {
                         if (student.getColor() == color) n++;
                     }
                             for (int i = 0; i < (10 - n); i++) {
@@ -244,8 +259,7 @@ public class Printable {
 
 
     public static void printProfessorSeat(List<Professor> p, Color c){
-        for (Professor professor:
-                p){
+        for (Professor professor: p){
             if(professor.getColor() == c){
                 System.out.print(colorANSI.get(c) + " #| ");
                 System.out.print(PROF);

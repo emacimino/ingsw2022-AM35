@@ -86,6 +86,7 @@ public class CLIHandler {
     private void currentLandsInfo(Game game) {
         for (Archipelago archipelago : game.getArchipelagos()) {
             getInfoArchipelago(archipelago);
+
         }
     }
 
@@ -126,7 +127,8 @@ public class CLIHandler {
     }
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
-            getInfoBoard(wizard.getBoard());
+            //getInfoBoard(wizard.getBoard());
+            Printable.printGenericBoard(wizard);
         }
     }
 
@@ -253,7 +255,8 @@ public class CLIHandler {
         System.out.println("\n"+yourTurnMessage.getContent());
     }
     private void requestLogin(){
-        System.out.println("Please, procede with the login: ");
+        System.out.println(Printable.bigTitle);
+        System.out.println("Please, proceed with the login: ");
         System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
                 "\n" + "(for example: camilla,2,yes  )");
     }

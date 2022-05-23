@@ -33,12 +33,15 @@ public class Game implements Cloneable{
     }
 
     /**
-     * This method sets the relation between the players and the wizards of the game
+     * This method sets the relation between the players and the wizards of the game and sets a different color of tower for every wizard
      * @param player is the collection of player
      */
     public void setWizards(List<Player> player){
-        for(Player p: player){
+        for(Player p: player) {
             wizards.add(new Wizard(p.getUsername(), limitOfStudentInEntrance, numOfStudentMovable));
+            if (player.size() == 2 || player.size() == 3) {
+                wizards.get(player.indexOf(p)).setTowerColor(player.indexOf(p));
+            }
         }
     }
 

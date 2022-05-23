@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.HashSet;
  */
 
 public class Wizard implements Serializable {
+    @Serial
     private static final long serialVersionUID = 3592062413355087348L;
     private final Board board = new Board();
     private final AssistantsDeck assistantsDeck= new AssistantsDeck();
@@ -23,6 +25,7 @@ public class Wizard implements Serializable {
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
     private final int limitOfStudentInEntrance;
+    private TowerColors towerColor;
     private boolean KNIGHT_EFFECT;
     private int MESSANGER_EFFECT;
 
@@ -248,5 +251,16 @@ public class Wizard implements Serializable {
     }
 
 
+    public void setTowerColor(int indexOfPlayer) {
+        switch (indexOfPlayer){
+            case 1 -> this.towerColor = TowerColors.White;
+            case 2 -> this.towerColor = TowerColors.Black;
+            case 3 -> this.towerColor = TowerColors.Gray;
+        }
+    }
+
+    public String getTowerColor(){
+        return this.towerColor.toString();
+    }
 }
 

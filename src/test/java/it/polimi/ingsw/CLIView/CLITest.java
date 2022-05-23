@@ -17,7 +17,7 @@ class CLITest {
         List<Student> s = List.of(new Student(Color.GREEN), new Student(Color.PINK),new Student(Color.GREEN), new Student(Color.PINK),new Student(Color.GREEN), new Student(Color.PINK),new Student(Color.GREEN), new Student(Color.PINK));
         System.out.println(Printable.bigTitle);
         Printable.printBoardTowers(7, "Gray");
-        Printable.printBoardProfessorAndTables(p, s);
+        //Printable.printBoardProfessorAndTables(p, s);
         Printable.printEntrance(s);
     }
 

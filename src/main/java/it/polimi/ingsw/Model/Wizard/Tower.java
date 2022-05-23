@@ -1,13 +1,16 @@
 package it.polimi.ingsw.Model.Wizard;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  *Tower Class implements the object tower of the game
  */
 public class Tower implements Serializable {
+    @Serial
     private static final long serialVersionUID = -6120634413404378219L;
     private final Wizard property;
+
 
     /**
      * Constructor of Tower, it sets the property of the tower
