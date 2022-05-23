@@ -24,6 +24,7 @@ public class BasicMatchThreePlayerTest {
     private final Player playerTwo = new Player("usernameTwo");
     private final Player playerThree = new Player("usernameThree");
 
+
     public void gameSetter() {
         List<Player> players = new ArrayList<>();
         players.add(playerOne);
@@ -68,9 +69,12 @@ public class BasicMatchThreePlayerTest {
                     Assertions.assertTrue(basicMatch3Players.getPlayers().contains(basicMatch3Players.getPlayerFromWizard(wizard)))
             );
         }
+        List<Player> playersTest = new ArrayList<>();
+        playersTest.add(playerThree);
+        playersTest.add(playerOne);
+        playersTest.add(playerThree);
+        Assertions.assertThrows(ExceptionGame.class, () -> basicMatch3Players.setTeams(playersTest));
 
-        Assertions.assertThrows(ExceptionGame.class, () -> basicMatch3Players.setTeamsOne(playerOne, playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, () -> basicMatch3Players.setTeamsTwo(playerOne, playerTwo));
         Assertions.assertThrows(ExceptionGame.class, basicMatch3Players::getTeams);
 
     }

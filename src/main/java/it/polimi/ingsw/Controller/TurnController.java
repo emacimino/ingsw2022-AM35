@@ -111,9 +111,9 @@ public class TurnController {
         try {
             controller.getMatch().chooseCloud(getActivePlayer(), cloudMap.get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
+            nextPlayerActionPhase();
             System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
 
-            nextPlayerActionPhase();
         } catch (ExceptionGame e) {
             e.printStackTrace();
             viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
@@ -131,7 +131,7 @@ public class TurnController {
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), studentsMap.get(indexStud));
             }
             numberOfStudentMoved ++;
-            if (numberOfStudentMoved == 3) {
+            if (numberOfStudentMoved == controller.getMatch().getNumberOfMovableStudents()) {
                 numberOfStudentMoved = 0;
                 setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
                 askNextAction();

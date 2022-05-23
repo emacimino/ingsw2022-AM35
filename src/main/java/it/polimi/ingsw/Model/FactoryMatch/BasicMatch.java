@@ -58,6 +58,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
+        notifyObserver(new GenericMessage("Order of the players: " + players));
       //  notifyObserver(new CurrentGameMessage(game));
 
     }
@@ -242,7 +243,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.moveStudentFromCloudToBoard(player, cloud);
        // notifyObserver(new CurrentGameMessage(game));
         notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
-
+        System.out.println("action player in basic match after choosing cloud "+actionPhaseOrderOfPlayers);
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();}
     }
@@ -379,11 +380,7 @@ public class BasicMatch extends Observable implements Serializable {
         return game.getMotherNature().getPosition();
     }
 
-    public void setTeamsOne(Player player1, Player player2) throws ExceptionGame {
-        throw new ExceptionGame("This match does not have teams");
-    }
-
-    public void setTeamsTwo(Player player1, Player player2) throws ExceptionGame {
+    public void setTeams(List<Player> players) throws ExceptionGame{
         throw new ExceptionGame("This match does not have teams");
     }
 

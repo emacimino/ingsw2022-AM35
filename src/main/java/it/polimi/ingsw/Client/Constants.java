@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.security.PublicKey;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
+
     public static final String ASSISTANT_TEN = "CARD TEN";
     public static final String ASSISTANT_NINE = "CARD NINE";
     public static final String ASSISTANT_EIGHT = "CARD EIGHT";

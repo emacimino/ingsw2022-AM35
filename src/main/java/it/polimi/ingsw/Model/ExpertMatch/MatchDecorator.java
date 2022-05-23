@@ -90,12 +90,8 @@ public abstract class MatchDecorator extends BasicMatch {
         return basicMatch.getPositionOfMotherNature();
     }
     @Override
-    public void setTeamsOne(Player player1, Player player2) throws ExceptionGame{
-        basicMatch.setTeamsOne(player1, player2);
-    }
-    @Override
-    public void setTeamsTwo(Player player1, Player player2) throws ExceptionGame{
-        basicMatch.setTeamsTwo(player1,player2);
+    public void setTeams(List<Player> players) throws ExceptionGame{
+        basicMatch.setTeams(players);
     }
     @Override
     public List<List<Player>> getTeams() throws ExceptionGame{

@@ -29,14 +29,12 @@ public class Controller implements Observer {
         return match;
     }
 
-    public void initGame() throws ExceptionGame, CloneNotSupportedException {
+    public void initGame() throws ExceptionGame{
         List<Player> players = setListOfPlayers(this.playersUsername);
         if (match.getNumberOfPlayers() == 4) {
-            match.setTeamsOne(players.get(0), players.get(1));
-            match.setTeamsOne(players.get(2), players.get(3));
+            match.setTeams(players);
         }
         this.match.setGame(players);
-
         gameState = GameState.PLANNING_PHASE;
         turnController = new TurnController(this, viewMap);
         turnController.pickFirstPlayerPlanningPhaseHandler();

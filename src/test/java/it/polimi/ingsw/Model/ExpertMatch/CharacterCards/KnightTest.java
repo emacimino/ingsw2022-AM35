@@ -159,8 +159,7 @@ class KnightTest {
         ExpertMatch expertMatch4Players = new ExpertMatch(match4players);
         Assertions.assertThrows(ExceptionGame.class, () -> expertMatch4Players.setGame(players));
         Assertions.assertDoesNotThrow(() -> {
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
             Wizard wizard2 = expertMatch4Players.getGame().getWizardFromPlayer(player2);
