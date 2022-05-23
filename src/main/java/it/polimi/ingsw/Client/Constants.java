@@ -47,6 +47,7 @@ public class Constants {
     public static final String ANSI_PINK = "\033[95m";
     public static final String ANSI_BRIGHTBLACK = "\u001b[30;1m";
     public static final String ANSI_BRIGHTWHITE = "\u001b[37;1m";
+    public static final String ANSI_ORANGE = "\u001b[38;5;208m";
 
     public static String getAssistantCardCLI(AssistantsCards assistantsCards){
         switch (assistantsCards.getValue()){

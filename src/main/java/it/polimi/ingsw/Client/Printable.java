@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -57,6 +59,8 @@ public class Printable {
     public static final String PROF_YELLOW = YELLOW + "███"+ RESET;
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
+
+    public static final String MOTHER_NATURE = Constants.ANSI_ORANGE + "¶^¶" + RESET;
 
     public static final String TABLE_OF_STUDENTS_PINK = PINK + " | "+ RESET;
     public static final String TABLE_OF_STUDENTS_GREEN = GREEN + " | "+ RESET;
@@ -169,12 +173,6 @@ public class Printable {
         }
     }
 
-    public void genericBoard(Wizard wizard){
-        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(),);
-        Printable.printBoardProfessorAndTables(p, s);
-        Printable.printEntrance(s);
-    }
-
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
         final String privateTowerColor = towerColor;
         final String color;
@@ -191,32 +189,12 @@ public class Printable {
         }
         System.out.print("\n");
         if(firstRowTowers > 0){
-            for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print( color + TOWER_TOP + RESET);
-            }
-            System.out.print("\n");
-            for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print(color + TOWER_MIDDLE + RESET);
-            }
-            System.out.print("\n");
-            for (int i = 0; i < firstRowTowers; i++) {
-                System.out.print(color + TOWER_MIDDLE + RESET);
-            }
+            printTowersRow(firstRowTowers, color);
             numberOfTowers = numberOfTowers - firstRowTowers;
         }
         System.out.print("\n");
         if(numberOfTowers > 0){
-            for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print( color + TOWER_TOP + RESET);
-            }
-            System.out.print("\n");
-            for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print(color + TOWER_MIDDLE + RESET);
-            }
-            System.out.print("\n");
-            for (int i = 0; i < numberOfTowers; i++) {
-                System.out.print(color + TOWER_MIDDLE + RESET);
-            }
+            printTowersRow(numberOfTowers, color);
             System.out.print("\n");
         }
         for (int i = 0; i < top_margin_lenght; i++) {
@@ -225,7 +203,36 @@ public class Printable {
         System.out.print("\n");
     }
 
-        public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
+    public static void printTowersRow(int firstRowTowers, String color){
+        for (int i = 0; i < firstRowTowers; i++) {
+            System.out.print( color + TOWER_TOP + RESET);
+        }
+        System.out.print("\n");
+        for (int i = 0; i < firstRowTowers; i++) {
+            System.out.print(color + TOWER_MIDDLE + RESET);
+        }
+        System.out.print("\n");
+        for (int i = 0; i < firstRowTowers; i++) {
+            System.out.print(color + TOWER_MIDDLE + RESET);
+        }
+    }
+
+    public static void printTowersIsland(String color){
+        switch (color) {
+            case "Black" -> color = ANSI_BRIGHTBLACK;
+            case "White" -> color = RESET;
+            case "Gray" -> color = ANSI_BRIGHTWHITE;
+            default -> throw new IllegalStateException("Unexpected value: " + color);
+        }
+        System.out.print( color + TOWER_TOP + RESET);
+        System.out.print("            |" + "\n" + "|  ");
+        System.out.print(color + TOWER_MIDDLE + RESET);
+        System.out.print("            |" + "\n" + "|  ");
+        System.out.print(color + TOWER_MIDDLE + RESET);
+        System.out.print("            |" + "\n" + "|   ");
+    }
+
+    public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
                 for (Color color :
                         Color.values()) {
                     printProfessorSeat(professors, color);
@@ -274,6 +281,28 @@ public class Printable {
             System.out.print(colorANSI.get(s.getColor()) + STUDENT + RESET + "   ");
         }
 
+    }
+
+    public static void printArchipelago(Archipelago archipelago){
+        for (int i = 0; i < (archipelago.getIsle().size() * 17); i++) System.out.print(RESET + "—————");
+        System.out.print("\n" + "|  ");
+        if(archipelago.isMotherNaturePresence())System.out.print(MOTHER_NATURE);
+        System.out.print("   ");
+        for (Island isle:
+             archipelago.getIsle()) {
+            for (int i = 0; i < 12; i++) System.out.print(RESET + "—");
+            System.out.print("\n" + "|  ");
+            if(isle.isThereTower())printTowersIsland("Gray");
+            System.out.print("| ");
+            for (Student student:
+                 isle.getStudentInIsland()) {
+                System.out.print(" " + colorANSI.get(student.getColor()) + STUDENT + RESET + " ");
+            }
+            System.out.print("  |" + "\n" + "|   ");
+            for (int i = 0; i < 15; i++) System.out.print(RESET + "—");
+        }
+        System.out.print("\n");
+        for (int i = 0; i < (archipelago.getIsle().size() * 17); i++) System.out.print(RESET + "—————");
     }
 
 }
