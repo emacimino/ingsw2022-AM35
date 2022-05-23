@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.util.*;
 
 class ControllerTest {
-
+/*
 
     private Set<String> usernameBasicMatch2Players,usernameBasicMatch3Players;
     private Controller controllerBasicMatch2Players;
@@ -126,5 +126,5 @@ class ControllerTest {
 
     @Test
     void update() {
-    }
+    }*/
 }

@@ -40,19 +40,20 @@ public class Controller implements Observer {
         gameState = GameState.PLANNING_PHASE;
         turnController = new TurnController(this, viewMap);
         turnController.pickFirstPlayerPlanningPhaseHandler();
-        System.out.println("INIT CONTROLLER");
     }
 
-    public void onMessageReceived(Message receivedMessage) {
+    public synchronized void onMessageReceived(Message receivedMessage) {
         switch (gameState) {
-            case PLANNING_PHASE:
+            case PLANNING_PHASE->{
                 turnController.planningPhaseHandling(receivedMessage);
-            case ACTION_PHASE:
+            }
+            case ACTION_PHASE ->{
                 turnController.actionPhaseHandling(receivedMessage);
+            }
 
-            default: //should never reach this condition
-                //Server.Logger.warning(STR_INVALID_STATE);
-                break;
+            default-> {}//should never reach this condition
+            //Server.Logger.warning(STR_INVALID_STATE);
+
         }
     }
 
@@ -87,5 +88,9 @@ public class Controller implements Observer {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }

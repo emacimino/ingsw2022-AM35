@@ -5,15 +5,22 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 public class MoveMotherNatureMessage extends Message{
 
         private static final long serialVersionUID = -9016040814084856548L;
-        private Archipelago archipelago;
+        private Integer archipelago;
 
-        public MoveMotherNatureMessage(Archipelago archipelago) {
-            this.archipelago = archipelago;
+        public MoveMotherNatureMessage(Integer indexArchipelago) {
+            this.archipelago = indexArchipelago;
             setType(TypeMessage.MOVE_MOTHER_NATURE);
         }
 
-    public Archipelago getArchipelago() {
+    public Integer getArchipelago() {
         return archipelago;
+    }
+
+    @Override
+    public String toString() {
+        return "MoveMotherNatureMessage{" +
+                "archipelago=" + archipelago +
+                '}';
     }
 }
 

@@ -3,6 +3,8 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
+import it.polimi.ingsw.Model.SchoolsMembers.Professor;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.util.List;
@@ -44,6 +46,18 @@ public class Printable {
     public static final String PROF_YELLOW = YELLOW + "███"+ RESET;
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
+
+    public static final String ASSISTANT_ONE = Constants.ASSISTANT_ONE + ", Value = 1, Steps = 1";
+    public static final String ASSISTANT_TWO = Constants.ASSISTANT_TWO + ", Value = 2, Steps = 1";
+    public static final String ASSISTANT_THREE = Constants.ASSISTANT_THREE + ", Value = 3, Steps = 2";
+    public static final String ASSISTANT_FOUR = Constants.ASSISTANT_FOUR + ", Value = 4, Steps = 2";
+    public static final String ASSISTANT_FIVE = Constants.ASSISTANT_FIVE + ", Value = 5, Steps = 3";
+    public static final String ASSISTANT_SIX = Constants.ASSISTANT_SIX + ", Value = 6, Steps = 3";
+    public static final String ASSISTANT_SEVEN = Constants.ASSISTANT_SEVEN + ", Value = 7, Steps = 4";
+    public static final String ASSISTANT_EIGHT = Constants.ASSISTANT_EIGHT + ", Value = 8, Steps = 4";
+    public static final String ASSISTANT_NINE = Constants.ASSISTANT_NINE + ", Value = 9, Steps = 5";
+    public static final String ASSISTANT_TEN = Constants.ASSISTANT_TEN + ", Value = 10, Steps = 5";
+
 
     public static final String TOWER_GREY = RESET +
             "█████\n" +
@@ -120,6 +134,31 @@ public class Printable {
             }
         }
     }
+    public static String getStudentsCLI(Student student){
+        String studentString;
+        switch (student.getColor()) {
+            case GREEN -> studentString = STUDENT_GREEN;
+            case BLUE -> studentString = STUDENT_BLUE;
+            case PINK -> studentString = STUDENT_PINK;
+            case RED -> studentString = STUDENT_RED;
+            case YELLOW -> studentString = STUDENT_YELLOW;
+            default -> studentString = null;
+        }
+        return studentString;
+    }
+
+    public static String getProfessorsCLI(Professor professor){
+        String professorString;
+        switch (professor.getColor()) {
+            case GREEN -> professorString = STUDENT_GREEN;
+            case BLUE -> professorString = STUDENT_BLUE;
+            case PINK -> professorString = STUDENT_PINK;
+            case RED -> professorString = STUDENT_RED;
+            case YELLOW -> professorString = STUDENT_YELLOW;
+            default -> professorString = null;
+        }
+        return professorString;
+    }
 
     public static void printCharacterCards(List<CharacterCard> characterCards){
         for (CharacterCard c:
@@ -170,6 +209,7 @@ public class Printable {
             System.out.print(BOARD_TOP_MARGIN);
         }
     }
+
 
 //creare funzoine che crea la torre passo passo dato il numero di torri e pone \n alla fine della riga
 

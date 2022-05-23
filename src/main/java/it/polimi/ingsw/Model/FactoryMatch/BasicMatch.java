@@ -11,11 +11,13 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class BasicMatch extends Observable implements Serializable {
 
+    @Serial
     private final static long serialVersionUID = 9167805616236002194L;
     private int numberOfPlayers;
     private Game game;
@@ -56,7 +58,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
-       // notifyObserver(new CurrentGameMessage(game));
+      //  notifyObserver(new CurrentGameMessage(game));
 
     }
 
@@ -82,16 +84,17 @@ public class BasicMatch extends Observable implements Serializable {
      * where his position on the list represents his order position in the action phase
      *
      * @param player          is the current player
-     * @param assistantsCards is the round's assistant's card of the player
+     * @param assistantsCard is the round's assistant's card of the player
      * @throws ExceptionGame is thrown whenever there is an issue with the assistant's card played or the current player
      */
-    public void playAssistantsCard(Player player, AssistantsCards assistantsCards) throws ExceptionGame {
+    public void playAssistantsCard(Player player, AssistantsCards assistantsCard) throws ExceptionGame {
         if (actionPhaseOrderOfPlayers.contains(player))
             throw new ExceptionGame("Player already played an assistant's Card");
         Wizard wizard = game.getWizardFromPlayer(player);
-        wizard.playAssistantsCard(assistantsCards, game.getAssistantsCardsPlayedInRound());
-        setPlayerInActionPhase(player, assistantsCards);
-        notifyObserver(new CurrentGameMessage(game));
+        wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
+        setPlayerInActionPhase(player, assistantsCard);
+     //   notifyObserver(new CurrentGameMessage(game));
+         notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**
@@ -144,7 +147,8 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
-        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the board"));
     }
 
     /**
@@ -157,7 +161,8 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
-        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
     }
 
     /**
@@ -174,28 +179,28 @@ public class BasicMatch extends Observable implements Serializable {
             int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
-            if(tmp!=archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player))){
-            }
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
             checkVictory();
 
         }
-        if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
-            resetRound();
-        }
-        notifyObserver(new CurrentGameMessage(game));
+      //  notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
 
     }
 
     /**
      * This method resets the list of assistant's cards played in the round
      */
-    public void resetRound() {    //Tested in local
-        actionPhaseOrderOfPlayers.removeAll(actionPhaseOrderOfPlayers);
-        game.getAssistantsCardsPlayedInRound().removeAll(game.getAssistantsCardsPlayedInRound());
-        game.setRandomStudentsOnCloud();
+    public void resetRound(){    //Tested in local
+        actionPhaseOrderOfPlayers.clear();
+        game.getAssistantsCardsPlayedInRound().clear();
+        try {
+            game.setRandomStudentsOnCloud();
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -235,8 +240,11 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
-        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
 
+        if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
+            resetRound();}
     }
 
     /**
@@ -246,15 +254,12 @@ public class BasicMatch extends Observable implements Serializable {
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
-        System.out.println("size of winners "+w.size());
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
         }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
-            System.out.println("num towers "+ w.get(0) + " : " + w.get(0).getBoard().getTowersInBoard().size());
             winner.add(w.get(0));
-            System.out.println("student bag empty or assistant card playable empty, one winner");
         }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());

@@ -2,15 +2,19 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 
-public class CloudMessage extends Message{
-    private static final long serialVersionUID = 4508068615547056508L;
-    private final Cloud cloud;
+import java.io.Serial;
 
-    public CloudMessage(Cloud cloud) {
+public class CloudMessage extends Message{
+    @Serial
+    private static final long serialVersionUID = 4508068615547056508L;
+    private final int cloud;
+
+    public CloudMessage(int cloud) {
         this.cloud = cloud;
+        setType(TypeMessage.CLOUD_CHOICE);
     }
 
-    public Cloud getCloud() {
+    public int getCloud() {
         return cloud;
     }
 }

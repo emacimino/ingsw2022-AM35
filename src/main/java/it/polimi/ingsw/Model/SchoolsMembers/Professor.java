@@ -2,10 +2,13 @@ package it.polimi.ingsw.Model.SchoolsMembers;
 
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class Professor {
+public class Professor implements Serializable {
+    private static final long serialVersionUID = 5617884145379497150L;
     private final Color color;
     private Wizard property;
 /**

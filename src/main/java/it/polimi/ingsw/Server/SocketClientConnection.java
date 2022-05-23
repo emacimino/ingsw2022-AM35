@@ -55,7 +55,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
     @Override
-    public synchronized void closeConnection() {
+    public synchronized void closeConnection() { //SONO qui
         sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
         try {
             socket.close();
@@ -89,35 +89,16 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     @Override
     public void run() {
-      //  Scanner in;
         Message newMessage;
         try{
-          /*  in = new Scanner(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            sendMessage("How many players do you want your match to have? Choose from 2 to 4");
-            numberOfPlayers = in.nextInt();
-            sendMessage("Do you want to play as an expert?");
-            String expert = in.next();
-            if(expert.equals("yes")){
-                isExpert = true;
-            }else if(expert.equals("no")){
-                isExpert = false;
-            } else {
-                System.out.println("pre error");
-              //  throw new IllegalArgumentException();
-            }
-*/
             login();
-           // in = new Scanner(socket.getInputStream());
-            while(isActive()){//waiting for client input to add new connections
-                System.out.println("devo processare messaggio da client");
+            while(isActive()){
                 newMessage = (Message) inputStream.readObject();
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ExceptionGame | CloneNotSupportedException | ClassNotFoundException e) {
             asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
             System.err.println("Error from SCC! " + e.getMessage());
-        }finally{
             close();
         }
     }

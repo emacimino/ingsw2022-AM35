@@ -15,7 +15,7 @@ class StudentTest {
         for (Color c: Color.values()) {
             Student student = new Student(c);
             Assertions.assertEquals(c, student.getColor());
-            Assertions.assertEquals(student.toString(), "Student: color = "+c+ "\n");
+            Assertions.assertEquals(student.toString(), "Student: color = "+c);
         }
     }
 

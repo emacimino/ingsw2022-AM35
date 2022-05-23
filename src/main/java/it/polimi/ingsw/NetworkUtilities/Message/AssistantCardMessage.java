@@ -7,9 +7,17 @@ public class AssistantCardMessage extends Message{
     private final AssistantsCards assistantsCard;
     public AssistantCardMessage( AssistantsCards assistantCard) {
         this.assistantsCard = assistantCard;
+        setType(TypeMessage.ASSISTANT_CARD);
     }
 
     public AssistantsCards getAssistantsCard() {
         return assistantsCard;
+    }
+
+    @Override
+    public String toString() {
+        return "AssistantCardMessage{" +
+                "assistantsCard=" + assistantsCard +
+                '}';
     }
 }

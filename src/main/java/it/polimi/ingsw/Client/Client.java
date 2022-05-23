@@ -16,7 +16,7 @@ public abstract class Client{
     protected ObjectOutputStream outputStream;
     private boolean active = true;
     protected ObjectInputStream socketIn;
-    protected TurnPhase turnPhase = TurnPhase.END_TURN;
+    protected TurnPhase turnPhase = TurnPhase.LOGIN;
 
     public Client(String ip, int port) {
         this.ip = ip;
@@ -68,12 +68,15 @@ public abstract class Client{
 
     protected void setNextAction(Message message) {
         switch (message.getType()){
-            case LIST_ASSISTANT_CARD -> this.turnPhase = TurnPhase.PLAY_ASSISTANT;
-            case MOVE_STUDENT -> this.turnPhase = TurnPhase.MOVE_STUDENTS;
-            case MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
-            case CHOOSE_CLOUD -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
+            case ASK_ASSISTANT_CARD -> this.turnPhase = TurnPhase.PLAY_ASSISTANT;
+            case STUDENTS_ON_ENTRANCE ->  this.turnPhase = TurnPhase.MOVE_STUDENTS;
+            case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
+            case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
             case REQUEST_LOGIN -> login();
+            default -> {
+                break;
+            }
 
         }
     }

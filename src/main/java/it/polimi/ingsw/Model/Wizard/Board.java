@@ -6,12 +6,14 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Board is the board you are given in the beginning and belongs only to you
  */
-public class Board {
+public class Board implements Serializable {
+    private static final long serialVersionUID = 4581093722653538190L;
     private final Collection<Tower> towersInBoard= new HashSet<>();
     private final List<Professor> professorInTable= new ArrayList<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
