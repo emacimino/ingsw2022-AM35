@@ -8,8 +8,8 @@ import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 public class CLI extends Client{
-    RemoteView remoteView;
-    CLIHandler cliHandler = new CLIHandler();
+
+    CLIHandler cliHandler = new CLIHandler(this);
 
     public CLI(String ip, int port) {
         super(ip, port);
@@ -57,6 +57,7 @@ public class CLI extends Client{
     }
 
     public void login(){
-
     }
+
+
 }

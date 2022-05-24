@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public abstract class Client{
+    protected final RemoteModel remoteModel = new RemoteModel();
     private final String ip;
     private final int port;
     protected ObjectOutputStream outputStream;
@@ -79,5 +80,8 @@ public abstract class Client{
             }
 
         }
+    }
+    public RemoteModel getRemoteModel() {
+        return remoteModel;
     }
 }

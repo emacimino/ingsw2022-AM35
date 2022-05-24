@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class ExpertMatch extends MatchDecorator {
     private final DeckCharacterCard deckCharacterCard;
-    private Map<Integer, CharacterCard> characterCardInMatchMap = new HashMap<>();
+    private Map<String, CharacterCard> characterCardInMatchMap = new HashMap<>();
     private InfluenceEffectCard activeInfluenceCard;
     private MotherNatureEffectCard activeMotherNatureCard;
     private ProhibitionEffectCard activeProhibitionCard;
@@ -69,7 +69,7 @@ public class ExpertMatch extends MatchDecorator {
             wizard.addACoin();
     }
 
-    public Map<Integer, CharacterCard> getCharactersForThisGame() {
+    public Map<String, CharacterCard> getCharactersForThisGame() {
         return characterCardInMatchMap;
     }
 

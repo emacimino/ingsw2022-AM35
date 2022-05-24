@@ -9,14 +9,14 @@ import java.util.Map;
 public class CharacterCardInGameMessage extends Message{
     @Serial
     private static final long serialVersionUID = -3374926525124994169L;
-    private final Map<Integer, CharacterCard> characterCard;
+    private final Map<String, CharacterCard> characterCard;
 
-    public CharacterCardInGameMessage(Map<Integer, CharacterCard> characterCard) {
+    public CharacterCardInGameMessage(Map<String, CharacterCard> characterCard) {
         this.characterCard = characterCard;
         setType(TypeMessage.CHARACTER_CARD_IN_GAME);
     }
 
-    public Map<Integer, CharacterCard> getCharacterCard() {
+    public Map<String, CharacterCard> getCharacterCard() {
         return characterCard;
     }
 }

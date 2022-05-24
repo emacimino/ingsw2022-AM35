@@ -22,15 +22,18 @@ import java.util.List;
 import java.util.Map;
 
 public class CLIHandler {
-    private List<AssistantsCards> assistantsCardsInTurn;
-    private Map<String, AssistantsCards> assistantsCardsMap = new HashMap<>();
-    private Map<Integer, Student> studentsMap = new HashMap<>();
-    private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
-    private Map<Integer, Cloud> cloudsMap = new HashMap<>();
-    private Map<Integer, CharacterCard> characterCardMap = new HashMap<>();
+    private CLI cli;
+
+    public CLIHandler(CLI cli) {
+        this.cli = cli;
+    }
+
 
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
+        if(inputString.equals("CharacterCard")){
+
+        }
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
             case PLAY_ASSISTANT -> message = createAssistantCardMessage(inputString);
@@ -49,7 +52,7 @@ public class CLIHandler {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
-            case STUDENTS_ON_ENTRANCE -> showStudentsOption(message);
+            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(message);
             case ASK_MOVE_MOTHER_NATURE -> showMotherNatureOption(message);
             case BOARD -> showBoard(message);
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
@@ -66,10 +69,57 @@ public class CLIHandler {
 
     }
 
+    private void requestLogin(){
+        System.out.println("Please, procede with the login: ");
+        System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
+                "\n" + "(for example: camilla,2,yes  )");
+    }
     private void showErrorMessage(Message message) {
         ErrorMessage errorMessage = (ErrorMessage) message;
         System.out.println(Constants.ANSI_RED + errorMessage.getError() + Constants.ANSI_RESET);
     }
+    private void showGenericMessage(Message message){
+        GenericMessage genericMessage = (GenericMessage) message;
+        System.out.println(genericMessage.getContent());
+    }
+    private void showEndOfTurnMessage(Message message){
+        EndTurnMessage endOfTurnMessage = (EndTurnMessage) message;
+        System.out.println(endOfTurnMessage.getContent());
+    }
+    private void showYourTurnMessage(Message message){
+        YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
+        System.out.println("\n"+yourTurnMessage.getContent());
+    }
+    private void showArchipelagos(Message message){
+        ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
+        cli.getRemoteModel().setArchipelagosMap(archipelagoListMessage.getArchipelago());
+        for(int i : cli.getRemoteModel().getArchipelagosMap().keySet()) {
+            System.out.print("\n"+i  + ")  In this archipelago we have:\n");
+            getInfoArchipelago(cli.getRemoteModel().getArchipelagosMap().get(i));
+        }
+    }
+    private void showClouds(Message message){
+        CloudInGame cloudInGame = (CloudInGame) message;
+        cli.getRemoteModel().setCloudsMap(cloudInGame.getCloudMap());
+        for(int i : cli.getRemoteModel().getCloudsMap().keySet()) {
+            System.out.print("\n"+i  + ")  In this cloud we have:\n");
+            printCloud(cli.getRemoteModel().getCloudsMap().get(i));
+        }
+    }
+    private void showBoard(Message message){
+        BoardMessage boardMessage = (BoardMessage) message;
+        getInfoBoard(boardMessage.getBoard());
+    }
+    private void showCharacterCardsInGame(Message message){
+        CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
+        cli.getRemoteModel().setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
+        System.out.println("In this game we have the follow Character's Cards");
+        int i = 1;
+        for(String s : cli.getRemoteModel().getCharacterCardMap().keySet()) {
+            System.out.print("\n"+i  + ")" +  cli.getRemoteModel().getCharacterCardMap().get(s));
+        }
+    }
+
 
     private void showCurrentGame(Message message) {
         System.out.println("State of current match is :\n");
@@ -77,18 +127,20 @@ public class CLIHandler {
         displayCurrentGameInfoCli(game);
 
     }
-
     private void displayCurrentGameInfoCli(Game game) {
         currentBoardInfo(game);
         currentLandsInfo(game);
     }
-
     private void currentLandsInfo(Game game) {
         for (Archipelago archipelago : game.getArchipelagos()) {
             getInfoArchipelago(archipelago);
         }
     }
-
+    private void currentBoardInfo(Game game) {
+        for (Wizard wizard : game.getWizards()) {
+            getInfoBoard(wizard.getBoard());
+        }
+    }
     private void getInfoArchipelago(Archipelago archipelago) {
         int numTowers = 0;
         for(Student student: archipelago.getStudentFromArchipelago()){
@@ -124,18 +176,8 @@ public class CLIHandler {
         System.out.println("\n TOWERS in board");
         printTowers(board.getTowersInBoard());
     }
-    private void currentBoardInfo(Game game) {
-        for (Wizard wizard : game.getWizards()) {
-            getInfoBoard(wizard.getBoard());
-        }
-    }
 
-    private void printStudentInArchipelagoForEveryWizard(Wizard wizard) {
-        for (Archipelago archipelago : wizard.getArchipelagosOfWizard()) {
-            for (Student student : archipelago.getStudentFromArchipelago())
-                printStudent(student);
-        }
-    }
+
     private void printStudentInTables(Board board) {
         for (Color color : Color.values()) {
             System.out.print("\nOn the table " +color + " -> ");
@@ -191,19 +233,19 @@ public class CLIHandler {
         System.out.println("Please select an Assistant Card from the option below: ");
         List<AssistantsCards> assistantsCardsInTurn = ((AskAssistantCardMessage)message).getAssistantsCards();
         for(AssistantsCards a : assistantsCardsInTurn){
-            assistantsCardsMap.put(Constants.getAssistantCardCLI(a), a);
+            cli.getRemoteModel().getAssistantsCardsMap().put(Constants.getAssistantCardCLI(a), a);
             System.out.println(Printable.getAssistantCardCLI(a));
         }
     }
-    private void showStudentsOption(Message message){
+    private void showStudentsOnEntranceOption(Message message){
         System.out.println("\nPlease select an Student from the option below: ");
         System.out.println("Indicate the student you cho ose with its number than after the comma choose the Archipelago you want to move the student" +
                 "\n Write just the number if you want move the student on your board ");
         System.out.println("example: 1,2");
         StudentsOnEntranceMessage studentsCollectionMessage = (StudentsOnEntranceMessage) message;
-        setStudentMap(studentsCollectionMessage.getStudents());
-        for(int s : studentsMap.keySet()) {
-            System.out.print(s + "->" + Printable.getStudentsCLI(studentsMap.get(s)) + "  ");
+        cli.getRemoteModel().setStudentOnEntranceMap(studentsCollectionMessage.getStudents());
+        for(int s : cli.getRemoteModel().getStudentsOnEntranceMap().keySet()) {
+            System.out.print(s + "->" + Printable.getStudentsCLI(cli.getRemoteModel().getStudentsOnEntranceMap().get(s)) + "  ");
         }
 
     }
@@ -212,57 +254,12 @@ public class CLIHandler {
         System.out.println(askToMoveMotherNatureMessage.getMessage());
         System.out.println("Insert the index of the Archipelago you want to move Mother Nature");
     }
-    private void showArchipelagos(Message message){
-        ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
-        setArchipelagosMap(archipelagoListMessage.getArchipelago());
-        for(int i : archipelagosMap.keySet()) {
-            System.out.print("\n"+i  + ")  In this archipelago we have:\n");
-            getInfoArchipelago(archipelagosMap.get(i));
-        }
-    }
-    private void showClouds(Message message){
-        CloudInGame cloudInGame = (CloudInGame) message;
-        setCloudsMap(cloudInGame.getCloudMap());
-        for(int i : cloudsMap.keySet()) {
-            System.out.print("\n"+i  + ")  In this cloud we have:\n");
-            printCloud(cloudsMap.get(i));
-        }
-    }
-    private void showBoard(Message message){
-        BoardMessage boardMessage = (BoardMessage) message;
-        getInfoBoard(boardMessage.getBoard());
-    }
-    private void showCharacterCardsInGame(Message message){
-        CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
-        setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
-        System.out.println("In this game we have the follow Character's Cards");
-        for(int i : characterCardMap.keySet()) {
-            System.out.print("\n"+i  + ")" +  characterCardMap.get(i));
-        }
-    }
-    private void showGenericMessage(Message message){
-        GenericMessage genericMessage = (GenericMessage) message;
-        System.out.println(genericMessage.getContent());
-    }
-    private void showEndOfTurnMessage(Message message){
-        EndTurnMessage endOfTurnMessage = (EndTurnMessage) message;
-        System.out.println(endOfTurnMessage.getContent());
-    }
-    private void showYourTurnMessage(Message message){
-        YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
-        System.out.println("\n"+yourTurnMessage.getContent());
-    }
-    private void requestLogin(){
-        System.out.println("Please, procede with the login: ");
-        System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
-                "\n" + "(for example: camilla,2,yes  )");
-    }
 
 
     private Message createAssistantCardMessage(String assistant){
         assistant = assistant.toUpperCase();
-        if(assistantsCardsMap.containsKey(assistant)) {
-            return new AssistantCardMessage(assistantsCardsMap.get(assistant));
+        if(cli.getRemoteModel().getAssistantsCardsMap().containsKey(assistant)) {
+            return new AssistantCardMessage(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
         }else {
             System.out.println("Please write a valid Assistant Card");
             return null;
@@ -300,7 +297,7 @@ public class CLIHandler {
         try {
             if (!student.contains(",")) {
                 Integer indexStud = Integer.parseInt(student);
-                if (studentsMap.containsKey(indexStud))
+                if (cli.getRemoteModel().getStudentsOnEntranceMap().containsKey(indexStud))
                     message = new MoveStudentMessage(indexStud, null);
                 else {
                     System.out.println("Please write a valid Student");
@@ -312,15 +309,13 @@ public class CLIHandler {
                 String arch = info[1];
                 Integer indexStud = Integer.parseInt(stud);
                 Integer indexArch = Integer.parseInt(arch);
-                if (studentsMap.containsKey(indexStud) && archipelagosMap.containsKey(indexArch)) {
+                if (cli.getRemoteModel().getStudentsOnEntranceMap().containsKey(indexStud) && cli.getRemoteModel().getArchipelagosMap().containsKey(indexArch)) {
                     return new MoveStudentMessage(indexStud, indexArch);
                 } else {
                     System.out.println("Please write a valid Student");
                     return null;
                 }
             }
-            studentsMap.clear();
-            archipelagosMap.clear();
         }catch (NumberFormatException n){
             System.out.println("Please write a valid number");
         }
@@ -330,7 +325,7 @@ public class CLIHandler {
         Message message= null;
         try {
             Integer indexArch = Integer.parseInt(archipelago);
-            if (archipelagosMap.containsKey(indexArch)) {
+            if (cli.getRemoteModel().getArchipelagosMap().containsKey(indexArch)) {
                 message = new MoveMotherNatureMessage(indexArch);
                 System.out.println(message);
             }
@@ -345,7 +340,7 @@ public class CLIHandler {
         Message message= null;
         try {
             int indexCloud = Integer.parseInt(cloud);
-            if (cloudsMap.containsKey(indexCloud)) {
+            if (cli.getRemoteModel().getCloudsMap().containsKey(indexCloud)) {
                 message = new CloudMessage(indexCloud);
             } else
                 System.out.println("Please write a valid index of Archipelago");
@@ -360,22 +355,6 @@ public class CLIHandler {
         System.out.println("Character Card available: \n");
         List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
         Printable.printCharacterCards(characterCards);
-    }
-    private void setStudentMap(Map<Integer, Student> map){
-        studentsMap.clear();
-        studentsMap.putAll(map);
-    }
-    private void setArchipelagosMap(Map<Integer, Archipelago> map){
-        archipelagosMap.clear();
-        archipelagosMap.putAll(map);
-    }
-    private void setCloudsMap(Map<Integer, Cloud> map){
-        cloudsMap.clear();
-        cloudsMap.putAll(map);
-    }
-    private void setCharacterCardMap(Map<Integer, CharacterCard> map ){
-        characterCardMap.clear();
-        characterCardMap.putAll(map);
     }
 
 
