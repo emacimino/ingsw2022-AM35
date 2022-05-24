@@ -15,11 +15,9 @@ import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
+
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import java.util.List;
-import java.util.Map;
 
 public class CLIHandler {
     private CLI cli;
@@ -32,7 +30,7 @@ public class CLIHandler {
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
         if(inputString.equals("CharacterCard")){
-
+                characterCardHandler();
         }
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
@@ -355,6 +353,12 @@ public class CLIHandler {
         System.out.println("Character Card available: \n");
         List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
         Printable.printCharacterCards(characterCards);
+    }
+
+    private void characterCardHandler(){
+        Scanner scanner = cli.scanner;
+        String input = scanner.nextLine();
+
     }
 
 

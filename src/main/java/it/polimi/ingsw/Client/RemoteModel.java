@@ -18,10 +18,9 @@ public class RemoteModel {
     private Map<Integer, Student> studentsOnBoardMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
     private Map<Integer, Cloud> cloudsMap = new HashMap<>();
-    private Map<String, CharacterCard> characterCardMap = new HashMap<>();
     private Map<String, Color> colorMap = setColorCardMap();
     private Map<Integer, Student> totalStudentMap= new HashMap<>();
-
+    private Map<String, CharacterCard> characterCardMap = new HashMap<>();
 
     protected void setStudentOnEntranceMap(Map<Integer, Student> map){
         studentsOnEntranceMap.clear();

@@ -9,7 +9,8 @@ import java.util.Scanner;
 
 public class CLI extends Client{
 
-    CLIHandler cliHandler = new CLIHandler(this);
+    protected CLIHandler cliHandler = new CLIHandler(this);
+    protected Scanner scanner;
 
     public CLI(String ip, int port) {
         super(ip, port);
@@ -17,9 +18,10 @@ public class CLI extends Client{
     }
 
     @Override
-    public Thread asyncWriteToSocket(final Scanner scanner){
+    public Thread asyncWriteToSocket(final Object inputFromUser){
         Thread thread = new Thread(() -> {
             try{
+                scanner = (Scanner)inputFromUser;
                 while (isActive()){
                     String inputLine = scanner.nextLine(); //Scan input from command line
                     Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
