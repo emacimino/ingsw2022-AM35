@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.Wizard.Tower;
+import it.polimi.ingsw.Model.Wizard.TowerColors;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ class ArchipelagoTest {
     @ParameterizedTest
     @EnumSource(Color.class)
     void calculationInfluenceInArchipelago_Test(Color c){
+        TowerColors towerColors = ;
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_Test", ints[0], ints[1]);
         Assertions.assertEquals(0, archipelago.calculateInfluenceInArchipelago(wizard));

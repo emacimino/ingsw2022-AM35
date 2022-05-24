@@ -72,6 +72,7 @@ public class CLIHandler {
         System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
                 "\n" + "(for example: camilla,2,yes  )");
     }
+
     private void showErrorMessage(Message message) {
         ErrorMessage errorMessage = (ErrorMessage) message;
         System.out.println(Constants.ANSI_RED + errorMessage.getError() + Constants.ANSI_RESET);
