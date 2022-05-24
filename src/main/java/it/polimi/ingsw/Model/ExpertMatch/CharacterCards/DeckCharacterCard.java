@@ -45,14 +45,14 @@ public class DeckCharacterCard{
      * @param basicMatch current match
      * @return the deck for the match
      */
-    public Map<Integer, CharacterCard> drawCharacterCard(BasicMatch basicMatch) {
+    public Map<String, CharacterCard> drawCharacterCard(BasicMatch basicMatch) {
         Random random = new Random();
-        Map<Integer, CharacterCard> deckForAMatch = new HashMap<>();
+        Map<String, CharacterCard> deckForAMatch = new HashMap<>();
         FactoryCharacterCard factoryCharacterCard = new FactoryCharacterCard();
         for (int i = 0; i < 3; i++) {
             int toChoose = random.nextInt(deckOfCharacterCards.size());
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
-            deckForAMatch.put(i+1, drawnCharacterCard);
+            deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
         }
         return deckForAMatch;

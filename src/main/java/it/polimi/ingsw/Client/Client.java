@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public abstract class Client{
+    protected final RemoteModel remoteModel = new RemoteModel();
     private final String ip;
     private final int port;
     protected ObjectOutputStream outputStream;
@@ -32,7 +33,7 @@ public abstract class Client{
     }
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
-    public abstract Thread asyncWriteToSocket(final Scanner scanner);
+    public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -79,5 +80,8 @@ public abstract class Client{
             }
 
         }
+    }
+    public RemoteModel getRemoteModel() {
+        return remoteModel;
     }
 }

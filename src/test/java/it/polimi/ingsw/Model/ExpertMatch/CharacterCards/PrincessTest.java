@@ -66,7 +66,7 @@ class PrincessTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
             //sets Archer card in the game in position 0
             CharacterCard princess = new Princess(basicMatch2Players, "Princess");
-            expertMatch.getCharactersForThisGame().put(0, princess);
+            expertMatch.getCharactersForThisGame().put(princess.getName(), princess);
             Assertions.assertEquals(2, princess.getCost());
             int cost = princess.getCost();
 
@@ -120,7 +120,7 @@ class PrincessTest {
                 expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
                 expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
                 CharacterCard princess = new Princess(match4players, "Princess");
-                expertMatch4Players.getCharactersForThisGame().put(0, princess);
+                expertMatch4Players.getCharactersForThisGame().put(princess.getName(), princess);
                 assertEquals(2, princess.getCost());
                 assertEquals(1, wizard1.getCoins());
                 assertEquals(1, wizard2.getCoins());
