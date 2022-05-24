@@ -60,7 +60,7 @@ public class Printable {
     public static final String PROF_GREEN = GREEN +"███"+ RESET;
     public static final String PROF_PINK = PINK + "███"+ RESET;
 
-    public static final String MOTHER_NATURE = Constants.ANSI_ORANGE + "¶^¶" + RESET;
+    public static final String MOTHER_NATURE = Constants.ANSI_ORANGE + "§§" + RESET;
 
     public static final String TABLE_OF_STUDENTS_PINK = PINK + " | "+ RESET;
     public static final String TABLE_OF_STUDENTS_GREEN = GREEN + " | "+ RESET;
@@ -225,11 +225,11 @@ public class Printable {
             default -> throw new IllegalStateException("Unexpected value: " + color);
         }
         System.out.print( color + TOWER_TOP + RESET);
-        System.out.print("            |" + "\n" + "|  ");
+        System.out.print("       |" + "\n" + "|  ");
         System.out.print(color + TOWER_MIDDLE + RESET);
-        System.out.print("            |" + "\n" + "|  ");
+        System.out.print("       |" + "\n" + "|  ");
         System.out.print(color + TOWER_MIDDLE + RESET);
-        System.out.print("            |" + "\n" + "|   ");
+        System.out.print("       |" + "\n" + "|   ");
     }
 
     public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
@@ -284,25 +284,31 @@ public class Printable {
     }
 
     public static void printArchipelago(Archipelago archipelago){
-        for (int i = 0; i < (archipelago.getIsle().size() * 17); i++) System.out.print(RESET + "—————");
+        for (int i = 0; i < 18; i++) System.out.print(RESET + "—");
         System.out.print("\n" + "|  ");
         if(archipelago.isMotherNaturePresence())System.out.print(MOTHER_NATURE);
-        System.out.print("   ");
+        System.out.print("            |");
         for (Island isle:
              archipelago.getIsle()) {
-            for (int i = 0; i < 12; i++) System.out.print(RESET + "—");
             System.out.print("\n" + "|  ");
             if(isle.isThereTower())printTowersIsland("Gray");
-            System.out.print("| ");
+            int counter = 0;
             for (Student student:
                  isle.getStudentInIsland()) {
+                counter++;
+                if(counter%4 == 1 && counter != 1){
+                    System.out.print(" |\n" + "|   ");
+                }
                 System.out.print(" " + colorANSI.get(student.getColor()) + STUDENT + RESET + " ");
+
+                }
+            if(counter%4!=0) {
+                for (int i = 0; i < (4 - counter%4); i++) System.out.print("   ");
             }
-            System.out.print("  |" + "\n" + "|   ");
-            for (int i = 0; i < 15; i++) System.out.print(RESET + "—");
+            System.out.print(" |" + "\n" + "    ");
         }
         System.out.print("\n");
-        for (int i = 0; i < (archipelago.getIsle().size() * 17); i++) System.out.print(RESET + "—————");
+        for (int i = 0; i < 18; i++) System.out.print(RESET + "—");
     }
 
 }
