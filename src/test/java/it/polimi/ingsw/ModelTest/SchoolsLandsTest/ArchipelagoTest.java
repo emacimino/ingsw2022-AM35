@@ -27,7 +27,6 @@ class ArchipelagoTest {
     @ParameterizedTest
     @EnumSource(Color.class)
     void calculationInfluenceInArchipelago_Test(Color c){
-        TowerColors towerColors = ;
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_Test", ints[0], ints[1]);
         Assertions.assertEquals(0, archipelago.calculateInfluenceInArchipelago(wizard));
