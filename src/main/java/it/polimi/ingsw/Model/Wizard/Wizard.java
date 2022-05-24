@@ -25,9 +25,6 @@ public class Wizard implements Serializable {
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
     private final int limitOfStudentInEntrance;
-    private boolean KNIGHT_EFFECT;
-    private int MESSANGER_EFFECT;
-
 
     /**
      * THis is the constructor of the Wizard Class, it needs the username of the player, the limit
@@ -41,8 +38,6 @@ public class Wizard implements Serializable {
         this.username = username;
         this.limitOfStudentInEntrance = limitOfStudentInEntrance;
         this.numOfStudentMovable = numOfStudentMovable;
-        KNIGHT_EFFECT = false;
-        MESSANGER_EFFECT = 0;
 
     }
 

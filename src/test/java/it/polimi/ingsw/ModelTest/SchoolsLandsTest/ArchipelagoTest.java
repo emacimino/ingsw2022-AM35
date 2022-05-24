@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.Wizard.Tower;
+import it.polimi.ingsw.Model.Wizard.TowerColors;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 class ArchipelagoTest {
     int[] ints = {9, 4};
-
+    TowerColors towerColors = TowerColors.Black;
     /**
      * This methodTest tests the calculationInfluenceInArchipelago method
      * @param c color to use as parameter
