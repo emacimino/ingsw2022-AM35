@@ -25,7 +25,6 @@ public class Wizard implements Serializable {
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
     private final int limitOfStudentInEntrance;
-    private TowerColors towerColor;
     private boolean KNIGHT_EFFECT;
     private int MESSANGER_EFFECT;
 
@@ -251,16 +250,5 @@ public class Wizard implements Serializable {
     }
 
 
-    public void setTowerColor(int indexOfPlayer) {
-        switch (indexOfPlayer){
-            case 1 -> this.towerColor = TowerColors.White;
-            case 2 -> this.towerColor = TowerColors.Black;
-            case 3 -> this.towerColor = TowerColors.Gray;
-        }
-    }
-
-    public String getTowerColor(){
-        return this.towerColor.toString();
-    }
 }
 

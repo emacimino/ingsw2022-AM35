@@ -5,16 +5,20 @@ import it.polimi.ingsw.Model.SchoolsLands.*;
 import it.polimi.ingsw.Model.SchoolsMembers.*;
 import it.polimi.ingsw.Model.Wizard.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Game class represents the state of the match, it contains the implements the objects of the game Eriantys
  */
-public class Game implements Cloneable{
+public class Game implements Cloneable, Serializable {
+    @Serial
+    private final static long serialVersionUID = 8766266646997066785L;
     private final List<Wizard> wizards = new ArrayList<>();
     private final Collection<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
     private final List<Archipelago> archipelagos = new ArrayList<>();
-    private final StudentBag studentBag = new StudentBag();
+    private final transient StudentBag studentBag = new StudentBag();
     private final List<Professor> professors = new ArrayList<>();
     private final Collection<Cloud> clouds = new ArrayList<>();
     private final MotherNature motherNature = new MotherNature();
@@ -39,9 +43,6 @@ public class Game implements Cloneable{
     public void setWizards(List<Player> player){
         for(Player p: player) {
             wizards.add(new Wizard(p.getUsername(), limitOfStudentInEntrance, numOfStudentMovable));
-            if (player.size() == 2 || player.size() == 3) {
-                wizards.get(player.indexOf(p)).setTowerColor(player.indexOf(p));
-            }
         }
     }
 
@@ -51,8 +52,24 @@ public class Game implements Cloneable{
      */
     public void setTowers(int numOfTowers){
         for(Wizard w : wizards){
+            TowerColors towerColors = setTowersColor(wizards.indexOf(w));
             for(int i = 0; i<numOfTowers; i++)
-                 w.getBoard().getTowersInBoard().add(new Tower(w));
+                 w.getBoard().getTowersInBoard().add(new Tower(w, towerColors));
+        }
+    }
+
+    private TowerColors setTowersColor(int indexOfWizard) {
+        switch(indexOfWizard){
+            case 1 -> {
+                return TowerColors.White;
+            }
+            case 2 -> {
+                return TowerColors.Black;
+            }
+            case 3 -> {
+                return TowerColors.Gray;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + indexOfWizard);
         }
     }
 

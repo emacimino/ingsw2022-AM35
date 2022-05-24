@@ -166,7 +166,7 @@ public class Printable {
     }
 
     public static void printGenericBoard(Wizard wizard){
-        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(), wizard.getTowerColor());
+        Printable.printBoardTowers(wizard.getBoard().getTowersInBoard().size(), wizard.getBoard().getTowersInBoard().stream().toList().get(1).getTowerColors().toString());
         try {
             Printable.printBoardProfessorAndTables(wizard);
         } catch (ExceptionGame e) {
