@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.Wizard.Tower;
+import it.polimi.ingsw.Model.Wizard.TowerColors;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 public class IslandTest {
     int[] ints = {3, 7};
-
+    TowerColors towerColors = TowerColors.Black;
     /**
      * This methodTest tests that the exception thrown by the methods of the class are correct
      */

@@ -59,7 +59,7 @@ public class Game implements Cloneable, Serializable {
     }
 
     private TowerColors setTowersColor(int indexOfWizard) {
-        switch(indexOfWizard){
+        switch(indexOfWizard + 1){
             case 1 -> {
                 return TowerColors.White;
             }

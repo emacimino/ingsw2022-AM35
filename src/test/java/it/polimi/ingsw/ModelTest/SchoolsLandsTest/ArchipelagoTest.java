@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 class ArchipelagoTest {
     int[] ints = {9, 4};
-
+    TowerColors towerColors = TowerColors.Black;
     /**
      * This methodTest tests the calculationInfluenceInArchipelago method
      * @param c color to use as parameter

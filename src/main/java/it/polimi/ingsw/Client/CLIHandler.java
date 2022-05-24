@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -46,7 +45,6 @@ public class CLIHandler {
     }
 
     public void showMessage(Message message) {
-        String show;
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
@@ -64,7 +62,6 @@ public class CLIHandler {
             default -> System.out.println(message);
 
         }
-
     }
 
     private void requestLogin(){
@@ -112,11 +109,7 @@ public class CLIHandler {
     private void showCharacterCardsInGame(Message message){
         CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
         cli.getRemoteModel().setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
-        System.out.println("In this game we have the follow Character's Cards");
-        int i = 1;
-        for(String s : cli.getRemoteModel().getCharacterCardMap().keySet()) {
-            System.out.print("\n"+i  + ")" +  cli.getRemoteModel().getCharacterCardMap().get(s));
-        }
+        displayCharacterCard();
     }
 
 
@@ -350,15 +343,20 @@ public class CLIHandler {
         return message;
     }
 
-    private void displayCharacterCard(Message message){
+    private void displayCharacterCard(){
         System.out.println("Character Card available: \n");
-        List<CharacterCard> characterCards = (((CharacterChardDisplayMessage) message).getCharacterCards());
-        Printable.printCharacterCards(characterCards);
+        int i = 1;
+        for(String s : cli.getRemoteModel().getCharacterCardMap().keySet()) {
+            System.out.print("\n"+i  + ")" +  cli.getRemoteModel().getCharacterCardMap().get(s));
+        }
     }
 
     private void characterCardHandler(){
         Scanner scanner = cli.scanner;
-        String input = scanner.nextLine();
+        System.out.println("Select the character card you want to play: ");
+        displayCharacterCard();
+        String nameCharacter = scanner.nextLine(); //expected to have the Name of the character selected
+
 
     }
 

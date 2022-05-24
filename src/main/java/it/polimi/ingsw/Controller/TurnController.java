@@ -11,17 +11,16 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
 import java.util.*;
-//TEST
+
 public class TurnController {
+    private MessageHandler messageHandler = new MessageHandler();
     private Controller controller;
     private Map<String, ViewInterface> viewMap;
     private Player activePlayer;
     private List<Player> actionOrderOfPlayers = new ArrayList<>();
     private TurnPhase turnPhase = null;
     private int numberOfStudentMoved = 0;
-    private Map<Integer, Student> studentsMap = new HashMap<>();
-    private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
-    private Map<Integer, Cloud> cloudMap = new HashMap<>();
+
 
 
     public TurnController(Controller controller, Map<String, ViewInterface> viewMap){
@@ -88,7 +87,7 @@ public class TurnController {
                 PlayCharacterMessage message = (PlayCharacterMessage) receivedMessage;
                 playCharacterCardForThisTurn(message);
             }
-            // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
+
             default ->
                     throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
 
@@ -111,7 +110,7 @@ public class TurnController {
     private void MoveMotherNatureForThisTurn(MoveMotherNatureMessage message) {
         Integer indexArch = message.getArchipelago();
         try {
-           controller.getMatch().moveMotherNature(getActivePlayer(), archipelagoMap.get(indexArch));
+           controller.getMatch().moveMotherNature(getActivePlayer(), messageHandler.getArchipelagoMap().get(indexArch));
            setTurnPhase(TurnPhase.CHOOSE_CLOUD);
            askNextAction();
         } catch (ExceptionGame exceptionGame) {
@@ -121,7 +120,7 @@ public class TurnController {
     }
     private void selectCloudForThisTurn(CloudMessage message) {
         try {
-            controller.getMatch().chooseCloud(getActivePlayer(), cloudMap.get(message.getCloud()));
+            controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
             nextPlayerActionPhase();
             System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
@@ -138,9 +137,12 @@ public class TurnController {
         Integer indexArch = message.getArchipelago();
         try {
             if (message.getArchipelago() != null) {
-                controller.getMatch().moveStudentOnArchipelago(getActivePlayer(), studentsMap.get(indexStud), archipelagoMap.get(indexArch));
+                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
+                Archipelago a = messageHandler.getArchipelagoMap().get(indexArch);
+                controller.getMatch().moveStudentOnArchipelago(getActivePlayer(), s, a);
             } else {
-                controller.getMatch().moveStudentOnBoard(getActivePlayer(), studentsMap.get(indexStud));
+                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
+                controller.getMatch().moveStudentOnBoard(getActivePlayer(), s);
             }
             numberOfStudentMoved ++;
             if (numberOfStudentMoved == controller.getMatch().getNumberOfMovableStudents()) {
@@ -196,11 +198,11 @@ public class TurnController {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         remoteView.showGenericMessage(new GenericMessage("It's your turn, move " + (controller.getMatch().getNumberOfMovableStudents() - numberOfStudentMoved) + " students from your board"));
         try {
-            setStudentMap(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
-            setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-            remoteView.sendMessage(new ArchipelagoInGameMessage(archipelagoMap));
+            messageHandler.setStudentOnEntranceMap(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
+            messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+            remoteView.sendMessage(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()));
             remoteView.sendMessage(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()));
-            remoteView.sendMessage(new StudentsOnEntranceMessage(studentsMap));
+            remoteView.sendMessage(new StudentsOnEntranceMessage(messageHandler.getStudentsOnEntranceMap()));
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -222,8 +224,8 @@ public class TurnController {
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
             remoteView.showGenericMessage(new GenericMessage("\nIt's your turn, move Mother Nature!!"));
-            setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-            remoteView.sendMessage(new ArchipelagoInGameMessage(archipelagoMap));
+            messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+            remoteView.sendMessage(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()));
             remoteView.sendMessage(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()));
             remoteView.sendMessage(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()));
         } catch (ExceptionGame e) {
@@ -235,11 +237,11 @@ public class TurnController {
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
             remoteView.showGenericMessage(new GenericMessage("\n It's your turn, choose a Cloud!!"));
-            setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
-            setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-            remoteView.sendMessage(new ArchipelagoInGameMessage(archipelagoMap));
+            messageHandler.setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
+            messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+            remoteView.sendMessage(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()));
             remoteView.sendMessage(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()));
-            remoteView.sendMessage(new CloudInGame(cloudMap));
+            remoteView.sendMessage(new CloudInGame(messageHandler.getCloudMap()));
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -248,29 +250,5 @@ public class TurnController {
 
     public TurnPhase getTurnPhase() {
         return turnPhase;
-    }
-    private void setArchipelagoMap(List<Archipelago> archipelagos){
-        archipelagoMap.clear();
-        Integer i = 1;
-        for(Archipelago a: archipelagos){
-            archipelagoMap.put(i, a);
-            i++;
-        }
-    }
-    private void setStudentMap(List<Student> students){
-        studentsMap.clear();
-        Integer i = 1;
-        for(Student s: students){
-            studentsMap.put(i, s);
-            i++;
-        }
-    }
-    private void setCloudMap(List<Cloud> clouds){
-        cloudMap.clear();
-        Integer i = 1;
-        for(Cloud c: clouds){
-            cloudMap.put(i, c);
-            i++;
-        }
     }
 }
