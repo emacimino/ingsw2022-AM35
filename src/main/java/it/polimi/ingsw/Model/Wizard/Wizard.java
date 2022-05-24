@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,6 +15,7 @@ import java.util.HashSet;
  */
 
 public class Wizard implements Serializable {
+    @Serial
     private static final long serialVersionUID = 3592062413355087348L;
     private final Board board = new Board();
     private final AssistantsDeck assistantsDeck= new AssistantsDeck();

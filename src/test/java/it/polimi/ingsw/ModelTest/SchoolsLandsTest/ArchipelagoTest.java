@@ -29,7 +29,7 @@ class ArchipelagoTest {
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_Test", ints[0], ints[1]);
         Assertions.assertEquals(0, archipelago.calculateInfluenceInArchipelago(wizard));
-        Tower tower = new Tower(wizard);
+        Tower tower = new Tower(wizard, towerColors);
         wizard.getBoard().getTowersInBoard().add(tower);
         System.out.println("num of tower of wizard " + wizard.getBoard().getTowersInBoard().size());
         Assertions.assertDoesNotThrow(()->
@@ -60,7 +60,7 @@ class ArchipelagoTest {
     void placeWizardsTower_Test(){
         Archipelago archipelago = new Archipelago();
         Wizard wizard = new Wizard("player_string", ints[0], ints[1]);
-        Tower t1 = new Tower(wizard);
+        Tower t1 = new Tower(wizard, towerColors);
         wizard.getBoard().getTowersInBoard().add(t1);
         AtomicBoolean isPresent = new AtomicBoolean(false);
         Assertions.assertDoesNotThrow(()-> {
@@ -71,7 +71,7 @@ class ArchipelagoTest {
             Assertions.assertTrue(isPresent.get());
         });
 
-        Tower t2 = new Tower(wizard);
+        Tower t2 = new Tower(wizard, towerColors);
         Island island = new Island();
         archipelago.getIsle().add(island);
         wizard.getBoard().getTowersInBoard().add(t1);

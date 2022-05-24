@@ -21,7 +21,7 @@ public class IslandTest {
         Island island = new Island();
         Assertions.assertThrows(ExceptionGame.class, island::getTower);
         Wizard w1 = new Wizard("player_test", ints[0], ints[1]);
-        Tower t = new Tower(w1);
+        Tower t = new Tower(w1, towerColors);
         island.setTower(t);
         Assertions.assertDoesNotThrow(()->island.getTower().getProperty());
         Assertions.assertDoesNotThrow(()->
@@ -36,13 +36,13 @@ public class IslandTest {
     void setTower_Test() {
         Island island = new Island();
         Wizard wizard1 = new Wizard("player_test_1", ints[0], ints[1]);
-        Tower t1 = new Tower(wizard1);
+        Tower t1 = new Tower(wizard1, towerColors);
         island.setTower(t1);
         Assertions.assertDoesNotThrow(()->
             Assertions.assertEquals(wizard1, island.getTower().getProperty()));
 
         Wizard wizard2 = new Wizard("player_test_2", ints[0], ints[1] );
-        Tower t2 = new Tower(wizard2);
+        Tower t2 = new Tower(wizard2, towerColors);
         island.setTower(t2);
         Assertions.assertDoesNotThrow(()->
             Assertions.assertEquals(wizard2, island.getTower().getProperty())
