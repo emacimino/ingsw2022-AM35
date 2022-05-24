@@ -351,10 +351,20 @@ public class CLIHandler {
     }
 
     private void characterCardHandler(){
+        //PRIMA DI ARRIVARE A QUESTO PUNTO VOGLIO CHE LE MAPPE SIANO STATE SETTATE/AGGIORNATE
         Scanner scanner = cli.scanner;
         System.out.println("Select the character card you want to play: ");
         displayCharacterCard();
         String nameCharacter = scanner.nextLine(); //expected to have the Name of the character selected
+        //MOSTRI GLI ARCHIPELAGHI DELLA MAPPA CON GLI INDICI
+
+        //MOSTRERAI GLI STUDENTI SULL CARTA
+        //MOSTRERAI STUDENTI SULL ENTRATA
+
+        //STUDENTI IN SALA/BOARD
+        //CHIEDERE IL COLORE
+
+
 
 
     }
