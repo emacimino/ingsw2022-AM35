@@ -70,7 +70,7 @@ class ChefTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
             //sets a Chef card in the game in position 0
             CharacterCard chef = new Chef( basicMatch2Players,"chef");
-            expertMatch.getCharactersForThisGame().add(0, chef);
+            expertMatch.getCharactersForThisGame().put(chef.getName(), chef);
             assertEquals(3, chef.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
@@ -183,8 +183,7 @@ class ChefTest {
         Assertions.assertThrows(ExceptionGame.class, ()-> expertMatch4Players.setGame(players));
 
         Assertions.assertDoesNotThrow( ()->{
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
 
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
@@ -196,7 +195,7 @@ class ChefTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard chef = new Chef(match4players,"chef");
-            expertMatch4Players.getCharactersForThisGame().add(0, chef);
+            expertMatch4Players.getCharactersForThisGame().put(chef.getName(), chef);
             assertEquals(3, chef.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

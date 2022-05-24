@@ -50,7 +50,7 @@ class MinstrelTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
 
             CharacterCard minstrel = new Minstrel(basicMatch2Players, "Minstrel");
-            expertMatch.getCharactersForThisGame().add(0, minstrel);
+            expertMatch.getCharactersForThisGame().put(minstrel.getName(), minstrel);
             Assertions.assertEquals(1, minstrel.getCost());
 
 
@@ -112,8 +112,7 @@ class MinstrelTest {
         assertThrows(ExceptionGame.class, ()-> expertMatch4Players.setGame(players));
 
         assertDoesNotThrow( ()->{
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
 
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
@@ -125,7 +124,7 @@ class MinstrelTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard minstrel = new Minstrel(match4players, "Minstrel");
-            expertMatch4Players.getCharactersForThisGame().add(0, minstrel);
+            expertMatch4Players.getCharactersForThisGame().put(minstrel.getName(), minstrel);
             assertEquals(1, minstrel.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

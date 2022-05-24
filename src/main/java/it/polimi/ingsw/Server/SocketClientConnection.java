@@ -96,7 +96,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
                 newMessage = (Message) inputStream.readObject();
                 controller.onMessageReceived(newMessage);
             }
-        } catch (IOException | NoSuchElementException | ExceptionGame | CloneNotSupportedException | ClassNotFoundException e) {
+        } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
             asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
             System.err.println("Error from SCC! " + e.getMessage());
             close();
@@ -111,7 +111,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         return numberOfPlayers;
     }
 
-    private void login() throws IOException, ClassNotFoundException, ExceptionGame, CloneNotSupportedException {
+    private void login() throws IOException, ClassNotFoundException {
         asyncSendMessage(new LoginRequest());
         LoginResponse login = (LoginResponse) inputStream.readObject();
         while(server.isNameNotOk(login.getName())){

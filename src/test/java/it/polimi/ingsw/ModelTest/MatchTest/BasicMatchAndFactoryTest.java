@@ -64,8 +64,11 @@ public class BasicMatchAndFactoryTest {
             );
         }
 
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch2Players.setTeamsOne(playerOne,playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch2Players.setTeamsTwo(playerOne,playerTwo));
+        List<Player> playersTest = new ArrayList<>();
+        playersTest.add(playerThree);
+        playersTest.add(playerOne);
+        playersTest.add(playerThree);
+        Assertions.assertThrows(ExceptionGame.class, () -> basicMatch3Players.setTeams(playersTest));
         Assertions.assertThrows(ExceptionGame.class, basicMatch2Players::getTeams);
     }
 
@@ -84,8 +87,11 @@ public class BasicMatchAndFactoryTest {
             );
         }
 
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.setTeamsOne(playerOne,playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.setTeamsTwo(playerOne,playerTwo));
+        List<Player> playersTest = new ArrayList<>();
+        playersTest.add(playerThree);
+        playersTest.add(playerOne);
+        playersTest.add(playerThree);
+        Assertions.assertThrows(ExceptionGame.class, () -> basicMatch3Players.setTeams(playersTest));
         Assertions.assertThrows(ExceptionGame.class, basicMatch3Players::getTeams);
     }
 

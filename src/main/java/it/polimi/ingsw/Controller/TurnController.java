@@ -11,9 +11,8 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
 import java.util.*;
-
+//TEST
 public class TurnController {
-
     private Controller controller;
     private Map<String, ViewInterface> viewMap;
     private Player activePlayer;
@@ -84,18 +83,31 @@ public class TurnController {
             case MOVE_MOTHER_NATURE -> {
                 MoveMotherNatureMessage message = (MoveMotherNatureMessage) receivedMessage;
                 MoveMotherNatureForThisTurn(message);
-
             }
-
-            //find a way to understand if influence in archipelago changed
+            case PLAY_CHARACTER_CARD -> {
+                PlayCharacterMessage message = (PlayCharacterMessage) receivedMessage;
+                playCharacterCardForThisTurn(message);
+            }
             // case MOVE_MOTHER_NATURE -> match.moveMotherNature(receivedMessage.getPlayer(), match.getGame().getArchipelagos().get((Integer) receivedMessage.getContentOne()));
             default ->
                     throw new IllegalStateException("Unexpected value: " + receivedMessage.getType());
 
         }
-
     }
 
+    private boolean playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
+        try {
+            controller.getMatch().playAssistantsCard(activePlayer, assistantsCard);
+            return true;
+
+        } catch (ExceptionGame e) {
+            ViewInterface view = viewMap.get(activePlayer.getUsername());
+            view.sendMessage(new ErrorMessage(e.getMessage()));
+            askingViewToPlayAnAssistantCard();
+            return false;
+        }
+
+    }
     private void MoveMotherNatureForThisTurn(MoveMotherNatureMessage message) {
         Integer indexArch = message.getArchipelago();
         try {
@@ -111,9 +123,9 @@ public class TurnController {
         try {
             controller.getMatch().chooseCloud(getActivePlayer(), cloudMap.get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
+            nextPlayerActionPhase();
             System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
 
-            nextPlayerActionPhase();
         } catch (ExceptionGame e) {
             e.printStackTrace();
             viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
@@ -131,7 +143,7 @@ public class TurnController {
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), studentsMap.get(indexStud));
             }
             numberOfStudentMoved ++;
-            if (numberOfStudentMoved == 3) {
+            if (numberOfStudentMoved == controller.getMatch().getNumberOfMovableStudents()) {
                 numberOfStudentMoved = 0;
                 setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
                 askNextAction();
@@ -144,17 +156,7 @@ public class TurnController {
             askingViewToMoveAStudent(numberOfStudentMoved);
         }
     }
-    private boolean playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
-        try {
-            controller.getMatch().playAssistantsCard(activePlayer, assistantsCard);
-            return true;
-
-        } catch (ExceptionGame e) {
-            ViewInterface view = viewMap.get(activePlayer.getUsername());
-            view.sendMessage(new ErrorMessage(e.getMessage()));
-            askingViewToPlayAnAssistantCard();
-            return false;
-        }
+    private void playCharacterCardForThisTurn(PlayCharacterMessage message){
 
     }
 

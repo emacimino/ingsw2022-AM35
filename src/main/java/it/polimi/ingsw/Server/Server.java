@@ -51,7 +51,7 @@ public class Server {
         }
     }
 
-    public synchronized void lobby(ClientConnection c) throws ExceptionGame, CloneNotSupportedException {
+    public synchronized void lobby(ClientConnection c) {
         SocketClientConnection newClientConnection = (SocketClientConnection) c;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
@@ -59,14 +59,18 @@ public class Server {
         createIfPossibleAMatch(newClientConnection, waitingList);
         }
 
-    private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) throws ExceptionGame, CloneNotSupportedException {
+    private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
             BasicMatch match = instantiateModel(newClientConnection);
             Controller controller = instantiateController(match, waitingList) ;
             ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
             matchInServer.put(matchCounter, clientsInMatch);
             matchCounter++;
-            controller.initGame();
+            try {
+                controller.initGame();
+            }catch (ExceptionGame e){
+                e.printStackTrace();
+            }
 
         }else{ // put all the players in waiting list in lobby
             waitingPlayersInLobby.putAll(waitingList);

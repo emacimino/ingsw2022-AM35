@@ -67,7 +67,7 @@ class BankerTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
             //sets a Chef card in the game in position 0
             CharacterCard banker = new Banker( basicMatch2Players,"Banker");
-            expertMatch.getCharactersForThisGame().add(0, banker);
+            expertMatch.getCharactersForThisGame().put(banker.getName(), banker);
             assertEquals(3, banker.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
@@ -128,8 +128,7 @@ class BankerTest {
         ExpertMatch expertMatch4Players = new ExpertMatch(match4players);
         Assertions.assertThrows(ExceptionGame.class, () -> expertMatch4Players.setGame(players));
         Assertions.assertDoesNotThrow(() -> {
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
             Wizard wizard2 = expertMatch4Players.getGame().getWizardFromPlayer(player2);
@@ -140,7 +139,7 @@ class BankerTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard banker = new Banker(match4players, "Banker");
-            expertMatch4Players.getCharactersForThisGame().add(0, banker);
+            expertMatch4Players.getCharactersForThisGame().put(banker.getName(), banker);
             assertEquals(3, banker.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

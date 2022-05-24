@@ -37,9 +37,8 @@ public class BasicMatchFourPlayerTest {
         players.add(playerThree);
         players.add(playerFour);
         Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch4Players.setGame(players));
-        Assertions.assertDoesNotThrow(()-> basicMatch4Players.setTeamsOne(playerOne,playerTwo));
-        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch4Players.setTeamsTwo(playerOne,playerTwo));
-        Assertions.assertDoesNotThrow(()-> basicMatch4Players.setTeamsTwo(playerThree,playerFour));
+        Assertions.assertDoesNotThrow(()-> basicMatch4Players.setTeams(players));
+        Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch4Players.setTeams(players));
         Assertions.assertDoesNotThrow(()-> basicMatch4Players.setGame(players));
     }
     public void printGame(){

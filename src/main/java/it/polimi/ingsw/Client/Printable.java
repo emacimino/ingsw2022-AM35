@@ -167,16 +167,14 @@ public class Printable {
     }
 
     public static void printCharacterCards(List<CharacterCard> characterCards){
-        for (CharacterCard c:
-             characterCards) {
-            c.toString();
+        for (CharacterCard c: characterCards) {
+            System.out.println(c);
         }
     }
 
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
-        final String privateTowerColor = towerColor;
         final String color;
-        switch (privateTowerColor) {
+        switch (towerColor) {
             case "Black" -> color = ANSI_BRIGHTBLACK;
             case "White" -> color = RESET;
             case "Gray" -> color = ANSI_BRIGHTWHITE;

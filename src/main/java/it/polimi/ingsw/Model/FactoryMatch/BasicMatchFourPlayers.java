@@ -47,47 +47,37 @@ public class BasicMatchFourPlayers extends BasicMatch{
         super.getGame().setProfessors();
         super.getGame().setClouds(getNumberOfClouds(), getNumberOfStudentsOnCLoud());
         super.getGame().setRandomlyFirstPlayer();
-        notifyObserver(new CurrentGameMessage(super.getGame()));
-
+        notifyObserver(new GenericMessage("Order of the players: " + players));
+        //notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
-    @Override
-    public void setTeamsOne(Player player1, Player player2) throws ExceptionGame{
-        if(teamTwo.contains(player1) || teamTwo.contains(player2))
-            throw new ExceptionGame("One player is already in Team Two");
-        if(!teamOne.isEmpty())
-            throw new ExceptionGame("Team One is already defined");
+    public void setTeams(List<Player> players) throws ExceptionGame {
+        if(teamOne.isEmpty() && teamTwo.isEmpty()) {
+            setTeamsOne(players.get(0), players.get(1));
+            setTeamsTwo(players.get(2), players.get(3));
+            notifyObserver(new GenericMessage("The teams are: \nteam ONE -> " + getTeams().get(0) + "\nteam TWO -> " + getTeams().get(1)));
+        }else throw new ExceptionGame("Team One is already defined");
+    }
+    private void setTeamsOne(Player player1, Player player2) {
         captainTeamOne = player1;
         captains.add(captainTeamOne);
         teamOne.add(player1);
         teamOne.add(player2);
     }
-
-    @Override
-    public void setTeamsTwo(Player player1, Player player2)throws ExceptionGame{
-        if(teamOne.contains(player1) || teamOne.contains(player2))
-            throw new ExceptionGame("One player is already in Team One");
-        if(!teamTwo.isEmpty())
-            throw new ExceptionGame("Team Two is already defined");
+    private void setTeamsTwo(Player player1, Player player2)throws ExceptionGame{
         captainTeamTwo = player1;
         captains.add(captainTeamTwo);
         teamTwo.add(player1);
         teamTwo.add(player2);
-
     }
 
     @Override
     public List<List<Player>> getTeams() throws ExceptionGame{
         List<List<Player>> teamsList = new ArrayList<>();
-        List<Player> copyOne = new ArrayList<>();
-        List<Player> copyTwo = new ArrayList<>();
-        Collections.copy(copyOne, teamOne);
-        teamsList.add(copyOne);
-        Collections.copy(copyTwo, teamTwo);
-        teamsList.add(copyTwo);
+        teamsList.add(teamOne);
+        teamsList.add(teamTwo);
         return teamsList;
     }
-
     private Player getCaptainOfTheTeam(Collection<Player> team) throws ExceptionGame{
         if(team.equals(teamOne))
             return captainTeamOne;
@@ -122,10 +112,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         }finally {
             checkVictory();
         }
-        if(player.equals(super.getActionPhaseOrderOfPlayers().get(super.getActionPhaseOrderOfPlayers().size()-1))){
-            resetRound();
-        }
-        notifyObserver(new CurrentGameMessage(super.getGame()));
+        //notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
     @Override
@@ -147,16 +134,12 @@ public class BasicMatchFourPlayers extends BasicMatch{
         boolean endOfTheMatch = false;
         List<Wizard> w = getCaptainsWithLeastTowers();
         List<Wizard> winner = new ArrayList<>();
-
-        System.out.println("size of winners "+w.size());
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
         }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
-            System.out.println("num towers "+ w.get(0) + " : " + w.get(0).getBoard().getTowersInBoard().size());
             winner.add(w.get(0));
-            System.out.println("studentbag empty or assistant card playable empty, one winner");
         }
         else if (w.size()>1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (super.getGame().getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;

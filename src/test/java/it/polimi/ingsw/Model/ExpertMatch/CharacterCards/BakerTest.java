@@ -71,7 +71,7 @@ class BakerTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
             //sets a Baker card in the game in position 0
             CharacterCard baker = new Baker( basicMatch2Players,"Baker");
-            expertMatch.getCharactersForThisGame().add(0, baker);
+            expertMatch.getCharactersForThisGame().put(baker.getName(), baker);
             Assertions.assertEquals(2, baker.getCost());
             Assertions.assertEquals(1, wizard1.getCoins());
             Assertions.assertEquals(1, wizard2.getCoins());
@@ -169,8 +169,7 @@ class BakerTest {
         Assertions.assertThrows(ExceptionGame.class, ()-> expertMatch4Players.setGame(players));
 
         Assertions.assertDoesNotThrow( ()->{
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
 
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
@@ -182,7 +181,7 @@ class BakerTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard baker = new Baker(  match4players,"baker");
-            expertMatch4Players.getCharactersForThisGame().add(0, baker);
+            expertMatch4Players.getCharactersForThisGame().put(baker.getName(), baker);
             assertEquals(2, baker.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());

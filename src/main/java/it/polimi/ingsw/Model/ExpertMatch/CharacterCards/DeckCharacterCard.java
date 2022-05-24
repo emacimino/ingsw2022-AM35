@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -43,14 +45,14 @@ public class DeckCharacterCard{
      * @param basicMatch current match
      * @return the deck for the match
      */
-    public ArrayList<CharacterCard> drawCharacterCard(BasicMatch basicMatch) {
+    public Map<String, CharacterCard> drawCharacterCard(BasicMatch basicMatch) {
         Random random = new Random();
-        ArrayList<CharacterCard> deckForAMatch = new ArrayList<>();
+        Map<String, CharacterCard> deckForAMatch = new HashMap<>();
         FactoryCharacterCard factoryCharacterCard = new FactoryCharacterCard();
         for (int i = 0; i < 3; i++) {
             int toChoose = random.nextInt(deckOfCharacterCards.size());
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
-            deckForAMatch.add(drawnCharacterCard);
+            deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
         }
         return deckForAMatch;

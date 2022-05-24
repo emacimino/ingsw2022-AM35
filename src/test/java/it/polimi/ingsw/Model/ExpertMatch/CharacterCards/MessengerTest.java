@@ -67,7 +67,7 @@ class MessengerTest {
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
 
             CharacterCard messenger = new Messenger(basicMatch2Players,"Messenger");
-            expertMatch.getCharactersForThisGame().add(0, messenger);
+            expertMatch.getCharactersForThisGame().put(messenger.getName(), messenger);
             Assertions.assertEquals(3, messenger.getCost());
             int cost = messenger.getCost();
             Collection<Student> studentsPlayer1 = expertMatch.getGame().getWizardFromPlayer(player1).getBoard().getStudentsInEntrance();
@@ -161,8 +161,7 @@ class MessengerTest {
         ExpertMatch expertMatch4Players = new ExpertMatch(match4players);
         Assertions.assertThrows(ExceptionGame.class, () -> expertMatch4Players.setGame(players));
         Assertions.assertDoesNotThrow(() -> {
-            expertMatch4Players.setTeamsOne(player1, player2);
-            expertMatch4Players.setTeamsTwo(player3, player4);
+            expertMatch4Players.setTeams(players);
             expertMatch4Players.setGame(players);
             Wizard wizard1 = expertMatch4Players.getGame().getWizardFromPlayer(player1);
             Wizard wizard2 = expertMatch4Players.getGame().getWizardFromPlayer(player2);
@@ -173,7 +172,7 @@ class MessengerTest {
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
             CharacterCard messenger = new Messenger(match4players,"Messenger");
-            expertMatch4Players.getCharactersForThisGame().add(0, messenger);
+            expertMatch4Players.getCharactersForThisGame().put(messenger.getName(), messenger);
             assertEquals(3, messenger.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
