@@ -108,6 +108,7 @@ public class CLIHandler {
         BoardMessage boardMessage = (BoardMessage) message;
         getInfoBoard(boardMessage.getBoard());
     }
+
     private void showCharacterCardsInGame(Message message){
         CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
         cli.getRemoteModel().setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
@@ -166,7 +167,7 @@ public class CLIHandler {
     }
     private void getInfoBoard(Board board){
         System.out.println("\n\nTO THIS WIZARD BELONGS:  ");
-        System.out.println("STUDENT in entrance:  ");
+        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().);
         printStudents(board.getStudentsInEntrance());
         printStudentInTables(board);
         System.out.println("\nPROFESSOR in board: \n ");
