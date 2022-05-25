@@ -59,7 +59,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
         notifyObserver(new GenericMessage("Order of the players: " + players));
-      //  notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new CurrentGameMessage(game));
 
     }
 
@@ -94,8 +94,8 @@ public class BasicMatch extends Observable implements Serializable {
         Wizard wizard = game.getWizardFromPlayer(player);
         wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCard);
-     //   notifyObserver(new CurrentGameMessage(game));
-         notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
+        notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**
@@ -186,7 +186,7 @@ public class BasicMatch extends Observable implements Serializable {
             checkVictory();
 
         }
-      //  notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new CurrentGameMessage(game));
         notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
 
     }

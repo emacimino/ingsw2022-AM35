@@ -1,22 +1,23 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
-import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BasicMatchFourPlayers extends BasicMatch{
 
     private  Player captainTeamOne;
     private  Player captainTeamTwo;
-    private List<Player> teamOne = new ArrayList<>();
-    private List<Player> teamTwo = new ArrayList<>();
-    private List<Player> captains = new ArrayList<>();
+    private final List<Player> teamOne = new ArrayList<>(); //added final after a warning
+    private final List<Player> teamTwo = new ArrayList<>(); //added final after a warning
+    private final List<Player> captains = new ArrayList<>(); //added final after a warning
    // private Team teamOne_;
    // private Team teamTwo_;
 
@@ -64,7 +65,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         teamOne.add(player1);
         teamOne.add(player2);
     }
-    private void setTeamsTwo(Player player1, Player player2)throws ExceptionGame{
+    private void setTeamsTwo(Player player1, Player player2){
         captainTeamTwo = player1;
         captains.add(captainTeamTwo);
         teamTwo.add(player1);
@@ -97,6 +98,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
     public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
         return getCaptainOfTheTeam(getTeamOfPlayer(player));
     }
+
     private List<Player> getCaptains(){
         return captains;
     }

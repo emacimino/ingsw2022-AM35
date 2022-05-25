@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -39,11 +40,13 @@ public class Printable {
             "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████";
 
     public static final String bigTitle=
-            "███████  ███████   ██      ██      ██     ██  ██████  ██    ██   █████\n" +
-            "██       ██    █   ██     █  █     ██ █   ██    ██      █  █    █     \n" +
-            "███████  ██████    ██    █ ██ █    ██  █  ██    ██       ██      ██   \n" +
-            "██       ██   █    ██   ██    ██   ██   █ ██    ██       ██        ██ \n" +
-            "███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████  \n"
+            """
+                    ███████  ███████   ██      ██      ██     ██  ██████  ██    ██   █████
+                    ██       ██    █   ██     █  █     ██ █   ██    ██      █  █    █    \s
+                    ███████  ██████    ██    █ ██ █    ██  █  ██    ██       ██      ██  \s
+                    ██       ██   █    ██   ██    ██   ██   █ ██    ██       ██        ██\s
+                    ███████  ██    ██  ██  ██      ██  ██    ███    ██       ██    █████ \s
+                    """
             ;
 
     public static final String STUDENT = "█";
@@ -172,6 +175,7 @@ public class Printable {
         }
     }
 
+
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
         final String color;
         switch (towerColor) {
@@ -256,8 +260,7 @@ public class Printable {
 
 
     public static void printProfessorSeat(List<Professor> p, Color c){
-        for (Professor professor:
-                p){
+        for (Professor professor: p){
             if(professor.getColor() == c){
                 System.out.print(colorANSI.get(c) + " #| ");
                 System.out.print(PROF);
