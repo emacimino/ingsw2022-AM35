@@ -25,6 +25,7 @@ public class Printable {
     public static final String GREEN = Constants.ANSI_GREEN;
     public static final String PINK = Constants.ANSI_PINK;
     public static final String RESET = Constants.ANSI_RESET;
+    public static final String DEEPBLUE = Constants.ANSI_DEEPBLUE;
 
     public static final String PLUS = "+";
 
@@ -285,10 +286,15 @@ public class Printable {
     }
 
     public static void printArchipelago(Archipelago archipelago){
-        for (int i = 0; i < 18; i++) System.out.print(RESET + "—");
+        System.out.print(DEEPBLUE + "\n ##################### \n\n");
+        for (int i = 0; i < 16; i++) System.out.print(RESET + "—");
         System.out.print("\n" + "|  ");
-        if(archipelago.isMotherNaturePresence())System.out.print(MOTHER_NATURE);
-        System.out.print("            |");
+        if(archipelago.isMotherNaturePresence()) {
+            System.out.print(MOTHER_NATURE + "          |");
+        }
+        else{
+            System.out.print("            |");
+        }
         for (Island isle:
              archipelago.getIsle()) {
             System.out.print("\n" + "|  ");
@@ -306,10 +312,12 @@ public class Printable {
             if(counter%4!=0) {
                 for (int i = 0; i < (4 - counter%4); i++) System.out.print("   ");
             }
-            System.out.print(" |" + "\n" + "    ");
+            if(counter == 0)System.out.print("            ");
+            System.out.print("|" + "\n" + "|   ");
         }
+        System.out.print("           |\n");
+        for (int i = 0; i < 16; i++) System.out.print(RESET + "—");
         System.out.print("\n");
-        for (int i = 0; i < 18; i++) System.out.print(RESET + "—");
     }
 
 }
