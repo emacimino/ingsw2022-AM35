@@ -297,20 +297,20 @@ public class Printable {
         }
         for (Island isle:
              archipelago.getIsle()) {
-            System.out.print("\n" + "|  ");
+            System.out.print("\n" + "| ");
             if(isle.isThereTower())printTowersIsland("Gray");
             int counter = 0;
             for (Student student:
                  isle.getStudentInIsland()) {
                 counter++;
                 if(counter%4 == 1 && counter != 1){
-                    System.out.print(" |\n" + "|   ");
+                    System.out.print(" |\n" + "|  ");
                 }
                 System.out.print(" " + colorANSI.get(student.getColor()) + STUDENT + RESET + " ");
 
                 }
             if(counter%4!=0) {
-                for (int i = 0; i < (4 - counter%4); i++) System.out.print("   ");
+                for (int i = 0; i < (4 - counter%4); i++) System.out.print("    ");
             }
             if(counter == 0)System.out.print("            ");
             System.out.print("|" + "\n" + "|   ");
