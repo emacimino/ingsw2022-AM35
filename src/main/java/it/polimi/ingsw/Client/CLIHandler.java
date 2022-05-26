@@ -128,6 +128,7 @@ public class CLIHandler {
         currentLandsInfo(game);
     }
     private void currentLandsInfo(Game game) {
+        System.out.print("\n\n  ARCHIPELAGOS:  \n");
         for (Archipelago archipelago : game.getArchipelagos()) {
             getInfoArchipelago(archipelago);
         }
@@ -138,40 +139,21 @@ public class CLIHandler {
         }
     }
     private void getInfoArchipelago(Archipelago archipelago) {
-        int numTowers = 0;
-        for(Student student: archipelago.getStudentFromArchipelago()){
-            System.out.print(Printable.getStudentsCLI(student) + "  ");
+        Printable.printArchipelago(archipelago);
+    }
+    private void getInfoBoard(Board board) throws ExceptionGame {
+        List<Student> students = new ArrayList<Student>();
+        System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
+        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        for (Color c:
+             Color.values()) {
+            students.addAll(board.getStudentsFromTable(c));
         }
-        for(Island island: archipelago.getIsle()) {
-            if (island.isThereTower())
-                numTowers++;
-        }
-        if(numTowers>0) {
-            try {
-                System.out.println(numTowers + " Towers of " + archipelago.getIsle().get(0).getTower().getProperty()+ " present in this Archipelagos\n");
-            } catch (ExceptionGame e) {
-                e.printStackTrace();
-            }
-        }
+        Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
+        Printable.printEntrance(board.getStudentsInEntrance().stream().toList());
+        System.out.print("\n");
+    }
 
-        if(archipelago.isMotherNaturePresence()){
-            System.out.println("In this archipelago we have motherNature " );
-        }else
-            System.out.println("NO MOTHER NATURE" );
-        if(archipelago.isProhibition()){
-            System.out.println("In this archipelago a prohibition is present " );
-        }
-    }
-    private void getInfoBoard(Board board){
-        System.out.println("\n\nTO THIS WIZARD BELONGS:  ");
-        System.out.println("STUDENT in entrance:  ");
-        printStudents(board.getStudentsInEntrance());
-        printStudentInTables(board);
-        System.out.println("\nPROFESSOR in board: \n ");
-        printProfessors(board.getProfessorInTable());
-        System.out.println("\n TOWERS in board");
-        printTowers(board.getTowersInBoard());
-    }
 
 
     private void printStudentInTables(Board board) {
@@ -382,28 +364,13 @@ public class CLIHandler {
 
     private void displayCharacterCard(){
         System.out.println("Character Card available: \n");
-        int sizeOfMap = 3;
-        int counter = 1;
+        int i = 1;
         for(String s : cli.getRemoteModel().getCharacterCardMap().keySet()) {
-            System.out.print("\n"+ counter + ")" +  cli.getRemoteModel().getCharacterCardMap().get(s));
-            counter++;
+            System.out.print("\n"+i  + ")" +  cli.getRemoteModel().getCharacterCardMap().get(s));
         }
     }
 
-    private void displayCharacterCardInfo(String nameOfCard) {
-        CharacterCard card = cli.getRemoteModel().getCharacterCardMap().get(nameOfCard);
-        if(!card.getStudentsOnCard().isEmpty()){
-            for(Student student: card.getStudentsOnCard()){
-                printStudent(student);
-            }
-
-        }
-
-
-
-    }
-
-    /* private void characterCardHandler(){
+/* private void characterCardHandler(){
         //Map already settled
         Scanner scanner = cli.scanner;
         displayCharacterCard();
@@ -417,7 +384,6 @@ public class CLIHandler {
 
         //STUDENTI IN SALA/BOARD
         //CHIEDERE IL COLORE
-
 
     }
 

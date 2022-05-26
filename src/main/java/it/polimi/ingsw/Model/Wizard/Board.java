@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.List;
 
 /**
  * Board is the board you are given in the beginning and belongs only to you
