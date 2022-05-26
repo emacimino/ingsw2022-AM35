@@ -1,8 +1,12 @@
 package it.polimi.ingsw.Client.Gui;
 
 import javafx.application.Application;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.*;
 
@@ -23,9 +27,19 @@ public class JavaFxGui extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Group root = new Group();
-        Scene scene = new Scene(root, Color.AQUA);
+        Scene scene = new Scene(root, Color.LIGHTSKYBLUE);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Eriantys");
+        Image iconCranio = new Image("file:LOGO_CRANIO_CREATIONS.png");
+        primaryStage.getIcons().add(iconCranio);
 
+        Text welcomeText = new Text();
+        welcomeText.setText("Welcome, are you ready to play with Eriantys???");
+        welcomeText.setX(50);
+        welcomeText.setY(50);
+        root.getChildren().add(welcomeText);
+        primaryStage.setMaximized(true);
+        // primaryStage.setFullScreen(true);
         primaryStage.show(); //used it to show the stage NB it needs to be at the end of start()
     }
 
