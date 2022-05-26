@@ -11,13 +11,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public abstract class Client{
-    protected final RemoteModel remoteModel = new RemoteModel();
     private final String ip;
     private final int port;
     protected ObjectOutputStream outputStream;
     private boolean active = true;
     protected ObjectInputStream socketIn;
     protected TurnPhase turnPhase = TurnPhase.LOGIN;
+    private final RemoteModel remoteModel = new RemoteModel();
 
     public Client(String ip, int port) {
         this.ip = ip;
@@ -33,7 +33,7 @@ public abstract class Client{
     }
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
-    public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
+    public abstract Thread asyncWriteToSocket();
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -51,16 +51,16 @@ public abstract class Client{
         System.out.println("Connection Established");
         socketIn = new ObjectInputStream(socketClient.getInputStream());
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
+        //Scanner stdin = new Scanner(System.in);
+
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(stdin);
+            Thread t1 = asyncWriteToSocket();
             t0.join();
             t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
-            stdin.close();
             socketIn.close();
             outputStream.close();
             socketClient.close();
@@ -81,6 +81,7 @@ public abstract class Client{
 
         }
     }
+
     public RemoteModel getRemoteModel() {
         return remoteModel;
     }
