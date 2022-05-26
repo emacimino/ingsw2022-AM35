@@ -44,7 +44,7 @@ public class CLIHandler {
         return message;
     }
 
-    public void showMessage(Message message) {
+    public void showMessage(Message message) throws ExceptionGame {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
@@ -101,10 +101,11 @@ public class CLIHandler {
             printCloud(cli.getRemoteModel().getCloudsMap().get(i));
         }
     }
-    private void showBoard(Message message){
+    private void showBoard(Message message) throws ExceptionGame {
         BoardMessage boardMessage = (BoardMessage) message;
         getInfoBoard(boardMessage.getBoard());
     }
+
     private void showCharacterCardsInGame(Message message){
         CharacterCardInGameMessage characterCardInGameMessage  = (CharacterCardInGameMessage) message;
         cli.getRemoteModel().setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
@@ -112,60 +113,41 @@ public class CLIHandler {
     }
 
 
-    private void showCurrentGame(Message message) {
+    private void showCurrentGame(Message message) throws ExceptionGame {
         System.out.println("State of current match is :\n");
         Game game = ((CurrentGameMessage) message).getGame();
         displayCurrentGameInfoCli(game);
 
     }
-    private void displayCurrentGameInfoCli(Game game) {
+    private void displayCurrentGameInfoCli(Game game) throws ExceptionGame {
         currentBoardInfo(game);
         currentLandsInfo(game);
     }
     private void currentLandsInfo(Game game) {
+        System.out.print("\n\n  ARCHIPELAGOS:  \n");
         for (Archipelago archipelago : game.getArchipelagos()) {
             getInfoArchipelago(archipelago);
         }
     }
-    private void currentBoardInfo(Game game) {
+    private void currentBoardInfo(Game game) throws ExceptionGame {
         for (Wizard wizard : game.getWizards()) {
             getInfoBoard(wizard.getBoard());
         }
     }
     private void getInfoArchipelago(Archipelago archipelago) {
-        int numTowers = 0;
-        for(Student student: archipelago.getStudentFromArchipelago()){
-            System.out.print(Printable.getStudentsCLI(student) + "  ");
-        }
-        for(Island island: archipelago.getIsle()) {
-            if (island.isThereTower())
-                numTowers++;
-        }
-        if(numTowers>0) {
-            try {
-                System.out.println(numTowers + " Towers of " + archipelago.getIsle().get(0).getTower().getProperty()+ " present in this Archipelagos\n");
-            } catch (ExceptionGame e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(archipelago.isMotherNaturePresence()){
-            System.out.println("In this archipelago we have motherNature " );
-        }else
-            System.out.println("NO MOTHER NATURE" );
-        if(archipelago.isProhibition()){
-            System.out.println("In this archipelago a prohibition is present " );
-        }
+        Printable.printArchipelago(archipelago);
     }
-    private void getInfoBoard(Board board){
-        System.out.println("\n\nTO THIS WIZARD BELONGS:  ");
-        System.out.println("STUDENT in entrance:  ");
-        printStudents(board.getStudentsInEntrance());
-        printStudentInTables(board);
-        System.out.println("\nPROFESSOR in board: \n ");
-        printProfessors(board.getProfessorInTable());
-        System.out.println("\n TOWERS in board");
-        printTowers(board.getTowersInBoard());
+    private void getInfoBoard(Board board) throws ExceptionGame {
+        List<Student> students = new ArrayList<Student>();
+        System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
+        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        for (Color c:
+             Color.values()) {
+            students.addAll(board.getStudentsFromTable(c));
+        }
+        Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
+        Printable.printEntrance(board.getStudentsInEntrance().stream().toList());
+        System.out.print("\n");
     }
 
 
