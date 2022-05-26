@@ -2,6 +2,9 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.Ping;
+import it.polimi.ingsw.NetworkUtilities.Message.Pong;
+import it.polimi.ingsw.NetworkUtilities.Message.TypeMessage;
 import it.polimi.ingsw.View.RemoteView;
 
 import java.io.ObjectInputStream;
@@ -34,7 +37,7 @@ public class CLI extends Client{
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                setActive(false);
+                //setActive(false);
             }
         });
         thread.start();
@@ -51,7 +54,7 @@ public class CLI extends Client{
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                setActive(false);
+                //setActive(false);
             }
         });
         thread.start();

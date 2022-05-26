@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -77,6 +78,7 @@ public class CLIHandler {
             case GENERIC_MESSAGE -> showGenericMessage(message);
             case GAME_INFO -> showCurrentGame(message);
             case ERROR -> showErrorMessage(message);
+            case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
             default -> System.out.println(message);
 
         }
@@ -125,6 +127,11 @@ public class CLIHandler {
     private void showYourTurnMessage(Message message){
         YourTurnMessage yourTurnMessage = (YourTurnMessage) message;
         System.out.println("\n"+yourTurnMessage.getContent());
+    }
+
+    private void showEndOfGameMessage(Message message){
+        EndOfGameMessage endOfGameMessage = (EndOfGameMessage) message;
+            System.out.println(endOfGameMessage.content);
     }
 
     /**
@@ -180,7 +187,6 @@ public class CLIHandler {
         System.out.println("State of current match is :\n");
         Game game = ((CurrentGameMessage) message).getGame();
         displayCurrentGameInfoCli(game);
-
     }
 
     /**
@@ -200,6 +206,7 @@ public class CLIHandler {
     private void currentLandsInfo(Game game) {
         System.out.print("\n\n  ARCHIPELAGOS:  \n");
         for (Archipelago archipelago : game.getArchipelagos()) {
+            System.out.print("Archipelago " + game.getArchipelagos().indexOf(archipelago));
             getInfoArchipelago(archipelago);
         }
     }

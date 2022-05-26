@@ -2,7 +2,6 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 import java.io.IOException;
@@ -94,6 +93,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
+                if(newMessage.getType() == TypeMessage.PING)timer(newMessage);
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
@@ -122,6 +122,32 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         numberOfPlayers = login.getNumberOfPlayer();
         isExpert = login.isExpertMatch();
         server.lobby(this);
+    }
+
+    public void Pong(Message receivedMessage){
+        Pong pong = new Pong();
+        if(receivedMessage.getType().equals(TypeMessage.PING)){
+            System.out.print("Pong");
+        }
+    }
+
+    public Runnable timer(Message receivedMessage) throws IOException, ClassNotFoundException {
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isActive()) {
+                    long start = System.currentTimeMillis();
+                    long end = start + 10 * 1000;
+                    while (System.currentTimeMillis() < end) {
+                        Pong(receivedMessage);
+                    }
+                    if (System.currentTimeMillis() > end) {
+                        server.EndGameDisconnected();
+                    }
+                }
+
+        }
+    });
     }
 
     public void setController(Controller controller) {

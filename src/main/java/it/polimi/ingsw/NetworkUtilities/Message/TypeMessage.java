@@ -26,5 +26,6 @@ public enum TypeMessage {
     END_MATCH,
     SHOW_CHARACTER_CARD,
     PLAY_CHARACTER_CARD,
-    GAME_INFO
+    GAME_INFO,
+    CLIENT_UNREACHABLE;
 }

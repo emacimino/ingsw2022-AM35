@@ -2,6 +2,8 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.Ping;
+import it.polimi.ingsw.NetworkUtilities.Message.Pong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,17 +48,37 @@ public abstract class Client{
         }
     }
 
+    public Thread ping(){
+        Ping ping = new Ping();
+        Thread thread = new Thread(() -> {
+            try{
+                while(isActive()){
+                    long start = System.currentTimeMillis();
+                    long end = start + 2 * 1000;
+                    if (System.currentTimeMillis() > end) {
+                        sendToServer(ping);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return thread;
+    }
+
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
-        System.out.println("Connection Established");
         socketIn = new ObjectInputStream(socketClient.getInputStream());
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
         Scanner stdin = new Scanner(System.in);
         try{
+            System.out.println("Connection Established");
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin);
+            Thread t2 = ping();
             t0.join();
             t1.join();
+            t2.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
@@ -66,6 +88,8 @@ public abstract class Client{
             socketClient.close();
         }
     }
+
+
 
     protected void setNextAction(Message message) {
         switch (message.getType()){
