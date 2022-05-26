@@ -58,8 +58,7 @@ public class CLI extends Client{
         return  thread;
     }
 
-    public void login(){
-    }
+    public void login(){}
 
 
 }

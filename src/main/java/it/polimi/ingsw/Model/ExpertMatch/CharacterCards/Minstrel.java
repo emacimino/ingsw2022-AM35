@@ -7,6 +7,8 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +18,9 @@ import java.util.List;
  * and uses StudentEffectCard interface
  */
 
-public class Minstrel extends CharacterCard implements StudentEffectCard {
+public class Minstrel extends CharacterCard implements StudentEffectCard , Serializable {
+    @Serial
+    private final static long serialVersionUID = 8611348347117274851L;
     /**
      * Constructor of the class
      * @param basicMatch current match

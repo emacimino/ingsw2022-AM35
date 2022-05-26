@@ -6,11 +6,16 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * and uses MotherNatureEffect interface
  */
 
-public class Magician extends CharacterCard implements MotherNatureEffectCard{
+public class Magician extends CharacterCard implements MotherNatureEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = 6530887498702475208L;
     /**
      * Constructor of the class
       * @param basicMatch current match

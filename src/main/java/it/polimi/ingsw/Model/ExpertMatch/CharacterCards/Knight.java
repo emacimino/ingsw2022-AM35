@@ -8,10 +8,16 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * and uses InfluenceEffectCard interface
  */
-public class Knight extends CharacterCard implements InfluenceEffectCard{
+public class Knight extends CharacterCard implements InfluenceEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = 5006606355033072195L;
     /**
      * Constructor of the class
      * @param basicMatch current match

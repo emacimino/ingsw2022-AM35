@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -41,7 +42,7 @@ public class CLIHandler {
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
         if(inputString.equals("CharacterCard")){
-                characterCardHandler();
+                //characterCardHandler();
         }
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);

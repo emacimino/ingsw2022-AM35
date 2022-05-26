@@ -8,10 +8,15 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * and uses InfluenceEffectCard interface
  */
-public class Baker extends CharacterCard implements InfluenceEffectCard{
+public class Baker extends CharacterCard implements InfluenceEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = 7241213580535659234L;
     /**
      * constructor
      * @param basicMatch current match
