@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public abstract class Client{
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
     public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
+    public abstract Thread characterCardHandlingToSocket(final ObjectInputStream socketIn);
+    public abstract Thread characterCardHandlingFromSocket(final ObjectInputStream socketIn);
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -55,8 +58,12 @@ public abstract class Client{
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin);
+            Thread t3 = characterCardHandlingFromSocket(socketIn);
+            Thread t4 = characterCardHandlingToSocket(socketIn);
             t0.join();
             t1.join();
+            t3.join();
+            t4.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
@@ -66,6 +73,8 @@ public abstract class Client{
             socketClient.close();
         }
     }
+
+
 
     protected void setNextAction(Message message) {
         switch (message.getType()){

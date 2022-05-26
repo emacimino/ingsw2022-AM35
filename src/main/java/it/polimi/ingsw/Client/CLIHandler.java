@@ -2,10 +2,9 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -19,6 +18,7 @@ import java.util.*;
 
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 
+
 public class CLIHandler {
     private CLI cli;
 
@@ -30,7 +30,7 @@ public class CLIHandler {
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
         if(inputString.equals("CharacterCard")){
-                //characterCardHandler();
+                characterCardHandler();
         }
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
@@ -65,8 +65,10 @@ public class CLIHandler {
         }
     }
 
+
     private void requestLogin(){
-        System.out.println("Please, procede with the login: ");
+        System.out.println(Printable.bigTitle);
+        System.out.println("Please, proceed with the login: ");
         System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
                 "\n" + "(for example: camilla,2,yes  )");
     }
@@ -107,7 +109,11 @@ public class CLIHandler {
 
     private void showBoard(Message message){
         BoardMessage boardMessage = (BoardMessage) message;
-        getInfoBoard(boardMessage.getBoard());
+        try {
+            getInfoBoard(boardMessage.getBoard());
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     private void showCharacterCardsInGame(Message message){
@@ -135,7 +141,11 @@ public class CLIHandler {
     }
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
-            getInfoBoard(wizard.getBoard());
+            try {
+                getInfoBoard(wizard.getBoard());
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
         }
     }
     private void getInfoArchipelago(Archipelago archipelago) {
@@ -168,21 +178,13 @@ public class CLIHandler {
             }
         }
     }
-    private void printStudents(Collection<Student> students) {
+    /*private void printStudents(Collection<Student> students) {
         for (Student student : students) {
             printStudent(student);
         }
         System.out.println();
     }
-    private void printStudent(Student student) {
-        switch (student.getColor()) {
-            case GREEN -> System.out.print(Printable.STUDENT_GREEN + "  ");
-            case BLUE -> System.out.print(Printable.STUDENT_BLUE + "  ");
-            case PINK -> System.out.print(Printable.STUDENT_PINK + "  ");
-            case RED -> System.out.print(Printable.STUDENT_RED + "  ");
-            case YELLOW -> System.out.print(Printable.STUDENT_YELLOW + "  ");
-        }
-    }
+    */
     private void printProfessors(Collection<Professor> professors) {
         for (Professor p : professors) {
             printProfessor(p);
@@ -202,6 +204,7 @@ public class CLIHandler {
             printStudent(s);
         System.out.println();
     }
+
     private void printTowers(Collection<Tower> towers){
         System.out.println("There are " + towers.size() + " towers\n");
     }
@@ -215,6 +218,7 @@ public class CLIHandler {
             System.out.println(Printable.getAssistantCardCLI(a));
         }
     }
+
     private void showStudentsOnEntranceOption(Message message){
         System.out.println("\nPlease select an Student from the option below: ");
         System.out.println("Indicate the student you cho ose with its number than after the comma choose the Archipelago you want to move the student" +
@@ -370,7 +374,7 @@ public class CLIHandler {
         }
     }
 
-/* private void characterCardHandler(){
+ private void characterCardHandler(){
         //Map already settled
         Scanner scanner = cli.scanner;
         displayCharacterCard();
@@ -390,28 +394,80 @@ public class CLIHandler {
 
     private void useCharacterCard(String nameCharacter) {
         switch (nameCharacter){
+            case "Archer" -> {
+                displayCharacterCardInfo("Archer");
+            }
+            case "Chef" -> {
+                displayCharacterCardInfo("Chef");
+            }
+            case "Knight" -> {
+                displayCharacterCardInfo("Knight");
+            }
+            case "Messenger" -> {
+                displayCharacterCardInfo("Messenger");
+            }
+            case "Baker" -> {
+                displayCharacterCardInfo("Baker");
+            }
+            case "Princess" -> {
+                displayCharacterCardInfo("Princess");
+            }
             case "Jester" -> {
                 displayCharacterCardInfo("Jester");
             }
-        }
-
-
-        Message message= null;
-        try {
-            Integer indexArch = Integer.parseInt(archipelago);
-            if (cli.getRemoteModel().getArchipelagosMap().containsKey(indexArch)) {
-                message = new MoveMotherNatureMessage(indexArch);
-                System.out.println(message);
+            case "Friar" -> {
+                displayCharacterCardInfo("Friar");
             }
-            else
-                System.out.println("Please write a valid index of Archipelago");
-        }catch (NumberFormatException n){
-            System.out.println("Please write a valid number");
+            case "Minstrel" -> {
+                displayCharacterCardInfo("Minstrel");
+            }
+            case "Magician" -> {
+                displayCharacterCardInfo("Magician");
+            }
+            case "Banker" -> {
+                displayCharacterCardInfo("Banker");
+            }
+            case "Herbalist" -> {
+                displayCharacterCardInfo("Herbalist");
+            }
+
+
         }
-        return message;
-    }*/
+    }
+
+    private void displayCharacterCardInfo(String nameOfCharacterCard) {
+        Scanner scanner = cli.scanner;
+        case "Archer" ->
+        case "Chef" ->
+        case "Knight" ->
+        case "Messenger" ->
+        case "Baker" ->
+        case "Princess" ->
+        case "Jester" -> {
+            Jester card = (Jester) cli.getRemoteModel().getCharacterCardMap().get("Jester");
+
+            for (Student student : card.getStudentsOnCard()) {
+                printStudent(student);
+
+            }
+
+        }
+        case "Friar" ->
+        case "Minstrel" ->
+        case "Magician" ->
+        case "Banker" ->
+        case "Herbalist" ->
+    }
 
 
 
-
+    public void printStudent(Student student) {
+        switch (student.getColor()) {
+            case GREEN -> System.out.print(Printable.STUDENT_GREEN + "  ");
+            case BLUE -> System.out.print(Printable.STUDENT_BLUE + "  ");
+            case PINK -> System.out.print(Printable.STUDENT_PINK + "  ");
+            case RED -> System.out.print(Printable.STUDENT_RED + "  ");
+            case YELLOW -> System.out.print(Printable.STUDENT_YELLOW + "  ");
+        }
+    }
 }

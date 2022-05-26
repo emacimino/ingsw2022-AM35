@@ -58,6 +58,35 @@ public class CLI extends Client{
         return  thread;
     }
 
+    @Override
+    public Thread characterCardHandlingToSocket(final ObjectInputStream characterCardInput) {
+        Thread thread = new Thread(() -> {
+            try{
+                scanner = (Scanner)characterCardInput;
+                while (isActive()){
+                    String inputLine = scanner.nextLine(); //Scan input from command line
+                    Message message = cliHandler.convertInputToCharacterCardMessage(inputLine, super.turnPhase); //Create message from input
+                    if(message != null) {
+                        super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
+                        super.outputStream.flush(); //send message derivate from input to the server
+                    }else if(inputLine.equals("quit")){
+
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                setActive(false);
+            }
+        });
+        thread.start();
+        return  thread;
+    }
+
+    @Override
+    public Thread characterCardHandlingFromSocket(ObjectInputStream socketIn) {
+        return null;
+    }
+
     public void login(){}
 
 

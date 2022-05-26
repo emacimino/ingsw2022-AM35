@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -8,9 +7,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.Model.Wizard.Wizard;
 
-import javax.print.attribute.standard.PresentationDirection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -175,6 +172,7 @@ public class Printable {
             System.out.println(c);
         }
     }
+
 
 
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
