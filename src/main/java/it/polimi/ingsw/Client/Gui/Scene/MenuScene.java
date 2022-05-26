@@ -1,4 +1,12 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
-public class MenuScene {
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import java.io.IOException;
+
+public class MenuScene implements GenericScene{
+
+
 }

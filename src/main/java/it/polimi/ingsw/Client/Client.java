@@ -51,7 +51,6 @@ public abstract class Client{
         System.out.println("Connection Established");
         socketIn = new ObjectInputStream(socketClient.getInputStream());
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
-        //Scanner stdin = new Scanner(System.in);
 
         try{
             Thread t0 = asyncReadFromSocket(socketIn);

@@ -105,9 +105,13 @@ public class CLIHandler {
         }
     }
 
-    private void showBoard(Message message){
+    private void showBoard(Message message) {
         BoardMessage boardMessage = (BoardMessage) message;
-        getInfoBoard(boardMessage.getBoard());
+        try {
+            getInfoBoard(boardMessage.getBoard());
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     private void showCharacterCardsInGame(Message message){
@@ -135,7 +139,11 @@ public class CLIHandler {
     }
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
-            getInfoBoard(wizard.getBoard());
+            try {
+                getInfoBoard(wizard.getBoard());
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
         }
     }
     private void getInfoArchipelago(Archipelago archipelago) {
