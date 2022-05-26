@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -29,7 +30,7 @@ public class CLIHandler {
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase){
         Message message;
         if(inputString.equals("CharacterCard")){
-                characterCardHandler();
+                //characterCardHandler();
         }
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
@@ -44,7 +45,7 @@ public class CLIHandler {
         return message;
     }
 
-    public void showMessage(Message message) throws ExceptionGame {
+    public void showMessage(Message message) {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
@@ -69,6 +70,7 @@ public class CLIHandler {
         System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
                 "\n" + "(for example: camilla,2,yes  )");
     }
+
     private void showErrorMessage(Message message) {
         ErrorMessage errorMessage = (ErrorMessage) message;
         System.out.println(Constants.ANSI_RED + errorMessage.getError() + Constants.ANSI_RESET);
@@ -93,6 +95,7 @@ public class CLIHandler {
             getInfoArchipelago(cli.getRemoteModel().getArchipelagosMap().get(i));
         }
     }
+
     private void showClouds(Message message){
         CloudInGame cloudInGame = (CloudInGame) message;
         cli.getRemoteModel().setCloudsMap(cloudInGame.getCloudMap());
@@ -101,7 +104,8 @@ public class CLIHandler {
             printCloud(cli.getRemoteModel().getCloudsMap().get(i));
         }
     }
-    private void showBoard(Message message) throws ExceptionGame {
+
+    private void showBoard(Message message){
         BoardMessage boardMessage = (BoardMessage) message;
         getInfoBoard(boardMessage.getBoard());
     }
@@ -113,13 +117,13 @@ public class CLIHandler {
     }
 
 
-    private void showCurrentGame(Message message) throws ExceptionGame {
+    private void showCurrentGame(Message message) {
         System.out.println("State of current match is :\n");
         Game game = ((CurrentGameMessage) message).getGame();
         displayCurrentGameInfoCli(game);
 
     }
-    private void displayCurrentGameInfoCli(Game game) throws ExceptionGame {
+    private void displayCurrentGameInfoCli(Game game) {
         currentBoardInfo(game);
         currentLandsInfo(game);
     }
@@ -129,7 +133,7 @@ public class CLIHandler {
             getInfoArchipelago(archipelago);
         }
     }
-    private void currentBoardInfo(Game game) throws ExceptionGame {
+    private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
             getInfoBoard(wizard.getBoard());
         }
@@ -149,6 +153,7 @@ public class CLIHandler {
         Printable.printEntrance(board.getStudentsInEntrance().stream().toList());
         System.out.print("\n");
     }
+
 
 
     private void printStudentInTables(Board board) {
@@ -294,6 +299,39 @@ public class CLIHandler {
         }
         return message;
     }
+
+    /*private Message createMoveStudentMessageFromCharacterCard(String characterCardName,String student){ //NON VA BENE DEVO RIVEDERE COME SEGNARE GLI ARCHIPELAGI
+        Message message = null;
+        //to be added -> getIndexOfStudentInCard to find The student in card
+        try {
+            if (!student.contains(",")) {
+                Integer indexStud = Integer.parseInt(student);
+                if (cli.getRemoteModel().getCharacterCardMap().get(characterCardName))
+                    message = new MoveStudentMessage(indexStud, null);
+                else {
+                    System.out.println("Please write a valid Student");
+                    return null;
+                }
+            } else {
+                String[] info = student.split(",");
+                String stud = info[0];
+                String arch = info[1];
+                Integer indexStud = Integer.parseInt(stud);
+                Integer indexArch = Integer.parseInt(arch);
+                if (cli.getRemoteModel().getStudentsOnEntranceMap().containsKey(indexStud) && cli.getRemoteModel().getArchipelagosMap().containsKey(indexArch)) {
+                    return new MoveStudentMessage(indexStud, indexArch);
+                } else {
+                    System.out.println("Please write a valid Student");
+                    return null;
+                }
+            }
+        }catch (NumberFormatException n){
+            System.out.println("Please write a valid number");
+        }
+        return message;
+    }
+
+     */
     private Message createMoveMotherNatureMessage(String archipelago){
         Message message= null;
         try {
@@ -332,12 +370,13 @@ public class CLIHandler {
         }
     }
 
-    private void characterCardHandler(){
-        //PRIMA DI ARRIVARE A QUESTO PUNTO VOGLIO CHE LE MAPPE SIANO STATE SETTATE/AGGIORNATE
+/* private void characterCardHandler(){
+        //Map already settled
         Scanner scanner = cli.scanner;
-        System.out.println("Select the character card you want to play: ");
         displayCharacterCard();
+        System.out.println("Select the character card you want to play: ");
         String nameCharacter = scanner.nextLine(); //expected to have the Name of the character selected
+        useCharacterCard(nameCharacter);
         //MOSTRI GLI ARCHIPELAGHI DELLA MAPPA CON GLI INDICI
 
         //MOSTRERAI GLI STUDENTI SULL CARTA
@@ -346,10 +385,33 @@ public class CLIHandler {
         //STUDENTI IN SALA/BOARD
         //CHIEDERE IL COLORE
 
-
-
-
     }
+
+
+    private void useCharacterCard(String nameCharacter) {
+        switch (nameCharacter){
+            case "Jester" -> {
+                displayCharacterCardInfo("Jester");
+            }
+        }
+
+
+        Message message= null;
+        try {
+            Integer indexArch = Integer.parseInt(archipelago);
+            if (cli.getRemoteModel().getArchipelagosMap().containsKey(indexArch)) {
+                message = new MoveMotherNatureMessage(indexArch);
+                System.out.println(message);
+            }
+            else
+                System.out.println("Please write a valid index of Archipelago");
+        }catch (NumberFormatException n){
+            System.out.println("Please write a valid number");
+        }
+        return message;
+    }*/
+
+
 
 
 }

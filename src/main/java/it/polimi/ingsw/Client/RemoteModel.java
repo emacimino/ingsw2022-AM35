@@ -37,10 +37,12 @@ public class RemoteModel {
         cloudsMap.clear();
         cloudsMap.putAll(map);
     }
+
     protected void setCharacterCardMap(Map<String, CharacterCard> map ){
         characterCardMap.clear();
         characterCardMap.putAll(map);
     }
+
     private Map<String, Color> setColorCardMap(){
         Map<String, Color> map = new HashMap<>();
         for(Color c: Color.values()){

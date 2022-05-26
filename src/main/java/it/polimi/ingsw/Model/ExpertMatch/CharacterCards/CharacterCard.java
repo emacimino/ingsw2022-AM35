@@ -10,6 +10,8 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,9 @@ import java.util.List;
  * Abstract class implemented by all cards
  */
 
-public abstract class CharacterCard {
+public abstract class CharacterCard implements Serializable {
+    @Serial
+    private final static long serialVersionUID = -998328383194066909L;
     protected int cost;
     private String name;
     private BasicMatch basicMatch;

@@ -8,10 +8,15 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /** Implements the effect from Character card Messenger
  * Calculate influence on an additional archipelago
  */
-public class Messenger extends CharacterCard implements InfluenceEffectCard{
+public class Messenger extends CharacterCard implements InfluenceEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = 174160886834745807L;
     /**
      * Constructor of the class
      * @param basicMatch current match

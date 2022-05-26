@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Model.Wizard.TowerColors;
 
-public class Player {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Player implements Serializable {
+    @Serial
+    private final static long serialVersionUID = 6140152117226239022L;
     private final String username;
-    private TowerColors towerColor;
 
     /**
      * constructor of Player Class
@@ -35,15 +38,5 @@ public class Player {
                 '}';
     }
 
-    private void setTowerColor(int indexOfPlayer) {
-        switch (indexOfPlayer){
-            case 1 -> this.towerColor = TowerColors.White;
-            case 2 -> this.towerColor = TowerColors.Black;
-            case 3 -> this.towerColor = TowerColors.Gray;
-        }
-    }
 
-    public TowerColors getTowerColor(){
-        return towerColor;
-    }
 }

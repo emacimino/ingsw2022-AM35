@@ -10,10 +10,15 @@ import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /** Implements the effect from Character card Chef
  * It calculates the influence without the students of one color
  */
-public class Chef extends CharacterCard implements InfluenceEffectCard{
+public class Chef extends CharacterCard implements InfluenceEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = -90494329657295844L;
 
     public Chef(BasicMatch basicMatch, String name) {
         super(basicMatch, name);

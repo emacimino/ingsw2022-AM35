@@ -6,12 +6,17 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 
 /**Implements the effect from Character card
  * and uses InfluenceEffectCard interface
  */
 
-public class Friar extends CharacterCard implements StudentEffectCard {
+public class Friar extends CharacterCard implements StudentEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = 2475723768882220364L;
     /**
      * Constructor of the class
      * @param basicMatch current match
