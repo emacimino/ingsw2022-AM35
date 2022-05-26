@@ -1,7 +1,12 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
 
-public class Player {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Player implements Serializable {
+    @Serial
+    private final static long serialVersionUID = 6140152117226239022L;
     private final String username;
 
     /**

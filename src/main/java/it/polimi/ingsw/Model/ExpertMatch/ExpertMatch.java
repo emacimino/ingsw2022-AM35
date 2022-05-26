@@ -10,6 +10,8 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +20,10 @@ import java.util.Map;
 /**
  * this class extends the MatchDecorator to implements the ExpertMode
  */
-public class ExpertMatch extends MatchDecorator {
-    private final DeckCharacterCard deckCharacterCard;
+public class ExpertMatch extends MatchDecorator implements Serializable {
+    @Serial
+    private final static long serialVersionUID = -8269485069293820321L;
+    private final transient DeckCharacterCard deckCharacterCard;
     private Map<String, CharacterCard> characterCardInMatchMap = new HashMap<>();
     private InfluenceEffectCard activeInfluenceCard;
     private MotherNatureEffectCard activeMotherNatureCard;

@@ -8,10 +8,16 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * Does not use Towers to calculate influence
  */
-public class Archer extends CharacterCard implements InfluenceEffectCard{
+public class Archer extends CharacterCard implements InfluenceEffectCard, Serializable {
+
+    @Serial
+    private final static long serialVersionUID = 2469981913853416577L;
     /**
      * Constructor of the class, the cost is set to 3 as indicated by the rules
      * @param basicMatch current match

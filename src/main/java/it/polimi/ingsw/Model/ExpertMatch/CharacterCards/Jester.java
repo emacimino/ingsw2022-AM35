@@ -5,10 +5,15 @@ import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * implements the interface StudentEffectCard
  */
-public class Jester extends CharacterCard implements StudentEffectCard {
+public class Jester extends CharacterCard implements StudentEffectCard , Serializable {
+    @Serial
+    private final static long serialVersionUID = 2253300146229149925L;
     /**
      * Constructor of the class
      * @param basicMatch current match

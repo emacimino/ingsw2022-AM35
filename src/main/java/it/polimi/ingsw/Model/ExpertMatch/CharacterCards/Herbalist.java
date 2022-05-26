@@ -7,11 +7,16 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**Implements the effect from Character card
  * and uses InfluenceEffectCard interface
  */
 
-public class Herbalist extends CharacterCard implements ProhibitionEffectCard{
+public class Herbalist extends CharacterCard implements ProhibitionEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = -361716328708727964L;
     /**
      * Constructor of the class
      * @param basicMatch current match

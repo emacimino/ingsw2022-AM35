@@ -7,13 +7,17 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * Uses effects from CharacterCard and interface StudentEffectCard
  */
-public class Banker extends CharacterCard implements StudentEffectCard{
+public class Banker extends CharacterCard implements StudentEffectCard, Serializable {
+    @Serial
+    private final static long serialVersionUID = -3412299212609450172L;
     /**
      * Constructor of the class
      * @param basicMatch current match
