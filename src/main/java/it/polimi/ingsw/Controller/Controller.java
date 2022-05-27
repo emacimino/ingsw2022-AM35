@@ -68,7 +68,7 @@ public class Controller implements Observer {
     }
 
     @Override
-    public void update(Object message)  {
+    public void update(Message message)  {
         onMessageReceived((Message) message);
     }
 

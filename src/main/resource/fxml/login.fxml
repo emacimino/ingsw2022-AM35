@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<!-- This scene takes the username, number of players and expert or not-->
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: PINK;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.LoginSceneController">
+   <children>
+      <Button fx:id="backBtn" layoutX="82.0" layoutY="338.0" mnemonicParsing="false" onAction="#initialize" text="BACK TO MENU" />
+      <Button fx:id="loginBtn" layoutX="473.0" layoutY="143.0" mnemonicParsing="false" text="Login" />
+      <Label fx:id="userLabel" layoutX="41.0" layoutY="38.0" text="Login Page" />
+      <TextField fx:id="textFieldUsername" layoutX="204.0" layoutY="93.0" />
+      <Label layoutX="41.0" layoutY="98.0" text="Insert the Username:" />
+      <Label layoutX="23.0" layoutY="173.0" prefHeight="17.0" prefWidth="157.0" text="Select the number of Players:" />
+      <CheckBox layoutX="226.0" layoutY="244.0" mnemonicParsing="false" text="Expert Match" />
+      <ChoiceBox layoutX="209.0" layoutY="169.0" prefWidth="150.0" />
+   </children>
+</AnchorPane>

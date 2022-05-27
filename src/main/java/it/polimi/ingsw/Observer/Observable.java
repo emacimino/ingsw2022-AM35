@@ -1,11 +1,13 @@
 package it.polimi.ingsw.Observer;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Observable{
+
 
     private final List<Observer> observers = new ArrayList<>();
 
@@ -31,11 +33,17 @@ public class Observable{
      *
      * @param message is the message to be passed to the observers.
      */
-    protected void notifyObserver(Object message) {
+    protected void notifyObserver(Message message) {
         for (Observer observer : observers) {
             observer.update(message);
         }
     }
 
+    public List<Observer> getObservers() {
+        return observers;
+    }
 
+    public void addAllObserver(List<Observer> observers){
+        observers.addAll(observers);
+    }
 }

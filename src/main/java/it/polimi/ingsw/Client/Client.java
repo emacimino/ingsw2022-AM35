@@ -34,7 +34,6 @@ public abstract class Client{
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
     public abstract Thread asyncWriteToSocket();
-    public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
         try{
@@ -73,7 +72,6 @@ public abstract class Client{
             case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
             case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
-            case REQUEST_LOGIN -> login();
             default -> {
                 break;
             }

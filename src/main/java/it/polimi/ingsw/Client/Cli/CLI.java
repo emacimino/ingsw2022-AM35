@@ -1,13 +1,12 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.Cli;
 
-import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.View.RemoteView;
 
 import java.io.ObjectInputStream;
 import java.util.Scanner;
 
-public class CLI extends Client{
+public class CLI extends Client {
     protected CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
 
@@ -24,8 +23,7 @@ public class CLI extends Client{
                     String inputLine = scanner.nextLine(); //Scan input from command line
                     Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
                     if(message != null) {
-                        super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
-                        super.outputStream.flush(); //send message derivate from input to the server
+                        sendToServer(message);
                     }else if(inputLine.equals("quit")){
 
                     }
@@ -56,7 +54,6 @@ public class CLI extends Client{
         return  thread;
     }
 
-    public void login(){}
 
 
 }

@@ -1,18 +1,14 @@
 package it.polimi.ingsw.CLIView;
-import it.polimi.ingsw.Client.*;
+import it.polimi.ingsw.Client.Cli.Printable;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CLITest {
     @Test
