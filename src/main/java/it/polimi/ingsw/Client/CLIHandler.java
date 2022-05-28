@@ -2,11 +2,8 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -244,7 +241,7 @@ public class CLIHandler {
             students.addAll(board.getStudentsFromTable(c));
         }
         Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
-        Printable.printEntrance(board.getStudentsInEntrance().stream().toList());
+        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getTowersInBoard().iterator().next().getProperty().getCoins());
         System.out.print("\n");
     }
 
