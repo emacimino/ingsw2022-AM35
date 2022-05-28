@@ -10,6 +10,7 @@ public class LoginResponse extends Message{
         this.name = name;
         this.numberOfPlayer = numberOfPlayer;
         this.isExpertMatch = isExpertMatch;
+        setType(TypeMessage.LOGIN_RESPONSE);
     }
 
     public String getName() {

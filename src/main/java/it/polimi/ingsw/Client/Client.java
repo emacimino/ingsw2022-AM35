@@ -72,6 +72,7 @@ public abstract class Client{
             case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
             case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
+
             default -> {
                 break;
             }

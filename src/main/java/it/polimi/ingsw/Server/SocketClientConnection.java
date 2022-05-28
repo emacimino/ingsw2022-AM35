@@ -2,7 +2,6 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 import java.io.IOException;
@@ -46,6 +45,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     public synchronized void sendMessage(Message message) {
         try{
+            System.out.println("in socketClientConnection sending: "+message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -94,6 +94,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
+                System.out.println("received in socketClientConnection: " + newMessage);
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
@@ -113,11 +114,22 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     private void login() throws IOException, ClassNotFoundException {
         asyncSendMessage(new LoginRequest());
-        LoginResponse login = (LoginResponse) inputStream.readObject();
-        while(server.isNameNotOk(login.getName())){
-            asyncSendMessage(new ErrorMessage("Username already used, please choose another username"));
-            login = (LoginResponse) inputStream.readObject();
+
+        Message message = (Message) inputStream.readObject();
+        while(! (message instanceof LoginResponse)){
+            message = (Message) inputStream.readObject();
         }
+        LoginResponse login = (LoginResponse) message;
+
+        while(server.isNameNotOk(login.getName())){
+            asyncSendMessage(new ErrorMessage("Username already used or not set, please choose another username"));
+            message = (Message) inputStream.readObject();
+            while(! (message instanceof LoginResponse)){
+                message = (Message) inputStream.readObject();
+            }
+            login = (LoginResponse) message;
+        }
+        asyncSendMessage(new OkLoginMessage());
         username = login.getName();
         numberOfPlayers = login.getNumberOfPlayer();
         isExpert = login.isExpertMatch();

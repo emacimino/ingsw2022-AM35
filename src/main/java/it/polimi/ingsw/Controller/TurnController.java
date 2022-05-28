@@ -101,7 +101,7 @@ public class TurnController {
 
         } catch (ExceptionGame e) {
             ViewInterface view = viewMap.get(activePlayer.getUsername());
-            view.sendMessage(new ErrorMessage(e.getMessage()));
+            view.sendMessage(new GenericMessage(e.getMessage()));
             askingViewToPlayAnAssistantCard();
             return false;
         }
@@ -115,7 +115,7 @@ public class TurnController {
            askNextAction();
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
-            viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move MotherNature in this position"));
+            viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't move MotherNature in this position"));
         }
     }
     private void selectCloudForThisTurn(CloudMessage message) {
@@ -127,7 +127,7 @@ public class TurnController {
 
         } catch (ExceptionGame e) {
             e.printStackTrace();
-            viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't select this cloud"));
+            viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't select this cloud"));
         }
 
 
@@ -154,7 +154,7 @@ public class TurnController {
 
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
-            viewMap.get(getActivePlayer().getUsername()).sendMessage(new ErrorMessage("Can't move more students from board"));
+            viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't move more students from board"));
             askingViewToMoveAStudent(numberOfStudentMoved);
         }
     }

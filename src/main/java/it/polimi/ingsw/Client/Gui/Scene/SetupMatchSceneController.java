@@ -8,16 +8,13 @@ import javafx.scene.input.MouseEvent;
 
 public class SetupMatchSceneController extends GenericSceneController{
     @FXML
-    private Button backBtn;
+    private Button exitBtn;
 
-    @FXML
-    private Label labelUsername;
 
     @FXML
     public void initialize() {
         // joinBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinBtnClick);
-        backBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToLoginBtnClick);
-    }
+        exitBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.exit(0));   }
 
     private void onBackToLoginBtnClick(Event event) {
         SceneController.changeRootPane(getObservers(), event, "login.fxml");

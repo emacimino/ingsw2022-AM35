@@ -21,24 +21,24 @@ public class RemoteModel {
     private Map<String, Color> colorMap = setColorCardMap();
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
 
-    protected void setStudentOnEntranceMap(Map<Integer, Student> map){
+    public void setStudentOnEntranceMap(Map<Integer, Student> map){
         studentsOnEntranceMap.clear();
         studentsOnEntranceMap.putAll(map);
     }
-    protected void setStudentOnBoardMap(Map<Integer, Student> map){
+    public void setStudentOnBoardMap(Map<Integer, Student> map){
         studentsOnBoardMap.clear();
         studentsOnBoardMap.putAll(map);
     }
-    protected void setArchipelagosMap(Map<Integer, Archipelago> map){
+    public void setArchipelagosMap(Map<Integer, Archipelago> map){
         archipelagosMap.clear();
         archipelagosMap.putAll(map);
     }
-    protected void setCloudsMap(Map<Integer, Cloud> map){
+    public void setCloudsMap(Map<Integer, Cloud> map){
         cloudsMap.clear();
         cloudsMap.putAll(map);
     }
 
-    protected void setCharacterCardMap(Map<String, CharacterCard> map ){
+    public void setCharacterCardMap(Map<String, CharacterCard> map ){
         characterCardMap.clear();
         characterCardMap.putAll(map);
     }

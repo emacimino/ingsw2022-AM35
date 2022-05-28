@@ -1,22 +1,17 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
+import it.polimi.ingsw.NetworkUtilities.Message.LoginResponse;
+import it.polimi.ingsw.NetworkUtilities.Message.ServerInfoMessage;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCharacterCombination;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginSceneController extends GenericSceneController{
+public class LoginSceneController extends GenericSceneController implements Initializable {
 //questa classe dovrà fare il cambio di scena solo se effettivamente il match viene creato: e ricevo di conseguenza un
     //input infoGameMessage
     @FXML
@@ -26,32 +21,46 @@ public class LoginSceneController extends GenericSceneController{
     @FXML
     private Label userLabel;
     @FXML
-    private TextField textFieldUsername;
-
-    public void switchToMenuScene(Event event) throws IOException {
-        SceneController.changeRootPane(getObservers(), event, "menu.fxml");
-    }
+    private ChoiceBox<Integer> choiceBoxNumber;
     @FXML
-    public void initialize() {
-       // joinBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onJoinBtnClick);
-        backBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onBackToMenuBtnClick);
-        loginBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, this::loginBtnClick);
+    private TextField textFieldUsername;
+    @FXML
+    private CheckBox isExpertCheck;
+
+    private Integer[] numberOfPlayers = {2, 3, 4};
+    private String username;
+    private int numOfPlayers;
+    private boolean isExpert = false;
+
+    @FXML
+    public void usernameInput(Event event){
+        username = textFieldUsername.getText();
+        System.out.println(username);
     }
 
-    public void usernameInput(ActionEvent event){
-        String username = textFieldUsername.getText();
-
+    @FXML
+    public void onIsExpert(ActionEvent event){
+        isExpert = isExpertCheck.isSelected();
     }
 
+    @FXML
     private void onBackToMenuBtnClick(Event event) {
-      //  joinBtn.setDisable(true);
-      //  backToMenuBtn.setDisable(true);
-
-        SceneController.changeRootPane(getObservers(), event, "menu.fxml");
+        SceneController.changeRootPane(getObservers(), event, "serverInfo.fxml");
     }
 
+    @FXML
     public void loginBtnClick(Event event){
-        SceneController.changeRootPane(getObservers(), event, "setupMatch.fxml");
+        notifyObserver(new LoginResponse(username, numOfPlayers, isExpert));
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        choiceBoxNumber.getItems().addAll(numberOfPlayers);
+        choiceBoxNumber.setOnAction(this::getNumberOFPlayers);
+    }
+
+    @FXML
+    public void getNumberOFPlayers(ActionEvent event){
+        numOfPlayers = choiceBoxNumber.getValue();
+    }
 }

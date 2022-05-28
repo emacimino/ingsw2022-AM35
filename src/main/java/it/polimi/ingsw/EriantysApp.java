@@ -32,10 +32,8 @@ public class EriantysApp {
                 client.run();
             }
             case "client -gui" -> {
-                System.out.println("TO DO");
                 System.out.println("Insert the IP: ");
                // String ip = scanner.nextLine();
-                GUI gui = new GUI("127.0.0.1", 1234);
                 Application.launch(JavaFxGui.class, args);
             }
         }

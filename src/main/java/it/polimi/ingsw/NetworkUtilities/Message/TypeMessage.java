@@ -3,6 +3,9 @@ package it.polimi.ingsw.NetworkUtilities.Message;
 public enum TypeMessage {
     PING,
     PONG,
+    SERVER_INFO,
+    OK_LOGIN,
+    LOGIN_RESPONSE,
     NUMBER_OF_PLAYERS,
     REQUEST_LOGIN,
     END_OF_TURN,

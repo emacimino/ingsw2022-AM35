@@ -43,7 +43,7 @@ public class Observable{
         return observers;
     }
 
-    public void addAllObserver(List<Observer> observers){
-        observers.addAll(observers);
+    public void addAllObserver(List<Observer> newObs){
+        observers.addAll(newObs);
     }
 }

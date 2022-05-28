@@ -17,7 +17,6 @@ public class Controller implements Observer {
     private Collection<String> playersUsername;
     private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
-    private Player firstPlanningPhasePlayer;
 
     //Initialize the Game having already a lobby
     public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
@@ -69,7 +68,7 @@ public class Controller implements Observer {
 
     @Override
     public void update(Message message)  {
-        onMessageReceived((Message) message);
+        onMessageReceived( message);
     }
 
     public void setViewMap(Map<String, ViewInterface> viewMap) {

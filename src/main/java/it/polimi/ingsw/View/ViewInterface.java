@@ -17,7 +17,7 @@ public abstract class ViewInterface extends Observable implements Observer{
 
     public abstract void moveMotherNature(Integer archipelago);
 
-    public abstract void update(Object message) ;
+    public abstract void update(Message message) ;
     public abstract void sendMessage(Message message);
     public abstract void showGenericMessage(Message message);
     public abstract ClientConnection getClientConnection();
