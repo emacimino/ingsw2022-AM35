@@ -35,7 +35,6 @@ public class LoginSceneController extends GenericSceneController implements Init
     @FXML
     public void usernameInput(Event event){
         username = textFieldUsername.getText();
-        System.out.println(username);
     }
 
     @FXML

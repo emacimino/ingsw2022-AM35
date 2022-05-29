@@ -20,7 +20,7 @@ public class Game implements Cloneable, Serializable {
     private final List<Archipelago> archipelagos = new ArrayList<>();
     private final transient StudentBag studentBag = new StudentBag();
     private final List<Professor> professors = new ArrayList<>();
-    private final Collection<Cloud> clouds = new ArrayList<>();
+    private final List<Cloud> clouds = new ArrayList<>();
     private final MotherNature motherNature = new MotherNature();
     private final int limitOfStudentInEntrance;
     private final int numOfStudentMovable;
@@ -357,7 +357,7 @@ public class Game implements Cloneable, Serializable {
      * This method returns the clouds of the game
      * @return clouds
      */
-    public Collection<Cloud> getClouds() {
+    public List<Cloud> getClouds() {
         return clouds;
     }
 

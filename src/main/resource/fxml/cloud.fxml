@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane maxHeight="100.0" maxWidth="110.0" minHeight="100.0" minWidth="110.0" prefHeight="100.0" prefWidth="110.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.CloudPanelController">
+   <children>
+      <ImageView accessibleRole="BUTTON" fitHeight="97.0" fitWidth="93.0" layoutX="9.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/cloud.PNG" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Circle fx:id="s2" fill="DODGERBLUE" layoutX="75.0" layoutY="28.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="s1" fill="DODGERBLUE" layoutX="40.0" layoutY="29.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="s4" fill="DODGERBLUE" layoutX="77.0" layoutY="61.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="s3" fill="DODGERBLUE" layoutX="39.0" layoutY="61.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+   </children>
+</AnchorPane>

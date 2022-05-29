@@ -62,6 +62,7 @@ public class SceneController {
     }
 
     public static void showGame(Game game){
+        System.out.println("Show GAME?");
         GameSceneController controller = null;
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
         List<Observer> observers = activeController.getObservers();
