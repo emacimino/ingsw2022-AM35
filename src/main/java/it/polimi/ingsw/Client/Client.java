@@ -36,6 +36,7 @@ public abstract class Client{
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
     public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
+
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {

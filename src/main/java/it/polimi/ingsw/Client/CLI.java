@@ -19,7 +19,7 @@ public class CLI extends Client{
     }
 
     @Override
-    public Thread asyncWriteToSocket(){
+    public Thread asyncWriteToSocket(Object inputFromUSer){
         Thread thread = new Thread(() -> {
             try{
                 scanner = new Scanner(System.in);
