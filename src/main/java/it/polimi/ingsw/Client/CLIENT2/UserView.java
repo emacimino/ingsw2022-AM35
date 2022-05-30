@@ -14,7 +14,7 @@ public interface UserView {
 
     void askLogin();
 
-    void askPlayAssistantCard(List<AssistantsCards> assistantsCards);
+    void playAssistantCard(List<AssistantsCards> assistantsCards);
 
     void askMoveStudent(List<Student> students);
 

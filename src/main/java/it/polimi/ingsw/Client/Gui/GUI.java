@@ -21,8 +21,8 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void askPlayAssistantCard(List<AssistantsCards> assistantsCards) {
-
+    public void playAssistantCard(List<AssistantsCards> assistantsCards) {
+        Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
     }
 
     @Override
@@ -54,16 +54,12 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void showGameState(CurrentGameMessage currentGameMessage){
-        Platform.runLater(()->{
-            SceneController.showGame(currentGameMessage.getGame());
-        });
+        Platform.runLater(()-> SceneController.showGame(currentGameMessage.getGame()));
     }
 
     @Override
     public void showGenericMessage(String genericMessage) {
-        Platform.runLater(() -> {
-            SceneController.showAlert("Message for you!", genericMessage);
-        });
+        Platform.runLater(() -> SceneController.showAlert("Message for you!", genericMessage));
     }
 
     @Override

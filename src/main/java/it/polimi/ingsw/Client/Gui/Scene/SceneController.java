@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.Gui.Scene;
 
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -17,9 +18,8 @@ public class SceneController {
     private static Scene activeScene ;
     private static GenericSceneController activeController;
 
-
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
-        GenericSceneController controller = null;
+        GenericSceneController controller;
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
             Parent root = loader.load();
@@ -42,15 +42,13 @@ public class SceneController {
         changeRootPane(observers, scene, fxml);
     }
 
-
-
     public static void showAlert(String title, String message) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/alertScene.fxml"));
         Parent parent;
         try {
             parent = loader.load();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return;
         }
         AlertSceneController alertSceneController = loader.getController();
@@ -62,8 +60,7 @@ public class SceneController {
     }
 
     public static void showGame(Game game){
-        System.out.println("Show GAME?");
-        GameSceneController controller = null;
+        GameSceneController controller;
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
         List<Observer> observers = activeController.getObservers();
        try {
@@ -85,5 +82,25 @@ public class SceneController {
 
     public static void setScene(List<Observer> observers, String fxml) {
         changeRootPane(observers, activeScene, fxml);
+    }
+
+    public static void showAssistantsCardOption(List<AssistantsCards> assistantsCards) {
+        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/assistantScene.fxml"));
+
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        AssistantSceneController assistantSceneController = loader.getController();
+        System.out.println("controller : "+assistantSceneController);
+        Scene assistantScene = new Scene(parent);
+        assistantSceneController.setAssistants(assistantsCards);
+        List<Observer> observers = activeController.getObservers();
+        assistantSceneController.addAllObserver(observers);
+        assistantSceneController.setScene(assistantScene);
+        assistantSceneController.displayOptions();
     }
 }

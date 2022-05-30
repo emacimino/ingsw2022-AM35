@@ -209,7 +209,7 @@ public class TurnController {
     }
     private void askingViewToPlayAnAssistantCard() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
+       // remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
         try {
             List<AssistantsCards> assistantsCardsToSend = new ArrayList<>(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
             if(assistantsCardsToSend.size() != controller.getMatch().getGame().getAssistantsCardsPlayedInRound().size()){

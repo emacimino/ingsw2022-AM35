@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
+
+<AnchorPane accessibleRole="BUTTON" maxHeight="200.0" maxWidth="220.0" minHeight="200.0" minWidth="220.0" prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ArchipelagoPanelController">
+   <children>
+      <ImageView fitHeight="200.0" fitWidth="220.0" layoutX="7.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Graphics/isola.PNG" />
+         </image>
+      </ImageView>
+      <Circle fx:id="redStudent" fill="#bf2727" layoutX="62.0" layoutY="126.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="blueStudent" fill="#0084ff" layoutX="99.0" layoutY="141.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="yellowStudent" fill="#e3ee44" layoutX="54.0" layoutY="89.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="pinkStudent" fill="#ff9ff4" layoutX="75.0" layoutY="55.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Circle fx:id="greenStudent" fill="#3dc649" layoutX="133.0" layoutY="136.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <Polygon fx:id="motherNature" fill="#ff921f" layoutX="157.0" layoutY="69.0" points="-19.98125457763672, 40.0, 19.860931396484375, 40.0, -7.62939453125E-6, 0.02014923095703125" stroke="BLACK" strokeType="INSIDE" visible="false" />
+      <ImageView fx:id="blackTower" fitHeight="78.0" fitWidth="57.0" layoutX="96.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphics/BlackTower.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="greyTower" fitHeight="78.0" fitWidth="57.0" layoutX="94.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphics/greyTower.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="whiteTower" fitHeight="78.0" fitWidth="57.0" layoutX="95.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphics/WhiteTower.PNG" />
+         </image>
+      </ImageView>
+      <Label fx:id="numBlueStudents" alignment="CENTER" layoutX="83.0" layoutY="128.0" prefHeight="25.0" prefWidth="32.0" text="0" visible="false" />
+      <Label fx:id="numGreenStudents" alignment="CENTER" layoutX="117.0" layoutY="124.0" prefHeight="25.0" prefWidth="32.0" text="0" visible="false" />
+      <Label fx:id="numRedStudents" alignment="CENTER" layoutX="44.0" layoutY="113.0" prefHeight="25.0" prefWidth="36.0" text="0" visible="false" />
+      <Label fx:id="numYellowStudents" alignment="CENTER" layoutX="38.0" layoutY="76.0" prefHeight="25.0" prefWidth="32.0" text="0" visible="false" />
+      <Label fx:id="numPinkStudents" alignment="CENTER" layoutX="58.0" layoutY="43.0" prefHeight="25.0" prefWidth="34.0" text="0" visible="false" />
+      <Label fx:id="numOfTowers" alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="3.0" prefHeight="17.0" prefWidth="44.0" text="1" visible="false" />
+   </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</AnchorPane>

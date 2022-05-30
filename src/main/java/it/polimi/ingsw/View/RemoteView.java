@@ -50,7 +50,7 @@ public class RemoteView extends ViewInterface implements UserView {
 
     @Override
     public void update(Message message){
-        clientConnection.sendMessage((Message) message);
+        clientConnection.sendMessage(message);
     }
 
     public void sendMessage(Message message){
@@ -65,7 +65,7 @@ public class RemoteView extends ViewInterface implements UserView {
     }
 
     @Override
-    public void askPlayAssistantCard(List<AssistantsCards> assistantsCards) {
+    public void playAssistantCard(List<AssistantsCards> assistantsCards) {
 
     }
 
@@ -121,6 +121,11 @@ public class RemoteView extends ViewInterface implements UserView {
 
     @Override
     public void showWinMessage(String winner) {
+
+    }
+
+    @Override
+    public void showGameState(CurrentGameMessage currentGameMessage) {
 
     }
 }

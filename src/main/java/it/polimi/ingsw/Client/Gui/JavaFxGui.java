@@ -28,7 +28,7 @@ public class JavaFxGui extends Application {
    //lo start verrà chiamato in modo indiretto, attraverso il metodo launch() che sara invocato al momento di una creazione di GUI
     //dal main
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
         GUI gui = new GUI();
         ClientController clientController = new ClientController(gui);
         gui.addObserver(clientController);
@@ -49,7 +49,6 @@ public class JavaFxGui extends Application {
 
         MenuSceneController actualController = loader.getController();
         actualController.addObserver(clientController);
-        System.out.println("controller in javafx: " + actualController);
         //create the relation between the controller first controller and the guiHandler and gui
         //to update everytime there is a change of sceneController
         //quando il controller viene modificato/invocato mandera un notify a guiHandler

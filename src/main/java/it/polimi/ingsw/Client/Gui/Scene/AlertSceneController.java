@@ -25,8 +25,9 @@ public class AlertSceneController {
         stage.initOwner(SceneController.getActiveScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setAlwaysOnTop(true);
+        //stage.setAlwaysOnTop(true);
     }
+
     public void setAlertTitle(String str) {
         titleLbl.setText(str);
     }
@@ -36,7 +37,7 @@ public class AlertSceneController {
     }
 
     public void displayAlert() {
-        stage.showAndWait();
+        stage.show();
     }
 
     public void setScene(Scene scene) {
