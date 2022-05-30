@@ -36,6 +36,7 @@ public abstract class Client{
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
     public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
 
+    public abstract Thread characterCard(final Object inputFromUSer);
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -76,9 +77,11 @@ public abstract class Client{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin);
             Thread t2 = ping();
+            Thread t3 = characterCard(stdin);
             t0.join();
             t1.join();
             t2.join();
+            t3.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

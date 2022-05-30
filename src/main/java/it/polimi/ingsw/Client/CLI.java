@@ -1,12 +1,8 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.NetworkUtilities.Message.Ping;
-import it.polimi.ingsw.NetworkUtilities.Message.Pong;
-import it.polimi.ingsw.NetworkUtilities.Message.TypeMessage;
-import it.polimi.ingsw.View.RemoteView;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Scanner;
 
@@ -26,7 +22,11 @@ public class CLI extends Client{
                 scanner = new Scanner(System.in);
                 while (isActive()){
                     String inputLine = scanner.nextLine(); //Scan input from command line
+                    if(this.getRemoteModel().getAssistantsCardsMap().containsKey(inputLine)) {
+                        characterCard(inputLine);
+                    }
                     Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
+
                     if(message != null) {
                         super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
                         super.outputStream.flush(); //send message derivate from input to the server
@@ -63,5 +63,27 @@ public class CLI extends Client{
 
     public void login(){}
 
+    @Override
+    public Thread characterCard(Object inputFromUser) {
+        Thread thread = new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+            try{
+                while (isActive()){
+                    String inputLine = scanner.nextLine();
+                    Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase);
+                    if(message != null) {
+                        super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
+                        super.outputStream.flush(); //send message derivate from input to the server
+                        }
+                    }
+                } catch (IOException e) {
+                throw new RuntimeException(e);
+            }catch (Exception e){
+                e.printStackTrace();
+        }
+            });
+        thread.start();
+        return  thread;
 
+    }
 }

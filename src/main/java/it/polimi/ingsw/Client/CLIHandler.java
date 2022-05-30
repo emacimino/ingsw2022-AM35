@@ -511,7 +511,7 @@ public class CLIHandler {
         do{
             System.out.println("Select the character card you want to play: ");
             nameCharacter = scanner.nextLine(); //expected to have the Name of the character selected
-        } while (cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
+        } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
 
         message = createCharacterMessage(nameCharacter);
 
@@ -536,7 +536,7 @@ public class CLIHandler {
                 }
                     case "Chef" -> {
                     Chef card = (Chef) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card,notValidArchipelago,null,null, null);
+                        return new PlayCharacterMessage(card,notValidArchipelago, null,null, null);
                     }
                 case "Knight" -> {
                     Knight card = (Knight) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
@@ -572,17 +572,20 @@ public class CLIHandler {
                 }
                 case "Jester" -> {
                     int jesterTrade = 3;
+                    int counter = 0;
                     List<Integer> toTradeFromEntrance = new ArrayList<>();
                     List<Integer> toTradeFromCard = new ArrayList<>();
                     Jester card = (Jester) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
 
                     System.out.println("You can choose three students from entrance:");
                     for (int i = 0; i < jesterTrade; i++) {
+                        System.out.println(counter);
+                        counter++;
                         for (Student student : cli.getRemoteModel().getStudentsOnEntranceMap().values()) {
                         printStudent(student);
                         }
                         Scanner scanner = cli.scanner;
-                        Integer indexStud = Integer.parseInt(scanner.nextLine());
+                        int indexStud = Integer.parseInt(scanner.nextLine());
                         if (cli.getRemoteModel().getStudentsOnEntranceMap().containsKey(indexStud))
                             toTradeFromEntrance.add(indexStud);
                         else {
@@ -596,6 +599,7 @@ public class CLIHandler {
                         for (Student student : card.getStudentsOnCard()) {
                             printStudent(student);
                         }
+                        while ()
                         Scanner scanner = cli.scanner;
                         int indexStud = Integer.parseInt(scanner.nextLine());
                         if (cli.getRemoteModel().getStudentsOnEntranceMap().containsKey(indexStud))
