@@ -529,7 +529,6 @@ public class CLIHandler {
 
     private Message createCharacterMessage(String nameCharacter) {
         int notValidArchipelago = 13;
-        int notValidNumOfStep = -1;
             switch (nameCharacter) {
                 case "Archer" -> {
                     Archer card = (Archer) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
@@ -708,8 +707,12 @@ public class CLIHandler {
                     return new PlayCharacterMessage(card,indexOfArchipelago,null,null,null);
                 }
 
-                default -> throw new IllegalStateException("Unexpected value: " + nameCharacter);
+                default -> {
+                    System.out.println("Unexpected value: " + nameCharacter);
+                    characterCardHandler();
+                }
             }
-        }
+            throw new IllegalArgumentException("Unexpected value: " + nameCharacter);
+    }
 
 }

@@ -88,7 +88,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                if(newMessage.getType() == TypeMessage.PING)timer(newMessage);
+                //if(newMessage.getType() == TypeMessage.PING)timer(newMessage);
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
@@ -119,7 +119,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         server.lobby(this);
     }
 
-    public void Pong(Message receivedMessage){
+    /*public void Pong(Message receivedMessage){
         Pong pong = new Pong();
         if(receivedMessage.getType().equals(TypeMessage.PING)){
             System.out.print("Pong");
@@ -143,7 +143,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
         }
     });
-    }
+    }*/
 
     public void setController(Controller controller) {
         this.controller = controller;

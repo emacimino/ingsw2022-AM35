@@ -47,7 +47,7 @@ public abstract class Client{
         }
     }
 
-    public Thread ping(){
+    /*public Thread ping(){
         Ping ping = new Ping();
         Thread thread = new Thread(() -> {
             try{
@@ -63,7 +63,7 @@ public abstract class Client{
             }
         });
         return thread;
-    }
+    }*/
 
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
@@ -75,10 +75,10 @@ public abstract class Client{
             System.out.println("Connection Established");
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket();
-            Thread t2 = ping();
+            //Thread t2 = ping();
             t0.join();
             t1.join();
-            t2.join();
+            //t2.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

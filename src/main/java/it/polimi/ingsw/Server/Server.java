@@ -59,12 +59,12 @@ public class Server {
         }
 
 
-    public void EndGameDisconnected(){
+    /*public void EndGameDisconnected(){
         for (int i=0; i<waitingPlayersInLobby.size();i++) {
             waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
             waitingPlayersInLobby.get(i).closeConnection();
         }
-    }
+    }*/
 
     private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
