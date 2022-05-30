@@ -41,9 +41,10 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public Thread asyncWriteToSocket() {
-        return asyncWriteToSocket();
+    public void showLogin(boolean success) {
+
     }
+
 
     @Override
     public void showGameState(CurrentGameMessage currentGameMessage){
