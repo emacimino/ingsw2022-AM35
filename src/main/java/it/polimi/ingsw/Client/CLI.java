@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.Ping;
 import it.polimi.ingsw.View.RemoteView;
 
 import java.io.ObjectInputStream;
@@ -29,7 +30,7 @@ public class CLI extends Client{
                         super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
                         super.outputStream.flush(); //send message derivate from input to the server
                     }else if(inputLine.equals("quit")){
-
+                    //to add
                     }
                 }
             }catch (Exception e){
@@ -40,6 +41,7 @@ public class CLI extends Client{
         thread.start();
         return  thread;
     }
+
 
     public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
         Thread thread = new Thread(() -> {
@@ -58,34 +60,7 @@ public class CLI extends Client{
         return  thread;
     }
 
-    @Override
-    public Thread characterCardHandlingToSocket(final ObjectInputStream characterCardInput) {
-        Thread thread = new Thread(() -> {
-            try{
-                scanner = (Scanner)characterCardInput;
-                while (isActive()){
-                    String inputLine = scanner.nextLine(); //Scan input from command line
-                    Message message = cliHandler.convertInputToCharacterCardMessage(inputLine, super.turnPhase); //Create message from input
-                    if(message != null) {
-                        super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
-                        super.outputStream.flush(); //send message derivate from input to the server
-                    }else if(inputLine.equals("quit")){
 
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                setActive(false);
-            }
-        });
-        thread.start();
-        return  thread;
-    }
-
-    @Override
-    public Thread characterCardHandlingFromSocket(ObjectInputStream socketIn) {
-        return null;
-    }
 
     public void login(){}
 

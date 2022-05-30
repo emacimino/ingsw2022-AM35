@@ -29,6 +29,8 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     private MotherNatureEffectCard activeMotherNatureCard;
     private ProhibitionEffectCard activeProhibitionCard;
 
+
+
     /**
      * Constructor of ExpertMatch
      *
@@ -170,6 +172,10 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
 
     public void setActiveProhibitionCard(ProhibitionEffectCard activeProhibitionCard) {
         this.activeProhibitionCard = activeProhibitionCard;
+    }
+
+    public Map<String, CharacterCard> getCharacterCardInMatchMap() {
+        return characterCardInMatchMap;
     }
 }
 

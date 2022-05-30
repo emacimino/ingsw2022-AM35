@@ -9,6 +9,8 @@ import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
+import it.polimi.ingsw.Observer.Observable;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,7 +21,7 @@ import java.util.List;
  * Abstract class implemented by all cards
  */
 
-public abstract class CharacterCard implements Serializable {
+public abstract class CharacterCard extends Observable implements Serializable {
     @Serial
     private final static long serialVersionUID = -998328383194066909L;
     protected int cost;
@@ -132,7 +134,7 @@ public abstract class CharacterCard implements Serializable {
             throw new ExceptionGame("activeWizard hasn't been set");
         }
         activeWizard.reduceCoins(getCost());
-
+        notifyObserver(new CurrentGameMessage(match.getGame())); //not sure if it works, line to check
     }
 
     /**

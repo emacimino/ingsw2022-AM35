@@ -2,7 +2,6 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 import java.io.IOException;
@@ -12,10 +11,10 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 
 public class SocketClientConnection implements Runnable, ClientConnection {
-    private Socket socket;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
-    private Server server;
+    private final Socket socket;
+    private final ObjectOutputStream outputStream;
+    private final ObjectInputStream inputStream;
+    private final Server server;
     private Integer numOfMatch = null;
     private String username = null;
     private int numberOfPlayers;
@@ -55,7 +54,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
     @Override
-    public synchronized void closeConnection() { //SONO qui
+    public synchronized void closeConnection() {
         sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
         try {
             socket.close();
@@ -74,12 +73,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     @Override
     public void asyncSendMessage(final Message message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendMessage(message);
-            }
-        }).start();
+        new Thread(() -> sendMessage(message)).start();
     }
 
     @Override

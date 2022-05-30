@@ -1,11 +1,13 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
+import java.io.Serial;
+
 public class Pong extends Message{
+    @Serial
     private static final long serialVersionUID = 8550122873407340272L;
-    private final String ping = "Pong";
 
-    public Pong(String nickname){
-
+    public Pong(){
+        super.setType(TypeMessage.PONG);
     }
 
 }

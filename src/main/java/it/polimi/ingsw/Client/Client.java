@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.Ping;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Timer;
 
 public abstract class Client{
     protected final RemoteModel remoteModel = new RemoteModel();
@@ -35,8 +37,6 @@ public abstract class Client{
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
     public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
-    public abstract Thread characterCardHandlingToSocket(final ObjectInputStream socketIn);
-    public abstract Thread characterCardHandlingFromSocket(final ObjectInputStream socketIn);
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -51,19 +51,16 @@ public abstract class Client{
 
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
-        System.out.println("Connection Established");
         socketIn = new ObjectInputStream(socketClient.getInputStream());
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
         Scanner stdin = new Scanner(System.in);
+        System.out.println("Connection Established");
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin);
-            Thread t3 = characterCardHandlingFromSocket(socketIn);
-            Thread t4 = characterCardHandlingToSocket(socketIn);
+            //Thread ping = pingHandling(new Ping());
             t0.join();
             t1.join();
-            t3.join();
-            t4.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
@@ -74,6 +71,17 @@ public abstract class Client{
         }
     }
 
+
+    /*public Thread pingHandling(Ping ping){
+        Timer timer = new Timer();
+        timer.schedule(sendToServer());
+
+        Thread thread = new Thread(() -> {
+            sendToServer(new Ping());
+        });
+        thread.start();
+        return thread;
+    }*/
 
 
     protected void setNextAction(Message message) {
