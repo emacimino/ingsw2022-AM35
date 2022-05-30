@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.View.RemoteView;
@@ -128,7 +128,6 @@ public class TurnController {
             controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
             nextPlayerActionPhase();
-            System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
 
         } catch (ExceptionGame e) {
             e.printStackTrace();
@@ -141,12 +140,11 @@ public class TurnController {
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
         try {
+            Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
             if (message.getArchipelago() != null) {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 Archipelago a = messageHandler.getArchipelagoMap().get(indexArch);
                 controller.getMatch().moveStudentOnArchipelago(getActivePlayer(), s, a);
             } else {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), s);
             }
             numberOfStudentMoved ++;
@@ -166,20 +164,11 @@ public class TurnController {
 
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
         String cardName = message.getCharacterCard().getName();
-        CharacterCard card = ((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName);
-        Archipelago archipelago;
-        int numOfStep;
-        List<Student> studentFromCardToTrade;
-        List<Student> studentFromBoardToTrade;
-        List<Student> studentFromEntranceToTrade;
-
-        if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().containsKey(cardName) &&
+        try {
+            if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().containsKey(cardName) &&
                 (!message.getCharacterCard().getName().equals("Archer") && !cardName.equals("Chef") && !cardName.equals("Knight") && !cardName.equals("Baker"))){
             handleCardSettings(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName),message);
-        }
-
-        try {
-
+            }
             message.getCharacterCard().useCard((ExpertMatch) controller.getMatch());
 
         } catch (ExceptionGame e) {
@@ -188,27 +177,70 @@ public class TurnController {
 
     }
 
-    private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) {
+    private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) throws ExceptionGame {
+        ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
         switch (card.getName()) {
 
-            case "Messenger" -> {
-                card.setArchipelagoEffected(this.controller.getMatch().getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
-            }
+            case "Messenger", "Magician", "Herbalist" -> card.setArchipelagoEffected(match.getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
             case "Princess" -> {
-                //card.setActiveStudents(this.controller.getMatch().getGame());
+                List<Student> activeStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
             }
             case "Jester" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                List<Student> passiveStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                for (Integer integer: message.getToTradeFromEntrance()) {
+                    passiveStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setPassiveStudents(passiveStudent);
             }
             case "Friar" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setArchipelagoEffected(match.getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
             }
-            case "Minstrel" -> {
+            case "Minstrel" -> {//needs some modification
+                List<Student> activeStudent = new ArrayList<>();
+                List<Student> passiveStudent = new ArrayList<>();
+                List<Student> messageStudent = message.getToTradeFromTables();
+                for (Student student: messageStudent) {
+                   for(Color color: Color.values()){
+                       if(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getTableOfStudent(color).getStudentsInTable().contains(student)){
+                           activeStudent.add(student);
+                           messageStudent.remove(student);
+                       }
+                   }
+                }
+                for (Integer integer: message.getToTradeFromEntrance()) {
+                    passiveStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setPassiveStudents(passiveStudent);
             }
-            case "Magician" -> {
+            case "Banker" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                List<Student> messageStudent = message.getToTradeFromTables();
+                for (Student student: messageStudent) {
+                    for(Color color: Color.values()){
+                        if(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getTableOfStudent(color).getStudentsInTable().contains(student)){
+                            activeStudent.add(student);
+                            messageStudent.remove(student);
+                        }
+                    }
+                }
+                card.setActiveStudents(activeStudent);
             }
-            case "Banker" -> { }
 
-            case "Herbalist" -> {
-                 }
 
             default -> throw new IllegalStateException("Unexpected value: " + card.getName());
         }

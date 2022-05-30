@@ -12,10 +12,10 @@ public class PlayCharacterMessage extends Message{
     private final CharacterCard characterCard;
     private int indexOfArchipelago;
     private final List<Integer> toTradeFromEntrance;
-    private final List<Integer> toTradeFromTables;
+    private final List<Student> toTradeFromTables;
     private final List<Integer> toTradeFromCard;
 
-    public PlayCharacterMessage(CharacterCard characterCard, int indexOfArchipelago, List<Integer> toTradeFromEntrance, List<Integer> toTradeFromCard, List<Integer> toTradeFromTables, int numOfStep) {
+    public PlayCharacterMessage(CharacterCard characterCard, int indexOfArchipelago, List<Integer> toTradeFromEntrance, List<Integer> toTradeFromCard, List<Student> toTradeFromTables) {
         this.characterCard = characterCard;
         this.indexOfArchipelago = indexOfArchipelago;
         this.toTradeFromEntrance = toTradeFromEntrance;
@@ -41,7 +41,7 @@ public class PlayCharacterMessage extends Message{
         return toTradeFromCard;
     }
 
-    public List<Integer> getToTradeFromTables() {
+    public List<Student> getToTradeFromTables() {
         return toTradeFromTables;
     }
 }
