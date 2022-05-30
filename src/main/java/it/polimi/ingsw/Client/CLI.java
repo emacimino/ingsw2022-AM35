@@ -16,6 +16,7 @@ public class CLI extends Client{
 
     public CLI(String ip, int port) {
         super(ip, port);
+
     }
 
     @Override
@@ -30,7 +31,7 @@ public class CLI extends Client{
                         super.outputStream.writeObject(message); // prepare the outputStream from the client to the server
                         super.outputStream.flush(); //send message derivate from input to the server
                     }else if(inputLine.equals("quit")){
-
+                    //to add
                     }
                 }
             }catch (Exception e){
@@ -58,6 +59,7 @@ public class CLI extends Client{
         thread.start();
         return  thread;
     }
+
 
     public void login(){}
 
