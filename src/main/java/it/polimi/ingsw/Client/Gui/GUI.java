@@ -18,8 +18,8 @@ public class GUI extends Client {
     }
 
     @Override
-    public Thread asyncWriteToSocket() {
-        return asyncWriteToSocket();
+    public Thread asyncWriteToSocket(Object inputFromUSer) {
+        return null;
     }
 
     @Override

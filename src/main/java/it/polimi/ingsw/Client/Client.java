@@ -34,7 +34,8 @@ public abstract class Client{
     }
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
-    public abstract Thread asyncWriteToSocket();
+    public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
+
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -47,7 +48,7 @@ public abstract class Client{
         }
     }
 
-    /*public Thread ping(){
+    public Thread ping(){
         Ping ping = new Ping();
         Thread thread = new Thread(() -> {
             try{
@@ -63,22 +64,21 @@ public abstract class Client{
             }
         });
         return thread;
-    }*/
+    }
 
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
         socketIn = new ObjectInputStream(socketClient.getInputStream());
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
         Scanner stdin = new Scanner(System.in);
-        System.out.println("Connection Established");
         try{
             System.out.println("Connection Established");
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket();
-            //Thread t2 = ping();
+            Thread t1 = asyncWriteToSocket(stdin);
+            Thread t2 = ping();
             t0.join();
             t1.join();
-            //t2.join();
+            t2.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
