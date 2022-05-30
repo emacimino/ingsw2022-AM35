@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.GameSceneController">
    <children>
@@ -27,6 +30,41 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <VBox prefHeight="222.0" prefWidth="245.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="235.0" spacing="70.0">
+                     <children>
+                        <ImageView fitHeight="105.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Graphics/Assistents/2x/Assistente(1).png" />
+                           </image>
+                        </ImageView>
+                        <Button alignment="TOP_LEFT" mnemonicParsing="false" text="go to boards" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="118.0" prefWidth="251.0" spacing="7.0">
+                     <children>
+                        <ImageView fitHeight="110.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Graphics/Personaggi/CarteTOT_front2.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="110.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Graphics/Personaggi/CarteTOT_front2.jpg" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="113.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Graphics/Personaggi/CarteTOT_front2.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
       </GridPane>
    </children>
 </AnchorPane>
