@@ -3,13 +3,14 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.NetworkUtilities.Message.Ping;
+import it.polimi.ingsw.NetworkUtilities.Message.Pong;
+import it.polimi.ingsw.NetworkUtilities.Message.TypeMessage;
 import it.polimi.ingsw.View.RemoteView;
 
 import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 public class CLI extends Client{
-
     protected CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
 
@@ -19,10 +20,10 @@ public class CLI extends Client{
     }
 
     @Override
-    public Thread asyncWriteToSocket(final Object inputFromUser){
+    public Thread asyncWriteToSocket(){
         Thread thread = new Thread(() -> {
             try{
-                scanner = (Scanner)inputFromUser;
+                scanner = new Scanner(System.in);
                 while (isActive()){
                     String inputLine = scanner.nextLine(); //Scan input from command line
                     Message message = cliHandler.convertInputToMessage(inputLine, super.turnPhase); //Create message from input
@@ -35,13 +36,12 @@ public class CLI extends Client{
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                setActive(false);
+                //setActive(false);
             }
         });
         thread.start();
         return  thread;
     }
-
 
     public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
         Thread thread = new Thread(() -> {
@@ -53,14 +53,12 @@ public class CLI extends Client{
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                setActive(false);
+                //setActive(false);
             }
         });
         thread.start();
         return  thread;
     }
-
-
 
     public void login(){}
 

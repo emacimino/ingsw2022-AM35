@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.NetworkUtilities.Message.Ping;
+import it.polimi.ingsw.NetworkUtilities.Message.Pong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -49,6 +50,24 @@ public abstract class Client{
         }
     }
 
+    public Thread ping(){
+        Ping ping = new Ping();
+        Thread thread = new Thread(() -> {
+            try{
+                while(isActive()){
+                    long start = System.currentTimeMillis();
+                    long end = start + 2 * 1000;
+                    if (System.currentTimeMillis() > end) {
+                        sendToServer(ping);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return thread;
+    }
+
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
         socketIn = new ObjectInputStream(socketClient.getInputStream());
@@ -56,11 +75,13 @@ public abstract class Client{
         Scanner stdin = new Scanner(System.in);
         System.out.println("Connection Established");
         try{
+            System.out.println("Connection Established");
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin);
-            //Thread ping = pingHandling(new Ping());
+            Thread t2 = ping();
             t0.join();
             t1.join();
+            t2.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
@@ -70,19 +91,6 @@ public abstract class Client{
             socketClient.close();
         }
     }
-
-
-    /*public Thread pingHandling(Ping ping){
-        Timer timer = new Timer();
-        timer.schedule(sendToServer());
-
-        Thread thread = new Thread(() -> {
-            sendToServer(new Ping());
-        });
-        thread.start();
-        return thread;
-    }*/
-
 
     protected void setNextAction(Message message) {
         switch (message.getType()){
