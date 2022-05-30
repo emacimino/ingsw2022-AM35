@@ -18,7 +18,7 @@ class CLITest {
         System.out.println(Printable.bigTitle);
         Printable.printBoardTowers(7, "Gray");
         //Printable.printBoardProfessorAndTables(p, s);
-        Printable.printEntrance(s);
+        Printable.printEntranceAndCoins(s, 5);
     }
 
     @Test

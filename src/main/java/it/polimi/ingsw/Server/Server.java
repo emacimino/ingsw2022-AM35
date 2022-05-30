@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
@@ -25,7 +25,6 @@ public class Server {
     private Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
     private int matchCounter = 0;
     private int connections = 0;
-
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -58,6 +57,14 @@ public class Server {
         findCompatiblePlayers(newClientConnection, keys, waitingList);
         createIfPossibleAMatch(newClientConnection, waitingList);
         }
+
+
+    public void EndGameDisconnected(){
+        for (int i=0; i<waitingPlayersInLobby.size();i++) {
+            waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
+            waitingPlayersInLobby.get(i).closeConnection();
+        }
+    }
 
     private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
@@ -132,15 +139,14 @@ public class Server {
 
     private void acceptConnections() {
         try {
-
             Socket newSocket = serverSocket.accept();
             connections++;
-            System.out.println("Ready for the new connection; current connections = " + connections );
+            System.out.println("Ready for the new connection; current connections = " + connections);
             //clientHandlerToBeImplemented
             SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
             executor.submit(socketConnection); //starts the socketClientConnection
         } catch (IOException e) {
-            System.out.println("Connection Error!");
+            e.printStackTrace();
         }
     }
 

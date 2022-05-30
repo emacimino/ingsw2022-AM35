@@ -174,6 +174,7 @@ public class Printable {
     }
 
 
+
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
         final String color;
         switch (towerColor) {
@@ -270,7 +271,7 @@ public class Printable {
         System.out.print("  |# " + RESET);
     }
 
-    public static void printEntrance(List<Student> students){
+    public static void printEntranceAndCoins(List<Student> students, int coins){
         for (int i = 0; i < 13; i++) {
             System.out.print(BOARD_TOP_MARGIN);
         }
@@ -279,7 +280,10 @@ public class Printable {
              students) {
             System.out.print(colorANSI.get(s.getColor()) + STUDENT + RESET + "   ");
         }
-
+        System.out.print("\n" + "Coins: ");
+        for (int i = 0; i < coins; i++) {
+            System.out.print(GREEN + " $ ");
+        }
     }
 
     public static void printArchipelago(Archipelago archipelago){

@@ -11,10 +11,10 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 
 public class SocketClientConnection implements Runnable, ClientConnection {
-    private Socket socket;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
-    private Server server;
+    private final Socket socket;
+    private final ObjectOutputStream outputStream;
+    private final ObjectInputStream inputStream;
+    private final Server server;
     private Integer numOfMatch = null;
     private String username = null;
     private int numberOfPlayers;
@@ -45,7 +45,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     public synchronized void sendMessage(Message message) {
         try{
-            System.out.println("in socketClientConnection sending: "+message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -55,7 +54,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
     @Override
-    public synchronized void closeConnection() { //SONO qui
+    public synchronized void closeConnection() {
         sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
         try {
             socket.close();
@@ -74,12 +73,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     @Override
     public void asyncSendMessage(final Message message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendMessage(message);
-            }
-        }).start();
+        new Thread(() -> sendMessage(message)).start();
     }
 
     @Override
@@ -94,7 +88,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                System.out.println("received in socketClientConnection: " + newMessage);
                 controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
@@ -134,6 +127,32 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         numberOfPlayers = login.getNumberOfPlayer();
         isExpert = login.isExpertMatch();
         server.lobby(this);
+    }
+
+    public void Pong(Message receivedMessage){
+        Pong pong = new Pong();
+        if(receivedMessage.getType().equals(TypeMessage.PING)){
+            System.out.print("Pong");
+        }
+    }
+
+    public Runnable timer(Message receivedMessage) throws IOException, ClassNotFoundException {
+        return new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isActive()) {
+                    long start = System.currentTimeMillis();
+                    long end = start + 10 * 1000;
+                    while (System.currentTimeMillis() < end) {
+                        Pong(receivedMessage);
+                    }
+                    if (System.currentTimeMillis() > end) {
+                        server.EndGameDisconnected();
+                    }
+                }
+
+        }
+    });
     }
 
     public void setController(Controller controller) {

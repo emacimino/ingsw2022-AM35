@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.Cli;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.View.RemoteView;
 
 import java.io.ObjectInputStream;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class CLI extends Client {
 
     public CLI(String ip, int port) {
         super(ip, port);
+
     }
 
     @Override

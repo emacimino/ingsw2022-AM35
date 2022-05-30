@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.Ping;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,13 +12,13 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public abstract class Client{
+    protected final RemoteModel remoteModel = new RemoteModel();
     private final String ip;
     private final int port;
     protected ObjectOutputStream outputStream;
     private boolean active = true;
     protected ObjectInputStream socketIn;
     protected TurnPhase turnPhase = TurnPhase.LOGIN;
-    private final RemoteModel remoteModel = new RemoteModel();
 
     public Client(String ip, int port) {
         this.ip = ip;
@@ -45,6 +46,24 @@ public abstract class Client{
         }
     }
 
+    public Thread ping(){
+        Ping ping = new Ping();
+        Thread thread = new Thread(() -> {
+            try{
+                while(isActive()){
+                    long start = System.currentTimeMillis();
+                    long end = start + 2 * 1000;
+                    if (System.currentTimeMillis() > end) {
+                        sendToServer(ping);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return thread;
+    }
+
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
         System.out.println("Connection Established");
@@ -54,8 +73,10 @@ public abstract class Client{
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket();
+            Thread t2 = ping();
             t0.join();
             t1.join();
+            t2.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

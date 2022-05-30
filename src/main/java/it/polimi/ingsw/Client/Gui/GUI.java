@@ -41,15 +41,8 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void showLogin(boolean success) {
-        if (!success) {
-            Platform.runLater(() -> {
-                SceneController.showAlert("Error", "Nickname already taken.");
-                SceneController.setScene(getObservers(), "login.fxml"); //rifai login
-            });
-        }else
-            Platform.runLater(() -> SceneController.setScene(getObservers(), "setupMatch.fxml"));
-
+    public Thread asyncWriteToSocket() {
+        return asyncWriteToSocket();
     }
 
     @Override

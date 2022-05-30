@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
+import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -51,6 +53,7 @@ public class TurnController {
         setTurnPhase(TurnPhase.PLAY_ASSISTANT);
         setActivePlayer(player);
     }
+
     protected synchronized void planningPhaseHandling(Message receivedMessage) {
         Player activePlayer = getActivePlayer();
         boolean correctPlay = false;
@@ -65,10 +68,12 @@ public class TurnController {
             nextPlayerPlanningPhase();
         }
     }
+
     protected void pickFirstPlayerActionPhaseHandler() {
         setActionOrderOfPlayers(controller.getMatch().getActionPhaseOrderOfPlayers());
         setTurnPhase(TurnPhase.MOVE_STUDENTS);
     }
+
     protected void actionPhaseHandling(Message receivedMessage) {
         switch (receivedMessage.getType()) {
             case MOVE_STUDENT -> {
@@ -158,9 +163,57 @@ public class TurnController {
             askingViewToMoveAStudent(numberOfStudentMoved);
         }
     }
+
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
+        String cardName = message.getCharacterCard().getName();
+        CharacterCard card = ((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName);
+        Archipelago archipelago;
+        int numOfStep;
+        List<Student> studentFromCardToTrade;
+        List<Student> studentFromBoardToTrade;
+        List<Student> studentFromEntranceToTrade;
+
+        if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().containsKey(cardName) &&
+                (!message.getCharacterCard().getName().equals("Archer") && !cardName.equals("Chef") && !cardName.equals("Knight") && !cardName.equals("Baker"))){
+            handleCardSettings(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName),message);
+        }
+
+        try {
+
+            message.getCharacterCard().useCard((ExpertMatch) controller.getMatch());
+
+        } catch (ExceptionGame e) {
+            System.out.println("Character card move not valid");
+        }
 
     }
+
+    private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) {
+        switch (card.getName()) {
+
+            case "Messenger" -> {
+                card.setArchipelagoEffected(this.controller.getMatch().getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
+            }
+            case "Princess" -> {
+                //card.setActiveStudents(this.controller.getMatch().getGame());
+            }
+            case "Jester" -> {
+            }
+            case "Friar" -> {
+            }
+            case "Minstrel" -> {
+            }
+            case "Magician" -> {
+            }
+            case "Banker" -> { }
+
+            case "Herbalist" -> {
+                 }
+
+            default -> throw new IllegalStateException("Unexpected value: " + card.getName());
+        }
+    }
+
 
     public void setActionOrderOfPlayers(List<Player> actionOrderOfPlayers) {
         this.actionOrderOfPlayers.clear();
