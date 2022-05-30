@@ -195,7 +195,7 @@ public class TurnController {
                 card.setArchipelagoEffected(this.controller.getMatch().getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
             }
             case "Princess" -> {
-                card.setActiveStudents(this.controller.getMatch().getGame());
+                //card.setActiveStudents(this.controller.getMatch().getGame());
             }
             case "Jester" -> {
             }

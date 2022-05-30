@@ -176,7 +176,7 @@ public class CLIHandler {
      * This method is called to print the player's board
      * @param message message printed
      */
-    private void showBoard(Message message) throws ExceptionGame {
+    private void showBoard(Message message){
         BoardMessage boardMessage = (BoardMessage) message;
         try {
             getInfoBoard(boardMessage.getBoard());
@@ -231,9 +231,8 @@ public class CLIHandler {
     /**
      * This method is used to print the board belonging to each wizard
      * @param game current game
-     * @throws ExceptionGame if the board has fewer tables than it should have
      */
-    private void currentBoardInfo(Game game) throws ExceptionGame {
+    private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
             try {
                 getInfoBoard(wizard.getBoard());
@@ -245,7 +244,7 @@ public class CLIHandler {
 
     /**
      * This method prints a single Archipelago
-     * @param archipelago
+     * @param archipelago is the printed archipelago
      */
     private void getInfoArchipelago(Archipelago archipelago) {
         Printable.printArchipelago(archipelago);
@@ -494,11 +493,12 @@ public class CLIHandler {
     /**
      * This method prints the character cards
      */
-    private void displayCharacterCard(){
+    private void displayCharacterCardInGame(){
         System.out.println("Character Card available: \n");
         int i = 1;
         for (String s : cli.getRemoteModel().getCharacterCardMap().keySet()) {
             System.out.print("\n" + i + ")" + cli.getRemoteModel().getCharacterCardMap().get(s));
+            i++;
         }
     }
 
@@ -529,7 +529,8 @@ public class CLIHandler {
     }
 
 
-        private Message createCharacterMessage(String nameCharacter) {
+
+    private Message createCharacterMessage(String nameCharacter) {
         int notValidArchipelago = 13;
         int notValidNumOfStep = -1;
             switch (nameCharacter) {
@@ -709,14 +710,4 @@ public class CLIHandler {
             }
         }
 
-        public void printStudent (Student student){
-            switch (student.getColor()) {
-                case GREEN -> System.out.print(Printable.STUDENT_GREEN + "  ");
-                case BLUE -> System.out.print(Printable.STUDENT_BLUE + "  ");
-                case PINK -> System.out.print(Printable.STUDENT_PINK + "  ");
-                case RED -> System.out.print(Printable.STUDENT_RED + "  ");
-                case YELLOW -> System.out.print(Printable.STUDENT_YELLOW + "  ");
-            }
-        }
-
-    }
+}

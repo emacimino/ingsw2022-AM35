@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.TurnPhase;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.NetworkUtilities.Message.Ping;
-import it.polimi.ingsw.NetworkUtilities.Message.Pong;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,7 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.Timer;
 
 public abstract class Client{
     protected final RemoteModel remoteModel = new RemoteModel();
@@ -37,7 +34,7 @@ public abstract class Client{
     }
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketInput);
-    public abstract Thread asyncWriteToSocket(final Object inputFromUSer);
+    public abstract Thread asyncWriteToSocket();
     public abstract void login();
 
     protected synchronized void sendToServer(Message message) {
@@ -77,7 +74,7 @@ public abstract class Client{
         try{
             System.out.println("Connection Established");
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(stdin);
+            Thread t1 = asyncWriteToSocket();
             Thread t2 = ping();
             t0.join();
             t1.join();
