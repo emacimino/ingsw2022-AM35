@@ -7,4 +7,8 @@ import java.util.List;
 public class EndOfGameMessage extends Message{
     private static final long serialVersionUID = 5432746622257658252L;
     public String content = "A client is unreachable, the game ends now";
+
+    public EndOfGameMessage() {
+        setType(TypeMessage.CLIENT_UNREACHABLE);
+    }
 }

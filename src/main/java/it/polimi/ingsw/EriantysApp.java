@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Client.CLIENT2.ClientController;
 import it.polimi.ingsw.Client.Cli.CLI;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.Gui.GUI;
@@ -28,7 +29,9 @@ public class EriantysApp {
             case "client -cli" -> {
                 System.out.println("Insert the IP: ");
                 String ip = scanner.nextLine();
-                Client client = new CLI("127.0.0.1", 1234);
+                CLI client = new CLI("127.0.0.1", 1234);
+                ClientController clientController = new ClientController(client);
+                //client.addObserver(clientController);
                 client.run();
             }
             case "client -gui" -> {

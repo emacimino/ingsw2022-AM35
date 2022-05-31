@@ -20,6 +20,7 @@ public class ClientController implements Observer, ViewObserver {
     private String username;
     private final ExecutorService tasks;
 
+
     public ClientController(UserView view) { //User view sara o cli o gui,
         this.view = view;
 
@@ -44,9 +45,8 @@ public class ClientController implements Observer, ViewObserver {
             case GENERIC_MESSAGE -> view.showGenericMessage((String) ((GenericMessage) message).getContent());
             case GAME_INFO -> view.showGameState((CurrentGameMessage) message);
             case YOUR_TURN -> view.showGenericMessage(((YourTurnMessage) message).getContent());
-            case NUMBER_OF_PLAYERS -> {
-            }
             case REQUEST_LOGIN -> {
+                view.askLogin();
             }
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
             case ASSISTANT_CARD -> {
@@ -54,32 +54,32 @@ public class ClientController implements Observer, ViewObserver {
             }
             case ASK_ASSISTANT_CARD -> view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
             case ASK_MOVE_MOTHER_NATURE -> {
+                view.askMoveMotherNature(((AskToMoveMotherNatureMessage)message).getMessage());
             }
             case CLOUD_IN_GAME -> {
+                view.askChooseCloud((CloudInGame) message);
             }
             case MOVE_STUDENT -> {
+
             }
             case STUDENTS_ON_ENTRANCE -> {
             }
             case ARCHIPELAGOS_IN_GAME -> {
+
             }
             case BOARD -> {
             }
-            case REQUEST_CURRENT_GAME -> {
-            }
             case MOVE_MOTHER_NATURE -> {
+
             }
             case CLOUD_CHOICE -> {
             }
             case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
 
-            case MOVED_PROFESSOR -> {
-            }
-            case TOWER_BUILT -> {
-            }
             case END_MATCH -> {
             }
             case SHOW_CHARACTER_CARD -> {
+                view.showCharactersCards((CharacterCardInGameMessage) message);
             }
             case PLAY_CHARACTER_CARD -> {
             }
@@ -93,7 +93,7 @@ public class ClientController implements Observer, ViewObserver {
             client = new SocketClientSide(ip, Integer.parseInt(port));
             client.addObserver(this); //alla SocketClientSide, attraverso la facciata di Client2 aggiungo come osservatore il clientController -> Client controller verrà aggiornato alla notifica di cioe che accade a SocketClientSide
             client.readMessage(); //inizia una lettura asincrona dal server
-            client.enablePingPong(true);
+           // client.enablePingPong(true);
             tasks.execute(view::askLogin);
         } catch (IOException e) {
             tasks.execute(() -> view.showLogin(false));

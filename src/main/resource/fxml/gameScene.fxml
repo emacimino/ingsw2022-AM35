@@ -47,9 +47,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ImageView>
-                        <ImageView fitHeight="91.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="88.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="88.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView disable="true" fitHeight="91.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+                        <ImageView disable="true" fitHeight="88.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+                        <ImageView disable="true" fitHeight="88.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" visible="false" />
                      </children>
                   </HBox>
                   <HBox fx:id="characterCardBox" prefHeight="118.0" prefWidth="251.0" spacing="7.0">

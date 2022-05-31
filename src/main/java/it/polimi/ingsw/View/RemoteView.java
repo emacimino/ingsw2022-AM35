@@ -70,17 +70,17 @@ public class RemoteView extends ViewInterface implements UserView {
     }
 
     @Override
-    public void askMoveStudent(List<Student> students) {
+    public void askMoveStudent(Map<Integer,Student> students) {
 
     }
 
     @Override
-    public void askMoveMotherNature(List<Archipelago> archipelagos) {
+    public void askMoveMotherNature(String message) {
 
     }
 
     @Override
-    public void askChooseCloud(List<Cloud> cloud) {
+    public void askChooseCloud(CloudInGame cloud) {
 
     }
 
@@ -109,15 +109,6 @@ public class RemoteView extends ViewInterface implements UserView {
 
     }
 
-    @Override
-    public void showLobby(List<String> usernames) {
-
-    }
-
-    @Override
-    public void showMatchInfo() {
-
-    }
 
     @Override
     public void showWinMessage(String winner) {

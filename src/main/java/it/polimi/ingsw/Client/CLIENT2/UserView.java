@@ -7,9 +7,11 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserView {
 
@@ -17,11 +19,11 @@ public interface UserView {
 
     void askToPlayAssistantCard(List<AssistantsCards> assistantsCards);
 
-    void askMoveStudent(List<Student> students);
+    void askMoveStudent(Map<Integer, Student> students);
 
-    void askMoveMotherNature(List<Archipelago> archipelagos);
+    void askMoveMotherNature(String message);
 
-    void askChooseCloud(List<Cloud> cloud);
+    void askChooseCloud(CloudInGame clouds);
 
     void showLogin(boolean success);
 
@@ -32,10 +34,6 @@ public interface UserView {
     void showError(String error);
 
     void showBoard(Board board);
-
-    void showLobby(List<String> usernames);
-
-    void showMatchInfo();
 
     void showWinMessage(String winner);
 

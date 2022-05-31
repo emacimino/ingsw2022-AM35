@@ -73,18 +73,18 @@ public class CLIHandler {
     public void showMessage(Message message) throws ExceptionGame {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
-            case ASK_ASSISTANT_CARD -> showAssistantsCardOption(message);
-            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(message);
-            case ASK_MOVE_MOTHER_NATURE -> showMotherNatureOption(message);
-            case BOARD -> showBoard(message);
+            case ASK_ASSISTANT_CARD -> showAssistantsCardOption(((AskAssistantCardMessage) message).getAssistantsCards());
+            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage)message).getStudents());
+            case ASK_MOVE_MOTHER_NATURE -> askToMotherNature(((AskToMoveMotherNatureMessage)message).getMessage());
+            case BOARD -> showBoard(((BoardMessage)message).getBoard());
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
             case CLOUD_IN_GAME -> showClouds(message);
             case CHARACTER_CARD_IN_GAME -> showCharacterCardsInGame(message);
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
-            case GENERIC_MESSAGE -> showGenericMessage(message);
+            case GENERIC_MESSAGE -> showGenericMessage((String)((GenericMessage)message).getContent());
             case GAME_INFO -> showCurrentGame(message);
-            case ERROR -> showErrorMessage(message);
+            case ERROR -> showErrorMessage(((ErrorMessage)message).getError());
             case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
             default -> System.out.println(message);
 
@@ -94,7 +94,7 @@ public class CLIHandler {
     /**
      * This method that prints the Login info
      */
-    private void requestLogin() {
+    public void requestLogin() {
         System.out.println(Printable.bigTitle);
         System.out.println("Please, proceed with the login: ");
         System.out.println("Insert username, number of players you want in the match (from 2 to 4) and if you want to play as an expert: " +
@@ -104,11 +104,10 @@ public class CLIHandler {
     /**
      * This method that prints an error message
      *
-     * @param message message that generated error
+     * @param error message that generated error
      */
-    private void showErrorMessage(Message message) {
-        ErrorMessage errorMessage = (ErrorMessage) message;
-        System.out.println(Constants.ANSI_RED + errorMessage.getError() + Constants.ANSI_RESET);
+    public void showErrorMessage(String error) {
+        System.out.println(Constants.ANSI_RED + error + Constants.ANSI_RESET);
     }
 
 
@@ -117,9 +116,8 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showGenericMessage(Message message) {
-        GenericMessage genericMessage = (GenericMessage) message;
-        System.out.println(genericMessage.getContent());
+    public void showGenericMessage(String message) {
+        System.out.println(message);
     }
 
     /**
@@ -142,7 +140,7 @@ public class CLIHandler {
         System.out.println("\n" + yourTurnMessage.getContent());
     }
 
-    private void showEndOfGameMessage(Message message) {
+    public void showEndOfGameMessage(Message message) {
         EndOfGameMessage endOfGameMessage = (EndOfGameMessage) message;
         System.out.println(endOfGameMessage.content);
     }
@@ -173,7 +171,7 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showClouds(Message message) {
+    public void showClouds(Message message) {
         CloudInGame cloudInGame = (CloudInGame) message;
         cli.getRemoteModel().setCloudsMap(cloudInGame.getCloudMap());
         for (int i : cli.getRemoteModel().getCloudsMap().keySet()) {
@@ -185,12 +183,11 @@ public class CLIHandler {
     /**
      * This method is called to print the player's board
      *
-     * @param message message printed
+     * @param boardMessage message printed
      */
-    private void showBoard(Message message) {
-        BoardMessage boardMessage = (BoardMessage) message;
+    public void showBoard(Board boardMessage) {
         try {
-            getInfoBoard(boardMessage.getBoard());
+            getInfoBoard(boardMessage);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -201,7 +198,7 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showCharacterCardsInGame(Message message) {
+    public void showCharacterCardsInGame(Message message) {
         CharacterCardInGameMessage characterCardInGameMessage = (CharacterCardInGameMessage) message;
         cli.getRemoteModel().setCharacterCardMap(characterCardInGameMessage.getCharacterCard());
         displayCharacterCardInGame();
@@ -212,10 +209,14 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showCurrentGame(Message message) throws ExceptionGame {
+    public void showCurrentGame(Message message) {
         System.out.println("State of current match is :\n");
         Game game = ((CurrentGameMessage) message).getGame();
-        displayCurrentGameInfoCli(game);
+        try {
+            displayCurrentGameInfoCli(game);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -360,11 +361,10 @@ public class CLIHandler {
     /**
      * This method prints the options available for assistant cards
      *
-     * @param message message containing assistant card information
+     * @param assistantsCardsInTurn containing assistant card information
      */
-    private void showAssistantsCardOption(Message message) {
+    public void showAssistantsCardOption(List<AssistantsCards> assistantsCardsInTurn) {
         System.out.println("Please select an Assistant Card from the option below: ");
-        List<AssistantsCards> assistantsCardsInTurn = ((AskAssistantCardMessage) message).getAssistantsCards();
         for (AssistantsCards a : assistantsCardsInTurn) {
             cli.getRemoteModel().getAssistantsCardsMap().put(Constants.getAssistantCardCLI(a), a);
             System.out.println(Printable.getAssistantCardCLI(a));
@@ -374,15 +374,14 @@ public class CLIHandler {
     /**
      * This method is used to choose students from entrance
      *
-     * @param message message containing students in entrance
+     * @param studentMap  containing map of students in entrance
      */
-    private void showStudentsOnEntranceOption(Message message) {
+    public void showStudentsOnEntranceOption(Map<Integer, Student> studentMap) {
         System.out.println("\nPlease select an Student from the option below: ");
         System.out.println("Indicate the student you cho ose with its number than after the comma choose the Archipelago you want to move the student" +
                 "\n Write just the number if you want move the student on your board ");
         System.out.println("example: 1,2");
-        StudentsOnEntranceMessage studentsCollectionMessage = (StudentsOnEntranceMessage) message;
-        cli.getRemoteModel().setStudentOnEntranceMap(studentsCollectionMessage.getStudents());
+        cli.getRemoteModel().setStudentOnEntranceMap(studentMap);
         for (int s : cli.getRemoteModel().getStudentsOnEntranceMap().keySet()) {
             System.out.print(s + "->" + Printable.getStudentsCLI(cli.getRemoteModel().getStudentsOnEntranceMap().get(s)) + "  ");
         }
@@ -392,11 +391,10 @@ public class CLIHandler {
     /**
      * This method prints the options for Mother Nature movements
      *
-     * @param message mother nature position
+     * @param string
      */
-    private void showMotherNatureOption(Message message) {
-        AskToMoveMotherNatureMessage askToMoveMotherNatureMessage = (AskToMoveMotherNatureMessage) message;
-        System.out.println(askToMoveMotherNatureMessage.getMessage());
+    public void askToMotherNature(String string) {
+        System.out.println(string);
         System.out.println("Insert the index of the Archipelago you want to move Mother Nature");
     }
 

@@ -35,8 +35,8 @@ public class JavaFxGui extends Application {
         gui.addObserver(clientController);
 
         primaryStage.setTitle("Eriantys");
-        Image iconCranio = new Image(new File("/Users/cami2/Documents/ingsw2022-AM35/src/main/java/resources/LOGO_CRANIO_CREATIONS.png").toURI().toString());
-        primaryStage.getIcons().add(iconCranio);
+     //   Image iconCranio = new Image(new File("/Users/cami2/Documents/ingsw2022-AM35/src/main/java/resources/LOGO_CRANIO_CREATIONS.png").toURI().toString());
+       // primaryStage.getIcons().add(iconCranio);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/menuScene.fxml"));

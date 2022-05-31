@@ -9,10 +9,13 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
 import java.util.List;
+import java.util.Map;
 
 public class GUI extends Observable implements UserView {
 
@@ -28,17 +31,17 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void askMoveStudent(List<Student> students) {
+    public void askMoveStudent(Map<Integer,Student> students) {
 
     }
 
     @Override
-    public void askMoveMotherNature(List<Archipelago> archipelagos) {
+    public void askMoveMotherNature(String message) {
 
     }
 
     @Override
-    public void askChooseCloud(List<Cloud> cloud) {
+    public void askChooseCloud(CloudInGame cloud) {
 
     }
 
@@ -89,15 +92,6 @@ public class GUI extends Observable implements UserView {
 
     }
 
-    @Override
-    public void showLobby(List<String> usernames) {
-
-    }
-
-    @Override
-    public void showMatchInfo() {
-
-    }
 
     @Override
     public void showWinMessage(String winner) {
