@@ -142,7 +142,6 @@ public class Server {
             Socket newSocket = serverSocket.accept();
             connections++;
             System.out.println("Ready for the new connection; current connections = " + connections);
-            //clientHandlerToBeImplemented
             SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
             executor.submit(socketConnection); //starts the socketClientConnection
         } catch (IOException e) {

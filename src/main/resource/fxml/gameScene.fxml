@@ -37,7 +37,7 @@
          <children>
             <VBox prefHeight="229.0" prefWidth="241.0" spacing="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
-                  <HBox fx:id="assitantBox" prefHeight="102.0" prefWidth="244.0" spacing="2.0">
+                  <HBox fx:id="assistantBox" prefHeight="102.0" prefWidth="244.0" spacing="2.0">
                      <children>
                         <ImageView disable="true" fitHeight="95.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>

@@ -50,7 +50,7 @@ public class ClientController implements Observer, ViewObserver {
             }
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
             case ASSISTANT_CARD -> {
-
+                    updateOnSelectedAssistantCard((AssistantCardMessage) message);
             }
             case ASK_ASSISTANT_CARD -> view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
             case ASK_MOVE_MOTHER_NATURE -> {
@@ -107,8 +107,8 @@ public class ClientController implements Observer, ViewObserver {
 
 
     @Override
-    public void updateOnSelectedAssistantCard(AssistantsCards assistantsCards) {
-        client.sendMessage(new AssistantCardMessage(assistantsCards));
+    public void updateOnSelectedAssistantCard(AssistantCardMessage message) {
+        client.sendMessage(message);
     }
 
 

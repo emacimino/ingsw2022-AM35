@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.NetworkUtilities.Message.AssistantCardMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.LoginResponse;
 
@@ -15,7 +16,7 @@ public interface ViewObserver {
 
     void updateOnLogin(LoginResponse loginResponse);
 
-    void updateOnSelectedAssistantCard(AssistantsCards assistantsCards);
+    void updateOnSelectedAssistantCard(AssistantCardMessage assistantCardMessage);
 
 
     void updateOnMoveStudent(Student student, Archipelago archipelago);

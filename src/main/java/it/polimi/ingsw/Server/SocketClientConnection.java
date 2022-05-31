@@ -45,7 +45,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     public synchronized void sendMessage(Message message) {
         try{
-            System.out.println(message);
+            System.out.println("in socketClientController, socket send : "+message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -89,7 +89,9 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                controller.onMessageReceived(newMessage);
+                if(!(newMessage instanceof Ping))
+                    System.out.println("in socketClientController, socket received : "+ newMessage);
+                    controller.onMessageReceived(newMessage);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
             asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
@@ -108,7 +110,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     private void login() throws IOException, ClassNotFoundException {
         asyncSendMessage(new LoginRequest());
-
         Message message = (Message) inputStream.readObject();
         while(! (message instanceof LoginResponse login)){
             message = (Message) inputStream.readObject();

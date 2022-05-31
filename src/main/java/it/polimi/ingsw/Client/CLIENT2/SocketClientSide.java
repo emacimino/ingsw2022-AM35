@@ -34,8 +34,9 @@ public class SocketClientSide extends Client2 {
     }
 
     @Override
-    public void sendMessage(Message message) {
+    public synchronized void sendMessage(Message message) {
         try{
+            System.out.println("sending in socketcliedside :" + message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();

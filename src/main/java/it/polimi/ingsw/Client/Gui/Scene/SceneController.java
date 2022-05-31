@@ -104,7 +104,6 @@ public class SceneController {
 
     public static void showAssistantsCardOption(List<AssistantsCards> assistantsCards) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/assistantScene.fxml"));
-
         Parent parent;
         try {
             parent = loader.load();
@@ -113,7 +112,6 @@ public class SceneController {
             return;
         }
         AssistantSceneController assistantSceneController = loader.getController();
-        System.out.println("controller : "+assistantSceneController);
         Scene assistantScene = new Scene(parent);
         assistantSceneController.setAssistants(assistantsCards);
         List<Observer> observers = activeController.getObservers();

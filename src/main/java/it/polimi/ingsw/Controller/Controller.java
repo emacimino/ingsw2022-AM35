@@ -75,10 +75,6 @@ public class Controller implements Observer {
         this.viewMap = viewMap;
     }
 
-    private void printGame(){
-        System.out.println(match);
-    }
-
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
