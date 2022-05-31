@@ -12,11 +12,11 @@ import java.util.*;
 /**
  * Game class represents the state of the match, it contains the implements the objects of the game Eriantys
  */
-public class Game implements Cloneable, Serializable {
+public class Game implements Serializable {
     @Serial
     private final static long serialVersionUID = 8766266646997066785L;
     private final List<Wizard> wizards = new ArrayList<>();
-    private final Collection<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
+    private final List<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
     private final List<Archipelago> archipelagos = new ArrayList<>();
     private final transient StudentBag studentBag = new StudentBag();
     private final List<Professor> professors = new ArrayList<>();
@@ -341,7 +341,7 @@ public class Game implements Cloneable, Serializable {
                 s.add(studentBag.drawStudent());
             }
             w.placeStudentInEntrance(s);
-            s.removeAll(s);
+            s.clear();
         }
     }
 
@@ -397,7 +397,7 @@ public class Game implements Cloneable, Serializable {
      * This method returns the assistant's cards played during the round
      * @return a collection of AssistantsCard
      */
-    public Collection<AssistantsCards> getAssistantsCardsPlayedInRound() {
+    public List<AssistantsCards> getAssistantsCardsPlayedInRound() {
         return assistantsCardsPlayedInRound;
     }
 
@@ -422,16 +422,6 @@ public class Game implements Cloneable, Serializable {
 
     }
 
-    @Override
-    public Game clone() {
-        try {
-            Game clone = (Game) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 
     @Override
     public String toString() {

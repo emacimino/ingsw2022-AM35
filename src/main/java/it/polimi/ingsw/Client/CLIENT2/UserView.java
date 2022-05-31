@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface UserView {
 
     void askLogin();
 
-    void playAssistantCard(List<AssistantsCards> assistantsCards);
+    void askToPlayAssistantCard(List<AssistantsCards> assistantsCards);
 
     void askMoveStudent(List<Student> students);
 
@@ -39,4 +40,7 @@ public interface UserView {
     void showWinMessage(String winner);
 
     void showGameState(CurrentGameMessage currentGameMessage);
+
+    void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage);
+
 }

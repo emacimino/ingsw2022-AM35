@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -57,8 +58,8 @@ public class JavaFxGui extends Application {
         Scene menuScene = new Scene(root);
         primaryStage.setScene(menuScene);
 
-        primaryStage.setHeight(720d);
-        primaryStage.setWidth(1280d);
+        primaryStage.setHeight(900d);
+        primaryStage.setWidth(1400d);
         primaryStage.setResizable(false);
 
         primaryStage.show(); //used it to show the stage NB it needs to be at the end of start()

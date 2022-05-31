@@ -41,14 +41,17 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         deckCharacterCard = new DeckCharacterCard();
         activeInfluenceCard = null;
         activeMotherNatureCard = null;
+
     }
 
     @Override
     public void setGame(List<Player> players) throws ExceptionGame {
+        basicMatch.addAllObserver(this.getObservers());
         basicMatch.setGame(players);
         setFirstCoin();
         characterCardInMatchMap = deckCharacterCard.drawCharacterCard(basicMatch);
         notifyObserver(new CharacterCardInGameMessage(characterCardInMatchMap));
+
     }
 
     /**

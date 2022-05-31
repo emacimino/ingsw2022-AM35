@@ -65,7 +65,7 @@ public class RemoteView extends ViewInterface implements UserView {
     }
 
     @Override
-    public void playAssistantCard(List<AssistantsCards> assistantsCards) {
+    public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
 
     }
 
@@ -128,4 +128,10 @@ public class RemoteView extends ViewInterface implements UserView {
     public void showGameState(CurrentGameMessage currentGameMessage) {
 
     }
+
+    @Override
+    public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
+
+    }
+
 }

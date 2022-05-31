@@ -28,7 +28,7 @@
       </ImageView>
       <ImageView fx:id="greyTower" fitHeight="78.0" fitWidth="57.0" layoutX="94.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../Graphics/greyTower.PNG" />
+            <Image url="@../Graphics/GreyTower.PNG" />
          </image>
       </ImageView>
       <ImageView fx:id="whiteTower" fitHeight="78.0" fitWidth="57.0" layoutX="95.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" visible="false">

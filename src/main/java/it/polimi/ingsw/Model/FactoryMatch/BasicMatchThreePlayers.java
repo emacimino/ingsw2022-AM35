@@ -21,7 +21,7 @@ public class BasicMatchThreePlayers extends BasicMatch {
         super.setNumberOfStudentInEntrance(9);
         super.setNumberOfStudentsOnCLoud(4);
         game = new Game(getNumberOfStudentInEntrance(), getNumberOfMovableStudents());
-        super.setGame(game);
+        super.setActualGame(game);
     }
 
 

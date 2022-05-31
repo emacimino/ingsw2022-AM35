@@ -45,6 +45,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     public synchronized void sendMessage(Message message) {
         try{
+            System.out.println(message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -109,10 +110,9 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         asyncSendMessage(new LoginRequest());
 
         Message message = (Message) inputStream.readObject();
-        while(! (message instanceof LoginResponse)){
+        while(! (message instanceof LoginResponse login)){
             message = (Message) inputStream.readObject();
         }
-        LoginResponse login = (LoginResponse) message;
 
         while(server.isNameNotOk(login.getName())){
             asyncSendMessage(new ErrorMessage("Username already used or not set, please choose another username"));
@@ -136,22 +136,19 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
 
-    public Runnable timer(Message receivedMessage) throws IOException, ClassNotFoundException {
-        return new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isActive()) {
-                    long start = System.currentTimeMillis();
-                    long end = start + 10 * 1000;
-                    while (System.currentTimeMillis() < end) {
-                        Pong(receivedMessage);
-                    }
-                    if (System.currentTimeMillis() > end) {
-                        server.EndGameDisconnected();
-                    }
+    public Runnable timer(Message receivedMessage) {
+        return new Thread(() -> {
+            while (isActive()) {
+                long start = System.currentTimeMillis();
+                long end = start + 10 * 1000;
+                while (System.currentTimeMillis() < end) {
+                    Pong(receivedMessage);
                 }
+                if (System.currentTimeMillis() > end) {
+                    server.EndGameDisconnected();
+                }
+            }
 
-        }
     });
     }
 

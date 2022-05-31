@@ -58,8 +58,8 @@ public class BasicMatch extends Observable implements Serializable {
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
-        notifyObserver(new GenericMessage("Order of the players: " + players));
         notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Order of the players: \n" + players));
 
     }
 
@@ -393,7 +393,7 @@ public class BasicMatch extends Observable implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    protected void setGame(Game game) {
+    protected void setActualGame(Game game) {
         this.game = game;
     }
 
@@ -449,10 +449,6 @@ public class BasicMatch extends Observable implements Serializable {
         return player;
     }
 
-
-    public void infoMatch() throws CloneNotSupportedException{
-        notifyObserver(new CurrentGameMessage((Game) this.clone()));
-    }
 
     @Override
     public String toString() {

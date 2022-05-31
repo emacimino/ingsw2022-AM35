@@ -61,7 +61,7 @@ public class AssistantSceneController extends GenericSceneController {
 
     public AssistantSceneController() {
         stage = new Stage();
-        stage.setAlwaysOnTop(true);
+      //  stage.setAlwaysOnTop(true);
     }
 
     public void setScene(Scene scene) {

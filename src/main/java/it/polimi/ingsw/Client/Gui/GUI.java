@@ -2,11 +2,13 @@ package it.polimi.ingsw.Client.Gui;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
@@ -21,7 +23,7 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void playAssistantCard(List<AssistantsCards> assistantsCards) {
+    public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
         Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
     }
 
@@ -42,6 +44,13 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void showLogin(boolean success) {
+        if (!success) {
+            Platform.runLater(() -> {
+                SceneController.showAlert("Error", "Nickname already taken.");
+                SceneController.setScene(getObservers(), "login.fxml"); //rifai login
+            });
+        }else
+            Platform.runLater(() -> SceneController.setScene(getObservers(), "setupMatch.fxml"));
 
     }
 
@@ -50,6 +59,12 @@ public class GUI extends Observable implements UserView {
     public void showGameState(CurrentGameMessage currentGameMessage){
         Platform.runLater(()-> SceneController.showGame(currentGameMessage.getGame()));
     }
+
+    @Override
+    public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
+        Platform.runLater(()-> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
+    }
+
 
     @Override
     public void showGenericMessage(String genericMessage) {

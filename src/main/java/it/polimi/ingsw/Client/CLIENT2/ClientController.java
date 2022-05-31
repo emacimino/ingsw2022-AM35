@@ -50,8 +50,9 @@ public class ClientController implements Observer, ViewObserver {
             }
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
             case ASSISTANT_CARD -> {
+
             }
-            case ASK_ASSISTANT_CARD -> view.playAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
+            case ASK_ASSISTANT_CARD -> view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
             case ASK_MOVE_MOTHER_NATURE -> {
             }
             case CLOUD_IN_GAME -> {
@@ -70,8 +71,8 @@ public class ClientController implements Observer, ViewObserver {
             }
             case CLOUD_CHOICE -> {
             }
-            case CHARACTER_CARD_IN_GAME -> {
-            }
+            case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
+
             case MOVED_PROFESSOR -> {
             }
             case TOWER_BUILT -> {

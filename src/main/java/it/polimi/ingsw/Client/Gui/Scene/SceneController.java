@@ -2,24 +2,32 @@ package it.polimi.ingsw.Client.Gui.Scene;
 
 
 import it.polimi.ingsw.Controller.GameState;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class SceneController {
     private static Scene activeScene ;
     private static GenericSceneController activeController;
+    private static Parent previousRoot;
 
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
         GenericSceneController controller;
+        if(activeScene != null) {
+            previousRoot = activeScene.getRoot();
+        }
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
             Parent root = loader.load();
@@ -76,12 +84,22 @@ public class SceneController {
        }
     }
 
+    public static void loadCharacterCards(Map<String, CharacterCard> characterCard){
+        if(activeController instanceof GameSceneController){
+            ((GameSceneController) activeController).loadCharacterCards(characterCard);
+        }
+    }
+
     public static Scene getActiveScene() {
         return activeScene;
     }
 
     public static void setScene(List<Observer> observers, String fxml) {
         changeRootPane(observers, activeScene, fxml);
+    }
+
+    public static void backScene(){
+        activeScene.setRoot(previousRoot);
     }
 
     public static void showAssistantsCardOption(List<AssistantsCards> assistantsCards) {
@@ -102,5 +120,10 @@ public class SceneController {
         assistantSceneController.addAllObserver(observers);
         assistantSceneController.setScene(assistantScene);
         assistantSceneController.displayOptions();
+    }
+
+    public static void showWizardsBoards(List<Observer> observers, List<Wizard> wizards) {
+        changeRootPane(observers, activeScene, "boardsScene.fxml");
+        ((BoardsSceneController)activeController).setBoards(wizards);
     }
 }
