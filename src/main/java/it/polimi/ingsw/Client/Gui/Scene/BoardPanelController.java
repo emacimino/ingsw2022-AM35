@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Wizard.Tower;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -17,9 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BoardPanelController {
     @FXML
@@ -33,6 +34,10 @@ public class BoardPanelController {
     @FXML
     private Label wizardLbl;
 
+    private Student studentToMove;
+    private Map<Node, Student> studentEntranceMap = new HashMap<>();
+    private Lock lock = new ReentrantLock();
+
 
     public void setBoard(Board board, String wizardName) {
         for (TableOfStudents t : board.getTables()) {
@@ -41,7 +46,7 @@ public class BoardPanelController {
         setProfessors(board.getProfessorInTable());
         setTowers(board.getTowersInBoard());
         setStudentsInEntrance(board.getStudentsInEntrance().stream().toList());
-        wizardLbl.setText("Board of Wizard: " + wizardName);
+        wizardLbl.setText(wizardName + " board");
 
     }
 
@@ -50,23 +55,24 @@ public class BoardPanelController {
         List<Node> nodes2 = entrance2.getChildren();
         for (int i = 0; i < studentsInEntrance.size(); i++) {
             if (i < 4) {
-                setRightColorStudent(nodes1.get(i), studentsInEntrance.get(i).getColor());
+                setRightColorStudent(nodes1.get(i), studentsInEntrance.get(i));
             } else {
-                setRightColorStudent(nodes2.get(i-4), studentsInEntrance.get(i-4).getColor());
+                setRightColorStudent(nodes2.get(i - 4), studentsInEntrance.get(i));
             }
         }
-
     }
 
-    private void setRightColorStudent(Node node, Color color) {
+    private void setRightColorStudent(Node node, Student student) {
+        Color color = student.getColor();
         switch (color) {
             case GREEN -> ((Circle) node).setFill(Paint.valueOf("#3cc945"));
             case RED -> ((Circle) node).setFill(Paint.valueOf("#cd1a1a"));
             case YELLOW -> ((Circle) node).setFill(Paint.valueOf("#e3ff0c"));
-            case BLUE -> ((Circle) node).setFill(Paint.valueOf("#ff62e5"));
-            case PINK -> ((Circle) node).setFill(Paint.valueOf("#1e90ff"));
+            case BLUE -> ((Circle) node).setFill(Paint.valueOf("#1e90ff"));
+            case PINK -> ((Circle) node).setFill(Paint.valueOf("#ff62e5"));
         }
         node.setVisible(true);
+        studentEntranceMap.put(node, student);
     }
 
     private void setTowers(Collection<Tower> towersInBoard) {
@@ -135,5 +141,37 @@ public class BoardPanelController {
                 case BLUE -> profBlue.setVisible(true);
             }
         }
+    }
+
+    public void setMovableStudentOnEntrance(Map<Integer, Student> students) {
+        int depth = 70;  //Setting the uniform variable for the glow width and height
+        DropShadow borderGlow= new DropShadow();
+        borderGlow.setOffsetY(0f);
+        borderGlow.setOffsetX(0f);
+        borderGlow.setColor(javafx.scene.paint.Color.BLUE);
+        borderGlow.setWidth(depth);
+        borderGlow.setHeight(depth);
+
+        for (Node n : entrance1.getChildren()) {
+            n.setDisable(false);
+
+            n.setOnMouseClicked(MouseEvent -> {
+                studentToMove = studentEntranceMap.get(n);
+                System.out.println(studentToMove);
+                n.setEffect(borderGlow);});
+        }
+        for (Node n : entrance2.getChildren()) {
+            n.setDisable(false);
+            n.setOnMouseClicked(MouseEvent -> {
+                studentToMove = studentEntranceMap.get(n);
+                n.setEffect(borderGlow);});
+        }
+    }
+
+    private void setCiao(){
+        System.out.println(studentToMove);
+    }
+    public Student getStudentToMove() {
+        return studentToMove;
     }
 }

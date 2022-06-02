@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewObserver;
@@ -33,10 +32,8 @@ public class ClientController implements Observer, ViewObserver {
         switch (message.getType()) {
             case OK_LOGIN -> tasks.execute(() -> view.showLogin(true));
             case LOGIN_RESPONSE -> updateOnLogin((LoginResponse) message);
-            case PING -> {
-            }
-            case PONG -> {
-            }
+            case PING -> {}
+            case PONG -> { }
             case SERVER_INFO -> {
                 ServerInfoMessage infoMessage = (ServerInfoMessage) message;
                 updateOnServerInfo(infoMessage.getIp(), infoMessage.getPort());
@@ -45,44 +42,23 @@ public class ClientController implements Observer, ViewObserver {
             case GENERIC_MESSAGE -> view.showGenericMessage((String) ((GenericMessage) message).getContent());
             case GAME_INFO -> view.showGameState((CurrentGameMessage) message);
             case YOUR_TURN -> view.showGenericMessage(((YourTurnMessage) message).getContent());
-            case REQUEST_LOGIN -> {
-                view.askLogin();
-            }
+            case REQUEST_LOGIN -> view.askLogin();
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
-            case ASSISTANT_CARD -> {
-                    updateOnSelectedAssistantCard((AssistantCardMessage) message);
-            }
+            case ASSISTANT_CARD -> updateOnSelectedAssistantCard((AssistantCardMessage) message);
             case ASK_ASSISTANT_CARD -> view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
-            case ASK_MOVE_MOTHER_NATURE -> {
-                view.askMoveMotherNature(((AskToMoveMotherNatureMessage)message).getMessage());
-            }
-            case CLOUD_IN_GAME -> {
-                view.askChooseCloud((CloudInGame) message);
-            }
-            case MOVE_STUDENT -> {
-
-            }
-            case STUDENTS_ON_ENTRANCE -> {
-            }
-            case ARCHIPELAGOS_IN_GAME -> {
-
-            }
-            case BOARD -> {
-            }
-            case MOVE_MOTHER_NATURE -> {
-
-            }
-            case CLOUD_CHOICE -> {
-            }
+            case ASK_TO_MOVE_STUDENT -> view.askToMoveStudent();
+            case ASK_MOVE_MOTHER_NATURE -> view.askMoveMotherNature(((AskToMoveMotherNatureMessage)message).getMessage());
+            case CLOUD_IN_GAME -> view.askChooseCloud((CloudInGame) message);
+            case MOVE_STUDENT -> updateOnMoveStudent((MoveStudentMessage) message);
+            case STUDENTS_ON_ENTRANCE -> view.loadStudentOnEntrance(((StudentsOnEntranceMessage)message).getStudents());
+            case ARCHIPELAGOS_IN_GAME -> view.loadArchipelagosOption(((ArchipelagoInGameMessage)message).getArchipelago());
+            case BOARD -> view.loadBoard(((BoardMessage)message).getBoard());
+            case MOVE_MOTHER_NATURE -> {}
+            case CLOUD_CHOICE -> {}
             case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
-
-            case END_MATCH -> {
-            }
-            case SHOW_CHARACTER_CARD -> {
-                view.showCharactersCards((CharacterCardInGameMessage) message);
-            }
-            case PLAY_CHARACTER_CARD -> {
-            }
+            case END_MATCH -> {}
+            //case SHOW_CHARACTER_CARD -> view.showCharactersCards((CharacterCardInGameMessage) message);
+            case PLAY_CHARACTER_CARD -> { }
         }
     }
 
@@ -93,7 +69,7 @@ public class ClientController implements Observer, ViewObserver {
             client = new SocketClientSide(ip, Integer.parseInt(port));
             client.addObserver(this); //alla SocketClientSide, attraverso la facciata di Client2 aggiungo come osservatore il clientController -> Client controller verrà aggiornato alla notifica di cioe che accade a SocketClientSide
             client.readMessage(); //inizia una lettura asincrona dal server
-           // client.enablePingPong(true);
+            //client.enablePingPong(true);
             tasks.execute(view::askLogin);
         } catch (IOException e) {
             tasks.execute(() -> view.showLogin(false));
@@ -113,8 +89,8 @@ public class ClientController implements Observer, ViewObserver {
 
 
     @Override
-    public void updateOnMoveStudent(Student student, Archipelago archipelago) {
-
+    public void updateOnMoveStudent(MoveStudentMessage message) {
+        client.sendMessage(message);
     }
 
     @Override

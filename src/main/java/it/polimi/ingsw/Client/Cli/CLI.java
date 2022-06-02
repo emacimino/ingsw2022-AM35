@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.CLIENT2.UserView;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Controller.TurnPhase;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
@@ -91,7 +92,7 @@ public class CLI   implements UserView {
         outputStream = new ObjectOutputStream(socketClient.getOutputStream());
 
         try{
-           // Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket();
             Thread t2 = ping();
          //   t0.join();
@@ -158,7 +159,7 @@ public class CLI   implements UserView {
 
 
 
-
+    //codice da rendere coeso successivamente
     @Override
     public void askLogin() {
         cliHandler.requestLogin();
@@ -205,7 +206,7 @@ public class CLI   implements UserView {
     }
 
     @Override
-    public void showBoard(Board board) {
+    public void loadBoard(Board board) {
         cliHandler.showBoard(board);
     }
 
@@ -222,5 +223,20 @@ public class CLI   implements UserView {
     @Override
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
         cliHandler.showCharacterCardsInGame(characterCardInGameMessage);
+    }
+
+    @Override
+    public void askToMoveStudent() {
+
+    }
+
+    @Override
+    public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
+
+    }
+
+    @Override
+    public void loadStudentOnEntrance(Map<Integer, Student> students) {
+
     }
 }

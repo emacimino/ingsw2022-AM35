@@ -253,9 +253,12 @@ public class TurnController {
         try {
             messageHandler.setStudentOnEntranceMap(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+
+            remoteView.sendMessage(new AskToMoveStudents());
             remoteView.sendMessage(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()));
             remoteView.sendMessage(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()));
             remoteView.sendMessage(new StudentsOnEntranceMessage(messageHandler.getStudentsOnEntranceMap()));
+
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }

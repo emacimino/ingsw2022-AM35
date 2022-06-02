@@ -33,7 +33,7 @@ public interface UserView {
 
     void showError(String error);
 
-    void showBoard(Board board);
+    void loadBoard(Board board);
 
     void showWinMessage(String winner);
 
@@ -41,4 +41,9 @@ public interface UserView {
 
     void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage);
 
+    void askToMoveStudent();
+
+    void loadArchipelagosOption(Map<Integer, Archipelago> archipelago);
+
+    void loadStudentOnEntrance(Map<Integer, Student> students);
 }

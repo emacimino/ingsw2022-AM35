@@ -68,6 +68,21 @@ public class GUI extends Observable implements UserView {
         Platform.runLater(()-> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
     }
 
+    @Override
+    public void askToMoveStudent() {
+        Platform.runLater(()-> SceneController.setScene(getObservers(), "moveStudentScene.fxml"));
+    }
+
+    @Override
+    public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
+        Platform.runLater(() -> SceneController.loadArchipelagos(archipelago));
+    }
+
+    @Override
+    public void loadStudentOnEntrance(Map<Integer, Student> students) {
+        Platform.runLater(() -> SceneController.loadStudentOnEntrance(students));
+    }
+
 
     @Override
     public void showGenericMessage(String genericMessage) {
@@ -88,9 +103,10 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void showBoard(Board board) {
-
+    public void loadBoard(Board board) {
+        Platform.runLater(() -> SceneController.loadBoard(board));
     }
+
 
 
     @Override

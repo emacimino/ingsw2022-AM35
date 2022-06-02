@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.AssistantCardMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.LoginResponse;
+import it.polimi.ingsw.NetworkUtilities.Message.MoveStudentMessage;
 
 //a seconda degli update della view (cli o gui), chiunque è osservatore della view verrà aggiornato
 public interface ViewObserver {
@@ -19,7 +20,7 @@ public interface ViewObserver {
     void updateOnSelectedAssistantCard(AssistantCardMessage assistantCardMessage);
 
 
-    void updateOnMoveStudent(Student student, Archipelago archipelago);
+    void updateOnMoveStudent(MoveStudentMessage message);
 
     void updateOnMoveMotherNature(Archipelago archipelago);
 

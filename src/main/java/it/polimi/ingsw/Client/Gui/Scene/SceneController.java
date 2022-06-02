@@ -4,7 +4,10 @@ package it.polimi.ingsw.Client.Gui.Scene;
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
@@ -123,5 +126,23 @@ public class SceneController {
     public static void showWizardsBoards(List<Observer> observers, List<Wizard> wizards) {
         changeRootPane(observers, activeScene, "boardsScene.fxml");
         ((BoardsSceneController)activeController).setBoards(wizards);
+    }
+
+    public static void loadArchipelagos(Map<Integer, Archipelago> archipelago) {
+        if(activeController instanceof MoveStudentSceneController){
+            ((MoveStudentSceneController) activeController).setArchipelagos(archipelago);
+        }
+    }
+
+    public static void loadBoard(Board board) {
+        if(activeController instanceof MoveStudentSceneController){
+            ((MoveStudentSceneController) activeController).setBoard(board);
+        }
+    }
+
+    public static void loadStudentOnEntrance(Map<Integer, Student> students) {
+        if(activeController instanceof MoveStudentSceneController){
+            ((MoveStudentSceneController) activeController).loadStudentsMovable(students);
+        }
     }
 }

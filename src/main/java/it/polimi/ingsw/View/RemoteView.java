@@ -105,9 +105,10 @@ public class RemoteView extends ViewInterface implements UserView {
     }
 
     @Override
-    public void showBoard(Board board) {
+    public void loadBoard(Board board) {
 
     }
+
 
 
     @Override
@@ -122,6 +123,21 @@ public class RemoteView extends ViewInterface implements UserView {
 
     @Override
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
+
+    }
+
+    @Override
+    public void askToMoveStudent() {
+
+    }
+
+    @Override
+    public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
+
+    }
+
+    @Override
+    public void loadStudentOnEntrance(Map<Integer, Student> students) {
 
     }
 
