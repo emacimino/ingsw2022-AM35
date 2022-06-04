@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
 
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
@@ -40,7 +41,7 @@ public class ClientController implements Observer, ViewObserver {
             }
             case ERROR -> view.showError(((ErrorMessage) message).getError());
             case GENERIC_MESSAGE -> view.showGenericMessage((String) ((GenericMessage) message).getContent());
-            case GAME_INFO -> view.showGameState((CurrentGameMessage) message);
+            case GAME_INFO -> {view.showGameState((CurrentGameMessage) message);}
             case YOUR_TURN -> view.showGenericMessage(((YourTurnMessage) message).getContent());
             case REQUEST_LOGIN -> view.askLogin();
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
@@ -53,10 +54,10 @@ public class ClientController implements Observer, ViewObserver {
             case STUDENTS_ON_ENTRANCE -> view.loadStudentOnEntrance(((StudentsOnEntranceMessage)message).getStudents());
             case ARCHIPELAGOS_IN_GAME -> view.loadArchipelagosOption(((ArchipelagoInGameMessage)message).getArchipelago());
             case BOARD -> view.loadBoard(((BoardMessage)message).getBoard());
-            case MOVE_MOTHER_NATURE -> {}
-            case CLOUD_CHOICE -> {}
+            case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage)message);
+            case CLOUD_CHOICE -> {updateOnSelectedCloud((CloudMessage)message);}
             case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
-            case END_MATCH -> {}
+            case END_MATCH -> {view.showWinMessage((EndMatchMessage) message);}
             //case SHOW_CHARACTER_CARD -> view.showCharactersCards((CharacterCardInGameMessage) message);
             case PLAY_CHARACTER_CARD -> { }
         }
@@ -78,6 +79,7 @@ public class ClientController implements Observer, ViewObserver {
 
     @Override
     public void updateOnLogin(LoginResponse message) {
+        username = message.getName();
         client.sendMessage(message);
     }
 
@@ -94,12 +96,13 @@ public class ClientController implements Observer, ViewObserver {
     }
 
     @Override
-    public void updateOnMoveMotherNature(Archipelago archipelago) {
-
+    public void updateOnMoveMotherNature(MoveMotherNatureMessage message) {
+        client.sendMessage(message);
     }
 
     @Override
-    public void updateOnSelectedCloud(Cloud cloud) {
+    public void updateOnSelectedCloud(CloudMessage message) {
+        client.sendMessage(message);
 
     }
 

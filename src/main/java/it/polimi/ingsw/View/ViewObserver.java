@@ -5,10 +5,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.AssistantCardMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.LoginResponse;
-import it.polimi.ingsw.NetworkUtilities.Message.MoveStudentMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
 
 //a seconda degli update della view (cli o gui), chiunque è osservatore della view verrà aggiornato
 public interface ViewObserver {
@@ -22,9 +19,9 @@ public interface ViewObserver {
 
     void updateOnMoveStudent(MoveStudentMessage message);
 
-    void updateOnMoveMotherNature(Archipelago archipelago);
+    void updateOnMoveMotherNature(MoveMotherNatureMessage message);
 
-    void updateOnSelectedCloud(Cloud cloud);
+    void updateOnSelectedCloud(CloudMessage cloud);
 
     void updateOnSelectedColor(Color color);
 

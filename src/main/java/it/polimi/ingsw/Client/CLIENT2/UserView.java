@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
 import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,6 @@ public interface UserView {
     void askLogin();
 
     void askToPlayAssistantCard(List<AssistantsCards> assistantsCards);
-
-    void askMoveStudent(Map<Integer, Student> students);
 
     void askMoveMotherNature(String message);
 
@@ -35,7 +34,7 @@ public interface UserView {
 
     void loadBoard(Board board);
 
-    void showWinMessage(String winner);
+    void showWinMessage(EndMatchMessage message);
 
     void showGameState(CurrentGameMessage currentGameMessage);
 

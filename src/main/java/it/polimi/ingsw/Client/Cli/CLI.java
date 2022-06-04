@@ -170,10 +170,7 @@ public class CLI   implements UserView {
         cliHandler.showAssistantsCardOption(assistantsCards);
     }
 
-    @Override
-    public void askMoveStudent(Map<Integer,Student> students) {
-        cliHandler.showStudentsOnEntranceOption(students);
-    }
+
 
     @Override
     public void askMoveMotherNature(String message) {
@@ -211,7 +208,7 @@ public class CLI   implements UserView {
     }
 
     @Override
-    public void showWinMessage(String winner) {
+    public void showWinMessage(EndMatchMessage message) {
 
     }
 
@@ -237,6 +234,6 @@ public class CLI   implements UserView {
 
     @Override
     public void loadStudentOnEntrance(Map<Integer, Student> students) {
-
+        cliHandler.showStudentsOnEntranceOption(students);
     }
 }

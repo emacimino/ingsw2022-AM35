@@ -69,10 +69,6 @@ public class RemoteView extends ViewInterface implements UserView {
 
     }
 
-    @Override
-    public void askMoveStudent(Map<Integer,Student> students) {
-
-    }
 
     @Override
     public void askMoveMotherNature(String message) {
@@ -112,7 +108,7 @@ public class RemoteView extends ViewInterface implements UserView {
 
 
     @Override
-    public void showWinMessage(String winner) {
+    public void showWinMessage(EndMatchMessage message) {
 
     }
 

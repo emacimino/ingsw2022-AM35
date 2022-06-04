@@ -3,14 +3,10 @@ package it.polimi.ingsw.Client.Gui.Scene;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ArchipelagoPanelController {
     @FXML
@@ -26,11 +22,11 @@ public class ArchipelagoPanelController {
     @FXML
     private Polygon motherNature;
     @FXML
-    private ImageView towerBlack;
+    private ImageView blackTower;
     @FXML
-    private ImageView towerWhite;
+    private ImageView whiteTower;
     @FXML
-    private ImageView towerGrey;
+    private ImageView greyTower;
 
     @FXML
     private Label numBlueStudents;
@@ -96,9 +92,19 @@ public class ArchipelagoPanelController {
                 numOfTowers.setVisible(true);
                 numOfTowers.setText(String.valueOf(numberOfTowers));
                 switch (archipelago.getIsle().get(0).getTower().getTowerColors()) {
-                    case Gray -> towerGrey.setVisible(true);
-                    case Black -> towerBlack.setVisible(true);
-                    case White -> towerWhite.setVisible(true);
+                    case Gray -> {
+                        greyTower.setVisible(true);
+                        greyTower.setDisable(false);
+                    }
+                    case Black -> {
+                        blackTower.setVisible(true);
+                        blackTower.setDisable(false);
+                    }
+                    case White -> {
+                        whiteTower.setVisible(true);
+                        whiteTower.setDisable(false);
+                    }
+                    default -> System.out.println("COLOR OF TOWER NOT CORRECT, in archipelagopanelcontroller");
                 }
             }
         }catch (Exception e){

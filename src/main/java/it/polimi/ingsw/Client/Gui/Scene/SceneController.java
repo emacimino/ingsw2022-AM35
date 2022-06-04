@@ -1,27 +1,26 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
 
-import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class SceneController {
+    private static Game currentGame;
     private static Scene activeScene ;
     private static GenericSceneController activeController;
     private static Parent previousRoot;
@@ -36,7 +35,6 @@ public class SceneController {
             Parent root = loader.load();
             controller = loader.getController(); //mi serve per aggiungere gli observer alla nuova scena
 
-            //prendo il controller della nuova scena, ma mi aggiunge 2 observer, perche
             controller.addAllObserver(observers);
 
             activeController = controller;
@@ -71,6 +69,11 @@ public class SceneController {
     }
 
     public static void showGame(Game game){
+        if(game != null)
+             currentGame = game;
+        if(activeController instanceof MoveSceneController){
+            return;
+        }
         GameSceneController controller;
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
         List<Observer> observers = activeController.getObservers();
@@ -101,8 +104,10 @@ public class SceneController {
         changeRootPane(observers, activeScene, fxml);
     }
 
-    public static void backScene(){
-        activeScene.setRoot(previousRoot);
+    public static void backScene(Event event){
+        if(activeScene != null) {
+            activeScene.setRoot(previousRoot);
+        }
     }
 
     public static void showAssistantsCardOption(List<AssistantsCards> assistantsCards) {
@@ -123,26 +128,52 @@ public class SceneController {
         assistantSceneController.displayOptions();
     }
 
-    public static void showWizardsBoards(List<Observer> observers, List<Wizard> wizards) {
-        changeRootPane(observers, activeScene, "boardsScene.fxml");
-        ((BoardsSceneController)activeController).setBoards(wizards);
+    public static void showWizardsBoards(List<Observer> observers) {
+        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/boardsScene.fxml"));
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        BoardsSceneController boardsSceneController = loader.getController();
+        Scene boardScene = new Scene(parent);
+        boardsSceneController.setBoards(currentGame.getWizards());
+        boardsSceneController.addAllObserver(observers);
+        boardsSceneController.setScene(boardScene);
+        boardsSceneController.display();
     }
 
     public static void loadArchipelagos(Map<Integer, Archipelago> archipelago) {
-        if(activeController instanceof MoveStudentSceneController){
-            ((MoveStudentSceneController) activeController).setArchipelagos(archipelago);
+        if(activeController instanceof MoveSceneController){
+            ((MoveSceneController) activeController).setArchipelagos(archipelago);
         }
     }
 
     public static void loadBoard(Board board) {
-        if(activeController instanceof MoveStudentSceneController){
-            ((MoveStudentSceneController) activeController).setBoard(board);
+        if(activeController instanceof MoveSceneController){
+            ((MoveSceneController) activeController).setBoard(board);
         }
     }
 
     public static void loadStudentOnEntrance(Map<Integer, Student> students) {
-        if(activeController instanceof MoveStudentSceneController){
-            ((MoveStudentSceneController) activeController).loadStudentsMovable(students);
+        if(activeController instanceof MoveSceneController){
+            ((MoveSceneController) activeController).loadStudentsMovable(students);
         }
+    }
+
+    public static void letMoveMotherNature() {
+        if(activeController instanceof MoveSceneController){
+            ((MoveSceneController) activeController).setMoveMN(true);
+        }
+    }
+
+    public static void enableClouds(CloudInGame cloud) {
+        if(! (activeController instanceof GameSceneController)){
+            setScene(activeController.getObservers(), "gameScene.fxml");
+            ((GameSceneController)activeController).setGame(currentGame);
+        }
+        ((GameSceneController)activeController).enableCloud(cloud.getCloudMap());
     }
 }

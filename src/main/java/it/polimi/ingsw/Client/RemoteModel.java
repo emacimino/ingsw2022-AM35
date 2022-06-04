@@ -1,18 +1,23 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.Gui.GUI;
+
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+
+import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RemoteModel {
+    private Game game;
     private Map<String , AssistantsCards> assistantsCardsMap = new HashMap<>();
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Map<Integer, Student> studentsOnBoardMap = new HashMap<>();
@@ -69,6 +74,11 @@ public class RemoteModel {
     public Map<Integer, Cloud> getCloudsMap() {
         return cloudsMap;
     }
+
+    public Game getGame() {
+        return game;
+    }
+
     public Map<String, CharacterCard> getCharacterCardMap() {
         return characterCardMap;
     }
@@ -77,6 +87,10 @@ public class RemoteModel {
     }
     public Map<Integer, Student> getStudentsOnBoardMap() {
         return studentsOnBoardMap;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
 }

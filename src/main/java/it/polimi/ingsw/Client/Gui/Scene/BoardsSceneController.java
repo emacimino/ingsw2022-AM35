@@ -6,17 +6,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 
 public class BoardsSceneController extends GenericSceneController {
+    private final Stage stage;
     @FXML
     private GridPane sky;
-    @FXML
-    private Button backBtn;
+
+    public BoardsSceneController() {
+        stage = new Stage();
+        stage.setAlwaysOnTop(false);
+    }
 
     public void setBoards(List<Wizard> wizards) {
         for (int i = 0; i < wizards.size(); i++) {
@@ -48,7 +54,15 @@ public class BoardsSceneController extends GenericSceneController {
     }
 
     public void goBack(ActionEvent event) {
-        SceneController.backScene();
+        stage.close();
+    }
+
+    public void setScene(Scene scene) {
+        stage.setScene(scene);
+    }
+
+    public void display() {
+        stage.showAndWait();
     }
 
 }

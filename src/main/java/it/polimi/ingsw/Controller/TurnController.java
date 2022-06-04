@@ -121,6 +121,7 @@ public class TurnController {
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
             viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't move MotherNature in this position"));
+
         }
     }
     private void selectCloudForThisTurn(CloudMessage message) {
@@ -281,9 +282,9 @@ public class TurnController {
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
             remoteView.showGenericMessage(new GenericMessage("\nIt's your turn, move Mother Nature!!"));
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+            remoteView.sendMessage(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()));
             remoteView.sendMessage(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()));
             remoteView.sendMessage(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()));
-            remoteView.sendMessage(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()));
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }

@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
+import it.polimi.ingsw.NetworkUtilities.Message.CloudMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,6 +31,10 @@ public class GameSceneController extends GenericSceneController {
     private Game game;
     private int indexRow = 0;
     private int indexColumn = 0;
+    private HBox cloudsOne = new HBox(), cloudsTwo = new HBox();
+    private Map<Integer, Cloud> cloudMap = new HashMap<>();
+    private Cloud cloudSelected;
+    private boolean chooseCloud = false;
 
     public void setGame(Game game) {
         this.game = game;
@@ -84,8 +92,8 @@ public class GameSceneController extends GenericSceneController {
             indexRow = 1;
             indexColumn = 1;
             int pos = 1;
-            HBox hBox = new HBox();
-            sky.add(hBox, indexColumn, indexRow);
+            HBox hBox = cloudsOne;
+            sky.add(cloudsOne, indexColumn, indexRow);
             for (Cloud cloud : game.getClouds()) {
                 try {
                     loadCloud(cloud, pos, hBox);
@@ -97,8 +105,8 @@ public class GameSceneController extends GenericSceneController {
                 } else {
                     pos = 1;
                     indexColumn = 3;
-                    hBox = new HBox();
-                    sky.add(hBox, indexColumn, indexRow);
+                    hBox = cloudsTwo;
+                    sky.add(cloudsTwo, indexColumn, indexRow);
                 }
             }
         }
@@ -123,6 +131,9 @@ public class GameSceneController extends GenericSceneController {
         Node node = loader.load();
         CloudPanelController controller = loader.getController();
         controller.setCloud(cloud);
+        if(chooseCloud) {
+            node.setOnMouseClicked(mouseEvent -> selectCloud(cloud));
+        }
         VBox vBox;
         Node tmp = new Pane();
         tmp.setVisible(false);
@@ -140,6 +151,7 @@ public class GameSceneController extends GenericSceneController {
             hBox.getChildren().add(vBox);
         }
     }
+
 
     public void quit(ActionEvent event) {
         System.exit(0);
@@ -166,9 +178,44 @@ public class GameSceneController extends GenericSceneController {
     }
 
     public void goToBoards(ActionEvent event) {
-        SceneController.showWizardsBoards(getObservers(), game.getWizards());
+        SceneController.showWizardsBoards(getObservers());
 
     }
 
 
+    public void enableCloud(Map<Integer, Cloud> cloud) {
+        chooseCloud = true;
+        cloudMap.putAll(cloud);
+        cloudsOne.getChildren().clear();
+        cloudsTwo.getChildren().clear();
+        HBox hBox = cloudsOne;
+        int pos = 1;
+        for(Cloud c : cloud.values()){
+            try {
+                loadCloud(c, pos, hBox);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (pos == 1) {
+                pos = 2;
+            } else {
+                pos = 1;
+                hBox = cloudsTwo;
+                indexColumn = 3;
+            }
+        }
+    }
+
+    private void selectCloud(Cloud cloud) {
+        Integer indexCloud = null;
+        for (Integer i : cloudMap.keySet()) {
+            if (cloudMap.get(i).equals(cloud)) {
+                indexCloud = i;
+            }
+        }
+        if(indexCloud != null) {
+            notifyObserver(new CloudMessage(indexCloud));
+        }else
+            System.out.println("index cloud in gamescene controller " +indexCloud);
+    }
 }

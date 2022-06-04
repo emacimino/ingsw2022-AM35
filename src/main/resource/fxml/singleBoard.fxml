@@ -123,24 +123,24 @@
          <children>
             <HBox prefHeight="244.0" prefWidth="74.0">
                <children>
-                  <VBox fx:id="entrance1" prefHeight="244.0" prefWidth="107.0" spacing="17.0">
+                  <VBox fx:id="entrance1" onMouseClicked="#onStudentClick" prefHeight="244.0" prefWidth="107.0" spacing="17.0">
                      <children>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -151,27 +151,27 @@
                      </HBox.margin></VBox>
                   <VBox fx:id="entrance2" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
                      <children>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Circle>
-                        <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -268,5 +268,9 @@
             <Font name="Apple Chancery" size="18.0" />
          </font>
       </Label>
+      <Label fx:id="studentSelectedLbl" layoutX="377.0" layoutY="19.0">
+         <font>
+            <Font name="Apple Chancery" size="14.0" />
+         </font></Label>
    </children>
 </AnchorPane>

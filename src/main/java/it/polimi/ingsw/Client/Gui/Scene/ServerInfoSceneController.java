@@ -4,12 +4,16 @@ import it.polimi.ingsw.Client.CLIENT2.ClientController;
 import it.polimi.ingsw.NetworkUtilities.Message.ServerInfoMessage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ServerInfoSceneController extends GenericSceneController {
+
+public class ServerInfoSceneController extends GenericSceneController implements Initializable {
 
     @FXML //this annotation porterà tutti i valori del file fxml che ha menuSceneController
     private Button playBtn;
@@ -39,5 +43,10 @@ public class ServerInfoSceneController extends GenericSceneController {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ipAddressField.setText("127.0.0.1");
+        portField.setText("1234");
+    }
 }
 

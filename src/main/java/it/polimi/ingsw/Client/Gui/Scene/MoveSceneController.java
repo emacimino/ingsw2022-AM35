@@ -4,31 +4,38 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
 
+import it.polimi.ingsw.NetworkUtilities.Message.MoveMotherNatureMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.MoveStudentMessage;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
-import javafx.scene.transform.Rotate;
-
+import javax.security.auth.Subject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MoveStudentSceneController extends GenericSceneController {
+public class MoveSceneController extends GenericSceneController {
 
     @FXML
     private GridPane sky;
+    @FXML
+    private Label archipelagoSelectedLbl;
+    @FXML
+    private Button moveBtn;
 
     private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
     private Map<Integer, Student> studentMap = new HashMap<>();
-    private Board board;
     private Archipelago archipelagoSelected;
     private BoardPanelController boardPanelController;
     private Boolean ok = false;
+    private Boolean moveMN = false;
 
     public void setArchipelagos(Map<Integer, Archipelago> archipelagos) {
         archipelagoMap = archipelagos;
@@ -78,9 +85,14 @@ public class MoveStudentSceneController extends GenericSceneController {
         ArchipelagoPanelController controller = loader.getController();
         controller.setArchipelago(archipelago);
         node.setOnMouseClicked(MouseEvent -> {
+            if(archipelago == archipelagoSelected){
+                archipelagoSelected = null;
+                archipelagoSelectedLbl.setText("");
+            }else{
                     archipelagoSelected = archipelago;
-                    moveStudent();
-                }
+                archipelagoSelectedLbl.setText("You have selected \n the " + getArchipelagoIndex(archipelago) + " archipelago");
+            }
+        }
         );
         node.setDisable(false);
         sky.add(node, column, row);
@@ -110,24 +122,50 @@ public class MoveStudentSceneController extends GenericSceneController {
         boardPanelController.setMovableStudentOnEntrance(studentMap);
     }
 
-    private void moveStudent() {
-        System.out.println("DO something:" );
+    public void move(ActionEvent event) {
         Integer indexStud = null, indexArch = null;
-        for (Integer i : studentMap.keySet()) {
-            if (studentMap.get(i).equals(boardPanelController.getStudentToMove())) {
-                indexStud = i;
+        if(moveMN){
+            indexArch = getArchipelagoIndex(archipelagoSelected);
+            if(indexArch != null){
+                notifyObserver(new MoveMotherNatureMessage(indexArch));
             }
-        }
-        for (Integer i : archipelagoMap.keySet()) {
-            if (archipelagoMap.get(i).equals(archipelagoSelected)) {
-                indexArch = i;
+        }else {
+            Student student = boardPanelController.getStudentToMove();
+            indexStud = getStudentIndex(student);
+            indexArch = getArchipelagoIndex(archipelagoSelected);
+            System.out.println(indexArch + " , " + indexStud);
+            if (indexStud != null) {
+                notifyObserver(new MoveStudentMessage(indexStud, indexArch));
             }
-        }
-        System.out.println(indexArch + " , " + indexStud);
-        if (indexStud != null && indexArch != null) {
-            notifyObserver(new MoveStudentMessage(indexStud, indexArch));
         }
     }
 
+    private Integer getArchipelagoIndex(Archipelago archipelago){
+        Integer indexArch = null;
+        for (Integer i : archipelagoMap.keySet()) {
+            if (archipelagoMap.get(i).equals(archipelago)) {
+                indexArch = i;
+            }
+        }
+        return indexArch;
+    }
+    private Integer getStudentIndex(Student student){
+        Integer indexStud = null;
+        for (Integer i : studentMap.keySet()) {
+            if (studentMap.get(i).equals(student)) {
+                indexStud = i;
+            }
+        }
+        return indexStud;
+    }
 
+    public void goToBoards(ActionEvent event) {
+        SceneController.showWizardsBoards(getObservers());
+
+    }
+
+    public void setMoveMN(Boolean moveMN) {
+        this.moveMN = moveMN;
+        moveBtn.setText("Move Mother Nature");
+    }
 }

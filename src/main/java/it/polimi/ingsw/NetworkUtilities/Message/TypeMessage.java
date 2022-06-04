@@ -30,5 +30,6 @@ public enum TypeMessage {
     PLAY_CHARACTER_CARD,
     GAME_INFO,
     CHARACTER_CARD,
+    DISCONNECT,
     CLIENT_UNREACHABLE
 }

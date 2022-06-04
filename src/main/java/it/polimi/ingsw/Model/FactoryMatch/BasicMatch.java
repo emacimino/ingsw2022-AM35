@@ -148,8 +148,8 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the board"));
+        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the board"));
     }
 
     /**
@@ -162,8 +162,8 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
+        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
     }
 
     /**
@@ -187,7 +187,7 @@ public class BasicMatch extends Observable implements Serializable {
 
         }
         notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
+      //  notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
 
     }
 
@@ -241,9 +241,8 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         game.moveStudentFromCloudToBoard(player, cloud);
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
-        System.out.println("action player in basic match after choosing cloud "+actionPhaseOrderOfPlayers);
+        notifyObserver(new CurrentGameMessage(game));
+       // notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();}
     }
@@ -255,6 +254,7 @@ public class BasicMatch extends Observable implements Serializable {
         boolean endOfTheMatch = false;
         List<Wizard> w = game.getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
+
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
@@ -275,7 +275,7 @@ public class BasicMatch extends Observable implements Serializable {
             }
 
         }
-        System.out.println(endOfTheMatch);
+        System.out.println("end of match in checkVictory: " + endOfTheMatch);
         if (endOfTheMatch) {
             List<Player> winnerPlayers = winner.stream().map(wiz -> {
                 try {

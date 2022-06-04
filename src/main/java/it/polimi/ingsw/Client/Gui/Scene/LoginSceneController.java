@@ -54,6 +54,7 @@ public class LoginSceneController extends GenericSceneController implements Init
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        textFieldUsername.setText("Cami");
         choiceBoxNumber.getItems().addAll(numberOfPlayers);
         choiceBoxNumber.setOnAction(this::getNumberOFPlayers);
     }

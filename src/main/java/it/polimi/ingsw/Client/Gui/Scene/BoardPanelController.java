@@ -6,12 +6,15 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Tower;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,8 +22,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class BoardPanelController {
     @FXML
@@ -32,11 +33,11 @@ public class BoardPanelController {
     @FXML
     private ImageView profRed, profPink, profYellow, profBlue, profGreen;
     @FXML
-    private Label wizardLbl;
+    private Label wizardLbl, studentSelectedLbl;
 
     private Student studentToMove;
     private Map<Node, Student> studentEntranceMap = new HashMap<>();
-    private Lock lock = new ReentrantLock();
+    private boolean onBoard = false;
 
 
     public void setBoard(Board board, String wizardName) {
@@ -144,33 +145,17 @@ public class BoardPanelController {
     }
 
     public void setMovableStudentOnEntrance(Map<Integer, Student> students) {
-        int depth = 70;  //Setting the uniform variable for the glow width and height
-        DropShadow borderGlow= new DropShadow();
-        borderGlow.setOffsetY(0f);
-        borderGlow.setOffsetX(0f);
-        borderGlow.setColor(javafx.scene.paint.Color.BLUE);
-        borderGlow.setWidth(depth);
-        borderGlow.setHeight(depth);
-
-        for (Node n : entrance1.getChildren()) {
-            n.setDisable(false);
-
-            n.setOnMouseClicked(MouseEvent -> {
-                studentToMove = studentEntranceMap.get(n);
-                System.out.println(studentToMove);
-                n.setEffect(borderGlow);});
-        }
-        for (Node n : entrance2.getChildren()) {
-            n.setDisable(false);
-            n.setOnMouseClicked(MouseEvent -> {
-                studentToMove = studentEntranceMap.get(n);
-                n.setEffect(borderGlow);});
-        }
+        setStudentsInEntrance(students.values().stream().toList());
     }
 
-    private void setCiao(){
+    public void onStudentClick(MouseEvent event){
+        Node node = (Circle) event.getTarget();
+        studentToMove = studentEntranceMap.get(node);
+        studentSelectedLbl.setText("You have selected a " + studentToMove.getColor() + " student");
         System.out.println(studentToMove);
+
     }
+
     public Student getStudentToMove() {
         return studentToMove;
     }

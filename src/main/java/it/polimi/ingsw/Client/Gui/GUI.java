@@ -8,10 +8,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
-import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
 import java.util.List;
@@ -26,26 +23,6 @@ public class GUI extends Observable implements UserView {
     }
 
     @Override
-    public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
-        Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
-    }
-
-    @Override
-    public void askMoveStudent(Map<Integer,Student> students) {
-
-    }
-
-    @Override
-    public void askMoveMotherNature(String message) {
-
-    }
-
-    @Override
-    public void askChooseCloud(CloudInGame cloud) {
-
-    }
-
-    @Override
     public void showLogin(boolean success) {
         if (!success) {
             Platform.runLater(() -> {
@@ -55,6 +32,30 @@ public class GUI extends Observable implements UserView {
         }else
             Platform.runLater(() -> SceneController.setScene(getObservers(), "setupMatch.fxml"));
 
+    }
+
+    @Override
+    public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
+        Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
+    }
+
+    @Override
+    public void askToMoveStudent() {
+        Platform.runLater(()-> SceneController.setScene(getObservers(), "moveStudentScene.fxml"));
+    }
+
+    @Override
+    public void askMoveMotherNature(String message) {
+        Platform.runLater(()->{SceneController.setScene(getObservers(), "moveStudentScene.fxml");
+            SceneController.letMoveMotherNature();
+        });
+    }
+
+    @Override
+    public void askChooseCloud(CloudInGame cloud) {
+        Platform.runLater(()->{
+            SceneController.enableClouds(cloud);
+        });
     }
 
 
@@ -68,10 +69,6 @@ public class GUI extends Observable implements UserView {
         Platform.runLater(()-> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
     }
 
-    @Override
-    public void askToMoveStudent() {
-        Platform.runLater(()-> SceneController.setScene(getObservers(), "moveStudentScene.fxml"));
-    }
 
     @Override
     public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
@@ -83,15 +80,9 @@ public class GUI extends Observable implements UserView {
         Platform.runLater(() -> SceneController.loadStudentOnEntrance(students));
     }
 
-
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater(() -> SceneController.showAlert("Message for you!", genericMessage));
-    }
-
-    @Override
-    public void showDisconnectionMessage(String usernameDisconnected, String text) {
-
     }
 
     @Override
@@ -108,10 +99,14 @@ public class GUI extends Observable implements UserView {
     }
 
 
-
     @Override
-    public void showWinMessage(String winner) {
-
+    public void showWinMessage(EndMatchMessage message) {
+        Platform.runLater(()-> SceneController.setScene(getObservers(),"endScene.fxml")
+        );
     }
 
+    @Override
+    public void showDisconnectionMessage(String usernameDisconnected, String text) {
+
+    }
 }
