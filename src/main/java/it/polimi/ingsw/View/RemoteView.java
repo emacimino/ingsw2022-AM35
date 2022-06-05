@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnection;
@@ -11,7 +10,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -108,7 +106,7 @@ public class RemoteView extends ViewInterface implements UserView {
 
 
     @Override
-    public void showWinMessage(EndMatchMessage message) {
+    public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
 
     }
 

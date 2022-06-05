@@ -2,8 +2,6 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Client.CLIENT2.ClientController;
 import it.polimi.ingsw.Client.Cli.CLI;
-import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Client.Gui.GUI;
 import it.polimi.ingsw.Client.Gui.JavaFxGui;
 import it.polimi.ingsw.Server.Server;
 import javafx.application.Application;
@@ -34,10 +32,8 @@ public class EriantysApp {
                 //client.addObserver(clientController);
                 client.run();
             }
-            case "client -gui" -> {
-                System.out.println("Insert the IP: ");
-               // String ip = scanner.nextLine();
-                Application.launch(JavaFxGui.class, args);
+            case "-gui" -> {
+                Application.launch(JavaFxGui.class);
             }
         }
     }

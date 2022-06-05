@@ -2,9 +2,7 @@ package it.polimi.ingsw.Client.Gui;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
@@ -100,8 +98,8 @@ public class GUI extends Observable implements UserView {
 
 
     @Override
-    public void showWinMessage(EndMatchMessage message) {
-        Platform.runLater(()-> SceneController.setScene(getObservers(),"endScene.fxml")
+    public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
+        Platform.runLater(()-> SceneController.setEndingScene(((EndMatchMessage)message).getWinners().stream().map(s->s.getUsername()).toList(), isWinner)
         );
     }
 

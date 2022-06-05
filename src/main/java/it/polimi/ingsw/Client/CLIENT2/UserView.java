@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
-import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
@@ -34,7 +32,7 @@ public interface UserView {
 
     void loadBoard(Board board);
 
-    void showWinMessage(EndMatchMessage message);
+    void showWinMessage(EndMatchMessage message, Boolean isWinner);
 
     void showGameState(CurrentGameMessage currentGameMessage);
 

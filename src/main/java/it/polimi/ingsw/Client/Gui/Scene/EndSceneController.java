@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import java.util.List;
+
 
 public class EndSceneController extends GenericSceneController{
     @FXML
@@ -16,5 +18,13 @@ public class EndSceneController extends GenericSceneController{
 
     public void restartMatch(ActionEvent event){
         SceneController.changeRootPane(getObservers(), event, "endScene.fxml");
+    }
+
+    public void setWinMessage(List<String> winners){
+
+    }
+
+    public void setLoseMessage(List<String> winners){
+
     }
 }

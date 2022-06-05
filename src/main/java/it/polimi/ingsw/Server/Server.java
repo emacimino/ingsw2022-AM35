@@ -19,10 +19,10 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private static final int PORT = 1234;
-    private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
-    private Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
+    private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
+    private final Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
     private int matchCounter = 0;
     private int connections = 0;
 
@@ -60,7 +60,7 @@ public class Server {
 
 
     public void EndGameDisconnected(){
-        for (int i=0; i<waitingPlayersInLobby.size();i++) {
+        for (Integer i=0; i<waitingPlayersInLobby.size();i++) {
             waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
             waitingPlayersInLobby.get(i).closeConnection();
         }
@@ -111,6 +111,7 @@ public class Server {
             ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
             match.addObserver(clientView);
             clientView.addObserver(controller);
+            assert controller != null;
             controller.addView(clientName, clientView);
             ((SocketClientConnection) waitingList.get(clientName)).setController(controller);
 

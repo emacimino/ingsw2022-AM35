@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.CLIENT2;
 
 
 import it.polimi.ingsw.Client.RemoteModel;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
@@ -57,7 +58,11 @@ public class ClientController implements Observer, ViewObserver {
             case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage)message);
             case CLOUD_CHOICE -> {updateOnSelectedCloud((CloudMessage)message);}
             case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
-            case END_MATCH -> {view.showWinMessage((EndMatchMessage) message);}
+            case END_MATCH -> {
+                EndMatchMessage endMatchMessage = (EndMatchMessage) message;
+                boolean isWinner = ((EndMatchMessage) message).getWinners().stream().map(Player::getUsername).anyMatch(s -> s.equals(username));
+                 view.showWinMessage((EndMatchMessage) message , isWinner);
+            }
             //case SHOW_CHARACTER_CARD -> view.showCharactersCards((CharacterCardInGameMessage) message);
             case PLAY_CHARACTER_CARD -> { }
         }

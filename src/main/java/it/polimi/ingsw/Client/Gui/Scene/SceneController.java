@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
+import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -175,5 +176,13 @@ public class SceneController {
             ((GameSceneController)activeController).setGame(currentGame);
         }
         ((GameSceneController)activeController).enableCloud(cloud.getCloudMap());
+    }
+
+    public static void setEndingScene(List<String> winners, Boolean isWinner) {
+        setScene(activeController.getObservers(), "endScene.fxml");
+        if(isWinner)
+            ((EndSceneController)activeController).setWinMessage(winners);
+        else
+            ((EndSceneController)activeController).setLoseMessage(winners);
     }
 }

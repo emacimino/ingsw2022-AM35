@@ -13,4 +13,8 @@ public class EndMatchMessage extends Message{
         this.winners = winners;
         setType(TypeMessage.END_MATCH);
     }
+
+    public List<Player> getWinners() {
+        return winners;
+    }
 }
