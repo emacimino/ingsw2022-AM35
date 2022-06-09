@@ -11,6 +11,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -247,6 +250,18 @@ public class BasicMatchFourPlayerTest {
     void checkVictory_NoStudents_Test(){
         System.out.println();
         gameSetter();
+        class EndMatch implements Observer {
+            public boolean endMatch = false;
+            @Override
+            public void update(Message message) {
+                if(message instanceof EndMatchMessage){
+                    endMatch = true;
+                }
+            }
+        }
+
+        EndMatch obs = new EndMatch();
+        basicMatch4Players.addObserver(obs);
         Assertions.assertDoesNotThrow(() -> {
             List<AssistantsCards> assistantsCards_1 = basicMatch4Players.getGame().getWizardFromPlayer(playerOne).getAssistantsDeck().getPlayableAssistants();
             List<AssistantsCards> assistantsCards_2 = basicMatch4Players.getGame().getWizardFromPlayer(playerTwo).getAssistantsDeck().getPlayableAssistants();
@@ -265,8 +280,19 @@ public class BasicMatchFourPlayerTest {
             basicMatch4Players.getGame().getWizardFromPlayer(playerFour).getBoard().setProfessorInTable(new Professor(Color.GREEN));
             basicMatch4Players.getGame().getWizardFromPlayer(playerThree).getBoard().setProfessorInTable(new Professor(Color.PINK));
             basicMatch4Players.getGame().getWizardFromPlayer(playerFour).getBoard().setProfessorInTable(new Professor(Color.YELLOW));
-            //call moveMotherNature
             int oldPositionMotherNature = basicMatch4Players.getPositionOfMotherNature();
+            Archipelago archipelagoToMove = basicMatch4Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)%basicMatch4Players.getGame().getArchipelagos().size());
+
+            //call moveMotherNature
+            List<Player> orderPlayer = basicMatch4Players.getActionPhaseOrderOfPlayers();
+            Player lastPlayer = orderPlayer.get(orderPlayer.size()-1);
+            basicMatch4Players.moveMotherNature(orderPlayer.get(0), archipelagoToMove);
+            Assertions.assertFalse(obs.endMatch);
+
+            oldPositionMotherNature = basicMatch4Players.getPositionOfMotherNature();
+            archipelagoToMove = basicMatch4Players.getGame().getArchipelagos().get((oldPositionMotherNature + 1)%basicMatch4Players.getGame().getArchipelagos().size());
+            basicMatch4Players.moveMotherNature(lastPlayer, archipelagoToMove);
+            Assertions.assertTrue(obs.endMatch);
 
         });
     }

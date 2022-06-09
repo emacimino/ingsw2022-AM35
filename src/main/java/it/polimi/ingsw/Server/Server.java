@@ -31,13 +31,15 @@ public class Server {
     }
 
     public synchronized void deregisterConnection(ClientConnection c) {
-        List<ClientConnection> opponents = (List<ClientConnection>) matchInServer.get(c.getNumOfMatch());
-        if (opponents != null) {
-            for (ClientConnection clientConnection : opponents) {
+        ClientsInMatch clientsInMatch = matchInServer.get(c.getNumOfMatch());
+        Collection<ClientConnection> opponents = clientsInMatch.getClientConnectionList();
+        for (ClientConnection clientConnection : opponents) {
+            if(!clientConnection.equals(c)) {
                 clientConnection.closeConnection();
                 connections--;
             }
         }
+
         matchInServer.remove(c.getNumOfMatch());
         matchInServer.remove(opponents);
         waitingPlayersInLobby.keySet().removeIf(s -> waitingPlayersInLobby.get(s) == c);
@@ -59,12 +61,12 @@ public class Server {
         }
 
 
-    public void EndGameDisconnected(){
+  /*  public void EndGameDisconnected(){
         for (Integer i=0; i<waitingPlayersInLobby.size();i++) {
             waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
             waitingPlayersInLobby.get(i).closeConnection();
         }
-    }
+    }*/
 
     private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
@@ -105,8 +107,6 @@ public class Server {
         } catch (ExceptionGame | CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        //     Map<String, ViewInterface> viewMap = new HashMap<>();
-
         for (String clientName: waitingList.keySet()) {
             ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
             match.addObserver(clientView);
