@@ -22,7 +22,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
     private Controller controller;
 
     private boolean active = true;
-    private boolean matchOnGoing = true;
+
 
     public Socket getSocket() {
         return socket;
@@ -33,7 +33,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         this.server = server;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
-
     }
 
     public void setNumOfMatch(Integer numOfMatch) {
@@ -44,12 +43,8 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         return active;
     }
 
-    public void setMatchOnGoing(boolean matchOnGoing) {
-        this.matchOnGoing = matchOnGoing;
-    }
-
     public synchronized void sendMessage(Message message) {
-         if(matchOnGoing) {
+
              try {
                  System.out.println("in socketClientController, socket send : " + message);
                  outputStream.reset();
@@ -59,7 +54,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
                  exception.printStackTrace();
              }
-         }
+
     }
 
     @Override
