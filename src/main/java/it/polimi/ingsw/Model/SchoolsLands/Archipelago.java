@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class Archipelago implements Serializable {
     private static final long serialVersionUID = 8744156061031040215L;
-    private List<Island> isle= new ArrayList<>();
+    private final List<Island> isle= new ArrayList<>();
     private boolean motherNaturePresence = false;
     private boolean prohibition = false;
 
@@ -54,8 +54,8 @@ public class Archipelago implements Serializable {
      * @param archipelago is the archipelago that will be merged (hence stripped of its islands)
      */
     public void mergeArchipelago(Archipelago archipelago){
-        this.isle.addAll(archipelago.isle);
-        archipelago.getIsle().removeAll(isle);
+        this.isle.addAll(archipelago.getIsle());
+        archipelago.getIsle().clear();
     }
 
     /**

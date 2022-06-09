@@ -72,4 +72,11 @@ public class Island implements Serializable {
     public boolean isInterdictionCard() {
         return interdictionCard;
     }
+
+    @Override
+    public String toString() {
+        return "Island{" +
+                "tower=" + tower +
+                '}';
+    }
 }

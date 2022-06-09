@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -33,7 +34,6 @@ public class TurnController {
     public void nextPlayerPlanningPhase(){
         int indexNewActivePlayer = (controller.getMatch().getPlayers().indexOf(activePlayer) + 1) % controller.getMatch().getNumberOfPlayers();
         setActivePlayer(controller.getMatch().getPlayers().get(indexNewActivePlayer));
-       // setTurnPhase(TurnPhase.PLAY_ASSISTANT);
     }
     public void nextPlayerActionPhase(){
         //actionOrderOfPlayers.remove(activePlayer);
@@ -115,9 +115,9 @@ public class TurnController {
     private void MoveMotherNatureForThisTurn(MoveMotherNatureMessage message) {
         Integer indexArch = message.getArchipelago();
         try {
-           controller.getMatch().moveMotherNature(getActivePlayer(), messageHandler.getArchipelagoMap().get(indexArch));
-           setTurnPhase(TurnPhase.CHOOSE_CLOUD);
-           askNextAction();
+            controller.getMatch().moveMotherNature(getActivePlayer(), messageHandler.getArchipelagoMap().get(indexArch));
+            setTurnPhase(TurnPhase.CHOOSE_CLOUD);
+            askNextAction();
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
             viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't move MotherNature in this position"));
@@ -129,11 +129,10 @@ public class TurnController {
             controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
             nextPlayerActionPhase();
-            System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
 
         } catch (ExceptionGame e) {
             e.printStackTrace();
-            viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage("Can't select this cloud"));
+            viewMap.get(getActivePlayer().getUsername()).sendMessage(new GenericMessage(e.getMessage()));
         }
 
 
@@ -291,6 +290,11 @@ public class TurnController {
 
     }
     private void askingViewToChooseCloud(){
+        if(controller.getMatch().getGame().getStudentBag().getStudentsInBag().isEmpty()){
+            setTurnPhase(TurnPhase.MOVE_STUDENTS);
+            nextPlayerActionPhase();
+            return;
+        }
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
             remoteView.showGenericMessage(new GenericMessage("\n It's your turn, choose a Cloud!!"));

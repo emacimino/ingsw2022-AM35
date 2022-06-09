@@ -111,7 +111,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         }catch (ExceptionGame e){
             e.printStackTrace();
         }finally {
-            checkVictory();
+            checkVictory(player);
         }
         //notifyObserver(new CurrentGameMessage(super.getGame()));
     }
@@ -131,18 +131,24 @@ public class BasicMatchFourPlayers extends BasicMatch{
     }
 
     @Override
-    public void checkVictory() throws ExceptionGame{
+    public void checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = getCaptainsWithLeastTowers();
         List<Wizard> winner = new ArrayList<>();
+        Player lastPlayer = getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1);
+
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
+        }else if(w.size() == 1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1)))
+                || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
             winner.add(w.get(0));
         }
-        else if (w.size()>1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (super.getGame().getArchipelagos().size() <= 3))) {
+        else if (w.size()>1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) &&  player.equals(getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1)))
+                || (super.getGame().getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             List<Player> teamA = getTeamOfPlayer(getPlayerFromWizard(w.get(0)));
             List<Player> teamB = getTeamOfPlayer(getPlayerFromWizard(w.get(1)));
