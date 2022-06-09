@@ -28,11 +28,11 @@ public class CloudPanelController {
         for(int i = 0; i < students.size(); i++){
             circles.get(i).setVisible(true);
             switch(students.get(i).getColor()){
-                case RED -> circles.get(i).setFill(Paint.valueOf("#bf2727"));
-                case YELLOW -> circles.get(i).setFill(Paint.valueOf("#e3ee44"));
-                case PINK -> circles.get(i).setFill(Paint.valueOf("#ff9ff4"));
-                case BLUE -> circles.get(i).setFill(Paint.valueOf("#0084ff"));
-                case GREEN -> circles.get(i).setFill(Paint.valueOf("#ff921f"));
+                case RED -> circles.get(i).setFill(Paint.valueOf("#cd1a1a"));
+                case YELLOW -> circles.get(i).setFill(Paint.valueOf("#e3ff0c"));
+                case PINK -> circles.get(i).setFill(Paint.valueOf("#ff62e5"));
+                case BLUE -> circles.get(i).setFill(Paint.valueOf("DODGERBLUE"));
+                case GREEN -> circles.get(i).setFill(Paint.valueOf("#3cc945"));
             }
         }
     }

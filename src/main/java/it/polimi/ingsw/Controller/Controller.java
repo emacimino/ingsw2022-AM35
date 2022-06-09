@@ -14,12 +14,12 @@ import java.util.*;
 public class Controller implements Observer {
     private final BasicMatch match;
     private GameState gameState;
-    private Collection<String> playersUsername;
+    private final Collection<String> playersUsername;
     private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
 
     //Initialize the Game having already a lobby
-    public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
+    public Controller(BasicMatch match, Collection<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
         this.playersUsername = playersUsername;
         this.match = match;
     }
@@ -45,7 +45,13 @@ public class Controller implements Observer {
 
             case ACTION_PHASE -> turnController.actionPhaseHandling(receivedMessage);
 
-
+            case GAME_ENDED -> {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             default-> {}//should never reach this condition
             //Server.Logger.warning(STR_INVALID_STATE);
         }
