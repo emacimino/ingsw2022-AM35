@@ -3,28 +3,25 @@ package it.polimi.ingsw.ControllerTest;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Controller.TurnController;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
-import it.polimi.ingsw.Server.ClientConnection;
-import it.polimi.ingsw.Server.Server;
-import it.polimi.ingsw.Server.SocketClientConnection;
-import it.polimi.ingsw.View.RemoteView;
-import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Server.Server;
+import it.polimi.ingsw.Server.SocketClientConnection;
+import it.polimi.ingsw.View.RemoteView;
+import it.polimi.ingsw.View.ViewInterface;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class ControllerTest {
 
@@ -35,17 +32,25 @@ public class ControllerTest {
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
     private final Player playerOne = new Player("One");
     private final Player playerTwo = new Player("Two");
-    private ViewInterface view1 = null, view2 = null;
-    private final Map<String,ViewInterface> viewInterfaceMap2Players = new HashMap<>();
+    private  ViewInterface view1;
+    private SocketClientConnection clientConnection1;
+    private  ViewInterface view2;
+    private  SocketClientConnection clientConnection2;
 
-    public ControllerTest(){
-        setListsOfPlayers();
+
+
+    private void setControllerInTest(){
+        setListsOfPlayers(); //aggiunge al set di stringhe gli username dei players
+       Assertions.assertDoesNotThrow(()->{
+           view1 = new RemoteView(this.clientConnection1);
+           view2 = new RemoteView(this.clientConnection2);
+       });
         if(basicMatch2Players.getNumberOfPlayers() == 2) {
             try {
                 controllerBasicMatch2Players = new Controller(basicMatch2Players, usernameBasicMatch2Players);
+                controllerBasicMatch2Players.setMatchOnGoing(false);
                 controllerBasicMatch2Players.addView(playerOne.getUsername(), view1);
                 controllerBasicMatch2Players.addView(playerOne.getUsername(), view2);
-                controllerBasicMatch2Players.setViewMap(viewInterfaceMap2Players);
                 controllerBasicMatch2Players.initGame();
             } catch (ExceptionGame | CloneNotSupportedException e) {
                 e.printStackTrace();
@@ -63,54 +68,63 @@ public class ControllerTest {
 
 
     @Test
-    void getMatch() {
+    void getMatch_Test() {
+        setControllerInTest();
         Assertions.assertEquals(controllerBasicMatch2Players.getMatch(), basicMatch2Players);
     }
 
     @Test
-    void initGame(){
+    void initGame_Test(){
+        setControllerInTest();
+        Assertions.assertTrue(controllerBasicMatch2Players.getMatch().getPlayers().stream().map(p -> p.getUsername()).toList().containsAll(usernameBasicMatch2Players));
         Assertions.assertEquals(GameState.PLANNING_PHASE, controllerBasicMatch2Players.getGameState());
         Assertions.assertNotNull(controllerBasicMatch2Players.getMatch().getGame());
-        Assertions.assertNotNull(turnControllerBasicMatch2Players);
+       // Assertions.assertNotNull(turnControllerBasicMatch2Players);
     }
 
 
     @Test
-    void onMessageReceived() {
+    void onMessageReceived_Test() {
+        setControllerInTest();
         controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(3, 4)));
     }
 
-    @Test
-    void addView() {
+  /*  @Test
+    void addView_Test() {
+        setControllerInTest();
         controllerBasicMatch2Players.addView(playerOne.getUsername(), viewInterfaceMap2Players.get(0));
+        Assertions.assertNotNull(controllerBasicMatch2Players);
     }
 
     @Test
-    void update(){
+    void update_Test(){
+        setControllerInTest();
         controllerBasicMatch2Players.setGameState(GameState.PLANNING_PHASE);
-       Assertions.assertDoesNotThrow( () -> basicMatch2Players.playAssistantsCard(playerOne, AssistantsCards.CardFive));
-       controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
-       Assertions.assertThrows(ExceptionGame.class, () ->basicMatch2Players.playAssistantsCard(playerTwo, AssistantsCards.CardFive));
+        Assertions.assertDoesNotThrow( () -> basicMatch2Players.playAssistantsCard(playerOne, AssistantsCards.CardFive));
+        controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
+        Assertions.assertThrows(ExceptionGame.class, () ->basicMatch2Players.playAssistantsCard(playerTwo, AssistantsCards.CardFive));
     }
 
     @Test
-    void setViewMap() {
+    void setViewMap_Test() {
+        setControllerInTest();
         controllerBasicMatch2Players.setViewMap(viewInterfaceMap2Players);
     }
-/*
+
     @Test
-    void setGameState(GameState planningPhase) {
+    void setGameState_Test(GameState planningPhase) {
+        setControllerInTest();
         controllerBasicMatch2Players.setGameState(GameState.PLANNING_PHASE);
         Assertions.assertEquals(controllerBasicMatch2Players.getGameState(), GameState.PLANNING_PHASE);
         //controllerBasicMatch3Players.setGameState(GameState.GAME_STARTED);
         //Assertions.assertEquals(controllerBasicMatch3Players.getGameState(), GameState.GAME_STARTED);
     }
-*/
+
     @Test
-    void getGameState() {
+    void getGameState_Test() {
         controllerBasicMatch2Players.setGameState(GameState.PLANNING_PHASE);
         Assertions.assertNotNull(controllerBasicMatch2Players.getGameState());
         //Assertions.assertTrue(controllerBasicMatch3Players.getGameState().getClass().isEnum());
-    }
+    }*/
 }

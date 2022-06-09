@@ -52,7 +52,7 @@ public class RemoteView extends ViewInterface implements UserView {
     private void manageEndMatch(Message message) {
         sendMessage(message);
         clientConnection.getController().setGameState(GameState.GAME_ENDED);
-        clientConnection.setMatchOnGoing(false);
+        clientConnection.getController().setMatchOnGoing(false);
     }
 
     @Override
