@@ -22,6 +22,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
     private Controller controller;
 
     private boolean active = true;
+    private boolean matchOnGoing = true;
 
     public Socket getSocket() {
         return socket;
@@ -43,17 +44,24 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         return active;
     }
 
-    public synchronized void sendMessage(Message message) {
-        try{
-            System.out.println("in socketClientController, socket send : "+message);
-            outputStream.reset();
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException exception) {
-
-            exception.printStackTrace();
-        }
+    public void setMatchOnGoing(boolean matchOnGoing) {
+        this.matchOnGoing = matchOnGoing;
     }
+
+    public synchronized void sendMessage(Message message) {
+         if(matchOnGoing) {
+             try {
+                 System.out.println("in socketClientController, socket send : " + message);
+                 outputStream.reset();
+                 outputStream.writeObject(message);
+                 outputStream.flush();
+             } catch (IOException exception) {
+
+                 exception.printStackTrace();
+             }
+         }
+    }
+
     @Override
     public synchronized void closeConnection() {
         sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
@@ -63,6 +71,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             System.err.println("Error when closing socket!");
         }
         active = false;
+
     }
 
     private void close() {
@@ -82,6 +91,10 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         return numOfMatch;
     }
 
+    public Controller getController() {
+        return controller;
+    }
+
     @Override
     public void run() {
         Message newMessage;
@@ -89,14 +102,18 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                if(!(newMessage instanceof Ping))
-                    System.out.println("in socketClientController, socket received : "+ newMessage);
+                if(!(newMessage instanceof Ping) && !(newMessage instanceof DisconnectMessage)) {
+                    System.out.println("in socketClientController, socket received : " + newMessage);
                     controller.onMessageReceived(newMessage);
+                }else if(newMessage instanceof DisconnectMessage){
+                    System.out.println("in socketClientController, socket received : " + newMessage);
+                    closeConnection();
+                }
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
             asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
             System.err.println("Error from SCC! " + e.getMessage());
-            close();
+            closeConnection();
         }
     }
 
@@ -146,7 +163,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
                     Pong(receivedMessage);
                 }
                 if (System.currentTimeMillis() > end) {
-                    server.EndGameDisconnected();
+                   // server.EndGameDisconnected();
                 }
             }
 

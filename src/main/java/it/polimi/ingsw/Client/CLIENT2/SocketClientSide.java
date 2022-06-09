@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
 import it.polimi.ingsw.Client.CLIENT2.Client2;
+import it.polimi.ingsw.NetworkUtilities.Message.DisconnectMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.ErrorMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.NetworkUtilities.Message.Ping;
@@ -36,7 +37,7 @@ public class SocketClientSide extends Client2 {
     @Override
     public synchronized void sendMessage(Message message) {
         try{
-            System.out.println("sending in socketcliedside :" + message);
+            System.out.println("sending in socketClientside :" + message);
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -55,6 +56,7 @@ public class SocketClientSide extends Client2 {
                     try{
                         message = (Message) inputStream.readObject();
                     }catch (IOException | ClassNotFoundException e ){
+                        new Thread(()-> sendMessage(new DisconnectMessage())).start();
                         message = new ErrorMessage("Connection lost");
                         disconnect();
                         executorService.shutdownNow();
@@ -70,9 +72,7 @@ public class SocketClientSide extends Client2 {
         try{
             if(!socket.isClosed()){
                 executorService.shutdownNow();
-
                 socket.close();
-
             }
         }catch (IOException e){
             notifyObserver(new ErrorMessage("Can't disconnect, retry"));

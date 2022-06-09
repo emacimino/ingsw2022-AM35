@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
+import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnection;
@@ -36,11 +37,6 @@ public class RemoteView extends ViewInterface implements UserView {
     }
 
 
-
-    public void placeStudentOnArchipelago(Student studentsToArchipelago) {
-
-    }
-
     public void moveMotherNature(Integer archipelago) {
         clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
     }
@@ -48,13 +44,21 @@ public class RemoteView extends ViewInterface implements UserView {
 
     @Override
     public void update(Message message){
-        clientConnection.sendMessage(message);
+        if(message instanceof EndMatchMessage)
+            manageEndMatch(message);
+        sendMessage(message);
     }
 
-    public void sendMessage(Message message){
-        clientConnection.sendMessage(message);
+    private void manageEndMatch(Message message) {
+        sendMessage(message);
+        clientConnection.getController().setGameState(GameState.GAME_ENDED);
+        clientConnection.setMatchOnGoing(false);
     }
 
+    @Override
+    public void sendMessage(Message message) {
+        clientConnection.sendMessage(message);
+    }
 
 
     @Override
