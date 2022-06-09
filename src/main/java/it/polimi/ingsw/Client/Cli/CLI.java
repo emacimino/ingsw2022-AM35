@@ -93,7 +93,7 @@ public class CLI   implements UserView {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket();
             Thread t2 = ping();
-         //   t0.join();
+            t0.join();
             t1.join();
             t2.join();
         } catch(InterruptedException | NoSuchElementException e){
