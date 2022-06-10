@@ -50,10 +50,10 @@ public class ControllerTest {
 
     private void setControllerInTest(){
         setListsOfPlayers(); //aggiunge al set di stringhe gli username dei players
-       Assertions.assertDoesNotThrow(()->{
-           view1 = new RemoteView(this.clientConnection1);
-           view2 = new RemoteView(this.clientConnection2);
-       });
+        Assertions.assertDoesNotThrow(()->{
+            view1 = new RemoteView(this.clientConnection1);
+            view2 = new RemoteView(this.clientConnection2);
+        });
         if(basicMatch2Players.getNumberOfPlayers() == 2) {
             try {
                 controllerBasicMatch2Players = new Controller(basicMatch2Players, usernameBasicMatch2Players);
@@ -156,7 +156,7 @@ public class ControllerTest {
         Assertions.assertThrows(Exception.class, () -> controllerBasicMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
         Assertions.assertFalse(basicMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
 
-        }
+    }
 
     @Test
     void onMessageReceived2PLayersMotherNature_Test(){
@@ -186,7 +186,7 @@ public class ControllerTest {
 */
     }
 
-   @Test
+    @Test
     void addView_Test() {
         setControllerInTest();
         Assertions.assertNotNull(controllerBasicMatch2Players);
@@ -203,11 +203,7 @@ public class ControllerTest {
         //Assertions.assertDoesNotThrow(()->controllerBasicMatch2Players.update(new CloudMessage(0)));
     }
 
-    @Test
-    void getTurnController_Test(){
-        setControllerInTest();
-        Assertions.assertNotNull(controllerBasicMatch2Players.getTurnController());
-    }
+
 
     @Test
     void setViewMap_Test() {
