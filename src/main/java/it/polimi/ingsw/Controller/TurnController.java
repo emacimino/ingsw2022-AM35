@@ -281,7 +281,7 @@ public class TurnController {
     private void askingViewToMoveMotherNature(){
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-            remoteView.showGenericMessage(new GenericMessage("\nIt's your turn, move Mother Nature!!"));
+            sendMessageToView(new GenericMessage("\nIt's your turn, move Mother Nature!!"), remoteView);
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
             sendMessageToView(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()), remoteView);
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
@@ -299,7 +299,7 @@ public class TurnController {
         }
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-            remoteView.showGenericMessage(new GenericMessage("\n It's your turn, choose a Cloud!!"));
+            sendMessageToView(new GenericMessage("\n It's your turn, choose a Cloud!!"), remoteView);
             messageHandler.setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
