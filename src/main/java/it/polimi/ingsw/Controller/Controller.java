@@ -94,6 +94,10 @@ public class Controller implements Observer {
         this.matchOnGoing = matchOnGoing;
     }
 
+    public TurnController getTurnController() {
+        return turnController;
+    }
+
     public boolean isMatchOnGoing() {
         return matchOnGoing;
     }

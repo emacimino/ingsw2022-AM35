@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.FactoryMatch;
 
 import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
+//import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
@@ -242,7 +242,7 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
         if(game.getStudentBag().getStudentsInBag().isEmpty())
-            throw new ExceptionStudentBagEmpty("The studentBag is empty, it is not possible to pick a cloud");
+            throw new ExceptionGame("The studentBag is empty, it is not possible to pick a cloud");
         game.moveStudentFromCloudToBoard(player, cloud);
         notifyObserver(new CurrentGameMessage(game));
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
