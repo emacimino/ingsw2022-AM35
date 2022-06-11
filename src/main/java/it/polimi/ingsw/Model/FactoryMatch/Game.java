@@ -107,13 +107,17 @@ public class Game implements Serializable {
         int position = random.nextInt(12);
         motherNature.setPosition(position);
         archipelagos.get(position).setMotherNaturePresence(true);
-
+        List<Student> sb = new ArrayList<>();
+        for(Color c : Color.values()){
+            sb.add(studentBag.pickAStudentOfColor(c));
+            sb.add(studentBag.pickAStudentOfColor(c));
+        }
+        Collections.shuffle(sb);
         for(Archipelago a : archipelagos) {
             if (archipelagos.indexOf(a) != position && archipelagos.indexOf(a) != (position + 6) % 12) {
-                Student student1 = studentBag.drawStudent();
-                Student student2 = studentBag.drawStudent();
-                a.addStudentInArchipelago(student1);
-                a.addStudentInArchipelago(student2);
+                Student student = sb.remove(0);
+                studentBag.getStudentsInBag().remove(student);
+                a.addStudentInArchipelago(student);
             }
         }
 

@@ -131,7 +131,7 @@ public class GameTest {
            for(Archipelago a : game.getArchipelagos()){
                int index = game.getArchipelagos().indexOf(a);
                if( index != positionMotherNature && index != (positionMotherNature + 6)%12)
-                   Assertions.assertEquals(2, game.getArchipelagos().get(index).getStudentFromArchipelago().size());
+                   Assertions.assertEquals(1, game.getArchipelagos().get(index).getStudentFromArchipelago().size());
            }
         });
     }

@@ -63,6 +63,14 @@ public class StudentBag {
         return count;
     }
 
+    public Student pickAStudentOfColor(Color c){
+        for(Student s : studentsInBag){
+            if (s.getColor().equals(c))
+                return s;
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "StudentBag:" + "\n" +"Blue Students = " + getNumberOfStudentsInBag(Color.BLUE)+

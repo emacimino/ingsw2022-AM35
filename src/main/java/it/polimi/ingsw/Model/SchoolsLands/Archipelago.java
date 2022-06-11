@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,6 +14,7 @@ import java.util.*;
  * Archipelago is used to facilitate merge between islands and contains Mother Nature's position
  */
 public class Archipelago implements Serializable {
+    @Serial
     private static final long serialVersionUID = 8744156061031040215L;
     private final List<Island> isle= new ArrayList<>();
     private boolean motherNaturePresence = false;
@@ -72,8 +74,8 @@ public class Archipelago implements Serializable {
                 }
             }
             catch(ExceptionGame ignored){} //on the island there is no tower
-            influence += calculateInfluenceStudents(w);
         }
+        influence += calculateInfluenceStudents(w);
         return influence;
     }
 
@@ -81,7 +83,7 @@ public class Archipelago implements Serializable {
         int influenceStudent = 0;
         for (Island island: isle) {
             if(!w.getBoard().getProfessorInTable().isEmpty()) {
-                influenceStudent= w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
+                influenceStudent += w.getBoard().getProfessorInTable().stream().mapToInt(prof -> island.getStudentFilteredByColor(prof.getColor()).size()).sum();
             }
         }
         return influenceStudent;
@@ -137,5 +139,13 @@ public class Archipelago implements Serializable {
 
     public void setProhibition(boolean prohibition) {
         this.prohibition = prohibition;
+    }
+
+    @Override
+    public String toString() {
+        return "Archipelago{" +
+                "isle=" + isle +
+                ", motherNaturePresence=" + motherNaturePresence +
+                '}';
     }
 }

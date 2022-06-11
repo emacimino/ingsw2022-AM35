@@ -53,9 +53,9 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
         game.setWizards(players);
+        game.setArchipelagos();
         game.setTowers(numberOfTowers);
         game.setRandomlyStudentsInEntrance();
-        game.setArchipelagos();
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
@@ -178,7 +178,6 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
-            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
