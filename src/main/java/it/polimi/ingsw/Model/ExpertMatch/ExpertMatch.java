@@ -88,7 +88,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         if(activeProhibitionCard!=null)
             if(archipelago.isProhibition()){
                 activeProhibitionCard.resetAProhibitionEffect(archipelago);
-                basicMatch.checkVictory();
+                basicMatch.checkVictory(player);
                 if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
                     throw new ExceptionGame("Every player has played in this round phase");
                 if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
@@ -109,7 +109,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            basicMatch.checkVictory();
+            basicMatch.checkVictory(player);
         }
         if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
             throw new ExceptionGame("Every player has played in this round phase");

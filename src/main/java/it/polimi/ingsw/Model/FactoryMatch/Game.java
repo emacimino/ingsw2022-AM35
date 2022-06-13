@@ -107,13 +107,17 @@ public class Game implements Serializable {
         int position = random.nextInt(12);
         motherNature.setPosition(position);
         archipelagos.get(position).setMotherNaturePresence(true);
-
+        List<Student> sb = new ArrayList<>();
+        for(Color c : Color.values()){
+            sb.add(studentBag.pickAStudentOfColor(c));
+            sb.add(studentBag.pickAStudentOfColor(c));
+        }
+        Collections.shuffle(sb);
         for(Archipelago a : archipelagos) {
             if (archipelagos.indexOf(a) != position && archipelagos.indexOf(a) != (position + 6) % 12) {
-                Student student1 = studentBag.drawStudent();
-                Student student2 = studentBag.drawStudent();
-                a.addStudentInArchipelago(student1);
-                a.addStudentInArchipelago(student2);
+                Student student = sb.remove(0);
+                studentBag.getStudentsInBag().remove(student);
+                a.addStudentInArchipelago(student);
             }
         }
 
@@ -296,29 +300,35 @@ public class Game implements Serializable {
             Wizard wizardActualIsle = archipelago.getIsle().get(0).getTower().getProperty();
 
             try {
-                int previousIsle = ((archipelagos.size() + actualIsle) - 1)%archipelagos.size();
+                int previousIsle = ((archipelagos.size() + actualIsle) - 1) % archipelagos.size();
                 Wizard wizardPreviousIsle = archipelagos.get(previousIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardPreviousIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(previousIsle));
                     archipelagos.remove(archipelagos.get(previousIsle));
-                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+
+                    actualIsle = archipelagos.indexOf(archipelago);
+                    motherNature.setPosition(actualIsle);
                 }
+
             } catch (ExceptionGame e1) {
-                System.out.println("Previous Isle not controlled by any wizard");
+                System.out.println(e1.getMessage());
             }
+
             try {
                 int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
                 Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardNextIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(nextIsle));
                     archipelagos.remove(archipelagos.get(nextIsle));
-                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+
+                    actualIsle = archipelagos.indexOf(archipelago);
+                    motherNature.setPosition(actualIsle);
                 }
             } catch (ExceptionGame e2) {
-                System.out.println("Next Isle is not controlled by any wizard");
+                System.out.println(e2.getMessage());
             }
         }catch(ExceptionGame e0){
-            System.out.println("The current Isle is not controlled by any wizard");
+            System.out.println(e0.getMessage());
         }
     }
 

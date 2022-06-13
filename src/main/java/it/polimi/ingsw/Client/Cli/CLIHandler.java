@@ -434,7 +434,7 @@ public class CLIHandler {
                     return null;
                 }
             }
-        } catch (NumberFormatException n) {
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException n) {
             System.out.println("Please write a valid number");
         }
         return message;
@@ -455,7 +455,7 @@ public class CLIHandler {
                 System.out.println(message);
             } else
                 System.out.println("Please write a valid index of Archipelago");
-        } catch (NumberFormatException n) {
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException n) {
             System.out.println("Please write a valid number");
         }
         return message;

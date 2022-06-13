@@ -15,9 +15,10 @@ public class Controller implements Observer {
     private final Collection<String> playersUsername;
     private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
+    private boolean matchOnGoing = true;
 
     //Initialize the Game having already a lobby
-    public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
+    public Controller(BasicMatch match, Collection<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
         this.playersUsername = playersUsername;
         this.match = match;
     }
@@ -43,7 +44,13 @@ public class Controller implements Observer {
 
             case ACTION_PHASE -> turnController.actionPhaseHandling(receivedMessage);
 
-
+            case GAME_ENDED -> {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             default-> {}//should never reach this condition
             //Server.Logger.warning(STR_INVALID_STATE);
         }
@@ -80,5 +87,12 @@ public class Controller implements Observer {
 
     public GameState getGameState() {
         return gameState;
+    }
+    public void setMatchOnGoing(boolean matchOnGoing) {
+        this.matchOnGoing = matchOnGoing;
+    }
+
+    public boolean isMatchOnGoing() {
+        return matchOnGoing;
     }
 }

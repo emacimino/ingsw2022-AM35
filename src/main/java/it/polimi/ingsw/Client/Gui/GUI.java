@@ -99,7 +99,7 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
-        Platform.runLater(()-> SceneController.setEndingScene(((EndMatchMessage)message).getWinners().stream().map(s->s.getUsername()).toList(), isWinner)
+        Platform.runLater(()-> SceneController.setEndingScene(message.getWinners().stream().map(s->s.getUsername()).toList(), isWinner)
         );
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.FactoryMatch;
 
 import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
@@ -52,9 +53,9 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
         game.setWizards(players);
+        game.setArchipelagos();
         game.setTowers(numberOfTowers);
         game.setRandomlyStudentsInEntrance();
-        game.setArchipelagos();
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
@@ -177,13 +178,12 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
-            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            checkVictory();
+            checkVictory(player);
 
         }
         notifyObserver(new CurrentGameMessage(game));
@@ -240,9 +240,10 @@ public class BasicMatch extends Observable implements Serializable {
      * @throws ExceptionGame is thrown if the move is not allowed
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
+        if(game.getStudentBag().getStudentsInBag().isEmpty())
+            throw new ExceptionStudentBagEmpty("The studentBag is empty, it is not possible to pick a cloud");
         game.moveStudentFromCloudToBoard(player, cloud);
         notifyObserver(new CurrentGameMessage(game));
-       // notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();}
     }
@@ -250,18 +251,23 @@ public class BasicMatch extends Observable implements Serializable {
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    public void checkVictory() throws ExceptionGame{
+    public void checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
-        List<Wizard> w = game.getWizardsWithLeastTowers();
+        List<Wizard> w = getGame().getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
+        Player lastPlayer = actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1);
 
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
+        }else if(w.size() == 1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(lastPlayer))
+                || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
+        }else if (w.size() >1 && (
+                ((getGame().getStudentBag().getNumberOfStudents() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(lastPlayer))
+                || (getGame().getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());
             if(w.get(0).getBoard().getProfessorInTable().size() > w.get(1).getBoard().getProfessorInTable().size())
@@ -275,7 +281,6 @@ public class BasicMatch extends Observable implements Serializable {
             }
 
         }
-        System.out.println("end of match in checkVictory: " + endOfTheMatch);
         if (endOfTheMatch) {
             List<Player> winnerPlayers = winner.stream().map(wiz -> {
                 try {
