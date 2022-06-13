@@ -3,7 +3,6 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.View.RemoteView;
@@ -15,12 +14,13 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import java.util.*;
 
 public class TurnController {
-    private MessageHandler messageHandler = new MessageHandler();
-    private Controller controller;
-    private Map<String, ViewInterface> viewMap;
+    private final MessageHandler messageHandler = new MessageHandler();
+    private final Controller controller;
+    private final Map<String, ViewInterface> viewMap;
     private Player activePlayer;
-    private List<Player> actionOrderOfPlayers = new ArrayList<>();
+    private final List<Player> actionOrderOfPlayers = new ArrayList<>();
     private TurnPhase turnPhase = null;
+    private TurnPhase precedentTurnPhase = null;
     private int numberOfStudentMoved = 0;
 
 
@@ -71,7 +71,11 @@ public class TurnController {
 
     protected void pickFirstPlayerActionPhaseHandler() {
         setActionOrderOfPlayers(controller.getMatch().getActionPhaseOrderOfPlayers());
-        setTurnPhase(TurnPhase.MOVE_STUDENTS);
+        if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().isEmpty())
+            setTurnPhase(TurnPhase.MOVE_STUDENTS);
+        else{
+            setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
+        }
     }
 
     protected void actionPhaseHandling(Message receivedMessage) {
@@ -88,6 +92,16 @@ public class TurnController {
                 MoveMotherNatureMessage message = (MoveMotherNatureMessage) receivedMessage;
                 MoveMotherNatureForThisTurn(message);
             }
+            case ASK_CHARACTER_CARD -> {
+                AskCharacterCardMessage message = (AskCharacterCardMessage) receivedMessage;
+                try {
+                    sendCharacterCardInfo(message);
+                } catch (ExceptionGame e) {
+                    e.printStackTrace();
+                    RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+                    remoteView.sendMessage(new ErrorMessage(e.getMessage()));
+                }
+            }
             case PLAY_CHARACTER_CARD -> {
                 PlayCharacterMessage message = (PlayCharacterMessage) receivedMessage;
                 playCharacterCardForThisTurn(message);
@@ -98,6 +112,8 @@ public class TurnController {
 
         }
     }
+
+
 
     private boolean playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
         try {
@@ -129,7 +145,7 @@ public class TurnController {
             controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
             nextPlayerActionPhase();
-            System.out.println("IN SELECTCLOUD IN TURNCONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
+            System.out.println("IN SELECT CLOUD IN TURN CONTROLLER: ACTIVE PLAYER AFTER CHOOSE THE CLOUD IS: " +activePlayer);
 
         } catch (ExceptionGame e) {
             e.printStackTrace();
@@ -142,18 +158,17 @@ public class TurnController {
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
         try {
+            Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
             if (message.getArchipelago() != null) {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 Archipelago a = messageHandler.getArchipelagoMap().get(indexArch);
                 controller.getMatch().moveStudentOnArchipelago(getActivePlayer(), s, a);
             } else {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), s);
             }
             numberOfStudentMoved ++;
             if (numberOfStudentMoved == controller.getMatch().getNumberOfMovableStudents()) {
                 numberOfStudentMoved = 0;
-                setTurnPhase(TurnPhase.MOVE_MOTHERNATURE);
+                setTurnPhase(TurnPhase.MOVE_MOTHER_NATURE);
                 askNextAction();
             }else
                 askingViewToMoveAStudent(numberOfStudentMoved);
@@ -165,55 +180,6 @@ public class TurnController {
         }
     }
 
-    private void playCharacterCardForThisTurn(PlayCharacterMessage message){
-        String cardName = message.getCharacterCard().getName();
-        CharacterCard card = ((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName);
-        Archipelago archipelago;
-        int numOfStep;
-        List<Student> studentFromCardToTrade;
-        List<Student> studentFromBoardToTrade;
-        List<Student> studentFromEntranceToTrade;
-
-        if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().containsKey(cardName) &&
-                (!message.getCharacterCard().getName().equals("Archer") && !cardName.equals("Chef") && !cardName.equals("Knight") && !cardName.equals("Baker"))){
-            handleCardSettings(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName),message);
-        }
-
-        try {
-
-            message.getCharacterCard().useCard((ExpertMatch) controller.getMatch());
-
-        } catch (ExceptionGame e) {
-            System.out.println("Character card move not valid");
-        }
-
-    }
-
-    private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) {
-        switch (card.getName()) {
-
-            case "Messenger" -> {
-                card.setArchipelagoEffected(this.controller.getMatch().getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
-            }
-            case "Princess" -> {
-                //card.setActiveStudents(this.controller.getMatch().getGame());
-            }
-            case "Jester" -> {
-            }
-            case "Friar" -> {
-            }
-            case "Minstrel" -> {
-            }
-            case "Magician" -> {
-            }
-            case "Banker" -> { }
-
-            case "Herbalist" -> {
-                 }
-
-            default -> throw new IllegalStateException("Unexpected value: " + card.getName());
-        }
-    }
 
 
     public void setActionOrderOfPlayers(List<Player> actionOrderOfPlayers) {
@@ -229,8 +195,12 @@ public class TurnController {
         switch (turnPhase) {
             case PLAY_ASSISTANT -> askingViewToPlayAnAssistantCard();
             case MOVE_STUDENTS -> askingViewToMoveAStudent(numberOfStudentMoved);
-            case MOVE_MOTHERNATURE -> askingViewToMoveMotherNature();
+            case MOVE_MOTHER_NATURE -> askingViewToMoveMotherNature();
             case CHOOSE_CLOUD -> askingViewToChooseCloud();
+            case PLAY_CHARACTER_CARD -> {
+                setTurnPhase(precedentTurnPhase);
+                askNextAction();
+            }
         }
     }
     public void setActivePlayer(Player player) {
@@ -266,7 +236,7 @@ public class TurnController {
     }
     private void askingViewToPlayAnAssistantCard() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-       // remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
+        remoteView.showGenericMessage(new GenericMessage("It's your turn, pick an assistant card"));
         try {
             List<AssistantsCards> assistantsCardsToSend = new ArrayList<>(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getAssistantsDeck().getPlayableAssistants());
             if(assistantsCardsToSend.size() != controller.getMatch().getGame().getAssistantsCardsPlayedInRound().size()){
@@ -305,7 +275,96 @@ public class TurnController {
 
     }
 
-    public TurnPhase getTurnPhase() {
-        return turnPhase;
+    private void sendCharacterCardInfo(AskCharacterCardMessage message) throws ExceptionGame {
+        ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
+        messageHandler.setStudentOnCardMap(match.getCharacterCardInMatchMap().get(message.getCharacterCardName()).getStudentsOnCard());
+        messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
+        messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
+        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+        remoteView.sendMessage(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()));
+        remoteView.sendMessage(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()));
+        remoteView.showGenericMessage(new GenericMessage("\n It's your turn, choose a CharacterCard!!"));
+        setPrecedentTurnPhase(turnPhase);
+        setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
+    }
+
+    private void playCharacterCardForThisTurn(PlayCharacterMessage message){
+        String cardName = message.getCharacterCard().getName();
+
+        if(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().containsKey(cardName)){
+            try {
+                handleCardSettings(((ExpertMatch)controller.getMatch()).getCharacterCardInMatchMap().get(cardName),message);
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+                RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+                remoteView.sendMessage(new ErrorMessage(e.getMessage()));
+            }
+        }
+
+        try {
+            ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
+            askNextAction();
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+            RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+            remoteView.sendMessage(new ErrorMessage(e.getMessage()));
+        }
+
+    }
+
+    private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) throws ExceptionGame {
+        ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
+        switch (card.getName()) {
+            case "Archer","Chef","Knight","Baker" ->{
+                //do nothing
+            }
+            case "Messenger", "Magician", "Herbalist" -> card.setArchipelagoEffected(match.getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
+            case "Princess" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+            }
+            case "Jester" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                List<Student> passiveStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                for (Integer integer: message.getToTradeFromEntrance()) {
+                    passiveStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setPassiveStudents(passiveStudent);
+            }
+            case "Friar" -> {
+                List<Student> activeStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromCard()) {
+                    activeStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setArchipelagoEffected(match.getGame().getArchipelagos().get(message.getIndexOfArchipelago()));
+            }
+            case "Minstrel" -> {//needs some modification
+                List<Student> activeStudent = message.getToTradeFromTables();
+                List<Student> passiveStudent = new ArrayList<>();
+                for (Integer integer: message.getToTradeFromEntrance()) {
+                    passiveStudent.add(match.getCharacterCardInMatchMap().get(card.getName()).getStudentsOnCard().get(integer));
+                }
+                card.setActiveStudents(activeStudent);
+                card.setPassiveStudents(passiveStudent);
+            }
+            case "Banker" -> {
+                List<Student> activeStudent = message.getToTradeFromTables();
+                card.setActiveStudents(activeStudent);
+            }
+
+            default -> throw new IllegalStateException("Unexpected value: " + card.getName());
+        }
+    }
+
+    public void setPrecedentTurnPhase(TurnPhase precedentTurnPhase) {
+        this.precedentTurnPhase = precedentTurnPhase;
     }
 }
