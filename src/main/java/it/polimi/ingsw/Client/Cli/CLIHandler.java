@@ -41,7 +41,7 @@ public class CLIHandler {
      */
     public Message convertInputToMessage(String inputString, TurnPhase turnPhase) {
         Message message;
-        if (inputString.equals("CharacterCard")) {
+        if (inputString.equals("CharacterCard") && !cli.getRemoteModel().getCharacterCardMap().isEmpty()) {
             return askCharacterCardInfoMessage();
         }
 

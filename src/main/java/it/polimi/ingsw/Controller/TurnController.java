@@ -94,6 +94,7 @@ public class TurnController {
                 AskCharacterCardMessage message = (AskCharacterCardMessage) receivedMessage;
                 try {
                     setPrecedentTurnPhase(turnPhase);
+                    setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
                     sendCharacterCardInfo(message);
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
@@ -283,7 +284,6 @@ public class TurnController {
         messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
         messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
         messageHandler.setActiveCharacterCard(message.getCharacterCardName());
-        setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         remoteView.sendMessage(new ActiveCharacterCardMessage(messageHandler.getActiveCharacterCardName()));
         remoteView.sendMessage(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()));
@@ -307,8 +307,9 @@ public class TurnController {
 
         try {
             ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
+            RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+            remoteView.sendMessage(new GoesBackFromCharacterCard(this.precedentTurnPhase));
             setTurnPhase(precedentTurnPhase);
-            precedentTurnPhase = null;
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();
@@ -320,6 +321,7 @@ public class TurnController {
 
     private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) throws ExceptionGame {
         ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
+        card.setActiveWizard(match.getGame().getWizardFromPlayer(activePlayer));
         switch (card.getName()) {
             case "Archer","Chef","Knight","Baker" ->{
                 //do nothing

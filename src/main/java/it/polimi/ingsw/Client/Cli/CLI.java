@@ -110,6 +110,8 @@ public class CLI   implements UserView {
             case STUDENTS_ON_ENTRANCE ->  this.turnPhase = TurnPhase.MOVE_STUDENTS;
             case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
             case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
+            case SHOW_CHARACTER_CARD_INFO -> this.turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
+            case END_OF_CHARACTER_CARD -> this.turnPhase = ((GoesBackFromCharacterCard)message).getPrecedentTurnPhase();
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
 
             default -> {
