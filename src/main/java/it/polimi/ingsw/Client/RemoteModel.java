@@ -29,6 +29,7 @@ public class RemoteModel {
     private Map<String, Color> colorMap = setColorCardMap();
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
     private AssistantsCards assistantsCardUsed;
+    private String activeCharacterCard;
 
     public void setStudentOnEntranceMap(Map<Integer, Student> map){
         studentsOnEntranceMap.clear();
@@ -111,5 +112,13 @@ public class RemoteModel {
 
     public AssistantsCards getAssistantsCardUsed() {
         return assistantsCardUsed;
+    }
+
+    public void setActiveCharacterCard(String activeCharacterCardName) {
+        this.activeCharacterCard = activeCharacterCardName;
+    }
+
+    public String getActiveCharacterCard() {
+        return activeCharacterCard;
     }
 }

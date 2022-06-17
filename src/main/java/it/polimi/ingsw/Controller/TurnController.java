@@ -1,19 +1,20 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
+import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class TurnController {
     private final MessageHandler messageHandler = new MessageHandler();
@@ -92,6 +93,7 @@ public class TurnController {
             case ASK_CHARACTER_CARD -> {
                 AskCharacterCardMessage message = (AskCharacterCardMessage) receivedMessage;
                 try {
+                    setPrecedentTurnPhase(turnPhase);
                     sendCharacterCardInfo(message);
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
@@ -152,12 +154,11 @@ public class TurnController {
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
         try {
+            Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
             if (message.getArchipelago() != null) {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 Archipelago a = messageHandler.getArchipelagoMap().get(indexArch);
                 controller.getMatch().moveStudentOnArchipelago(getActivePlayer(), s, a);
             } else {
-                Student s = messageHandler.getStudentsOnEntranceMap().get(indexStud);
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), s);
             }
             numberOfStudentMoved ++;
@@ -281,12 +282,14 @@ public class TurnController {
         messageHandler.setStudentOnCardMap(match.getCharacterCardInMatchMap().get(message.getCharacterCardName()).getStudentsOnCard());
         messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
         messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
+        messageHandler.setActiveCharacterCard(message.getCharacterCardName());
+        setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+        remoteView.sendMessage(new ActiveCharacterCardMessage(messageHandler.getActiveCharacterCardName()));
         remoteView.sendMessage(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()));
         remoteView.sendMessage(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()));
-        remoteView.showGenericMessage(new GenericMessage("\n It's your turn, choose a CharacterCard!!"));
-        setPrecedentTurnPhase(turnPhase);
-        setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
+        remoteView.showGenericMessage(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"));
+
     }
 
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
@@ -304,6 +307,8 @@ public class TurnController {
 
         try {
             ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
+            setTurnPhase(precedentTurnPhase);
+            precedentTurnPhase = null;
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();

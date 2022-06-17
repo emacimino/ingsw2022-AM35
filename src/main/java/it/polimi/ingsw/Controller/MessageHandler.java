@@ -20,6 +20,7 @@ public class MessageHandler {
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
     private Map<Player, AssistantsCards> assistantsCardsUsedInTurnMap = new HashMap<>();
     private Map<Integer,Student> studentsOnCardMap = new HashMap<>();
+    private String activeCharacterCardName;
 
     public void setStudentOnCardMap(List<Student> studentsOnCard) {
         studentsOnCardMap.clear();
@@ -111,4 +112,11 @@ public class MessageHandler {
     }
 
 
+    public void setActiveCharacterCard(String characterCardName) {
+        this.activeCharacterCardName = characterCardName;
+    }
+
+    public String getActiveCharacterCardName() {
+        return activeCharacterCardName;
+    }
 }
