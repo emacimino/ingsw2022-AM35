@@ -1,12 +1,9 @@
 package it.polimi.ingsw.Client.Cli;
 
-import it.polimi.ingsw.Client.Cli.CLI;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -70,7 +67,7 @@ public class CLIHandler {
      * @param message message received
      * @throws ExceptionGame if showBoard throws an exception
      */
-    public void showMessage(Message message) throws ExceptionGame {
+    public void showMessage(Message message){
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(((AskAssistantCardMessage) message).getAssistantsCards());
@@ -187,7 +184,7 @@ public class CLIHandler {
      */
     public void showBoard(Board boardMessage) {
         try {
-            getInfoBoard(boardMessage);
+            getInfoBoard(boardMessage, null);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -252,7 +249,7 @@ public class CLIHandler {
     private void currentBoardInfo(Game game) {
         for (Wizard wizard : game.getWizards()) {
             try {
-                getInfoBoard(wizard.getBoard());
+                getInfoBoard(wizard.getBoard(), wizard);
             } catch (ExceptionGame e) {
                 e.printStackTrace();
             }
@@ -274,15 +271,20 @@ public class CLIHandler {
      * @param board board printed
      * @throws ExceptionGame if the board has fewer tables than it should have
      */
-    private void getInfoBoard(Board board) throws ExceptionGame {
+    private void getInfoBoard(Board board, Wizard wizard) throws ExceptionGame {
         List<Student> students = new ArrayList<>();
-        System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
-        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        if(wizard != null) {
+            System.out.println("\n\nTO " + wizard.getUsername() + " BELONGS :  \n");
+        }
+        if(!board.getTowersInBoard().isEmpty()) {
+            Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        }
         for (Color c : Color.values()) {
             students.addAll(board.getStudentsFromTable(c));
         }
         Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
-        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getTowersInBoard().iterator().next().getProperty().getCoins());
+
+        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getCoins());
         System.out.print("\n");
     }
 
@@ -390,8 +392,6 @@ public class CLIHandler {
 
     /**
      * This method prints the options for Mother Nature movements
-     *
-     * @param string
      */
     public void askToMotherNature(String string) {
         System.out.println(string);

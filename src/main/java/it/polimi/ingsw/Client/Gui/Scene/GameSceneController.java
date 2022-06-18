@@ -102,7 +102,7 @@ public class GameSceneController extends GenericSceneController {
                 }
                 if (pos == 1) {
                     pos = 2;
-                } else {
+                } else if(indexColumn != 3){
                     pos = 1;
                     indexColumn = 3;
                     hBox = cloudsTwo;

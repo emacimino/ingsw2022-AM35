@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 
 public class ClientController implements Observer, ViewObserver {
     private final UserView view; //view è cli o gui
-    private Client2 client;  //rappresenta il socket lato client
+    private Client client;  //rappresenta il socket lato client
     private String username;
     private final ExecutorService tasks;
 
@@ -24,7 +24,7 @@ public class ClientController implements Observer, ViewObserver {
 
     @Override
     public void update(Message message) {
-        System.out.println(message);
+        System.out.println("in client controller: "+message);
         switch (message.getType()) {
             case OK_LOGIN -> tasks.execute(() -> view.showLogin(true));
             case LOGIN_RESPONSE -> updateOnLogin((LoginResponse) message);
@@ -36,7 +36,7 @@ public class ClientController implements Observer, ViewObserver {
             }
             case ERROR -> view.showError(((ErrorMessage) message).getError());
             case GENERIC_MESSAGE -> view.showGenericMessage((String) ((GenericMessage) message).getContent());
-            case GAME_INFO -> {view.showGameState((CurrentGameMessage) message);}
+            case GAME_INFO -> view.showGameState((CurrentGameMessage) message);
             case YOUR_TURN -> view.showGenericMessage(((YourTurnMessage) message).getContent());
             case REQUEST_LOGIN -> view.askLogin();
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
@@ -50,7 +50,7 @@ public class ClientController implements Observer, ViewObserver {
             case ARCHIPELAGOS_IN_GAME -> view.loadArchipelagosOption(((ArchipelagoInGameMessage)message).getArchipelago());
             case BOARD -> view.loadBoard(((BoardMessage)message).getBoard());
             case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage)message);
-            case CLOUD_CHOICE -> {updateOnSelectedCloud((CloudMessage)message);}
+            case CLOUD_CHOICE -> updateOnSelectedCloud((CloudMessage)message);
             case CHARACTER_CARD_IN_GAME ->  view.showCharactersCards((CharacterCardInGameMessage)message );
 
             case END_MATCH -> {
@@ -59,9 +59,10 @@ public class ClientController implements Observer, ViewObserver {
                 view.showWinMessage(matchMessage, isWinner);
 
             }
-
+            case NEW_MATCH -> client.sendMessage(message);
             //case SHOW_CHARACTER_CARD -> view.showCharactersCards((CharacterCardInGameMessage) message);
             case PLAY_CHARACTER_CARD -> { }
+            case DISCONNECT -> onDisconnection();
         }
     }
 
@@ -70,7 +71,7 @@ public class ClientController implements Observer, ViewObserver {
     public void updateOnServerInfo(String ip, String port) {
         try {
             client = new SocketClientSide(ip, Integer.parseInt(port));
-            client.addObserver(this); //alla SocketClientSide, attraverso la facciata di Client2 aggiungo come osservatore il clientController -> Client controller verrà aggiornato alla notifica di cioe che accade a SocketClientSide
+            client.addObserver(this); //alla SocketClientSide, attraverso la facciata di Client aggiungo come osservatore il clientController -> Client controller verrà aggiornato alla notifica di cioe che accade a SocketClientSide
             client.readMessage(); //inizia una lettura asincrona dal server
             //client.enablePingPong(true);
             tasks.execute(view::askLogin);

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
-import it.polimi.ingsw.Client.CLIENT2.Client2;
 import it.polimi.ingsw.NetworkUtilities.Message.DisconnectMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.ErrorMessage;
 import it.polimi.ingsw.NetworkUtilities.Message.Message;
@@ -16,7 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 //CLASSE VERA CHE SI OCCUPA DEL READ AND SEND MESSAGE, NB SOLTANTO IL READ DA SOCKET HA BISOGNO DI UN THREAD, E A PARTE IL PING PONG
-public class SocketClientSide extends Client2 {
+public class SocketClientSide extends Client {
     private final Socket socket;
     private final ObjectOutputStream outputStream;
     private final ObjectInputStream inputStream;
@@ -56,7 +55,6 @@ public class SocketClientSide extends Client2 {
                     try{
                         message = (Message) inputStream.readObject();
                     }catch (IOException | ClassNotFoundException e ){
-                        new Thread(()-> sendMessage(new DisconnectMessage())).start();
                         message = new ErrorMessage("Connection lost");
                         disconnect();
                         executorService.shutdownNow();
@@ -70,12 +68,15 @@ public class SocketClientSide extends Client2 {
     @Override
     public void disconnect() {
         try{
+            new Thread(()-> sendMessage(new DisconnectMessage())).start();
             if(!socket.isClosed()){
+                System.out.println("socket not closed yer");
                 executorService.shutdownNow();
                 socket.close();
             }
         }catch (IOException e){
             notifyObserver(new ErrorMessage("Can't disconnect, retry"));
+            e.printStackTrace();
         }
     }
 
