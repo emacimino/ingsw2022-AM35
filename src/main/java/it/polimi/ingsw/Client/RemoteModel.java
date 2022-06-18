@@ -2,29 +2,34 @@ package it.polimi.ingsw.Client;
 
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.Model.Wizard.Wizard;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RemoteModel {
     private Game game;
+
+
+
     private Map<String , AssistantsCards> assistantsCardsMap = new HashMap<>();
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Map<Integer, Student> studentsOnBoardMap = new HashMap<>();
+
+
+
+    private Map<Integer, Student> studentsOnCardMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
     private Map<Integer, Cloud> cloudsMap = new HashMap<>();
     private Map<String, Color> colorMap = setColorCardMap();
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
+    private AssistantsCards assistantsCardUsed;
+    private String activeCharacterCard;
 
     public void setStudentOnEntranceMap(Map<Integer, Student> map){
         studentsOnEntranceMap.clear();
@@ -61,6 +66,14 @@ public class RemoteModel {
         }
         return map;
     }
+    public void setStudentsOnCardMap(Map<Integer, Student> studentsOnCard) {
+        this.studentsOnCardMap = studentsOnCard;
+        }
+
+    public Map<Integer, Student> getStudentsOnCardMap() {
+        return studentsOnCardMap;
+    }
+
 
     public Map<String, AssistantsCards> getAssistantsCardsMap() {
         return assistantsCardsMap;
@@ -93,4 +106,19 @@ public class RemoteModel {
         this.game = game;
     }
 
+    public void assistantCardUsed(AssistantsCards assistantsCards) {
+        this.assistantsCardUsed = assistantsCards;
+    }
+
+    public AssistantsCards getAssistantsCardUsed() {
+        return assistantsCardUsed;
+    }
+
+    public void setActiveCharacterCard(String activeCharacterCardName) {
+        this.activeCharacterCard = activeCharacterCardName;
+    }
+
+    public String getActiveCharacterCard() {
+        return activeCharacterCard;
+    }
 }

@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class CLI   implements UserView {
-    private CLIHandler cliHandler = new CLIHandler(this);
+    private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private final RemoteModel remoteModel = new RemoteModel();
     private final String ip;
@@ -85,23 +85,22 @@ public class CLI   implements UserView {
 
     public void run() throws IOException {
         Socket socketClient = new Socket(ip,port);
-        System.out.println("Connection Established");
-        socketIn = new ObjectInputStream(socketClient.getInputStream());
-        outputStream = new ObjectOutputStream(socketClient.getOutputStream());
 
-        try{
+        try (socketClient) {
+            System.out.println("Connection Established");
+            socketIn = new ObjectInputStream(socketClient.getInputStream());
+            outputStream = new ObjectOutputStream(socketClient.getOutputStream());
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket();
             Thread t2 = ping();
-         //   t0.join();
+            t0.join();
             t1.join();
             t2.join();
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
         } finally {
             socketIn.close();
             outputStream.close();
-            socketClient.close();
         }
     }
 
@@ -109,12 +108,14 @@ public class CLI   implements UserView {
         switch (message.getType()){
             case ASK_ASSISTANT_CARD -> this.turnPhase = TurnPhase.PLAY_ASSISTANT;
             case STUDENTS_ON_ENTRANCE ->  this.turnPhase = TurnPhase.MOVE_STUDENTS;
-            case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHERNATURE;
+            case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
             case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
+            case SHOW_CHARACTER_CARD_INFO -> this.turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
+            case END_OF_CHARACTER_CARD -> this.turnPhase = ((GoesBackFromCharacterCard)message).getPrecedentTurnPhase();
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
 
             default -> {
-                break;
+                //do nothing
             }
 
         }
@@ -157,7 +158,7 @@ public class CLI   implements UserView {
 
 
 
-    //codice da rendere coeso successivamente
+    //code to be changed in order to be more readable and usable within cli and gui
     @Override
     public void askLogin() {
         cliHandler.requestLogin();

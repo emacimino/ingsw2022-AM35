@@ -1,9 +1,12 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
+import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +17,23 @@ public class MessageHandler {
     private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
     private Map<Integer, Cloud> cloudMap = new HashMap<>();
     private final Map<String, Color> colorMap = setColorMap();
+    private Map<String, CharacterCard> characterCardMap = new HashMap<>();
+    private Map<Player, AssistantsCards> assistantsCardsUsedInTurnMap = new HashMap<>();
+    private Map<Integer,Student> studentsOnCardMap = new HashMap<>();
+    private String activeCharacterCardName;
+
+    public void setStudentOnCardMap(List<Student> studentsOnCard) {
+        studentsOnCardMap.clear();
+        Integer i = 1;
+        for(Student s: studentsOnCard){
+            studentsOnEntranceMap.put(i, s);
+            i++;
+        }
+    }
+
+    public Map<Integer, Student> getStudentsOnCardMap() {
+        return studentsOnCardMap;
+    }
 
     protected void setArchipelagoMap(List<Archipelago> archipelagos){
         archipelagoMap.clear();
@@ -39,6 +59,17 @@ public class MessageHandler {
             i++;
         }
     }
+
+    public void setCharacterCardMap(List<CharacterCard> characterCard) {
+        characterCardMap.clear();
+        for(CharacterCard c: characterCard){
+            characterCardMap.put(c.getName(), c);
+
+        }
+    }
+
+    public void setStudentsOnCharacterCardMap(){}
+
     private Map<String, Color>  setColorMap(){
         Map<String, Color> map = new HashMap<>();
         for(Color c: Color.values()){
@@ -51,6 +82,16 @@ public class MessageHandler {
             }
         }
         return map;
+    }
+
+    public Map<Player, AssistantsCards> getAssistantsCardsUsedInTurnMap() {
+        Map<Player, AssistantsCards> tmpAssistantsCardsUsedInTurnMap = assistantsCardsUsedInTurnMap;
+        assistantsCardsUsedInTurnMap.clear();
+        return tmpAssistantsCardsUsedInTurnMap;
+    }
+
+    public void setAssistantsCardsUsedInTurnMap(Player activePlayer,AssistantsCards assistantsCardUsed) {
+        this.assistantsCardsUsedInTurnMap.put(activePlayer,assistantsCardUsed);
     }
 
     public Map<Integer, Student> getStudentsOnEntranceMap() {
@@ -66,4 +107,16 @@ public class MessageHandler {
         return colorMap;
     }
 
+    public Map<String, CharacterCard> getCharacterCardMap() {
+        return characterCardMap;
+    }
+
+
+    public void setActiveCharacterCard(String characterCardName) {
+        this.activeCharacterCardName = characterCardName;
+    }
+
+    public String getActiveCharacterCardName() {
+        return activeCharacterCardName;
+    }
 }
