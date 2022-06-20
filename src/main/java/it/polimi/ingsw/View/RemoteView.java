@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Server.ClientConnection;
@@ -127,6 +128,7 @@ public class RemoteView extends ViewInterface implements UserView {
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
 
     }
+
 
     @Override
     public void askToMoveStudent() {

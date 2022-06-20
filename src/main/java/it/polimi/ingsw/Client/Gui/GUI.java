@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.Gui;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -67,6 +68,7 @@ public class GUI extends Observable implements UserView {
     }
 
 
+
     @Override
     public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
         Platform.runLater(() -> SceneController.loadArchipelagos(archipelago));
@@ -76,6 +78,8 @@ public class GUI extends Observable implements UserView {
     public void loadStudentOnEntrance(Map<Integer, Student> students) {
         Platform.runLater(() -> SceneController.loadStudentOnEntrance(students));
     }
+
+
 
     @Override
     public void showGenericMessage(String genericMessage) {

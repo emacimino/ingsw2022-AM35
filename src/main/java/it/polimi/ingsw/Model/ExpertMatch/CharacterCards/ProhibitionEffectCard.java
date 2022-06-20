@@ -9,7 +9,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 public interface ProhibitionEffectCard {
 
     void useProhibitionEffect() throws ExceptionGame;
-    void resetAProhibitionEffect(Archipelago archipelago) throws ExceptionGame;
+    void resetProhibitionEffect(Archipelago archipelago) throws ExceptionGame;
     int getProhibitionPass();
 }
 

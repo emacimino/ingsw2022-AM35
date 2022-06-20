@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -38,9 +39,13 @@ public interface UserView {
 
     void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage);
 
+
+
     void askToMoveStudent();
 
     void loadArchipelagosOption(Map<Integer, Archipelago> archipelago);
 
     void loadStudentOnEntrance(Map<Integer, Student> students);
+
+
 }

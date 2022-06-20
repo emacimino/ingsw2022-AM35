@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class CLI   implements UserView {
+public class CLI  implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private final RemoteModel remoteModel = new RemoteModel();
@@ -220,6 +220,8 @@ public class CLI   implements UserView {
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
         cliHandler.showCharacterCardsInGame(characterCardInGameMessage);
     }
+
+
 
     @Override
     public void askToMoveStudent() {

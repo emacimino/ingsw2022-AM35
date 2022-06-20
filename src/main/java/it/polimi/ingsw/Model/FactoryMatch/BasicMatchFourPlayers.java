@@ -117,7 +117,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
     }
 
     @Override
-    protected void buildTower(Player captain, Archipelago archipelago) throws ExceptionGame {
+    public void buildTower(Player captain, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         Wizard wizard = getGame().getWizardFromPlayer(captain);
         Player rivalCaptain = getRivals(captain).get(0);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.NetworkUtilities.Message;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
 import java.io.Serial;
@@ -13,14 +14,16 @@ public class PlayCharacterMessage extends Message{
     private final int indexOfArchipelago;
     private final List<Integer> toTradeFromEntrance;
     private final List<Student> toTradeFromTables;
+    private final List<Color> color;
     private final List<Integer> toTradeFromCard;
 
-    public PlayCharacterMessage(CharacterCard characterCard, int indexOfArchipelago, List<Integer> toTradeFromEntrance, List<Integer> toTradeFromCard, List<Student> toTradeFromTables) {
+    public PlayCharacterMessage(CharacterCard characterCard, int indexOfArchipelago, List<Integer> toTradeFromEntrance, List<Integer> toTradeFromCard, List<Student> toTradeFromTables, List<Color> color) {
         this.characterCard = characterCard;
         this.indexOfArchipelago = indexOfArchipelago;
         this.toTradeFromEntrance = toTradeFromEntrance;
         this.toTradeFromCard = toTradeFromCard;
         this.toTradeFromTables = toTradeFromTables;
+        this.color = color;
         super.setType(TypeMessage.PLAY_CHARACTER_CARD);
     }
 
@@ -43,5 +46,9 @@ public class PlayCharacterMessage extends Message{
 
     public List<Student> getToTradeFromTables() {
         return toTradeFromTables;
+    }
+
+    public List<Color> getColors() {
+        return color;
     }
 }

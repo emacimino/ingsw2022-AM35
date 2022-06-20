@@ -118,6 +118,8 @@ class BakerTest {
             Assertions.assertEquals(0, wizard2.getCoins());
             expertMatch.moveMotherNature(player2, interestArchipelago);
             Assertions.assertEquals(7, wizard2.getBoard().getTowersInBoard().size());
+            expertMatch.chooseCloud(player1, expertMatch.getGame().getClouds().get(0));
+            expertMatch.chooseCloud(player2, expertMatch.getGame().getClouds().get(1));
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(7));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(5));
 

@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
@@ -45,6 +46,7 @@ public class CLIHandler {
             return askCharacterCardInfoMessage();
         }
 
+
         switch (turnPhase) {
             case LOGIN -> message = createLoginMessage(inputString);
             case PLAY_ASSISTANT -> message = createAssistantCardMessage(inputString);
@@ -63,9 +65,13 @@ public class CLIHandler {
     private Message askCharacterCardInfoMessage() {
         String nameCharacter;
         displayCharacterCardInGame();
+        System.out.println();
         do {
-            System.out.println("Select the character card you want to play: ");
+            System.out.println("Select the character card you want to play, or input 'quit' to return to the game: ");
             nameCharacter = cli.scanner.nextLine(); //expected to have the Name of the character selected
+            if (nameCharacter.equals("quit")) {
+                return null;
+            }
         } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
 
         return new AskCharacterCardMessage(nameCharacter);
@@ -80,26 +86,24 @@ public class CLIHandler {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(((AskAssistantCardMessage) message).getAssistantsCards());
-            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage)message).getStudents());
-            case ASK_MOVE_MOTHER_NATURE -> askToMotherNature(((AskToMoveMotherNatureMessage)message).getMessage());
-            case BOARD -> showBoard(((BoardMessage)message).getBoard());
+            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage) message).getStudents());
+            case ASK_MOVE_MOTHER_NATURE -> askToMotherNature(((AskToMoveMotherNatureMessage) message).getMessage());
+            case BOARD -> showBoard(((BoardMessage) message).getBoard());
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
             case CLOUD_IN_GAME -> showClouds(message);
             case CHARACTER_CARD_IN_GAME -> showCharacterCardsInGame(message);
             case END_OF_TURN -> showEndOfTurnMessage(message);
             case YOUR_TURN -> showYourTurnMessage(message);
-            case GENERIC_MESSAGE -> showGenericMessage((String)((GenericMessage)message).getContent());
+            case GENERIC_MESSAGE -> showGenericMessage((String) ((GenericMessage) message).getContent());
             case GAME_INFO -> showCurrentGame(message);
-            case ERROR -> showErrorMessage(((ErrorMessage)message).getError());
+            case ERROR -> showErrorMessage(((ErrorMessage) message).getError());
             case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
-            //case SHOW_CHARACTER_CARD -> characterCardHandler();
             case ACTIVE_CHARACTER_CARD -> showActiveCharacterCard(message);
             case SHOW_CHARACTER_CARD_INFO -> showChosenCharacterCard(message);
             default -> System.out.println(message);
 
         }
     }
-
 
 
     /**
@@ -202,6 +206,7 @@ public class CLIHandler {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
+        cli.getRemoteModel().setCurrentBoard(boardMessage);
     }
 
     /**
@@ -342,7 +347,7 @@ public class CLIHandler {
     /**
      * This method is used to choose students from entrance
      *
-     * @param studentMap  containing map of students in entrance
+     * @param studentMap containing map of students in entrance
      */
     public void showStudentsOnEntranceOption(Map<Integer, Student> studentMap) {
         System.out.println("\nPlease select an Student from the option below: ");
@@ -358,7 +363,6 @@ public class CLIHandler {
 
     /**
      * This method prints the options for Mother Nature movements
-     *
      */
     public void askToMotherNature(String string) {
         System.out.println(string);
@@ -447,6 +451,7 @@ public class CLIHandler {
      * @return a message containing the new mother nature's position
      */
     private Message createMoveMotherNatureMessage(String archipelago) {
+        System.out.println("IN CREATE MOVE MOTHER NATURE IN CLIHANDLER");
         Message message = null;
         try {
             Integer indexArch = Integer.parseInt(archipelago);
@@ -462,6 +467,7 @@ public class CLIHandler {
     }
 
     private Message createChooseCloudMessage(String cloud) {
+        System.out.println("IN CREATE CHOOSE CLOUD  IN CLIHANDLER");
         Message message = null;
         try {
             int indexCloud = Integer.parseInt(cloud);
@@ -488,38 +494,28 @@ public class CLIHandler {
         }
     }
 
-    /**
-     * This method display the Character cards in game info
-     */
-    /*private void characterCardHandler() {
-        String nameCharacter;
-        //Map already settled
-        displayCharacterCardInGame();
-        do {
-            System.out.println("Select the character card you want to play: ");
-            nameCharacter = cli.scanner.nextLine(); //expected to have the Name of the character selected
-        } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
-
-        createCharacterMessage(nameCharacter);
-    }*/
-    private void showActiveCharacterCard(Message message){
+    private void showActiveCharacterCard(Message message) {
         ActiveCharacterCardMessage activeMessage = (ActiveCharacterCardMessage) message;
         System.out.println(activeMessage.getActiveCharacterCardName());
         cli.getRemoteModel().setActiveCharacterCard(activeMessage.getActiveCharacterCardName());
     }
+
     private void showChosenCharacterCard(Message message) {
         CharacterCardInfo infoMessage = (CharacterCardInfo) message;
         cli.getRemoteModel().setArchipelagosMap(infoMessage.getArchipelagoMap());
         cli.getRemoteModel().setStudentsOnCardMap(infoMessage.getStudentsOnCardMap());
         cli.getRemoteModel().setStudentOnEntranceMap(infoMessage.getStudentsOnEntranceMap());
-        for(Integer integer: cli.getRemoteModel().getArchipelagosMap().keySet()){
+        System.out.println("Archipelagos: ");
+        for (Integer integer : cli.getRemoteModel().getArchipelagosMap().keySet()) {
             System.out.println(integer + ") ");
             Printable.printArchipelago(cli.getRemoteModel().getArchipelagosMap().get(integer));
         }
-        for(Integer integer: cli.getRemoteModel().getStudentsOnEntranceMap().keySet()){
+        System.out.println("Students in Entrance: ");
+        for (Integer integer : cli.getRemoteModel().getStudentsOnEntranceMap().keySet()) {
             System.out.println(integer + ") " + cli.getRemoteModel().getStudentsOnEntranceMap().get(integer));
         }
-        for(Integer integer: cli.getRemoteModel().getStudentsOnCardMap().keySet()){
+        System.out.println("Students on the Card: ");
+        for (Integer integer : cli.getRemoteModel().getStudentsOnCardMap().keySet()) {
             System.out.println(integer + ") " + cli.getRemoteModel().getStudentsOnCardMap().get(integer));
         }
         askToChoose();
@@ -528,12 +524,12 @@ public class CLIHandler {
     private void askToChoose() {
         String nameCharacter = cli.getRemoteModel().getActiveCharacterCard();
         switch (nameCharacter) {
-            case "Princess" ->  System.out.println("Please write a valid Student by his index: ");
+            case "Princess" -> System.out.println("Please write a valid Student by his index: ");
 
             case "Jester" -> {
-                System.out.println("You can choose three students from entrance by their index: write them separated by ','");
+                System.out.println("You can choose FIRST from those student on Jester card by their index: write them separated by ','");
                 System.out.println("Write a -");
-                System.out.println("You can choose from those student on Jester card by their index: write them separated by ','");
+                System.out.println("You can choose THEN three students from entrance by their index: write them separated by ','");
             }
             case "Friar" -> {
                 System.out.println("Choose an archipelago by his index");
@@ -541,14 +537,15 @@ public class CLIHandler {
                 System.out.println("Choose one student from Friar card by his index");
             }
             case "Minstrel" -> {
-                System.out.println("You can choose two students from entrance by their index: write them separated by ','");
+                System.out.println("You can choose FIRST two student on your Tables by their color: write them separated by ','");
                 System.out.println("Write a -");
-                System.out.println("You can choose two student on Minstrel card by their color: write them separated by ','");
+                System.out.println("You can choose THEN two students from entrance by their index: write them separated by ','");
+
             }
-            case "Magician" -> System.out.println("Choose an archipelago by his index");
-            case "Banker" -> System.out.println("You can choose two student on B card by their index: write them separated by ','");
+            case "Banker" -> System.out.println("You can choose two student on Banker card by their index: write them separated by ','");
+            case "Messenger" -> System.out.println("Choose an Archipelago where use the card effect");
             default -> {
-                //do nothing
+                System.out.println("For this card you don't need nothing! press ENTER to continue");
             }
         }
 
@@ -557,116 +554,128 @@ public class CLIHandler {
     private Message createCharacterMessage(String input) {
         String nameCharacter = cli.getRemoteModel().getActiveCharacterCard();
         int notValidArchipelago = 13;
-        switch (cli.getRemoteModel().getActiveCharacterCard()) {
-            case "Archer" -> {
-                Archer card = (Archer) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                return new PlayCharacterMessage(card, notValidArchipelago, null, null, null);
-            }
-            case "Chef" -> {
-                Chef card = (Chef) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                return new PlayCharacterMessage(card, notValidArchipelago, null, null, null);
-            }
-            case "Knight" -> {
-                Knight card = (Knight) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                return new PlayCharacterMessage(card, notValidArchipelago, null, null, null);
-            }
-            case "Messenger" -> {
-                Messenger card = (Messenger) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                int indexOfArchipelago = Integer.parseInt(input);
-                return new PlayCharacterMessage(card, indexOfArchipelago, null, null, null);
-            }
-            case "Baker" -> {
-                Baker card = (Baker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                return new PlayCharacterMessage(card, notValidArchipelago, null, null, null);
-            }
-            case "Princess" -> {
-                Princess card = (Princess) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                List<Integer> toTradeFromCard = new ArrayList<>();
-                String[] info = input.split(",");
-                Integer stud1 = Integer.parseInt(info[0]);
-                Integer stud2 = Integer.parseInt(info[1]);
-                toTradeFromCard.add(stud1);
-                toTradeFromCard.add(stud2);
-                return new PlayCharacterMessage(card, notValidArchipelago, null, toTradeFromCard, null);
-            }
-            case "Jester" -> {
-                Jester card = (Jester) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                List<Integer> toTradeFromEntrance = new ArrayList<>();
-                List<Integer> toTradeFromCard = new ArrayList<>();
-                String[] info = input.split("-");
-                String[] tradeFromEntrance = info[0].split(",");
-                String[] tradeFromCard = info[1].split(",");
-                int stud1 = Integer.parseInt(tradeFromEntrance[0]);
-                int stud2 = Integer.parseInt(tradeFromEntrance[1]);
-                toTradeFromEntrance.add(stud1);
-                toTradeFromEntrance.add(stud2);
-                stud1 = Integer.parseInt(tradeFromCard[0]);
-                stud2 = Integer.parseInt(tradeFromCard[1]);
-                toTradeFromCard.add(stud1);
-                toTradeFromCard.add(stud2);
-                return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromCard, toTradeFromEntrance, null);
-            }
-            case "Friar" -> {
-                Friar card = (Friar) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                List<Integer> toTradeFromCard = new ArrayList<>();
-                String[] info = input.split("-");
-                int indexOfArchipelago = Integer.parseInt(info[0]);
-                int indexStud = Integer.parseInt(info[1]);
-                toTradeFromCard.add(indexStud);
-                return new PlayCharacterMessage(card, indexOfArchipelago, null, toTradeFromCard, null);
-            }
-            case "Minstrel" -> {
-                Minstrel card = (Minstrel) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                List<Student> tmpOnTables;
-                Color tmpColor;
-                List<Student> toTradeFromTables = new ArrayList<>();
-                List<Integer> toTradeFromEntrance = new ArrayList<>();
-                String[] info = input.split("-");
-                String[] tradeFromTables = info[0].split(",");
-                String[] tradeFromEntrance = info[1].split(",");
-                tmpOnTables = cli.getRemoteModel().getStudentsOnBoardMap().values().stream().toList();
-                for (int i = 0; i < tradeFromTables.length; i++) {
-                    tmpColor = getColor(tradeFromTables[i]);
-                    if(tmpOnTables.get(i).getColor().equals(tmpColor))
-                        toTradeFromTables.add(tmpOnTables.get(i));
-                }
-                int stud1 = Integer.parseInt(tradeFromEntrance[0]);
-                int stud2 = Integer.parseInt(tradeFromEntrance[1]);
-                toTradeFromEntrance.add(stud1);
-                toTradeFromEntrance.add(stud2);
-                return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, toTradeFromTables);
-            }
-            case "Magician" -> {
-                Magician card = (Magician) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                int indexOfArchipelago = Integer.parseInt(input);
-                return new PlayCharacterMessage(card, indexOfArchipelago, null, null, null);
-            }
-            case "Banker" -> {
-                Banker card = (Banker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                List<Student> toTradeFromTables = new ArrayList<>();
-                String[] tradeFromTables = input.split(",");
-                List<Student> tmpOnTables = cli.getRemoteModel().getStudentsOnBoardMap().values().stream().toList();
-                for (int i = 0; i < tradeFromTables.length; i++) {
-                    Color tmpColor = getColor(tradeFromTables[i]);
-                    if(tmpOnTables.get(i).getColor().equals(tmpColor))
-                        toTradeFromTables.add(tmpOnTables.get(i));
-                }
-                return new PlayCharacterMessage(card, notValidArchipelago, null, null, toTradeFromTables);
+        boolean inputInvalid = true;
+        while (inputInvalid) {
+            try {
+                switch (cli.getRemoteModel().getActiveCharacterCard()) {
+                    case "Archer" -> {
+                        Archer card = (Archer) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    }
+                    case "Chef" -> {
+                        Chef card = (Chef) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    }
+                    case "Knight" -> {
+                        Knight card = (Knight) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    }
+                    case "Messenger" -> {
+                        Messenger card = (Messenger) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        int indexOfArchipelago = Integer.parseInt(input);
+                        return new PlayCharacterMessage(card, indexOfArchipelago, null, null, null, null);
+                    }
+                    case "Baker" -> {
+                        Baker card = (Baker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    }
+                    case "Princess" -> {
+                        Princess card = (Princess) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        List<Integer> toTradeFromCard = new ArrayList<>();
+                        Integer stud1 = Integer.parseInt(input);
+                        toTradeFromCard.add(stud1);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, toTradeFromCard, null, null);
+                    }
+                    case "Jester" -> {
+                        Jester card = (Jester) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        List<Integer> toTradeFromEntrance = new ArrayList<>();
+                        List<Integer> toTradeFromCard = new ArrayList<>();
+                        String[] info = input.split("-");
+                        String[] tradeFromEntrance = info[0].split(",");
+                        String[] tradeFromCard = info[1].split(",");
+                        int stud1 = Integer.parseInt(tradeFromEntrance[0]);
+                        int stud2 = Integer.parseInt(tradeFromEntrance[1]);
+                        int stud3 = Integer.parseInt(tradeFromEntrance[2]);
+                        toTradeFromEntrance.add(stud1);
+                        toTradeFromEntrance.add(stud2);
+                        toTradeFromEntrance.add(stud3);
 
+                        stud1 = Integer.parseInt(tradeFromCard[0]);
+                        stud2 = Integer.parseInt(tradeFromCard[1]);
+                        stud3 = Integer.parseInt(tradeFromCard[2]);
+                        toTradeFromCard.add(stud1);
+                        toTradeFromCard.add(stud2);
+                        toTradeFromCard.add(stud3);
+                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromCard, toTradeFromEntrance, null, null);
+                    }
+                    case "Friar" -> {
+                        Friar card = (Friar) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        List<Integer> toTradeFromCard = new ArrayList<>();
+                        String[] info = input.split("-");
+                        int indexOfArchipelago = Integer.parseInt(info[0]);
+                        int indexStud = Integer.parseInt(info[1]);
+                        toTradeFromCard.add(indexStud);
+
+                        return new PlayCharacterMessage(card, indexOfArchipelago, null, toTradeFromCard, null, null);
+                    }
+                    case "Minstrel" -> {
+                        Minstrel card = (Minstrel) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        Color tmpColor;
+                        List<Color> colorsOfTable = new ArrayList<>();
+                        List<Integer> toTradeFromEntrance = new ArrayList<>();
+                        String[] info = input.split("-");
+                        String[] tradeFromTables = info[0].split(",");
+                        String[] tradeFromEntrance = info[1].split(",");
+
+                        for (String s : tradeFromTables) {
+                            tmpColor = getColor(s);
+                            colorsOfTable.add(tmpColor);
+                        }
+                        int stud1 = Integer.parseInt(tradeFromEntrance[0]);
+                        int stud2 = Integer.parseInt(tradeFromEntrance[1]);
+                        toTradeFromEntrance.add(stud1);
+                        toTradeFromEntrance.add(stud2);
+                        System.out.println("creating minstrel card");
+                        System.out.println(toTradeFromEntrance);
+                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, null, colorsOfTable);
+                    }
+                    case "Magician" -> {
+                        Magician card = (Magician) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    }
+                    case "Banker" -> {
+                        Banker card = (Banker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        List<Student> toTradeFromTables = new ArrayList<>();
+                        String[] tradeFromTables = input.split(",");
+                        List<Student> tmpOnTables = cli.getRemoteModel().getStudentsOnBoardMap().values().stream().toList();
+                        for (int i = 0; i < tradeFromTables.length; i++) {
+                            Color tmpColor = getColor(tradeFromTables[i]);
+                            if (tmpOnTables.get(i).getColor().equals(tmpColor))
+                                toTradeFromTables.add(tmpOnTables.get(i));
+                        }
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, toTradeFromTables, null);
+
+                    }
+                }
+                inputInvalid = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                input = cli.scanner.nextLine();
             }
         }
 
         return null;
     }
 
-    private Color getColor(String color) {
+    private Color getColor(String color) throws Exception {
         Color tmpColor = null;
-        switch (color){
+        switch (color) {
             case "blue" -> tmpColor = Color.BLUE;
             case "green" -> tmpColor = Color.GREEN;
             case "pink" -> tmpColor = Color.PINK;
             case "yellow" -> tmpColor = Color.YELLOW;
             case "red" -> tmpColor = Color.RED;
+            default -> {throw new Exception();}
         }
         return tmpColor;
     }
