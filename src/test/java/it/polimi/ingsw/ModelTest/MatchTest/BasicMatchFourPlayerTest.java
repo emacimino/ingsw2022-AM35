@@ -213,6 +213,7 @@ public class BasicMatchFourPlayerTest {
             //move mother nature for 10 steps, in order to arrive to the archipelago before the archipelagoMerged
             //and replace playerTwo in the actionPhaseOrder list
 
+            archipelagoMerged.addStudentInArchipelago(new Student(basicMatch4Players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable().get(0).getColor()));
             basicMatch4Players.moveMotherNature(playerFour, basicMatch4Players.getGame().getArchipelagos().get((oldPositionMotherNature_3+ basicMatch4Players.getGame().getArchipelagos().size() + getSteps(playerFour))% basicMatch4Players.getGame().getArchipelagos().size()));
             basicMatch4Players.getActionPhaseOrderOfPlayers().add(playerFour);
             basicMatch4Players.moveMotherNature(playerFour, basicMatch4Players.getGame().getArchipelagos().get((basicMatch4Players.getGame().getArchipelagos().indexOf(archipelagoMerged)+ basicMatch4Players.getGame().getArchipelagos().size() -1 )% basicMatch4Players.getGame().getArchipelagos().size()));

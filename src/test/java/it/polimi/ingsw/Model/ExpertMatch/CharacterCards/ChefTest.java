@@ -110,17 +110,15 @@ class ChefTest {
             assertEquals(cost + 1, chef.getCost());
 
 
-            if (wizard2.getBoard().isProfessorPresent(student.getColor()) && !s[1].getColor().equals(student.getColor()))
+            if (wizard2.getBoard().isProfessorPresent(student.getColor()) )
                 assertEquals(influenceBeforeEffectW2 - 1, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
-            else if (wizard2.getBoard().isProfessorPresent(student.getColor()) && s[1].getColor().equals(student.getColor()))
-                assertEquals(influenceBeforeEffectW2 - 2, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
-            else
+           else
                 assertEquals(influenceBeforeEffectW2, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
 
-            if (wizard1.getBoard().isProfessorPresent(student.getColor()) && !s[1].getColor().equals(student.getColor()))
+            if (wizard1.getBoard().isProfessorPresent(student.getColor()) && !s[0].getColor().equals(student.getColor()))
+                assertEquals(influenceBeforeEffectW1  , expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
+            else if (wizard1.getBoard().isProfessorPresent(student.getColor()) && s[0].getColor().equals(student.getColor()))
                 assertEquals(influenceBeforeEffectW1 - 1, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
-            else if (wizard1.getBoard().isProfessorPresent(student.getColor()) && s[1].getColor().equals(student.getColor()))
-                assertEquals(influenceBeforeEffectW1 - 2, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
             else
                 assertEquals(influenceBeforeEffectW1, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
 

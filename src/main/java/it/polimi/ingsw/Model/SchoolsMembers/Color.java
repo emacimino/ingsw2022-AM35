@@ -9,4 +9,5 @@ public enum Color implements Serializable {
     PINK,
     BLUE;
     private static final long serialVersionUID = 5136358313370733586L;
+
 }

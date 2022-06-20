@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Tower;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import java.util.HashSet;
  */
 
 public class Island implements Serializable {
+    @Serial
     private static final long serialVersionUID = -3300699129250759355L;
     private final Collection<Student> studentInIsland= new HashSet<>();
     private Tower tower = null;
@@ -65,9 +67,7 @@ public class Island implements Serializable {
     }
 
     public boolean isThereTower(){
-        if(tower == null)
-            return false;
-        else return true;
+        return tower != null;
     }
     public boolean isInterdictionCard() {
         return interdictionCard;
@@ -77,6 +77,7 @@ public class Island implements Serializable {
     public String toString() {
         return "Island{" +
                 "tower=" + tower +
+                ", students= " + studentInIsland +
                 '}';
     }
 }

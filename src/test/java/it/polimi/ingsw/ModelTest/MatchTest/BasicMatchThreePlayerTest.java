@@ -128,7 +128,7 @@ public class BasicMatchThreePlayerTest {
             int oldPositionMotherNature_1 = basicMatch3Players.getPositionOfMotherNature();
             //try to move MN on the same island
             Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.moveMotherNature(playerThree, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature_1 )% basicMatch3Players.getGame().getArchipelagos().size())));
-            //sets the game in order to put a professor on the board of playerOne and have influence on the isle where MN will be in the next move (oldPositionMotherNature +2)
+            //sets the game in order to put a professor on the board of playerthree and have influence on the isle where MN will be in the next move (oldPositionMotherNature +2)
             for(Student s : basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature_1 + getSteps(playerThree))% basicMatch3Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
                 for(int i = 0; i< basicMatch3Players.getGame().getProfessors().size(); i++){
                     if (basicMatch3Players.getGame().getProfessors().get(i).getColor() == s.getColor()){
@@ -166,6 +166,7 @@ public class BasicMatchThreePlayerTest {
             Assertions.assertEquals(2, basicMatch3Players.getGame().getArchipelagos().get(basicMatch3Players.getGame().getArchipelagos().indexOf(archipelagoMerged)).getIsle().size());
 
             //sets playerTwo the most influence on the ArchipelagoMerged
+
             for(Student s : archipelagoMerged.getStudentFromArchipelago()){
                 boolean isInGame = false;
                 for(int i = 0; i< basicMatch3Players.getGame().getProfessors().size(); i++){
@@ -185,6 +186,7 @@ public class BasicMatchThreePlayerTest {
 
                 }
             }
+            archipelagoMerged.addStudentInArchipelago(new Student(basicMatch3Players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable().get(0).getColor()));
             int oldPositionMotherNature_3 = basicMatch3Players.getPositionOfMotherNature();
             //move mother nature for 10 steps, in order to arrive to the archipelago before the archipelagoMerged
             //and replace playerTwo in the actionPhaseOrder list
@@ -195,7 +197,7 @@ public class BasicMatchThreePlayerTest {
             basicMatch3Players.getActionPhaseOrderOfPlayers().add(playerTwo);
             //place MN on archipelagoMerged and check if the replacement of the tower is correct
             basicMatch3Players.moveMotherNature(playerTwo, archipelagoMerged);
-            Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerTwo), basicMatch3Players.getGame().getArchipelagos().get(basicMatch3Players.getPositionOfMotherNature()).getIsle().get(0).getTower().getProperty());
+            Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerTwo), archipelagoMerged.getIsle().get(0).getTower().getProperty());
         });
     }
 

@@ -36,7 +36,7 @@ public class Friar extends CharacterCard implements StudentEffectCard, Serializa
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
-        usedFriarCard(getActiveStudents().get(0));
+        usedFriarCard(getActiveStudents().stream().findFirst().orElse(null));
         this.cost++;
     }
 

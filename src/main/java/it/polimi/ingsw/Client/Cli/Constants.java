@@ -1,12 +1,6 @@
 package it.polimi.ingsw.Client.Cli;
 
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-
-import javax.print.attribute.HashPrintJobAttributeSet;
-import java.security.PublicKey;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Constants {
 

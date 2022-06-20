@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.List;
@@ -14,12 +15,14 @@ import java.util.List;
  * Board is the board you are given in the beginning and belongs only to you
  */
 public class Board implements Serializable {
+    @Serial
     private static final long serialVersionUID = 4581093722653538190L;
     private final Collection<Tower> towersInBoard= new HashSet<>();
     private final List<Professor> professorInTable= new ArrayList<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
     private final int limitStudentOnTable = 10;
+    private int coins = 10;
 
     /**
      * constructs the class
@@ -121,24 +124,6 @@ public class Board implements Serializable {
         }
     }
 
-    /**
-     *
-     */
-   /* public void modifyEntranceByCharacterCard(List<Student> toBeTradeFromEntrance, List<Student> toBeTradeFromCard){
-        List<Student> tmp = new ArrayList<>();
-        for (Student student: toBeTradeFromEntrance) {
-            this.studentsInEntrance.remove(student);
-            tmp.add(student); //tmp contiene gli studenti presi dall ingresso
-        }
-        //metto in ingresso gli studenti dalla carta
-        this.studentsInEntrance.addAll(toBeTradeFromCard);
-        toBeTradeFromCard.removeAll(toBeTradeFromCard); //svuoto la carta
-
-
-        for (Student student: tmp){
-            toBeTradeFromCard.add(student); //metto sulla carta cio che ho messo in tmp
-        }
-    }*/
 
     public TableOfStudents getTableOfStudent(Color c) throws ExceptionGame{
         for (TableOfStudents t: tables) {
@@ -146,5 +131,20 @@ public class Board implements Serializable {
                 return t;
         }
         throw new ExceptionGame("There is not a table with the color passed");
+    }
+
+    public void reduceCoins(int reduce) throws ExceptionGame{
+        if(reduce > getCoins())
+            throw new ExceptionGame("wizard does not have enough coins");
+        this.coins -= reduce;
+
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void addACoin() {
+        coins++;
     }
 }

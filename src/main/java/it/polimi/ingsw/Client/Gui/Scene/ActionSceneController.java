@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MoveSceneController extends GenericSceneController {
+public class ActionSceneController extends GenericSceneController {
 
     @FXML
     private GridPane sky;
@@ -115,15 +115,13 @@ public class MoveSceneController extends GenericSceneController {
     }
 
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
-        while(!ok){
-           ;
-        }
+        while(!ok){}
         studentMap = studentsMovable;
         boardPanelController.setMovableStudentOnEntrance(studentMap);
     }
 
     public void move(ActionEvent event) {
-        Integer indexStud = null, indexArch = null;
+        Integer indexStud, indexArch;
         if(moveMN){
             indexArch = getArchipelagoIndex(archipelagoSelected);
             if(indexArch != null){

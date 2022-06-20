@@ -1,13 +1,11 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Server.ClientConnection;
-import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.Message.Message;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.View.ViewInterface;
 
 import java.util.*;
 
@@ -18,6 +16,10 @@ public class Controller implements Observer {
     private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
     private boolean matchOnGoing = true;
+
+    public Map<String, ViewInterface> getViewMap() {
+        return viewMap;
+    }
 
     //Initialize the Game having already a lobby
     public Controller(BasicMatch match, Collection<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
@@ -90,6 +92,7 @@ public class Controller implements Observer {
     public GameState getGameState() {
         return gameState;
     }
+
     public void setMatchOnGoing(boolean matchOnGoing) {
         this.matchOnGoing = matchOnGoing;
     }

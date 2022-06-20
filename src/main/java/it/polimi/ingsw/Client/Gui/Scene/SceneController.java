@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -72,7 +71,7 @@ public class SceneController {
     public static void showGame(Game game){
         if(game != null)
              currentGame = game;
-        if(activeController instanceof MoveSceneController){
+        if(activeController instanceof ActionSceneController){
             return;
         }
         GameSceneController controller;
@@ -147,26 +146,26 @@ public class SceneController {
     }
 
     public static void loadArchipelagos(Map<Integer, Archipelago> archipelago) {
-        if(activeController instanceof MoveSceneController){
-            ((MoveSceneController) activeController).setArchipelagos(archipelago);
+        if(activeController instanceof ActionSceneController){
+            ((ActionSceneController) activeController).setArchipelagos(archipelago);
         }
     }
 
     public static void loadBoard(Board board) {
-        if(activeController instanceof MoveSceneController){
-            ((MoveSceneController) activeController).setBoard(board);
+        if(activeController instanceof ActionSceneController){
+            ((ActionSceneController) activeController).setBoard(board);
         }
     }
 
     public static void loadStudentOnEntrance(Map<Integer, Student> students) {
-        if(activeController instanceof MoveSceneController){
-            ((MoveSceneController) activeController).loadStudentsMovable(students);
+        if(activeController instanceof ActionSceneController){
+            ((ActionSceneController) activeController).loadStudentsMovable(students);
         }
     }
 
     public static void letMoveMotherNature() {
-        if(activeController instanceof MoveSceneController){
-            ((MoveSceneController) activeController).setMoveMN(true);
+        if(activeController instanceof ActionSceneController){
+            ((ActionSceneController) activeController).setMoveMN(true);
         }
     }
 

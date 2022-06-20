@@ -61,8 +61,8 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard, S
      * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
      */
     @Override
-    public void resetAProhibitionEffect(Archipelago archipelago) throws ExceptionGame {
-        if(getProhibitionPass() <= getProhibitionPass() ) {
+    public void resetProhibitionEffect(Archipelago archipelago) throws ExceptionGame {
+        if(getProhibitionPass() <= 3 ) {
             archipelago.setProhibition(false);
             setProhibitionPass(getProhibitionPass() + 1);
         }

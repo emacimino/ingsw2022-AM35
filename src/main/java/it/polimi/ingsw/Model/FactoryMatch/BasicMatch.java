@@ -53,9 +53,9 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
         game.setWizards(players);
+        game.setArchipelagos();
         game.setTowers(numberOfTowers);
         game.setRandomlyStudentsInEntrance();
-        game.setArchipelagos();
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
@@ -150,12 +150,10 @@ public class BasicMatch extends Observable implements Serializable {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
         notifyObserver(new CurrentGameMessage(game));
-       // notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the board"));
     }
 
     /**
      * This method moves the player's student passed as parameter to the archipelago passed as parameter
-     *
      * @param player      is the player which moves the student
      * @param student     is the student
      * @param archipelago is the archipelago
@@ -164,7 +162,6 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
         notifyObserver(new CurrentGameMessage(game));
-       // notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
     }
 
     /**
@@ -178,7 +175,6 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
-            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
@@ -188,8 +184,6 @@ public class BasicMatch extends Observable implements Serializable {
 
         }
         notifyObserver(new CurrentGameMessage(game));
-      //  notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
-
     }
 
     /**
@@ -212,7 +206,7 @@ public class BasicMatch extends Observable implements Serializable {
      * @param archipelago is the archipelago
      * @throws ExceptionGame is thrown if the tower can't be built
      */
-    protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
+    public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
             if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
@@ -245,8 +239,10 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("The studentBag is empty, it is not possible to pick a cloud");
         game.moveStudentFromCloudToBoard(player, cloud);
         notifyObserver(new CurrentGameMessage(game));
+        System.out.println("in chooseCloud BAsicMAtch " + actionPhaseOrderOfPlayers);
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
-            resetRound();}
+            resetRound();
+        }
     }
 
     /**
