@@ -10,7 +10,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
@@ -279,7 +278,11 @@ public class CLIHandler {
      * @param archipelago is the printed archipelago
      */
     private void getInfoArchipelago(Archipelago archipelago) {
-        Printable.printArchipelago(archipelago);
+        try {
+            Printable.printArchipelago(archipelago);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -495,7 +498,7 @@ public class CLIHandler {
         System.out.println(activeMessage.getActiveCharacterCardName());
         cli.getRemoteModel().setActiveCharacterCard(activeMessage.getActiveCharacterCardName());
     }
-    private void showChosenCharacterCard(Message message) {
+    private void showChosenCharacterCard(Message message){
         CharacterCardInfo infoMessage = (CharacterCardInfo) message;
         cli.getRemoteModel().setArchipelagosMap(infoMessage.getArchipelagoMap());
         cli.getRemoteModel().setStudentsOnCardMap(infoMessage.getStudentsOnCardMap());
@@ -503,7 +506,11 @@ public class CLIHandler {
         System.out.println("Archipelagos: ");
         for (Integer integer : cli.getRemoteModel().getArchipelagosMap().keySet()) {
             System.out.println(integer + ") ");
-            Printable.printArchipelago(cli.getRemoteModel().getArchipelagosMap().get(integer));
+            try {
+                Printable.printArchipelago(cli.getRemoteModel().getArchipelagosMap().get(integer));
+            } catch (ExceptionGame e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Students in Entrance: ");
         for (Integer integer : cli.getRemoteModel().getStudentsOnEntranceMap().keySet()) {
@@ -537,8 +544,9 @@ public class CLIHandler {
                 System.out.println("You can choose THEN two students from entrance by their index: write them separated by ','");
 
             }
-            case "Banker" -> System.out.println("You can choose two student on Banker card by their index: write them separated by ','");
-            case "Messenger" -> System.out.println("Choose an Archipelago where use the card effect");
+            case "Banker" -> System.out.println("You can choose two student from the tables by their color: write them separated by ','");
+            case "Messenger","Herbalist" -> System.out.println("Choose an Archipelago where use the card effect");
+            case "Chef" -> System.out.println("Choose a student color to use the card effect");
             default -> {
                 System.out.println("For this card you don't need nothing! press ENTER to continue");
             }
@@ -557,9 +565,15 @@ public class CLIHandler {
                         Archer card = (Archer) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
                         return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
                     }
+                    case "Herbalist" ->{
+                        Herbalist card = (Herbalist) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                        int indexOfArchipelago = Integer.parseInt(input);
+                        return new PlayCharacterMessage(card, indexOfArchipelago, null, null, null, null);
+                    }
                     case "Chef" -> {
                         Chef card = (Chef) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                        Color affectedColor = getColor(input);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, affectedColor);
                     }
                     case "Knight" -> {
                         Knight card = (Knight) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
@@ -632,7 +646,7 @@ public class CLIHandler {
                         toTradeFromEntrance.add(stud2);
                         System.out.println("creating minstrel card");
                         System.out.println(toTradeFromEntrance);
-                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, null, colorsOfTable);
+                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, colorsOfTable, null);
                     }
                     case "Magician" -> {
                         Magician card = (Magician) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
@@ -640,15 +654,14 @@ public class CLIHandler {
                     }
                     case "Banker" -> {
                         Banker card = (Banker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        List<Student> toTradeFromTables = new ArrayList<>();
+                        Color tmpColor;
+                        List<Color> colorsOfTable = new ArrayList<>();
                         String[] tradeFromTables = input.split(",");
-                        List<Student> tmpOnTables = cli.getRemoteModel().getStudentsOnBoardMap().values().stream().toList();
-                        for (int i = 0; i < tradeFromTables.length; i++) {
-                            Color tmpColor = getColor(tradeFromTables[i]);
-                            if (tmpOnTables.get(i).getColor().equals(tmpColor))
-                                toTradeFromTables.add(tmpOnTables.get(i));
+                        for (String s : tradeFromTables) {
+                            tmpColor = getColor(s);
+                            colorsOfTable.add(tmpColor);
                         }
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, toTradeFromTables, null);
+                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, colorsOfTable, null);
 
                     }
                 }
@@ -663,7 +676,7 @@ public class CLIHandler {
     }
 
     private Color getColor(String color) throws Exception {
-        Color tmpColor = null;
+        Color tmpColor;
         switch (color) {
             case "blue" -> tmpColor = Color.BLUE;
             case "green" -> tmpColor = Color.GREEN;

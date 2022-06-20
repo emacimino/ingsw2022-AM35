@@ -341,9 +341,10 @@ public class TurnController {
         Wizard activeWizard = match.getGame().getWizardFromPlayer(activePlayer);
         card.setActiveWizard(activeWizard);
         switch (card.getName()) {
-            case "Archer","Chef","Knight","Baker", "Magician" ->{
+            case "Archer","Knight","Baker", "Magician" ->{
                 //do nothing
             }
+            case "Chef" -> card.setColorEffected(message.getAffectedColor());
             case "Messenger",  "Herbalist" -> card.setArchipelagoEffected(messageHandler.getArchipelagoMap().get(message.getIndexOfArchipelago()));
             case "Princess" -> {
                 List<Student> activeStudent = new ArrayList<>();
@@ -374,7 +375,7 @@ public class TurnController {
             }
             case "Minstrel" -> {
                 List<Student> activeStudent = new ArrayList<>();
-                for(Color c : message.getColors()) {
+                for(Color c : message.getToTradeFromTables()) {
                     for (TableOfStudents t : activeWizard.getBoard().getTables()) {
                         if (t.getColor().equals(c) && !t.getStudentsInTable().isEmpty())
                             activeStudent.add(t.getStudentsInTable().stream().findAny().get());
@@ -392,8 +393,13 @@ public class TurnController {
             }
 
             case "Banker" -> {
-                List<Student> activeStudent = message.getToTradeFromTables();
-                card.setActiveStudents(activeStudent);
+                List<Student> activeStudent = new ArrayList<>();
+                for(Color c : message.getToTradeFromTables()) {
+                    for (TableOfStudents t : activeWizard.getBoard().getTables()) {
+                        if (t.getColor().equals(c) && !t.getStudentsInTable().isEmpty())
+                            activeStudent.add(t.getStudentsInTable().stream().findAny().get());
+                    }
+                }
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + card.getName());

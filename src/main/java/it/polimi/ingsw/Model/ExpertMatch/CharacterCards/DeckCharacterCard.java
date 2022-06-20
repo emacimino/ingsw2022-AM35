@@ -55,8 +55,9 @@ public class DeckCharacterCard{
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
         }
-        deckForAMatch.put("Minstrel", factoryCharacterCard.createACharacterCard(basicMatch, "Minstrel"));
-        deckForAMatch.put("Archer", factoryCharacterCard.createACharacterCard(basicMatch, "Archer"));
+        deckForAMatch.put("Herbalist", factoryCharacterCard.createACharacterCard(basicMatch, "Herbalist"));
+        deckForAMatch.put("Chef", factoryCharacterCard.createACharacterCard(basicMatch, "Chef"));
+        deckForAMatch.put("Banker", factoryCharacterCard.createACharacterCard(basicMatch, "Banker"));
         return deckForAMatch;
     }
 
