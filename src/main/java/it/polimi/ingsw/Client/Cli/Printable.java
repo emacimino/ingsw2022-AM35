@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.Cli;
 
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.TowerColors;
 
 import java.util.HashMap;
 import java.util.List;
@@ -218,12 +220,13 @@ public class Printable {
         }
     }
 
-    public static void printTowersIsland(String color){
-        switch (color) {
+    public static void printTowersIsland(TowerColors towerColors){
+        final String color;
+        switch (towerColors.name()) {
             case "Black" -> color = ANSI_BRIGHTBLACK;
             case "White" -> color = RESET;
             case "Gray" -> color = ANSI_BRIGHTWHITE;
-            default -> throw new IllegalStateException("Unexpected value: " + color);
+            default -> throw new IllegalStateException("Unexpected value: " + towerColors);
         }
         System.out.print( color + TOWER_TOP + RESET);
         System.out.print("       |" + "\n" + "|  ");
@@ -286,7 +289,7 @@ public class Printable {
         }
     }
 
-    public static void printArchipelago(Archipelago archipelago){
+    public static void printArchipelago(Archipelago archipelago) throws ExceptionGame {
         System.out.print(DEEPBLUE + "\n ##################### \n\n");
         for (int i = 0; i < 16; i++) System.out.print(RESET + "—");
         System.out.print("\n" + "|  ");
@@ -299,7 +302,7 @@ public class Printable {
         for (Island isle:
              archipelago.getIsle()) {
             System.out.print("\n" + "| ");
-            if(isle.isThereTower())printTowersIsland("Gray");
+            if(isle.isThereTower())printTowersIsland(isle.getTower().getTowerColors());
             int counter = 0;
             for (Student student:
                  isle.getStudentInIsland()) {
