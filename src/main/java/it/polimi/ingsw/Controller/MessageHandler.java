@@ -26,7 +26,7 @@ public class MessageHandler {
         studentsOnCardMap.clear();
         Integer i = 1;
         for(Student s: studentsOnCard){
-            studentsOnEntranceMap.put(i, s);
+            studentsOnCardMap.put(i, s);
             i++;
         }
     }

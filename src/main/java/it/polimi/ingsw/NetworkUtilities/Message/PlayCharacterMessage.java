@@ -10,7 +10,7 @@ public class PlayCharacterMessage extends Message{
     @Serial
     private static final long serialVersionUID = -7642905185840013305L;
     private final CharacterCard characterCard;
-    private final int indexOfArchipelago;
+    private final Integer indexOfArchipelago;
     private final List<Integer> toTradeFromEntrance;
     private final List<Student> toTradeFromTables;
     private final List<Integer> toTradeFromCard;

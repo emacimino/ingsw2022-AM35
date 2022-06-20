@@ -285,10 +285,9 @@ public class TurnController {
         messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
         messageHandler.setActiveCharacterCard(message.getCharacterCardName());
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        remoteView.sendMessage(new ActiveCharacterCardMessage(messageHandler.getActiveCharacterCardName()));
-        remoteView.sendMessage(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()));
-        remoteView.sendMessage(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()));
-        remoteView.showGenericMessage(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"));
+        sendMessageToView(new ActiveCharacterCardMessage(messageHandler.getActiveCharacterCardName()),remoteView);
+        sendMessageToView(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()),remoteView);
+        sendMessageToView(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()),remoteView);
 
     }
 
