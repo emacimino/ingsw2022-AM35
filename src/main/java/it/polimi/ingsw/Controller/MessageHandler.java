@@ -68,7 +68,6 @@ public class MessageHandler {
         }
     }
 
-    public void setStudentsOnCharacterCardMap(){}
 
     private Map<String, Color>  setColorMap(){
         Map<String, Color> map = new HashMap<>();

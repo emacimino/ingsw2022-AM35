@@ -27,14 +27,14 @@ public class EriantysApp {
             case "client -cli" -> {
                 System.out.println("Insert the IP: ");
                 String ip = scanner.nextLine();
-                CLI client = new CLI("127.0.0.1", 1234);
+                System.out.println("Port: ");
+                String port = scanner.nextLine();
+                CLI client = new CLI(ip, Integer.parseInt(port));
                 ClientController clientController = new ClientController(client);
                 //client.addObserver(clientController);
                 client.run();
             }
-            case "-gui" -> {
-                Application.launch(JavaFxGui.class);
-            }
+            case "-gui" -> Application.launch(JavaFxGui.class);
         }
     }
 }

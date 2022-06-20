@@ -5,7 +5,7 @@ import it.polimi.ingsw.Observer.Observable;
 
 import javax.swing.table.TableRowSorter;
 
-public abstract class Client2 extends Observable {
+public abstract class Client extends Observable {
     public abstract void sendMessage(Message message);
 
     public abstract void readMessage();

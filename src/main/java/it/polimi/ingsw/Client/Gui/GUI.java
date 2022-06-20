@@ -2,6 +2,8 @@ package it.polimi.ingsw.Client.Gui;
 
 import it.polimi.ingsw.Client.CLIENT2.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
+import it.polimi.ingsw.Client.RemoteModel;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -39,21 +41,19 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void askToMoveStudent() {
-        Platform.runLater(()-> SceneController.setScene(getObservers(), "moveStudentScene.fxml"));
+        Platform.runLater(()-> SceneController.setScene(getObservers(), "actionScene.fxml"));
     }
 
     @Override
     public void askMoveMotherNature(String message) {
-        Platform.runLater(()->{SceneController.setScene(getObservers(), "moveStudentScene.fxml");
+        Platform.runLater(()->{SceneController.setScene(getObservers(), "actionScene.fxml");
             SceneController.letMoveMotherNature();
         });
     }
 
     @Override
     public void askChooseCloud(CloudInGame cloud) {
-        Platform.runLater(()->{
-            SceneController.enableClouds(cloud);
-        });
+        Platform.runLater(()-> SceneController.enableClouds(cloud));
     }
 
 
@@ -68,6 +68,7 @@ public class GUI extends Observable implements UserView {
     }
 
 
+
     @Override
     public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
         Platform.runLater(() -> SceneController.loadArchipelagos(archipelago));
@@ -77,6 +78,8 @@ public class GUI extends Observable implements UserView {
     public void loadStudentOnEntrance(Map<Integer, Student> students) {
         Platform.runLater(() -> SceneController.loadStudentOnEntrance(students));
     }
+
+
 
     @Override
     public void showGenericMessage(String genericMessage) {
@@ -99,7 +102,7 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
-        Platform.runLater(()-> SceneController.setEndingScene(message.getWinners().stream().map(s->s.getUsername()).toList(), isWinner)
+        Platform.runLater(()-> SceneController.setEndingScene(message.getWinners().stream().map(Player::getUsername).toList(), isWinner)
         );
     }
 

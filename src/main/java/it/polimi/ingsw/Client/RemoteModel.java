@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
+import it.polimi.ingsw.Model.Wizard.Board;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class RemoteModel {
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Map<Integer, Student> studentsOnBoardMap = new HashMap<>();
 
-
+    private Board currentBoard;
 
     private Map<Integer, Student> studentsOnCardMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagosMap = new HashMap<>();
@@ -32,25 +33,20 @@ public class RemoteModel {
     private String activeCharacterCard;
 
     public void setStudentOnEntranceMap(Map<Integer, Student> map){
-        studentsOnEntranceMap.clear();
-        studentsOnEntranceMap.putAll(map);
+        studentsOnEntranceMap = map;
     }
     public void setStudentOnBoardMap(Map<Integer, Student> map){
-        studentsOnBoardMap.clear();
-        studentsOnBoardMap.putAll(map);
+        studentsOnBoardMap = map;
     }
     public void setArchipelagosMap(Map<Integer, Archipelago> map){
-        archipelagosMap.clear();
-        archipelagosMap.putAll(map);
+        archipelagosMap = map;
     }
     public void setCloudsMap(Map<Integer, Cloud> map){
-        cloudsMap.clear();
-        cloudsMap.putAll(map);
+        cloudsMap = map;
     }
 
     public void setCharacterCardMap(Map<String, CharacterCard> map ){
-        characterCardMap.clear();
-        characterCardMap.putAll(map);
+        characterCardMap = map;
     }
 
     private Map<String, Color> setColorCardMap(){
@@ -67,6 +63,7 @@ public class RemoteModel {
         return map;
     }
     public void setStudentsOnCardMap(Map<Integer, Student> studentsOnCard) {
+        System.out.println("in Remote model \n " + studentsOnCard);
         this.studentsOnCardMap = studentsOnCard;
         }
 
@@ -120,5 +117,14 @@ public class RemoteModel {
 
     public String getActiveCharacterCard() {
         return activeCharacterCard;
+    }
+
+
+    public Board getCurrentBoard() {
+        return currentBoard;
+    }
+
+    public void setCurrentBoard(Board currentBoard) {
+        this.currentBoard = currentBoard;
     }
 }

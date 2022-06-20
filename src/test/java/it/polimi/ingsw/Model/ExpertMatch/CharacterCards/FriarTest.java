@@ -100,7 +100,7 @@ class FriarTest {
 
     }
 
-    @RepeatedTest(10000)
+    @RepeatedTest(10)
     public void match4player_Test(){
         BasicMatch match4players = factoryMatch.newMatch(4);
         Player player3 = new Player("username3");

@@ -33,16 +33,15 @@ public class Server {
     public synchronized void deregisterConnection(ClientConnection c) {
         ClientsInMatch clientsInMatch = matchInServer.get(c.getNumOfMatch());
         Collection<ClientConnection> opponents = clientsInMatch.getClientConnectionList();
+        opponents.remove(c);
         for (ClientConnection clientConnection : opponents) {
-            if(!clientConnection.equals(c)) {
                 clientConnection.closeConnection();
                 connections--;
-            }
         }
 
         matchInServer.remove(c.getNumOfMatch());
-        matchInServer.remove(opponents);
         waitingPlayersInLobby.keySet().removeIf(s -> waitingPlayersInLobby.get(s) == c);
+
     }
 
     public void run() {
@@ -72,7 +71,7 @@ public class Server {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
             BasicMatch match = instantiateModel(newClientConnection);
             Controller controller = instantiateController(match, waitingList) ;
-            ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
+            ClientsInMatch clientsInMatch = new ClientsInMatch(matchCounter, waitingList.values());
             matchInServer.put(matchCounter, clientsInMatch);
             matchCounter++;
             try {

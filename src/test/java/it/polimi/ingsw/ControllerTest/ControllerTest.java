@@ -175,11 +175,17 @@ public class ControllerTest {
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(1, 3)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(4, 3)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(2, 5)));
-        if(basicMatch2Players.getPositionOfMotherNature() != 3 && basicMatch2Players.getPositionOfMotherNature()!=9)Assertions.assertEquals(4,  basicMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
+        Assertions.assertEquals(TurnPhase.MOVE_MOTHERNATURE, controllerBasicMatch2Players.getTurnController().getTurnPhase());
+        if(basicMatch2Players.getPositionOfMotherNature() != 2 && basicMatch2Players.getPositionOfMotherNature()!=8)Assertions.assertEquals(4,  basicMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
         else Assertions.assertEquals(2, basicMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
         //Muove madre natura
         int i = basicMatch2Players.getPositionOfMotherNature();
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveMotherNatureMessage((i+2) % basicMatch2Players.getGame().getArchipelagos().size())));
+        Assertions.assertEquals(TurnPhase.CHOOSE_CLOUD, controllerBasicMatch2Players.getTurnController().getTurnPhase());
+        Assertions.assertEquals((i+1), basicMatch2Players.getPositionOfMotherNature());
+        Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new CloudMessage(1)));
+        Assertions.assertEquals(TurnPhase.MOVE_STUDENTS, controllerBasicMatch2Players.getTurnController().getTurnPhase());
+    }*/
 /*
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(1, 4)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(2, 4)));

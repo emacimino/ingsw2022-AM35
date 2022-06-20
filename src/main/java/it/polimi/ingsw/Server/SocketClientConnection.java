@@ -59,7 +59,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     @Override
     public synchronized void closeConnection() {
-        sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
         try {
             socket.close();
         } catch (IOException e) {
@@ -69,11 +68,11 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     }
 
-    private void close() {
-        closeConnection();
+    public synchronized void close() {
         System.out.println("De-registering client...");
         server.deregisterConnection(this);
         System.out.println("Done!");
+        closeConnection();
     }
 
     @Override
@@ -97,18 +96,16 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                if(!(newMessage instanceof Ping) && !(newMessage instanceof DisconnectMessage)) {
+                if(!(newMessage instanceof Ping) &&  !( newMessage instanceof NewMatchMessage)) {
                     System.out.println("in socketClientController, socket received : " + newMessage);
                     controller.onMessageReceived(newMessage);
-                }else if(newMessage instanceof DisconnectMessage){
-                    System.out.println("in socketClientController, socket received : " + newMessage);
-                    closeConnection();
+                }else if(newMessage instanceof NewMatchMessage){
+                    login();
                 }
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
-            asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
-            System.err.println("Error from SCC! " + e.getMessage());
-            closeConnection();
+            System.err.println("Error from SCC! ");
+            close();
         }
     }
 

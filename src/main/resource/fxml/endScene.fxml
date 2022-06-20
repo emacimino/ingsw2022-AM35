@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="881.0" prefWidth="1459.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.EndSceneController">
+<AnchorPane prefHeight="843.0" prefWidth="1378.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.EndSceneController">
    <children>
-      <ImageView fitHeight="1014.0" fitWidth="1487.0" layoutX="-12.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/Background/good-job-meme-idlememe-3.jpeg" />
-         </image>
+      <ImageView fitHeight="866.0" fitWidth="1390.0" layoutX="-12.0" layoutY="-17.0" pickOnBounds="true"
+                 preserveRatio="true">
+         <Image url="@../Graphics/Background/good-job-meme-idlememe-3.jpeg"/>
       </ImageView>
-      <Button fx:id="restarsBtn" layoutX="332.0" layoutY="589.0" mnemonicParsing="false" onAction="#restartMatch" text="Start a new Game">
+      <Button fx:id="restartBtn" layoutX="332.0" layoutY="589.0" mnemonicParsing="false" onAction="#restartMatch" text="Start a new Game">
          <font>
             <Font name="Apple Chancery" size="24.0" />
          </font>
@@ -24,7 +23,7 @@
             <Font name="Apple Chancery" size="24.0" />
          </font>
       </Button>
-      <Label fx:id="messageLbl" alignment="CENTER" layoutX="447.0" layoutY="149.0" prefHeight="108.0" prefWidth="770.0" text="LABEL" textFill="WHITE">
+      <Label fx:id="messageLbl" alignment="CENTER" layoutX="399.0" layoutY="139.0" prefHeight="108.0" prefWidth="770.0" textFill="WHITE">
          <font>
             <Font name="Apple Chancery" size="48.0" />
          </font>
