@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -109,7 +109,6 @@ public class CLI  implements UserView {
             case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
             case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
             case SHOW_CHARACTER_CARD_INFO -> this.turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
-           // case END_OF_CHARACTER_CARD -> this.turnPhase = ((GoesBackFromCharacterCard)message).getPrecedentTurnPhase();
             case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
 
             default -> {
@@ -131,7 +130,7 @@ public class CLI  implements UserView {
 
     public Thread ping(){
         Ping ping = new Ping();
-        Thread thread = new Thread(() -> {
+        return new Thread(() -> {
             try{
                 while(isActive()){
                     long start = System.currentTimeMillis();
@@ -144,7 +143,6 @@ public class CLI  implements UserView {
                 e.printStackTrace();
             }
         });
-        return thread;
     }
 
     public RemoteModel getRemoteModel() {

@@ -4,9 +4,9 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;

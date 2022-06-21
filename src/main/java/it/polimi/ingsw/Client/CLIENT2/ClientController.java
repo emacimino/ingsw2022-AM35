@@ -2,7 +2,7 @@ package it.polimi.ingsw.Client.CLIENT2;
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewObserver;
 

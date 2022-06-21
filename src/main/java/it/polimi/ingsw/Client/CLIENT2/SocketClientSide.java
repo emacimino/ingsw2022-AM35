@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
-import it.polimi.ingsw.NetworkUtilities.Message.DisconnectMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.ErrorMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.NetworkUtilities.Message.Ping;
+import it.polimi.ingsw.NetworkUtilities.DisconnectMessage;
+import it.polimi.ingsw.NetworkUtilities.ErrorMessage;
+import it.polimi.ingsw.NetworkUtilities.Message;
+import it.polimi.ingsw.NetworkUtilities.Ping;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

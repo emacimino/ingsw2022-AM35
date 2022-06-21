@@ -2,7 +2,8 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.NetworkUtilities.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -103,7 +104,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
                     login();
                 }
             }
-        } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
+        } catch (IOException | NoSuchElementException | ClassNotFoundException | ExceptionGame e) {
             System.err.println("Error from SCC! ");
             close();
         }

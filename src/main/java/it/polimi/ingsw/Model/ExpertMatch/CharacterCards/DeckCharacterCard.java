@@ -54,10 +54,7 @@ public class DeckCharacterCard{
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
-        }
-        deckForAMatch.put("Minstrel", factoryCharacterCard.createACharacterCard(basicMatch, "Minstrel"));
-        deckForAMatch.put("Archer", factoryCharacterCard.createACharacterCard(basicMatch, "Archer"));
-        return deckForAMatch;
+        }return deckForAMatch;
     }
 
 }

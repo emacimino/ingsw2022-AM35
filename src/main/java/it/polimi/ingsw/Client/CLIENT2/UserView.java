@@ -1,14 +1,13 @@
 package it.polimi.ingsw.Client.CLIENT2;
 
-import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.CloudInGame;
-import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CloudInGame;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
 
 import java.util.List;
 import java.util.Map;

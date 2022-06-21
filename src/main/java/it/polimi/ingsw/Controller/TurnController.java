@@ -5,13 +5,12 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 
@@ -27,7 +26,6 @@ public class TurnController {
     private Player activePlayer;
     private final List<Player> actionOrderOfPlayers = new ArrayList<>();
     private TurnPhase turnPhase = null;
-    private TurnPhase precedentTurnPhase = null;
     private int numberOfStudentMoved = 0;
 
 
@@ -96,8 +94,6 @@ public class TurnController {
             case ASK_CHARACTER_CARD -> {
                 AskCharacterCardMessage message = (AskCharacterCardMessage) receivedMessage;
                 try {
-                 //   setPrecedentTurnPhase(turnPhase);
-                 //   setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
                     sendCharacterCardInfo(message);
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
@@ -196,10 +192,6 @@ public class TurnController {
             case MOVE_STUDENTS -> askingViewToMoveAStudent(numberOfStudentMoved);
             case MOVE_MOTHER_NATURE -> askingViewToMoveMotherNature();
             case CHOOSE_CLOUD -> askingViewToChooseCloud();
-          /*  case PLAY_CHARACTER_CARD -> {
-                setTurnPhase(precedentTurnPhase);
-                askNextAction();*/
-
         }
     }
 
@@ -297,7 +289,7 @@ public class TurnController {
     }
 
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
-        String cardName = message.getCharacterCard().getName();
+        String cardName = message.getNameCharacterCard();
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         if(((ExpertMatch)controller.getMatch()).getCharactersForThisGame().containsKey(cardName)){
             try {
@@ -310,9 +302,7 @@ public class TurnController {
 
         try {
             ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
-        //    sendMessageToView(new GoesBackFromCharacterCard(this.precedentTurnPhase),remoteView);
             sendMessageToView(new CharacterCardInGameMessage(((ExpertMatch)controller.getMatch()).getCharactersForThisGame()), remoteView);
-          //  setTurnPhase(precedentTurnPhase);
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();
@@ -327,7 +317,7 @@ public class TurnController {
         Wizard activeWizard = match.getGame().getWizardFromPlayer(activePlayer);
         card.setActiveWizard(activeWizard);
         switch (card.getName()) {
-            case "Archer","Chef","Knight","Baker", "Magician" ->{
+            case "Archer","Knight","Baker", "Magician" ->{
                 //do nothing
             }
             case "Messenger",  "Herbalist" -> card.setArchipelagoEffected(messageHandler.getArchipelagoMap().get(message.getIndexOfArchipelago()));
@@ -375,19 +365,15 @@ public class TurnController {
                 card.setActiveStudents(activeStudent);
                 card.setPassiveStudents(passiveStudent);
             }
-
-            case "Banker" -> {
-                List<Student> activeStudent = message.getToTradeFromTables();
-                card.setActiveStudents(activeStudent);
+            case "Chef", "Banker" ->{
+                Color color = message.getColors().get(0);
+                card.setColorEffected(color);
             }
 
             default -> throw new IllegalStateException("Unexpected value: " + card.getName());
         }
     }
 
-    public void setPrecedentTurnPhase(TurnPhase precedentTurnPhase) {
-        this.precedentTurnPhase = precedentTurnPhase;
-    }
 
     private void sendMessageToView(Message message, RemoteView remoteView){
         if(controller.isMatchOnGoing()){

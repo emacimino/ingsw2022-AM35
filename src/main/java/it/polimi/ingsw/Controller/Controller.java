@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewInterface;
 
@@ -42,7 +42,7 @@ public class Controller implements Observer {
         turnController.pickFirstPlayerPlanningPhaseHandler();
     }
 
-    public synchronized void onMessageReceived(Message receivedMessage) {
+    public synchronized void onMessageReceived(Message receivedMessage) throws ExceptionGame {
         switch (gameState) {
             case PLANNING_PHASE-> turnController.planningPhaseHandling(receivedMessage);
 
@@ -55,8 +55,7 @@ public class Controller implements Observer {
                     e.printStackTrace();
                 }
             }
-            default-> {}//should never reach this condition
-            //Server.Logger.warning(STR_INVALID_STATE);
+            default-> throw new ExceptionGame("Error: invalid gameState");//should never reach this condition
         }
     }
 
@@ -77,7 +76,11 @@ public class Controller implements Observer {
 
     @Override
     public void update(Message message)  {
-        onMessageReceived( message);
+        try {
+            onMessageReceived( message);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     public void setViewMap(Map<String, ViewInterface> viewMap) {

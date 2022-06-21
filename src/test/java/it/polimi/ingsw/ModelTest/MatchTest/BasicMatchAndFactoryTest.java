@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ModelTest.MatchTest;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.*;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -9,10 +8,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observer;
-import javafx.scene.shape.Arc;
 import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,7 +187,7 @@ public class BasicMatchAndFactoryTest {
             nextArchipelago.placeWizardsTower(wizard);
 
             Assertions.assertEquals(12, basicMatch2Players.getGame().getArchipelagos().size());
-            Assertions.assertTrue(archipelagoToLook.calculateInfluenceInArchipelago(wizard) == 0);
+            Assertions.assertEquals(0, archipelagoToLook.calculateInfluenceInArchipelago(wizard));
 
             basicMatch2Players.getGame().buildTower(wizard, archipelagoToLook);
             basicMatch2Players.lookUpArchipelago(archipelagoToLook);

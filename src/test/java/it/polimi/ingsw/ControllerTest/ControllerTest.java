@@ -3,24 +3,19 @@ package it.polimi.ingsw.ControllerTest;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Controller.TurnController;
-import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
-import it.polimi.ingsw.Server.Server;
+import it.polimi.ingsw.NetworkUtilities.AssistantCardMessage;
+import it.polimi.ingsw.NetworkUtilities.MoveStudentMessage;
 import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 public class ControllerTest {
@@ -127,7 +122,7 @@ public class ControllerTest {
     @Test
     void initGame_Test(){
         setControllerInTest();
-        Assertions.assertTrue(controllerBasicMatch2Players.getMatch().getPlayers().stream().map(p -> p.getUsername()).toList().containsAll(usernameBasicMatch2Players));
+        Assertions.assertTrue(controllerBasicMatch2Players.getMatch().getPlayers().stream().map(Player::getUsername).toList().containsAll(usernameBasicMatch2Players));
         Assertions.assertEquals(GameState.PLANNING_PHASE, controllerBasicMatch2Players.getGameState());
         Assertions.assertNotNull(controllerBasicMatch2Players.getMatch().getGame());
     }
@@ -135,7 +130,7 @@ public class ControllerTest {
     @Test
     void initGame4Players_Test(){
         setControllerInTest4players();
-        Assertions.assertTrue(controllerBasicMatch4Players.getMatch().getPlayers().stream().map(p -> p.getUsername()).toList().containsAll(usernameBasicMatch4Players));
+        Assertions.assertTrue(controllerBasicMatch4Players.getMatch().getPlayers().stream().map(Player::getUsername).toList().containsAll(usernameBasicMatch4Players));
         Assertions.assertEquals(GameState.PLANNING_PHASE, controllerBasicMatch4Players.getGameState());
         Assertions.assertNotNull(controllerBasicMatch4Players.getMatch().getGame());
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch4Players.getMatch().getTeams());
@@ -256,13 +251,13 @@ public class ControllerTest {
     void isMatchOnGoing_test(){
         setControllerInTest();
         controllerBasicMatch2Players.setMatchOnGoing(true);
-        Assertions.assertEquals(controllerBasicMatch2Players.isMatchOnGoing(), true);
+        Assertions.assertTrue(controllerBasicMatch2Players.isMatchOnGoing());
     }
 
     @Test
     void setMatchOnGoing_test(){
         setControllerInTest();
         controllerBasicMatch2Players.setMatchOnGoing(false);
-        Assertions.assertEquals(controllerBasicMatch2Players.isMatchOnGoing(), false);
+        Assertions.assertFalse(controllerBasicMatch2Players.isMatchOnGoing());
     }
 }

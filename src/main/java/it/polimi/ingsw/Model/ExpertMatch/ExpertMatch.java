@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -88,6 +88,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         if(activeProhibitionCard!=null)
             if(archipelago.isProhibition()){
                 activeProhibitionCard.resetProhibitionEffect(archipelago);
+                basicMatch.getGame().placeMotherNature(player, archipelago);
                 basicMatch.checkVictory(player);
                 return;
             }

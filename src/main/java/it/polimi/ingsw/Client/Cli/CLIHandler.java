@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.Cli;
 
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.*;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
@@ -11,7 +10,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -532,9 +531,9 @@ public class CLIHandler {
                 System.out.println("You can choose THEN three students from entrance by their index: write them separated by ','");
             }
             case "Friar" -> {
-                System.out.println("Choose an archipelago by his index");
+                System.out.println("Choose FIRST an archipelago by his index");
                 System.out.println("Write a -");
-                System.out.println("Choose one student from Friar card by his index");
+                System.out.println("Choose THEN one student from Friar card by his index");
             }
             case "Minstrel" -> {
                 System.out.println("You can choose FIRST two student on your Tables by their color: write them separated by ','");
@@ -542,11 +541,9 @@ public class CLIHandler {
                 System.out.println("You can choose THEN two students from entrance by their index: write them separated by ','");
 
             }
-            case "Banker" -> System.out.println("You can choose two student on Banker card by their index: write them separated by ','");
-            case "Messenger" -> System.out.println("Choose an Archipelago where use the card effect");
-            default -> {
-                System.out.println("For this card you don't need nothing! press ENTER to continue");
-            }
+            case "Messenger", "Herbalist" -> System.out.println("Choose an Archipelago where use the card effect");
+            case "Chef", "Banker" ->System.out.println("Choose a Color to use the card effect");
+            default -> System.out.println("For this card you don't need nothing! press ENTER to continue");
         }
 
     }
@@ -557,69 +554,63 @@ public class CLIHandler {
         boolean inputInvalid = true;
         while (inputInvalid) {
             try {
-                switch (cli.getRemoteModel().getActiveCharacterCard()) {
-                    case "Archer" -> {
-                        Archer card = (Archer) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                switch (nameCharacter) {
+                    case "Chef", "Banker" -> {
+                        List<Color> color = new ArrayList<>();
+                        color.add(getColor(input));
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, null, null,  color);
                     }
-                    case "Chef" -> {
-                        Chef card = (Chef) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
-                    }
-                    case "Knight" -> {
-                        Knight card = (Knight) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
-                    }
-                    case "Messenger" -> {
-                        Messenger card = (Messenger) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                    case "Messenger", "Herbalist" -> {
                         int indexOfArchipelago = Integer.parseInt(input);
-                        return new PlayCharacterMessage(card, indexOfArchipelago, null, null, null, null);
+                        return new PlayCharacterMessage(nameCharacter, indexOfArchipelago, null, null, null);
                     }
-                    case "Baker" -> {
-                        Baker card = (Baker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
+                    case "Baker", "Magician", "Knight", "Archer" -> {
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, null, null, null);
                     }
-                    case "Princess" -> {
-                        Princess card = (Princess) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
+                    case "Princess", "Friar" -> {
                         List<Integer> toTradeFromCard = new ArrayList<>();
-                        Integer stud1 = Integer.parseInt(input);
-                        toTradeFromCard.add(stud1);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, toTradeFromCard, null, null);
+                        int indexOfArchipelago = notValidArchipelago;
+                        int indexStud;
+                        if(input.contains("-")) {
+                            String[] info = input.split("-");
+                            indexOfArchipelago = Integer.parseInt(info[0]);
+                            indexStud = Integer.parseInt(info[1]);
+                        }else{
+                            indexStud = Integer.parseInt(input);
+                        }
+                        toTradeFromCard.add(indexStud);
+                        return new PlayCharacterMessage(nameCharacter, indexOfArchipelago, null, toTradeFromCard, null);
                     }
                     case "Jester" -> {
-                        Jester card = (Jester) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
                         List<Integer> toTradeFromEntrance = new ArrayList<>();
                         List<Integer> toTradeFromCard = new ArrayList<>();
-                        String[] info = input.split("-");
-                        String[] tradeFromEntrance = info[0].split(",");
-                        String[] tradeFromCard = info[1].split(",");
-                        int stud1 = Integer.parseInt(tradeFromEntrance[0]);
-                        int stud2 = Integer.parseInt(tradeFromEntrance[1]);
-                        int stud3 = Integer.parseInt(tradeFromEntrance[2]);
-                        toTradeFromEntrance.add(stud1);
-                        toTradeFromEntrance.add(stud2);
-                        toTradeFromEntrance.add(stud3);
 
-                        stud1 = Integer.parseInt(tradeFromCard[0]);
-                        stud2 = Integer.parseInt(tradeFromCard[1]);
-                        stud3 = Integer.parseInt(tradeFromCard[2]);
-                        toTradeFromCard.add(stud1);
-                        toTradeFromCard.add(stud2);
-                        toTradeFromCard.add(stud3);
-                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromCard, toTradeFromEntrance, null, null);
-                    }
-                    case "Friar" -> {
-                        Friar card = (Friar) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        List<Integer> toTradeFromCard = new ArrayList<>();
+                        String[] tradeFromEntrance;
+                        String[] tradeFromCard;
                         String[] info = input.split("-");
-                        int indexOfArchipelago = Integer.parseInt(info[0]);
-                        int indexStud = Integer.parseInt(info[1]);
-                        toTradeFromCard.add(indexStud);
 
-                        return new PlayCharacterMessage(card, indexOfArchipelago, null, toTradeFromCard, null, null);
+                        if(info[0].contains(",")) {
+                            tradeFromEntrance = info[0].split(",");
+                        }else
+                            tradeFromEntrance = new String[]{info[0]};
+
+                        if(info[0].contains(",")) {
+                            tradeFromCard = info[1].split(",");
+                        }else
+                            tradeFromCard = new String[]{info[1]};
+
+                        for (String s : tradeFromEntrance) {
+                            int stud = Integer.parseInt(s);
+                            toTradeFromEntrance.add(stud);
+                        }
+
+                        for (String s : tradeFromCard) {
+                            int stud1 = Integer.parseInt(s);
+                            toTradeFromCard.add(stud1);
+                        }
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, toTradeFromCard, toTradeFromEntrance, null);
                     }
                     case "Minstrel" -> {
-                        Minstrel card = (Minstrel) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
                         Color tmpColor;
                         List<Color> colorsOfTable = new ArrayList<>();
                         List<Integer> toTradeFromEntrance = new ArrayList<>();
@@ -641,32 +632,13 @@ public class CLIHandler {
                             tmpColor = getColor(s);
                             colorsOfTable.add(tmpColor);
                         }
-                        System.out.println("in clihandler in ministrel"+colorsOfTable);
-                        for (int i = 0; i < tradeFromEntrance.length; i++) {
-                            int stud1 = Integer.parseInt(tradeFromEntrance[i]);
+                        for (String s : tradeFromEntrance) {
+                            int stud1 = Integer.parseInt(s);
                             toTradeFromEntrance.add(stud1);
                         }
-                        System.out.println("creating minstrel card");
-                        System.out.println("student from entrance: " +toTradeFromEntrance);
-                        return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, null, colorsOfTable);
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, toTradeFromEntrance, null,  colorsOfTable);
                     }
-                    case "Magician" -> {
-                        Magician card = (Magician) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, null, null);
-                    }
-                    case "Banker" -> {
-                        Banker card = (Banker) cli.getRemoteModel().getCharacterCardMap().get(nameCharacter);
-                        List<Student> toTradeFromTables = new ArrayList<>();
-                        String[] tradeFromTables = input.split(",");
-                        List<Student> tmpOnTables = cli.getRemoteModel().getStudentsOnBoardMap().values().stream().toList();
-                        for (int i = 0; i < tradeFromTables.length; i++) {
-                            Color tmpColor = getColor(tradeFromTables[i]);
-                            if (tmpOnTables.get(i).getColor().equals(tmpColor))
-                                toTradeFromTables.add(tmpOnTables.get(i));
-                        }
-                        return new PlayCharacterMessage(card, notValidArchipelago, null, null, toTradeFromTables, null);
 
-                    }
                 }
                 inputInvalid = false;
             } catch (Exception e) {
@@ -679,14 +651,14 @@ public class CLIHandler {
     }
 
     private Color getColor(String color) throws Exception {
-        Color tmpColor = null;
+        Color tmpColor;
         switch (color) {
             case "blue" -> tmpColor = Color.BLUE;
             case "green" -> tmpColor = Color.GREEN;
             case "pink" -> tmpColor = Color.PINK;
             case "yellow" -> tmpColor = Color.YELLOW;
             case "red" -> tmpColor = Color.RED;
-            default -> {throw new Exception();}
+            default -> throw new Exception();
         }
         return tmpColor;
     }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 //import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -9,7 +8,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.io.Serial;
