@@ -289,7 +289,7 @@ public class Printable {
         }
     }
 
-    public static void printArchipelago(Archipelago archipelago) throws ExceptionGame {
+    public static void printArchipelago(Archipelago archipelago) {
         System.out.print(DEEPBLUE + "\n ##################### \n\n");
         for (int i = 0; i < 16; i++) System.out.print(RESET + "—");
         System.out.print("\n" + "|  ");
@@ -302,7 +302,12 @@ public class Printable {
         for (Island isle:
              archipelago.getIsle()) {
             System.out.print("\n" + "| ");
-            if(isle.isThereTower())printTowersIsland(isle.getTower().getTowerColors());
+            if(isle.isThereTower())
+                try {
+                    printTowersIsland(isle.getTower().getTowerColors());
+                }catch (ExceptionGame e){
+                    System.out.println(e.getMessage());
+                }
             int counter = 0;
             for (Student student:
                  isle.getStudentInIsland()) {

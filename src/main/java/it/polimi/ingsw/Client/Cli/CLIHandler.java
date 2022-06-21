@@ -10,7 +10,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.Message.*;
 
@@ -338,6 +337,7 @@ public class CLIHandler {
      */
     public void showAssistantsCardOption(List<AssistantsCards> assistantsCardsInTurn) {
         System.out.println("Please select an Assistant Card from the option below: ");
+        cli.getRemoteModel().getAssistantsCardsMap().clear();
         for (AssistantsCards a : assistantsCardsInTurn) {
             cli.getRemoteModel().getAssistantsCardsMap().put(Constants.getAssistantCardCLI(a), a);
             System.out.println(Printable.getAssistantCardCLI(a));
@@ -624,19 +624,30 @@ public class CLIHandler {
                         List<Color> colorsOfTable = new ArrayList<>();
                         List<Integer> toTradeFromEntrance = new ArrayList<>();
                         String[] info = input.split("-");
-                        String[] tradeFromTables = info[0].split(",");
-                        String[] tradeFromEntrance = info[1].split(",");
+
+                        String[] tradeFromTables;
+                        if(info[0].contains(",")) {
+                            tradeFromTables = info[0].split(",");
+                        }else
+                            tradeFromTables = new String[]{info[0]};
+
+                        String[] tradeFromEntrance;
+                        if(info[0].contains(",")) {
+                             tradeFromEntrance = info[1].split(",");
+                        }else
+                            tradeFromEntrance = new String[]{info[1]};
 
                         for (String s : tradeFromTables) {
                             tmpColor = getColor(s);
                             colorsOfTable.add(tmpColor);
                         }
-                        int stud1 = Integer.parseInt(tradeFromEntrance[0]);
-                        int stud2 = Integer.parseInt(tradeFromEntrance[1]);
-                        toTradeFromEntrance.add(stud1);
-                        toTradeFromEntrance.add(stud2);
+                        System.out.println("in clihandler in ministrel"+colorsOfTable);
+                        for (int i = 0; i < tradeFromEntrance.length; i++) {
+                            int stud1 = Integer.parseInt(tradeFromEntrance[i]);
+                            toTradeFromEntrance.add(stud1);
+                        }
                         System.out.println("creating minstrel card");
-                        System.out.println(toTradeFromEntrance);
+                        System.out.println("student from entrance: " +toTradeFromEntrance);
                         return new PlayCharacterMessage(card, notValidArchipelago, toTradeFromEntrance, null, null, colorsOfTable);
                     }
                     case "Magician" -> {
@@ -659,7 +670,7 @@ public class CLIHandler {
                 }
                 inputInvalid = false;
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 input = cli.scanner.nextLine();
             }
         }

@@ -96,8 +96,8 @@ public class TurnController {
             case ASK_CHARACTER_CARD -> {
                 AskCharacterCardMessage message = (AskCharacterCardMessage) receivedMessage;
                 try {
-                    setPrecedentTurnPhase(turnPhase);
-                    setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
+                 //   setPrecedentTurnPhase(turnPhase);
+                 //   setTurnPhase(TurnPhase.PLAY_CHARACTER_CARD);
                     sendCharacterCardInfo(message);
                 } catch (ExceptionGame e) {
                     e.printStackTrace();
@@ -143,15 +143,7 @@ public class TurnController {
     }
     private void selectCloudForThisTurn(CloudMessage message) {
         try {
-            System.out.println("IN SELECTCLOUD IN TURNCONTROLLER");
-            System.out.println("before choosecloud");
-            for(Cloud c : messageHandler.getCloudMap().values())
-                System.out.println(c.getStudentOnCloud());
-
             controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
-            System.out.println("after choosecloud");
-            for(Cloud c : messageHandler.getCloudMap().values())
-                System.out.println(c.getStudentOnCloud());
 
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
             nextPlayerActionPhase();
@@ -204,12 +196,13 @@ public class TurnController {
             case MOVE_STUDENTS -> askingViewToMoveAStudent(numberOfStudentMoved);
             case MOVE_MOTHER_NATURE -> askingViewToMoveMotherNature();
             case CHOOSE_CLOUD -> askingViewToChooseCloud();
-            case PLAY_CHARACTER_CARD -> {
+          /*  case PLAY_CHARACTER_CARD -> {
                 setTurnPhase(precedentTurnPhase);
-                askNextAction();
-            }
+                askNextAction();*/
+
         }
     }
+
     public void setActivePlayer(Player player) {
         activePlayer = player;
         System.out.println("Active player: "+ player);
@@ -276,13 +269,7 @@ public class TurnController {
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
             sendMessageToView(new GenericMessage("\n It's your turn, choose a Cloud!!"), remoteView);
 
-            System.out.println("IN askcloud turncontroller before setCloudMap");
-            for(Cloud c : messageHandler.getCloudMap().values())
-                 System.out.println(c.getStudentOnCloud());
             messageHandler.setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
-            System.out.println("after setCloudMap");
-            for(Cloud c : messageHandler.getCloudMap().values())
-                System.out.println(c.getStudentOnCloud());
 
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
 
@@ -310,7 +297,6 @@ public class TurnController {
     }
 
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
-        System.out.println("IN TURN CONTROLLER IN PLAYCHARACTER");
         String cardName = message.getCharacterCard().getName();
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         if(((ExpertMatch)controller.getMatch()).getCharactersForThisGame().containsKey(cardName)){
@@ -323,12 +309,10 @@ public class TurnController {
         }
 
         try {
-            System.out.println("in turncontroller: playCharacterCard ");
             ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
-            sendMessageToView(new GoesBackFromCharacterCard(this.precedentTurnPhase),remoteView);
+        //    sendMessageToView(new GoesBackFromCharacterCard(this.precedentTurnPhase),remoteView);
             sendMessageToView(new CharacterCardInGameMessage(((ExpertMatch)controller.getMatch()).getCharactersForThisGame()), remoteView);
-            setTurnPhase(precedentTurnPhase);
-            System.out.println("settato stato turno precedente");
+          //  setTurnPhase(precedentTurnPhase);
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();
@@ -378,19 +362,18 @@ public class TurnController {
                 List<Student> activeStudent = new ArrayList<>();
                 for(Color c : message.getColors()) {
                     for (TableOfStudents t : activeWizard.getBoard().getTables()) {
-                        if (t.getColor().equals(c) && !t.getStudentsInTable().isEmpty())
-                            activeStudent.add(t.getStudentsInTable().stream().findAny().get());
+                        if (t.getColor().equals(c) && !t.getStudentsInTable().isEmpty()) {
+                            activeStudent.add(t.getStudentsInTable().stream().filter(s -> !activeStudent.contains(s)).findAny().get());
+                        }
                     }
                 }
                 List<Student> passiveStudent = new ArrayList<>();
                 for (Integer integer: message.getToTradeFromEntrance()) {
-                    passiveStudent.add(messageHandler.getStudentsOnCardMap().get(integer));
+                    passiveStudent.add(messageHandler.getStudentsOnEntranceMap().get(integer));
+
                 }
-                System.out.println("active " + activeStudent);
-                System.out.println("passive " + passiveStudent);
                 card.setActiveStudents(activeStudent);
                 card.setPassiveStudents(passiveStudent);
-                System.out.println("in turn contorller: settato minstrel");
             }
 
             case "Banker" -> {

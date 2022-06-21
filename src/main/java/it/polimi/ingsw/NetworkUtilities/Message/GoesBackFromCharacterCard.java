@@ -12,7 +12,7 @@ public class GoesBackFromCharacterCard extends Message implements Serializable {
 
     private final TurnPhase precedentTurnPhase;
     public GoesBackFromCharacterCard(TurnPhase precedentTurnPhase) {
-        super.setType(TypeMessage.GET_BACK_FROM_USED_CHARACTER_CARD);
+        super.setType(TypeMessage.END_OF_CHARACTER_CARD);
         this.precedentTurnPhase = precedentTurnPhase;
     }
 
