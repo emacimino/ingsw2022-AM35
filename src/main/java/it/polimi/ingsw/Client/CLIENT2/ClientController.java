@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.CLIENT2;
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewObserver;
 
@@ -14,6 +15,8 @@ public class ClientController implements Observer, ViewObserver {
     private Client client;  //rappresenta il socket lato client
     private String username;
     private final ExecutorService tasks;
+
+    RemoteModel remoteModel = new RemoteModel(); //gestire in update tutti i salvataggi in remoteModel
 
 
     public ClientController(UserView view) { //User view sara o cli o gui,
@@ -60,7 +63,6 @@ public class ClientController implements Observer, ViewObserver {
 
             }
             case NEW_MATCH -> client.sendMessage(message);
-            //case SHOW_CHARACTER_CARD -> view.showCharactersCards((CharacterCardInGameMessage) message);
             case PLAY_CHARACTER_CARD -> { }
             case DISCONNECT -> onDisconnection();
         }

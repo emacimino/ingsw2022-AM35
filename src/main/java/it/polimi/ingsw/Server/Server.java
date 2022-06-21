@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
@@ -90,7 +90,7 @@ public class Server {
 
     private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
         for (String key : keys) { //keys belong to size of players in lobby
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //take connection of whoever is in the lobby
             if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
                 waitingList.put(key, connection); //put whoever is matchable in the waiting list
                 waitingPlayersInLobby.remove(key); //and remove it from lobby

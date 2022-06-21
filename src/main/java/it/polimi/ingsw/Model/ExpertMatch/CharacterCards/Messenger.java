@@ -14,7 +14,7 @@ import java.io.Serializable;
 /** Implements the effect from Character card Messenger
  * Calculate influence on an additional archipelago
  */
-public class Messenger extends CharacterCard implements InfluenceEffectCard, Serializable {
+public class Messenger extends CharacterCard implements Serializable {
     @Serial
     private final static long serialVersionUID = 174160886834745807L;
     /**
@@ -35,27 +35,21 @@ public class Messenger extends CharacterCard implements InfluenceEffectCard, Ser
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
-        match.setActiveInfluenceCard(this);
+        calculateEffectInfluence(getArchipelagoEffected());
         this.cost++;
     }
 
     /**
      * This method is used to calculate the card effect on the influence
-     * @param wizard wizard using the card
      * @param archipelago targeted archipelago
-     * @param normalInfluence influence before changes
      * @return the modified influence
      * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
      */
-    public int calculateEffectInfluence(Wizard wizard, Archipelago archipelago, int normalInfluence) throws ExceptionGame{ //wizard del capitano
+    public void calculateEffectInfluence(Archipelago archipelago) throws ExceptionGame{ //wizard del capitano
         Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
         Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
-        Wizard wizardCaptain = getBasicMatch().getGame().getWizardFromPlayer(captainOfActivePlayer);
-        int influenceArchipelago = getBasicMatch().getWizardInfluenceInArchipelago(captainOfActivePlayer, getArchipelagoEffected());
-        if(wizard.equals(wizardCaptain)){
-            normalInfluence += influenceArchipelago;
-        }
-        return normalInfluence;
+        getBasicMatch().buildTower(captainOfActivePlayer, archipelago);
+       getBasicMatch().lookUpArchipelago(archipelago);
     }
 
     /**

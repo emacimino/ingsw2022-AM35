@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Observer;
 
-import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.Message;
 
 import java.util.ArrayList;
 import java.util.List;

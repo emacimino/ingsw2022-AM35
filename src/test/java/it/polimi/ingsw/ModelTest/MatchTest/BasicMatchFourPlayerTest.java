@@ -1,6 +1,5 @@
 package it.polimi.ingsw.ModelTest.MatchTest;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
@@ -11,8 +10,8 @@ import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;

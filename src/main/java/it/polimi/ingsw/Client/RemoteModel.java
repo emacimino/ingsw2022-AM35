@@ -127,4 +127,6 @@ public class RemoteModel {
     public void setCurrentBoard(Board currentBoard) {
         this.currentBoard = currentBoard;
     }
+
+
 }

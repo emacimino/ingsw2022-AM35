@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
-import it.polimi.ingsw.NetworkUtilities.Message.DisconnectMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.NewMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.NewMatchMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

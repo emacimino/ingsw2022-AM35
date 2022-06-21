@@ -3,13 +3,11 @@ package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
-import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.io.Serial;
@@ -86,7 +84,7 @@ public abstract class CharacterCard extends Observable implements Serializable {
 
     /**
      * This method sets the color effected
-     * @param colorEffected
+     * @param colorEffected color
      */
     public void setColorEffected(Color colorEffected) {
         this.colorEffected = colorEffected;
@@ -94,7 +92,7 @@ public abstract class CharacterCard extends Observable implements Serializable {
 
     /**
      * This method sets the archipelago effected
-     * @param archipelagoEffected
+     * @param archipelagoEffected archipelago
      */
     public void setArchipelagoEffected(Archipelago archipelagoEffected) {
         this.archipelagoEffected = archipelagoEffected;
@@ -102,7 +100,7 @@ public abstract class CharacterCard extends Observable implements Serializable {
 
     /**
      * This method sets the active student
-     * @param activeStudents
+     * @param activeStudents activeStudent
      */
     public void setActiveStudents(List<Student> activeStudents) {
         this.activeStudents = activeStudents;
@@ -110,7 +108,7 @@ public abstract class CharacterCard extends Observable implements Serializable {
 
     /**
      * This method sets the passive student
-     * @param passiveStudents
+     * @param passiveStudents passiveStudent
      */
     public void setPassiveStudents(List<Student> passiveStudents) {
         this.passiveStudents = passiveStudents;

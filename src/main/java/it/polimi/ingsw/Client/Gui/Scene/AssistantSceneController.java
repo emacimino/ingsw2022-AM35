@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.AssistantCardMessage;
+import it.polimi.ingsw.NetworkUtilities.AssistantCardMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,16 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.scene.control.Label;
-import jdk.jfr.Event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class AssistantSceneController extends GenericSceneController {
@@ -52,7 +46,13 @@ public class AssistantSceneController extends GenericSceneController {
             } else
                 hBox = sixToTen;
             nodes = hBox.getChildren();
-            card = nodes.stream().filter(n -> n.getId().equals(mapImageId.get(a))).findFirst().get();
+            card = null;
+            try {
+                card = nodes.stream().filter(n -> n.getId().equals(mapImageId.get(a))).findFirst().get();
+            }catch (NullPointerException | NoSuchElementException e){
+                e.printStackTrace();
+            }
+            assert card != null;
             card.setVisible(true);
             card.setDisable(false);
             card.setOnMouseClicked(MouseEvent -> selectAssistantCard(a));

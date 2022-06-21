@@ -4,8 +4,8 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
 
-import it.polimi.ingsw.NetworkUtilities.Message.MoveMotherNatureMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.MoveStudentMessage;
+import it.polimi.ingsw.NetworkUtilities.MoveMotherNatureMessage;
+import it.polimi.ingsw.NetworkUtilities.MoveStudentMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
-import javax.security.auth.Subject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ActionSceneController extends GenericSceneController {
 
