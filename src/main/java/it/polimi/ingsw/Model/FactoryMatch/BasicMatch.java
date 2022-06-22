@@ -1,14 +1,16 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+//import it.polimi.ingsw.Model.Exception.ExceptionStudentBagEmpty;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.io.Serial;
@@ -52,14 +54,14 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
         game.setWizards(players);
+        game.setArchipelagos();
         game.setTowers(numberOfTowers);
         game.setRandomlyStudentsInEntrance();
-        game.setArchipelagos();
         game.setProfessors();
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
-        notifyObserver(new GenericMessage("Order of the players: " + players));
         notifyObserver(new CurrentGameMessage(game));
+        notifyObserver(new GenericMessage("Order of the players: \n" + players));
 
     }
 
@@ -148,13 +150,11 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveStudentOnBoard(Player player, Student student) throws ExceptionGame {
         game.placeStudentOnTable(player, student);
         lookUpProfessor(student.getColor());
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the board"));
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
      * This method moves the player's student passed as parameter to the archipelago passed as parameter
-     *
      * @param player      is the player which moves the student
      * @param student     is the student
      * @param archipelago is the archipelago
@@ -162,8 +162,7 @@ public class BasicMatch extends Observable implements Serializable {
      */
     public void moveStudentOnArchipelago(Player player, Student student, Archipelago archipelago) throws ExceptionGame {
         game.placeStudentOnArchipelago(player, student, archipelago);
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved this student "+ student + " on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
+        notifyObserver(new CurrentGameMessage(game));
     }
 
     /**
@@ -177,18 +176,15 @@ public class BasicMatch extends Observable implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         game.placeMotherNature(player, archipelago);
         try {
-            int tmp = archipelago.calculateInfluenceInArchipelago(game.getWizardFromPlayer(player));
             this.buildTower(player, archipelago);
             lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            checkVictory();
+            checkVictory(player);
 
         }
         notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has moved Mother Nature on the archipelago " + (game.getArchipelagos().indexOf(archipelago)+1)));
-
     }
 
     /**
@@ -211,7 +207,7 @@ public class BasicMatch extends Observable implements Serializable {
      * @param archipelago is the archipelago
      * @throws ExceptionGame is thrown if the tower can't be built
      */
-    protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
+    public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
             if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago))
@@ -240,28 +236,36 @@ public class BasicMatch extends Observable implements Serializable {
      * @throws ExceptionGame is thrown if the move is not allowed
      */
     public void chooseCloud(Player player, Cloud cloud) throws ExceptionGame {
+        if(game.getStudentBag().getStudentsInBag().isEmpty())
+            throw new ExceptionGame("The studentBag is empty, it is not possible to pick a cloud");
         game.moveStudentFromCloudToBoard(player, cloud);
-       // notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has choose the cloud " + (game.getClouds().stream().toList().indexOf(cloud)+1)));
-        System.out.println("action player in basic match after choosing cloud "+actionPhaseOrderOfPlayers);
+        notifyObserver(new CurrentGameMessage(game));
+        System.out.println("in chooseCloud BAsicMAtch " + actionPhaseOrderOfPlayers);
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
-            resetRound();}
+            resetRound();
+        }
     }
 
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    public void checkVictory() throws ExceptionGame{
+    public void checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
-        List<Wizard> w = game.getWizardsWithLeastTowers();
+        List<Wizard> w = getGame().getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
+        Player lastPlayer = actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1);
+
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
+        }else if(w.size() == 1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(lastPlayer))
+                || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if (w.size() >1 && ((game.getStudentBag().getNumberOfStudents() == 0) || (game.getArchipelagos().size() <= 3))) {
+        }else if (w.size() >1 && (
+                ((getGame().getStudentBag().getNumberOfStudents() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(lastPlayer))
+                || (getGame().getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             w.sort((w1, w2) -> w2.getBoard().getProfessorInTable().size() - w1.getBoard().getProfessorInTable().size());
             if(w.get(0).getBoard().getProfessorInTable().size() > w.get(1).getBoard().getProfessorInTable().size())
@@ -275,7 +279,6 @@ public class BasicMatch extends Observable implements Serializable {
             }
 
         }
-        System.out.println(endOfTheMatch);
         if (endOfTheMatch) {
             List<Player> winnerPlayers = winner.stream().map(wiz -> {
                 try {
@@ -393,7 +396,7 @@ public class BasicMatch extends Observable implements Serializable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    protected void setGame(Game game) {
+    protected void setActualGame(Game game) {
         this.game = game;
     }
 
@@ -449,10 +452,6 @@ public class BasicMatch extends Observable implements Serializable {
         return player;
     }
 
-
-    public void infoMatch() throws CloneNotSupportedException{
-        notifyObserver(new CurrentGameMessage((Game) this.clone()));
-    }
 
     @Override
     public String toString() {

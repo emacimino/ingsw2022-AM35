@@ -54,8 +54,7 @@ public class DeckCharacterCard{
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
-        }
-        return deckForAMatch;
+        }return deckForAMatch;
     }
 
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="257.0" prefWidth="418.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.AlertSceneController">
+    <top>
+        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="545.0">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="170.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                </ImageView>
+                <Label fx:id="titleLbl" alignment="CENTER" layoutX="119.0" layoutY="25.0" prefHeight="22.0" prefWidth="180.0" styleClass="customText" text="ERROR">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="messageLbl" alignment="CENTER" layoutX="38.0" layoutY="45.0" prefHeight="161.0" prefWidth="354.0" styleClass="alertText" text="Something went wrong :(" wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            <Button fx:id="okBtn" layoutX="182.0" layoutY="186.0" mnemonicParsing="false" onAction="#okBtnClick" text="ok" />
+            </children>
+        </AnchorPane>
+    </top>
+</BorderPane>

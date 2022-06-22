@@ -2,7 +2,8 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.NetworkUtilities.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,6 +24,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     private boolean active = true;
 
+
     public Socket getSocket() {
         return socket;
     }
@@ -32,7 +34,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         this.server = server;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
-
     }
 
     public void setNumOfMatch(Integer numOfMatch) {
@@ -44,31 +45,35 @@ public class SocketClientConnection implements Runnable, ClientConnection {
     }
 
     public synchronized void sendMessage(Message message) {
-        try{
-            outputStream.reset();
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException exception) {
 
-            exception.printStackTrace();
-        }
+             try {
+                 System.out.println("in socketClientController, socket send : " + message);
+                 outputStream.reset();
+                 outputStream.writeObject(message);
+                 outputStream.flush();
+             } catch (IOException exception) {
+
+                 exception.printStackTrace();
+             }
+
     }
+
     @Override
     public synchronized void closeConnection() {
-        sendMessage(new GenericMessage("Connection closed! I'm in close connection"));
         try {
             socket.close();
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
         }
         active = false;
+
     }
 
-    private void close() {
-        closeConnection();
+    public synchronized void close() {
         System.out.println("De-registering client...");
         server.deregisterConnection(this);
         System.out.println("Done!");
+        closeConnection();
     }
 
     @Override
@@ -81,6 +86,10 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         return numOfMatch;
     }
 
+    public Controller getController() {
+        return controller;
+    }
+
     @Override
     public void run() {
         Message newMessage;
@@ -88,12 +97,15 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                //if(newMessage.getType() == TypeMessage.PING)timer(newMessage);
-                controller.onMessageReceived(newMessage);
+                if(!(newMessage instanceof Ping) &&  !( newMessage instanceof NewMatchMessage)) {
+                    System.out.println("in socketClientController, socket received : " + newMessage);
+                    controller.onMessageReceived(newMessage);
+                }else if(newMessage instanceof NewMatchMessage){
+                    login();
+                }
             }
-        } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
-            asyncSendMessage(new ErrorMessage("Error from SCC! " + e.getMessage()));
-            System.err.println("Error from SCC! " + e.getMessage());
+        } catch (IOException | NoSuchElementException | ClassNotFoundException | ExceptionGame e) {
+            System.err.println("Error from SCC! ");
             close();
         }
     }
@@ -108,42 +120,48 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     private void login() throws IOException, ClassNotFoundException {
         asyncSendMessage(new LoginRequest());
-        LoginResponse login = (LoginResponse) inputStream.readObject();
-        while(server.isNameNotOk(login.getName())){
-            asyncSendMessage(new ErrorMessage("Username already used, please choose another username"));
-            login = (LoginResponse) inputStream.readObject();
+        Message message = (Message) inputStream.readObject();
+        while(! (message instanceof LoginResponse login)){
+            message = (Message) inputStream.readObject();
         }
+
+        while(server.isNameNotOk(login.getName())){
+            asyncSendMessage(new ErrorMessage("Username already used or not set, please choose another username"));
+            message = (Message) inputStream.readObject();
+            while(! (message instanceof LoginResponse)){
+                message = (Message) inputStream.readObject();
+            }
+            login = (LoginResponse) message;
+        }
+        asyncSendMessage(new OkLoginMessage());
         username = login.getName();
         numberOfPlayers = login.getNumberOfPlayer();
         isExpert = login.isExpertMatch();
         server.lobby(this);
     }
 
-    /*public void Pong(Message receivedMessage){
+    public void Pong(Message receivedMessage){
         Pong pong = new Pong();
         if(receivedMessage.getType().equals(TypeMessage.PING)){
             System.out.print("Pong");
         }
     }
 
-    public Runnable timer(Message receivedMessage) throws IOException, ClassNotFoundException {
-        return new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isActive()) {
-                    long start = System.currentTimeMillis();
-                    long end = start + 10 * 1000;
-                    while (System.currentTimeMillis() < end) {
-                        Pong(receivedMessage);
-                    }
-                    if (System.currentTimeMillis() > end) {
-                        server.EndGameDisconnected();
-                    }
+    public Runnable timer(Message receivedMessage) {
+        return new Thread(() -> {
+            while (isActive()) {
+                long start = System.currentTimeMillis();
+                long end = start + 10 * 1000;
+                while (System.currentTimeMillis() < end) {
+                    Pong(receivedMessage);
                 }
+                if (System.currentTimeMillis() > end) {
+                   // server.EndGameDisconnected();
+                }
+            }
 
-        }
     });
-    }*/
+    }
 
     public void setController(Controller controller) {
         this.controller = controller;

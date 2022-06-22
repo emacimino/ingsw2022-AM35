@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 import it.polimi.ingsw.View.RemoteView;
 import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
@@ -19,10 +19,10 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private static final int PORT = 1234;
-    private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
-    private Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
+    private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(128);
+    private final Map<String, ClientConnection> waitingPlayersInLobby = new HashMap<>();
+    private final Map<Integer, ClientsInMatch> matchInServer = new HashMap<>();
     private int matchCounter = 0;
     private int connections = 0;
 
@@ -31,16 +31,17 @@ public class Server {
     }
 
     public synchronized void deregisterConnection(ClientConnection c) {
-        List<ClientConnection> opponents = (List<ClientConnection>) matchInServer.get(c.getNumOfMatch());
-        if (opponents != null) {
-            for (ClientConnection clientConnection : opponents) {
+        ClientsInMatch clientsInMatch = matchInServer.get(c.getNumOfMatch());
+        Collection<ClientConnection> opponents = clientsInMatch.getClientConnectionList();
+        opponents.remove(c);
+        for (ClientConnection clientConnection : opponents) {
                 clientConnection.closeConnection();
                 connections--;
-            }
         }
+
         matchInServer.remove(c.getNumOfMatch());
-        matchInServer.remove(opponents);
         waitingPlayersInLobby.keySet().removeIf(s -> waitingPlayersInLobby.get(s) == c);
+
     }
 
     public void run() {
@@ -59,8 +60,8 @@ public class Server {
         }
 
 
-    /*public void EndGameDisconnected(){
-        for (int i=0; i<waitingPlayersInLobby.size();i++) {
+  /*  public void EndGameDisconnected(){
+        for (Integer i=0; i<waitingPlayersInLobby.size();i++) {
             waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
             waitingPlayersInLobby.get(i).closeConnection();
         }
@@ -70,7 +71,7 @@ public class Server {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
             BasicMatch match = instantiateModel(newClientConnection);
             Controller controller = instantiateController(match, waitingList) ;
-            ClientsInMatch clientsInMatch = new ClientsInMatch(waitingList.values());
+            ClientsInMatch clientsInMatch = new ClientsInMatch(matchCounter, waitingList.values());
             matchInServer.put(matchCounter, clientsInMatch);
             matchCounter++;
             try {
@@ -89,7 +90,7 @@ public class Server {
 
     private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
         for (String key : keys) { //keys belong to size of players in lobby
-            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //tacke connection of whoever is in the lobby
+            SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //take connection of whoever is in the lobby
             if (clientConnection.getNumberOfPlayers() == connection.getNumberOfPlayers() && clientConnection.isExpert() == connection.isExpert()) {
                 waitingList.put(key, connection); //put whoever is matchable in the waiting list
                 waitingPlayersInLobby.remove(key); //and remove it from lobby
@@ -105,12 +106,11 @@ public class Server {
         } catch (ExceptionGame | CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        //     Map<String, ViewInterface> viewMap = new HashMap<>();
-
         for (String clientName: waitingList.keySet()) {
             ViewInterface clientView = new RemoteView((SocketClientConnection) waitingList.get(clientName));
             match.addObserver(clientView);
             clientView.addObserver(controller);
+            assert controller != null;
             controller.addView(clientName, clientView);
             ((SocketClientConnection) waitingList.get(clientName)).setController(controller);
 
@@ -142,7 +142,6 @@ public class Server {
             Socket newSocket = serverSocket.accept();
             connections++;
             System.out.println("Ready for the new connection; current connections = " + connections);
-            //clientHandlerToBeImplemented
             SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this);
             executor.submit(socketConnection); //starts the socketClientConnection
         } catch (IOException e) {

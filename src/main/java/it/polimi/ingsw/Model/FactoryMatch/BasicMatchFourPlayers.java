@@ -4,8 +4,9 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.EndMatchMessage;
-import it.polimi.ingsw.NetworkUtilities.Message.GenericMessage;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.GenericMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +19,6 @@ public class BasicMatchFourPlayers extends BasicMatch{
     private final List<Player> teamOne = new ArrayList<>(); //added final after a warning
     private final List<Player> teamTwo = new ArrayList<>(); //added final after a warning
     private final List<Player> captains = new ArrayList<>(); //added final after a warning
-   // private Team teamOne_;
-   // private Team teamTwo_;
 
     public BasicMatchFourPlayers(){
         super.setNumberOfPlayers(4);
@@ -29,7 +28,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         super.setNumberOfStudentInEntrance(7);
         super.setNumberOfStudentsOnCLoud(3);
         Game game = new Game(getNumberOfStudentInEntrance(), getNumberOfMovableStudents());
-        super.setGame(game);
+        super.setActualGame(game);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
         super.getGame().setClouds(getNumberOfClouds(), getNumberOfStudentsOnCLoud());
         super.getGame().setRandomlyFirstPlayer();
         notifyObserver(new GenericMessage("Order of the players: " + players));
-        //notifyObserver(new CurrentGameMessage(super.getGame()));
+        notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
     public void setTeams(List<Player> players) throws ExceptionGame {
@@ -110,15 +109,15 @@ public class BasicMatchFourPlayers extends BasicMatch{
             buildTower(getCaptainTeamOfPlayer(player), archipelago);
             lookUpArchipelago(archipelago);
         }catch (ExceptionGame e){
-            System.out.println(e);
+            e.printStackTrace();
         }finally {
-            checkVictory();
+            checkVictory(player);
         }
         //notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
     @Override
-    protected void buildTower(Player captain, Archipelago archipelago) throws ExceptionGame {
+    public void buildTower(Player captain, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         Wizard wizard = getGame().getWizardFromPlayer(captain);
         Player rivalCaptain = getRivals(captain).get(0);
@@ -132,18 +131,24 @@ public class BasicMatchFourPlayers extends BasicMatch{
     }
 
     @Override
-    public void checkVictory() throws ExceptionGame{
+    public void checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = getCaptainsWithLeastTowers();
         List<Wizard> winner = new ArrayList<>();
+        Player lastPlayer = getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1);
+
         if (w.size()==1 && w.get(0).getBoard().getTowersInBoard().isEmpty()) {
             endOfTheMatch = true;
             winner.add(w.get(0));
-        }else if(w.size() == 1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (getGame().getArchipelagos().size() <= 3))){
+        }else if(w.size() == 1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) && player.equals(getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1)))
+                || (getGame().getArchipelagos().size() <= 3))){
             endOfTheMatch = true;
             winner.add(w.get(0));
         }
-        else if (w.size()>1 && ((getGame().getStudentBag().getStudentsInBag().size() == 0) || (super.getGame().getArchipelagos().size() <= 3))) {
+        else if (w.size()>1 && (
+                ((getGame().getStudentBag().getStudentsInBag().size() == 0 || getGame().getWizardFromPlayer(player).getAssistantsDeck().getPlayableAssistants().isEmpty()) &&  player.equals(getActionPhaseOrderOfPlayers().get(getActionPhaseOrderOfPlayers().size() - 1)))
+                || (super.getGame().getArchipelagos().size() <= 3))) {
             endOfTheMatch = true;
             List<Player> teamA = getTeamOfPlayer(getPlayerFromWizard(w.get(0)));
             List<Player> teamB = getTeamOfPlayer(getPlayerFromWizard(w.get(1)));
@@ -226,8 +231,7 @@ public class BasicMatchFourPlayers extends BasicMatch{
     public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
         Wizard captain = getGame().getWizardFromPlayer(getCaptainTeamOfPlayer(player));
         Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(player).get(1));
-        boolean teamControl = (companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color));
-        return teamControl;
+        return (companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color));
     }
 
 }

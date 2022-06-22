@@ -1,26 +1,28 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Server.ClientConnection;
-import it.polimi.ingsw.View.ViewInterface;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.NetworkUtilities.Message.*;
+import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.View.ViewInterface;
 
 import java.util.*;
 
 public class Controller implements Observer {
     private final BasicMatch match;
     private GameState gameState;
-    private Collection<String> playersUsername;
+    private final Collection<String> playersUsername;
     private Map<String, ViewInterface> viewMap = new HashMap<>();
     private TurnController turnController;
-    private Player firstPlanningPhasePlayer;
+    private boolean matchOnGoing = true;
+
+    public Map<String, ViewInterface> getViewMap() {
+        return viewMap;
+    }
 
     //Initialize the Game having already a lobby
-    public Controller(BasicMatch match, Set<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
+    public Controller(BasicMatch match, Collection<String> playersUsername) throws ExceptionGame, CloneNotSupportedException {
         this.playersUsername = playersUsername;
         this.match = match;
     }
@@ -40,15 +42,20 @@ public class Controller implements Observer {
         turnController.pickFirstPlayerPlanningPhaseHandler();
     }
 
-    public synchronized void onMessageReceived(Message receivedMessage) {
+    public synchronized void onMessageReceived(Message receivedMessage) throws ExceptionGame {
         switch (gameState) {
             case PLANNING_PHASE-> turnController.planningPhaseHandling(receivedMessage);
 
             case ACTION_PHASE -> turnController.actionPhaseHandling(receivedMessage);
 
-
-            default-> {}//should never reach this condition
-            //Server.Logger.warning(STR_INVALID_STATE);
+            case GAME_ENDED -> {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            default-> throw new ExceptionGame("Error: invalid gameState");//should never reach this condition
         }
     }
 
@@ -68,16 +75,16 @@ public class Controller implements Observer {
     }
 
     @Override
-    public void update(Object message)  {
-        onMessageReceived((Message) message);
+    public void update(Message message)  {
+        try {
+            onMessageReceived( message);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     public void setViewMap(Map<String, ViewInterface> viewMap) {
         this.viewMap = viewMap;
-    }
-
-    private void printGame(){
-        System.out.println(match);
     }
 
 
@@ -87,5 +94,17 @@ public class Controller implements Observer {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void setMatchOnGoing(boolean matchOnGoing) {
+        this.matchOnGoing = matchOnGoing;
+    }
+
+    public TurnController getTurnController() {
+        return turnController;
+    }
+
+    public boolean isMatchOnGoing() {
+        return matchOnGoing;
     }
 }

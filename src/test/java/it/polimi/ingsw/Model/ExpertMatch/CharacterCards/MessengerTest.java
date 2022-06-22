@@ -84,69 +84,41 @@ class MessengerTest {
 
             int positionMN = expertMatch.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
-            Archipelago archipelagoPost = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2) + 1) % expertMatch.getGame().getArchipelagos().size());
-            interestArchipelago.placeWizardsTower(wizard1); //metto una torre del Wizard1 sul prossimo arcipelago
-
-            Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
-            Assertions.assertEquals(1, interestArchipelago.calculateInfluenceTowers(wizard1));
 
             int influenceBeforeEffect1 = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceBeforeEffect2 = expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago);
-            int influenceArchipelagoPost = expertMatch.getWizardInfluenceInArchipelago(player2, archipelagoPost);
             wizard2.addACoin();
             wizard2.addACoin();
             Assertions.assertEquals(3, wizard2.getCoins());
             Assertions.assertEquals(3, messenger.getCost());
             messenger.setActiveWizard(wizard2);
-            messenger.setArchipelagoEffected(archipelagoPost);
+            messenger.setArchipelagoEffected(interestArchipelago);
             messenger.useCard(expertMatch);
-            Assertions.assertEquals(influenceBeforeEffect2 + influenceArchipelagoPost, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
-            Assertions.assertEquals(influenceBeforeEffect1 , expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
             Assertions.assertEquals(0, wizard2.getCoins());
             Assertions.assertEquals(cost + 1, messenger.getCost());
 
             int cases = -1;
-            if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) > expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
+            if (influenceBeforeEffect1 > influenceBeforeEffect2)
                 cases = 0;
-            else if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) < expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago))
+            else if (influenceBeforeEffect1 < influenceBeforeEffect2)
                 cases = 1;
 
-            expertMatch.moveMotherNature(player2, interestArchipelago); //nb se w2 ha piu influenza c'è un cambio di torre
             Assertions.assertNull(expertMatch.getActiveInfluenceCard());
-            int numberOfTowerW2;
-            int numberOfTowerW1;
             if (cases == 0) {
                 Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
-                numberOfTowerW2 = 8;
-                numberOfTowerW1 = 7;
+                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
+
             } else if (cases == 1) {
                 Assertions.assertEquals(7, wizard2.getBoard().getTowersInBoard().size());
-                numberOfTowerW2 = 7;
-                numberOfTowerW1 = 8;
+                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
             } else {
-                Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
                 Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
-                numberOfTowerW2 = 8;
-                numberOfTowerW1 = 7;
             }
 
-
-            positionMN = expertMatch.getPositionOfMotherNature();
-            interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player1)) % expertMatch.getGame().getArchipelagos().size());
+            Assertions.assertEquals(positionMN, expertMatch.getPositionOfMotherNature());
 
 
-            expertMatch.moveMotherNature(player1, interestArchipelago);
-            printGame();
-            if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) > expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago)) {
-                Assertions.assertEquals(numberOfTowerW1 - 1, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numberOfTowerW2, wizard2.getBoard().getTowersInBoard().size());
-            } else if (expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago) < expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago)) {
-                Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numberOfTowerW2, wizard2.getBoard().getTowersInBoard().size());
-            } else {
-                Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numberOfTowerW1, wizard1.getBoard().getTowersInBoard().size());
-            }
         });
     }
 
@@ -199,41 +171,28 @@ class MessengerTest {
             expertMatch4Players.moveStudentOnBoard(player2, students2[1]);
 
             int positionMN = expertMatch4Players.getPositionOfMotherNature();
-            expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
-            positionMN = expertMatch4Players.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
-            Archipelago archipelagoPost = expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4) + 1) % expertMatch4Players.getGame().getArchipelagos().size());
 
-            Student[] s = new Student[2];
-            Student student = interestArchipelago.getStudentFromArchipelago().toArray(s)[0];
             wizard4.addACoin();
             wizard4.addACoin();
 
             int influenceBeforeEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceBeforeEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
-            int influenceArchipelagoPost = expertMatch4Players.getWizardInfluenceInArchipelago(player4, archipelagoPost);
 
             messenger.setActiveWizard(wizard4);
-            messenger.setArchipelagoEffected(archipelagoPost);
+            messenger.setArchipelagoEffected(interestArchipelago);
             messenger.useCard(expertMatch4Players);
             assertEquals(0, wizard4.getCoins());
             assertEquals(cost + 1, messenger.getCost());
 
-            int influenceAfterEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
-            int influenceAfterEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
-
-            Assertions.assertEquals(influenceBeforeEffectTeam1 , influenceAfterEffectTeam1);
-            Assertions.assertEquals(influenceBeforeEffectTeam2 + influenceArchipelagoPost , influenceAfterEffectTeam2);
-
-            expertMatch4Players.moveMotherNature(player4, interestArchipelago); //NB MN MOVED BY PLAYER4
             Assertions.assertNull(expertMatch4Players.getActiveInfluenceCard());
 
-            if (influenceAfterEffectTeam1 > influenceAfterEffectTeam2) {
+            if (influenceBeforeEffectTeam1 > influenceBeforeEffectTeam2) {
                 assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
                 assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
                 assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
                 assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
-            } else if (influenceAfterEffectTeam1 < influenceAfterEffectTeam2) {
+            } else if (influenceBeforeEffectTeam1 < influenceBeforeEffectTeam2) {
                 assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
                 assertEquals(7, wizard3.getBoard().getTowersInBoard().size());
                 assertEquals(0, wizard2.getBoard().getTowersInBoard().size());

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Server;
 
 
-import it.polimi.ingsw.NetworkUtilities.Message.Message;
-import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.NetworkUtilities.Message;
 
 public interface ClientConnection {
 

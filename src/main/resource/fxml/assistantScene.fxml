@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.AssistantSceneController">
+   <children>
+      <ImageView fitHeight="631.0" fitWidth="941.0" layoutX="-33.0" layoutY="-102.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Background/wood_assistant_card.jpeg" />
+         </image>
+      </ImageView>
+      <HBox fx:id="oneToFive" layoutX="151.0" layoutY="96.0" prefHeight="147.0" prefWidth="511.0" spacing="5.0" AnchorPane.leftAnchor="146.0">
+         <children>
+            <ImageView fx:id="ASSISTANT_ONE" fitHeight="150.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(1).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_TWO" fitHeight="150.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(2).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_THREE" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(3).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_FOUR" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(4).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_FIVE" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(5).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox fx:id="sixToTen" layoutX="152.0" layoutY="276.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.leftAnchor="146.0">
+         <children>
+            <ImageView fx:id="ASSISTANT_SIX" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(6).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_SEVEN" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(7).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_EIGHT" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(8).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_NINE" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(9).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ASSISTANT_TEN" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Assistents/2x/Assistente(10).png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </HBox>
+      <Label alignment="CENTER" layoutX="159.0" layoutY="25.0" prefHeight="44.0" prefWidth="492.0" text="SELECT YOUR ASSISTANT FOR THIS ROUND:" textFill="WHITE">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="assLbl" layoutX="147.0" layoutY="439.0" text="ASSISTANT SELECTED: " textFill="WHITE">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="confirmBtn" layoutX="572.0" layoutY="444.0" mnemonicParsing="false" onAction="#sendAssistant" opacity="0.54" style="-fx-background-color: WHITE;" text="CONFIRM">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

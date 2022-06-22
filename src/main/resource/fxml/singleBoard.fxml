@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="900.0" maxWidth="1400.0" minHeight="327.0" minWidth="709.0" prefHeight="346.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.BoardPanelController">
+   <children>
+      <ImageView fitHeight="302.0" fitWidth="756.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../PLANCIA_GIOCO.png" />
+         </image>
+      </ImageView>
+      <StackPane layoutX="125.0" layoutY="77.0" prefHeight="32.0" prefWidth="337.0">
+         <children>
+            <HBox fx:id="greenTable" prefHeight="28.0" prefWidth="332.0" spacing="1.0">
+               <children>
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+               </children>
+               <StackPane.margin>
+                  <Insets left="3.0" />
+               </StackPane.margin></HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="125.0" layoutY="125.0" prefHeight="33.0" prefWidth="337.0">
+         <children>
+            <HBox fx:id="redTable" prefHeight="30.0" prefWidth="329.0" spacing="1.0">
+               <children>
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+               </children>
+               <StackPane.margin>
+                  <Insets left="3.0" />
+               </StackPane.margin></HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="126.0" layoutY="176.0" prefHeight="32.0" prefWidth="337.0">
+         <children>
+            <HBox fx:id="yellowTable" prefHeight="25.0" prefWidth="327.0" spacing="1.0">
+               <children>
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+               </children>
+               <padding>
+                  <Insets left="3.0" />
+               </padding></HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="126.0" layoutY="225.0" prefHeight="32.0" prefWidth="335.0">
+         <children>
+            <HBox fx:id="pinkTable" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+               <children>
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+               </children>
+               <StackPane.margin>
+                  <Insets left="3.0" />
+               </StackPane.margin></HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="126.0" layoutY="274.0" prefHeight="38.0" prefWidth="336.0">
+         <children>
+            <HBox fx:id="blueTable" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+               <children>
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                  <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+               </children>
+               <StackPane.margin>
+                  <Insets left="3.0" />
+               </StackPane.margin></HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="18.0" layoutY="70.0" prefHeight="245.0" prefWidth="80.0">
+         <children>
+            <HBox prefHeight="244.0" prefWidth="74.0">
+               <children>
+                  <VBox fx:id="entrance1" onMouseClicked="#onStudentClick" prefHeight="244.0" prefWidth="107.0" spacing="17.0">
+                     <children>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="5.0" top="57.0" />
+                     </HBox.margin></VBox>
+                  <VBox fx:id="entrance2" prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+                     <children>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fill="DODGERBLUE" onMouseClicked="#onStudentClick" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="7.0" />
+                     </HBox.margin></VBox>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+      <StackPane layoutX="480.0" layoutY="67.0" prefHeight="249.0" prefWidth="55.0">
+         <children>
+            <VBox fx:id="professorTable" prefHeight="200.0" prefWidth="100.0" spacing="16.0">
+               <children>
+                  <ImageView fx:id="profGreen" disable="true" fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+                     <image>
+                        <Image url="@../Graphics/professor/green_professor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profRed" disable="true" fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+                     <image>
+                        <Image url="@../Graphics/professor/red_professor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profYellow" disable="true" fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+                     <image>
+                        <Image url="@../Graphics/professor/yellow_professor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profPink" disable="true" fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+                     <image>
+                        <Image url="@../Graphics/professor/pink_professor.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="profBlue" disable="true" fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" visible="false">
+                     <image>
+                        <Image url="@../Graphics/professor/blue_professor.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <StackPane.margin>
+                  <Insets left="9.0" top="11.0" />
+               </StackPane.margin></VBox>
+         </children>
+      </StackPane>
+      <StackPane fx:id="towersPane" layoutX="554.0" layoutY="100.0" prefHeight="173.0" prefWidth="121.0">
+         <children>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="TOP_LEFT">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="TOP_CENTER">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="TOP_RIGHT">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="CENTER_LEFT">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="BOTTOM_CENTER">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="CENTER_RIGHT">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false" StackPane.alignment="BOTTOM_LEFT">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+            <ImageView disable="true" fitHeight="57.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../Graphics/BlackTower.PNG" />
+               </image>
+            </ImageView>
+         </children>
+      </StackPane>
+      <Label fx:id="wizardLbl" layoutX="32.0" layoutY="10.0" text="Board of Wizard : ">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="studentSelectedLbl" layoutX="377.0" layoutY="19.0">
+         <font>
+            <Font name="Apple Chancery" size="14.0" />
+         </font></Label>
+   </children>
+</AnchorPane>

@@ -8,11 +8,10 @@ import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import it.polimi.ingsw.NetworkUtilities.Message.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,14 +40,18 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         deckCharacterCard = new DeckCharacterCard();
         activeInfluenceCard = null;
         activeMotherNatureCard = null;
+
     }
 
     @Override
     public void setGame(List<Player> players) throws ExceptionGame {
+        basicMatch.addAllObserver(this.getObservers());
         basicMatch.setGame(players);
         setFirstCoin();
         characterCardInMatchMap = deckCharacterCard.drawCharacterCard(basicMatch);
+
         notifyObserver(new CharacterCardInGameMessage(characterCardInMatchMap));
+
     }
 
     /**
@@ -84,15 +87,10 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         if(activeProhibitionCard!=null)
             if(archipelago.isProhibition()){
-                activeProhibitionCard.resetAProhibitionEffect(archipelago);
-                basicMatch.checkVictory();
-                if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
-                    throw new ExceptionGame("Every player has played in this round phase");
-                if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
-                    basicMatch.resetRound();
-                }
+                activeProhibitionCard.resetProhibitionEffect(archipelago);
+                basicMatch.getGame().placeMotherNature(player, archipelago);
+                basicMatch.checkVictory(player);
                 return;
-
             }
 
         if(activeMotherNatureCard != null){
@@ -100,18 +98,14 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         }else {
             basicMatch.getGame().placeMotherNature(player, archipelago);
         }
+
         try {
             buildTower(player, archipelago);
             basicMatch.lookUpArchipelago(archipelago);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            basicMatch.checkVictory();
-        }
-        if(basicMatch.getActionPhaseOrderOfPlayers().size() == 0)
-            throw new ExceptionGame("Every player has played in this round phase");
-        if (player.equals(basicMatch.getActionPhaseOrderOfPlayers().get(basicMatch.getActionPhaseOrderOfPlayers().size() - 1))) {
-            basicMatch.resetRound();
+            basicMatch.checkVictory(player);
         }
 
         if(activeInfluenceCard != null) {
@@ -124,7 +118,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         }
     }
 
-    protected void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
+    public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
             if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) { //influenza del player in negativo
@@ -134,9 +128,9 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         if(isMostInfluence) {
             basicMatch.getGame().buildTower( getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(player)), archipelago);
         }
-
-
     }
+
+
 
     @Override
     public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame {
@@ -174,9 +168,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         this.activeProhibitionCard = activeProhibitionCard;
     }
 
-    public Map<String, CharacterCard> getCharacterCardInMatchMap() {
-        return characterCardInMatchMap;
-    }
+
 }
 
 

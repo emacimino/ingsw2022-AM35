@@ -12,15 +12,15 @@ import java.util.*;
 /**
  * Game class represents the state of the match, it contains the implements the objects of the game Eriantys
  */
-public class Game implements Cloneable, Serializable {
+public class Game implements Serializable {
     @Serial
     private final static long serialVersionUID = 8766266646997066785L;
     private final List<Wizard> wizards = new ArrayList<>();
-    private final Collection<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
+    private final List<AssistantsCards> assistantsCardsPlayedInRound = new ArrayList<>();
     private final List<Archipelago> archipelagos = new ArrayList<>();
     private final transient StudentBag studentBag = new StudentBag();
     private final List<Professor> professors = new ArrayList<>();
-    private final Collection<Cloud> clouds = new ArrayList<>();
+    private final List<Cloud> clouds = new ArrayList<>();
     private final MotherNature motherNature = new MotherNature();
     private final int limitOfStudentInEntrance;
     private final int numOfStudentMovable;
@@ -107,13 +107,17 @@ public class Game implements Cloneable, Serializable {
         int position = random.nextInt(12);
         motherNature.setPosition(position);
         archipelagos.get(position).setMotherNaturePresence(true);
-
+        List<Student> sb = new ArrayList<>();
+        for(Color c : Color.values()){
+            sb.add(studentBag.pickAStudentOfColor(c));
+            sb.add(studentBag.pickAStudentOfColor(c));
+        }
+        Collections.shuffle(sb);
         for(Archipelago a : archipelagos) {
             if (archipelagos.indexOf(a) != position && archipelagos.indexOf(a) != (position + 6) % 12) {
-                Student student1 = studentBag.drawStudent();
-                Student student2 = studentBag.drawStudent();
-                a.addStudentInArchipelago(student1);
-                a.addStudentInArchipelago(student2);
+                Student student = sb.remove(0);
+                studentBag.getStudentsInBag().remove(student);
+                a.addStudentInArchipelago(student);
             }
         }
 
@@ -296,29 +300,35 @@ public class Game implements Cloneable, Serializable {
             Wizard wizardActualIsle = archipelago.getIsle().get(0).getTower().getProperty();
 
             try {
-                int previousIsle = ((archipelagos.size() + actualIsle) - 1)%archipelagos.size();
+                int previousIsle = ((archipelagos.size() + actualIsle) - 1) % archipelagos.size();
                 Wizard wizardPreviousIsle = archipelagos.get(previousIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardPreviousIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(previousIsle));
                     archipelagos.remove(archipelagos.get(previousIsle));
-                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+
+                    actualIsle = archipelagos.indexOf(archipelago);
+                    motherNature.setPosition(actualIsle);
                 }
+
             } catch (ExceptionGame e1) {
-                System.out.println("Previous Isle not controlled by any wizard");
+                System.out.println(e1.getMessage());
             }
+
             try {
                 int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
                 Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardNextIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(nextIsle));
                     archipelagos.remove(archipelagos.get(nextIsle));
-                    motherNature.setPosition(archipelagos.indexOf(archipelago));
+
+                    actualIsle = archipelagos.indexOf(archipelago);
+                    motherNature.setPosition(actualIsle);
                 }
             } catch (ExceptionGame e2) {
-                System.out.println("Next Isle is not controlled by any wizard");
+                System.out.println(e2.getMessage());
             }
         }catch(ExceptionGame e0){
-            System.out.println("The current Isle is not controlled by any wizard");
+            System.out.println(e0.getMessage());
         }
     }
 
@@ -341,7 +351,7 @@ public class Game implements Cloneable, Serializable {
                 s.add(studentBag.drawStudent());
             }
             w.placeStudentInEntrance(s);
-            s.removeAll(s);
+            s.clear();
         }
     }
 
@@ -357,7 +367,7 @@ public class Game implements Cloneable, Serializable {
      * This method returns the clouds of the game
      * @return clouds
      */
-    public Collection<Cloud> getClouds() {
+    public List<Cloud> getClouds() {
         return clouds;
     }
 
@@ -397,7 +407,7 @@ public class Game implements Cloneable, Serializable {
      * This method returns the assistant's cards played during the round
      * @return a collection of AssistantsCard
      */
-    public Collection<AssistantsCards> getAssistantsCardsPlayedInRound() {
+    public List<AssistantsCards> getAssistantsCardsPlayedInRound() {
         return assistantsCardsPlayedInRound;
     }
 
@@ -422,16 +432,6 @@ public class Game implements Cloneable, Serializable {
 
     }
 
-    @Override
-    public Game clone() {
-        try {
-            Game clone = (Game) super.clone();
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 
     @Override
     public String toString() {

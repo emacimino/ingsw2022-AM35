@@ -77,7 +77,7 @@ class FriarTest {
 
             int positionMN = expertMatch.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
-            Assertions.assertEquals(2, interestArchipelago.getStudentFromArchipelago().size());
+            Assertions.assertEquals(1, interestArchipelago.getStudentFromArchipelago().size());
 
             Assertions.assertEquals(1, wizard1.getCoins());
             List<Student> studentsOnCard = friar.getStudentsOnCard();
@@ -90,7 +90,7 @@ class FriarTest {
             friar.useCard(expertMatch);
 
             Assertions.assertFalse(friar.getStudentsOnCard().contains(s));
-            Assertions.assertEquals(3, interestArchipelago.getStudentFromArchipelago().size());
+            Assertions.assertEquals(2, interestArchipelago.getStudentFromArchipelago().size());
             Assertions.assertTrue(interestArchipelago.getStudentFromArchipelago().contains(s));
             Assertions.assertEquals(0, wizard1.getCoins());
             Assertions.assertEquals(2, friar.getCost());
@@ -132,21 +132,26 @@ class FriarTest {
             assertEquals(1, wizard3.getCoins());
             assertEquals(1, wizard4.getCoins());
 
-            System.out.println(expertMatch4Players.getPlayers());
             List<Student> studentsOnCard = friar.getStudentsOnCard();
             Student s = studentsOnCard.get(0);
             int positionMN = expertMatch4Players.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(player2, expertMatch4Players)) % expertMatch4Players.getGame().getArchipelagos().size());
-            Assertions.assertEquals(2, interestArchipelago.getStudentFromArchipelago().size());
+            Assertions.assertEquals(1, interestArchipelago.getStudentFromArchipelago().size());
+            List<Student> activeStudents = studentsOnCard.subList(0, 1);
+            System.out.println(activeStudents);
+            Student studMoved = activeStudents.get(0);
+            Assertions.assertTrue(friar.getStudentsOnCard().containsAll(activeStudents));
 
+            System.out.println(interestArchipelago);
             friar.setActiveWizard(wizard4);
-            friar.setActiveStudents(studentsOnCard.subList(0, 1));
+            friar.setActiveStudents(activeStudents);
             friar.setArchipelagoEffected(interestArchipelago);
             friar.useCard(expertMatch4Players);
+            System.out.println(interestArchipelago.getIsle());
 
-            Assertions.assertFalse(friar.getStudentsOnCard().contains(s));
-            Assertions.assertEquals(3, interestArchipelago.getStudentFromArchipelago().size());
-            Assertions.assertTrue(interestArchipelago.getStudentFromArchipelago().contains(s));
+            Assertions.assertFalse(friar.getStudentsOnCard().contains(studMoved));
+            Assertions.assertEquals(2, interestArchipelago.getStudentFromArchipelago().size());
+            Assertions.assertTrue(interestArchipelago.getStudentFromArchipelago().contains(studMoved));
             Assertions.assertEquals(0, wizard4.getCoins());
             Assertions.assertEquals(2, friar.getCost());
 

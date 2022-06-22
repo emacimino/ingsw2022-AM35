@@ -1,10 +1,12 @@
 package it.polimi.ingsw.CLIView;
-import it.polimi.ingsw.Client.*;
+import it.polimi.ingsw.Client.Cli.Printable;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
+import it.polimi.ingsw.Model.Wizard.Tower;
+import it.polimi.ingsw.Model.Wizard.TowerColors;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Test;
 
@@ -28,23 +30,25 @@ class CLITest {
         System.out.println(Printable.bigTitle);
         Archipelago archipelago = new Archipelago();
         archipelago.setMotherNaturePresence(true);
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
-        archipelago.getIsle().get(0).getStudentInIsland().add(new Student(Color.GREEN));
         Wizard w = new Wizard("Wizard1", 7 , 4);
 
         Island island = new Island();
+        island.setTower(new Tower(w, TowerColors.Black));
         island.getStudentInIsland().add(new Student(Color.PINK));
         island.getStudentInIsland().add(new Student(Color.PINK));
         island.getStudentInIsland().add(new Student(Color.PINK));
 
 
         archipelago.getIsle().add(island);
+
+        Island island1 = new Island();
+        island.setTower(new Tower(w, TowerColors.Gray));
+        island.getStudentInIsland().add(new Student(Color.PINK));
+        island.getStudentInIsland().add(new Student(Color.PINK));
+        island.getStudentInIsland().add(new Student(Color.PINK));
+
+
+        archipelago.getIsle().add(island1);
         Printable.printArchipelago(archipelago);
     }
 }

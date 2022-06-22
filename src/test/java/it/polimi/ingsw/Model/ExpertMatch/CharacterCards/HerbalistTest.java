@@ -66,7 +66,7 @@ class HerbalistTest {
             wizard2 = expertMatch.getGame().getWizardFromPlayer(player2);
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(0));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
-            //sets a Chef card in the game in position 0
+
             CharacterCard herbalist = new Herbalist(basicMatch2Players, "Herbalist");
             expertMatch.getCharactersForThisGame().put(herbalist.getName(), herbalist);
             assertEquals(2, herbalist.getCost());
@@ -147,8 +147,11 @@ class HerbalistTest {
             Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
             Assertions.assertEquals(2, expertMatch.getActiveProhibitionCard().getProhibitionPass());
 
-            expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(0));
-            expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(1));
+
+            expertMatch.chooseCloud(player1, expertMatch.getGame().getClouds().get(0));
+            expertMatch.chooseCloud(player2, expertMatch.getGame().getClouds().get(1));
+            expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(1));
+            expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(2));
             Assertions.assertTrue(effectArchipelago_3.isProhibition());
             expertMatch.moveMotherNature(player1, effectArchipelago_3);
             Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());

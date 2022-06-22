@@ -20,7 +20,6 @@ public class Wizard implements Serializable {
     private final Board board = new Board();
     private final AssistantsDeck assistantsDeck= new AssistantsDeck();
     private final String username;
-    private int coins = 0;
     private final Collection<Archipelago> archipelagosOfWizard = new HashSet<>();
     private AssistantsCards roundAssistantsCard;
     private final int numOfStudentMovable;
@@ -216,14 +215,11 @@ public class Wizard implements Serializable {
      * @return the number of coins that belongs to the wizard
      */
     public int getCoins() {
-        return coins;
+        return board.getCoins();
     }
 
     public void reduceCoins(int reduce) throws ExceptionGame{
-        if(reduce > getCoins())
-            throw new ExceptionGame("wizard does not have enough coins");
-        this.coins -= reduce;
-
+        board.reduceCoins(reduce);
     }
 
     /**
@@ -241,7 +237,7 @@ public class Wizard implements Serializable {
      * Add a coin when is needed.
      */
     public void addACoin() {
-        coins++;
+        board.addACoin();
     }
 
 

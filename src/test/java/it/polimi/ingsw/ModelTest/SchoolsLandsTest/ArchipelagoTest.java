@@ -32,20 +32,17 @@ class ArchipelagoTest {
         Assertions.assertEquals(0, archipelago.calculateInfluenceInArchipelago(wizard));
         Tower tower = new Tower(wizard, towerColors);
         wizard.getBoard().getTowersInBoard().add(tower);
-        System.out.println("num of tower of wizard " + wizard.getBoard().getTowersInBoard().size());
         Assertions.assertDoesNotThrow(()->
             archipelago.placeWizardsTower(wizard)
         );
-        System.out.println("influence after adding tower " +archipelago.calculateInfluenceInArchipelago(wizard));
+
         Assertions.assertEquals(1, archipelago.calculateInfluenceInArchipelago(wizard));
         Assertions.assertDoesNotThrow(()->Assertions.assertEquals(wizard, archipelago.getIsle().get(0).getTower().getProperty()));
         Professor prof = new Professor(c);
         Student student = new Student(c);
         wizard.getBoard().setProfessorInTable(prof);
-        System.out.println("prof in table " +wizard.getBoard().getProfessorInTable().size());
         archipelago.addStudentInArchipelago(student);
         Assertions.assertEquals(1, archipelago.getStudentFromArchipelago().size());
-        System.out.println("influence after adding student " +archipelago.calculateInfluenceInArchipelago(wizard));
         Assertions.assertEquals(2, archipelago.calculateInfluenceInArchipelago(wizard));
         for (Color color : Color.values())
             if(!color.equals(c)){

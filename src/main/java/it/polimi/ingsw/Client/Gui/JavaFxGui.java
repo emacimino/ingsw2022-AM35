@@ -1,47 +1,57 @@
 package it.polimi.ingsw.Client.Gui;
 
+import it.polimi.ingsw.Client.ClientController;
+import it.polimi.ingsw.Client.Gui.Scene.MenuSceneController;
 import javafx.application.Application;
-import javafx.geometry.VPos;
-import javafx.scene.Group;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.scene.paint.*;
+import java.io.IOException;
 
-import java.io.ObjectInputStream;
+public class JavaFxGui extends Application{
 
-public class JavaFxGui extends Application {
-    public Thread asyncReadFromSocket(ObjectInputStream socketInput) {
-        return null;
-    }
-
-    public Thread asyncWriteToSocket() {
-        return null;
-    }
-
-
-   //lo start verrà chiamato in modo indiretto, attraverso il metodo launch() che sara invocato al momento di una creazione di GUI
-    //dal main
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, Color.LIGHTSKYBLUE);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Eriantys");
-        Image iconCranio = new Image("file:LOGO_CRANIO_CREATIONS.png");
-        primaryStage.getIcons().add(iconCranio);
+    public void start(Stage primaryStage){
+        GUI gui = new GUI();
+        ClientController clientController = new ClientController(gui);
+        gui.addObserver(clientController);
 
-        Text welcomeText = new Text();
-        welcomeText.setText("Welcome, are you ready to play with Eriantys???");
-        welcomeText.setX(50);
-        welcomeText.setY(50);
-        root.getChildren().add(welcomeText);
-        primaryStage.setMaximized(true);
-        // primaryStage.setFullScreen(true);
+        primaryStage.setTitle("Eriantys");
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/menuScene.fxml"));
+
+
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        }catch (IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        MenuSceneController actualController = loader.getController();
+        actualController.addObserver(clientController);
+        //create the relation between the controller first controller and the guiHandler and gui
+        //to update everytime there is a change of sceneController
+        //quando il controller viene modificato/invocato manderà un notify a guiHandler
+        //la quale manderà una notify alla gui!!! che manderà il messaggio
+
+        Scene menuScene = new Scene(root);
+        primaryStage.setScene(menuScene);
+
+        primaryStage.setHeight(900d);
+        primaryStage.setWidth(1400d);
+        primaryStage.setResizable(false);
+
         primaryStage.show(); //used it to show the stage NB it needs to be at the end of start()
     }
 
-
+    public void stop() {
+        Platform.exit();
+        System.exit(0);
+    }
 }

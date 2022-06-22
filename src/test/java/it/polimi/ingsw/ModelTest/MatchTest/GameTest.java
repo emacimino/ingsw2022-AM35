@@ -131,7 +131,7 @@ public class GameTest {
            for(Archipelago a : game.getArchipelagos()){
                int index = game.getArchipelagos().indexOf(a);
                if( index != positionMotherNature && index != (positionMotherNature + 6)%12)
-                   Assertions.assertEquals(2, game.getArchipelagos().get(index).getStudentFromArchipelago().size());
+                   Assertions.assertEquals(1, game.getArchipelagos().get(index).getStudentFromArchipelago().size());
            }
         });
     }
@@ -300,9 +300,10 @@ public class GameTest {
 
             actualArchipelago.placeWizardsTower(wizard1);
 
+            //put the towers on the previous and next archipelago
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size()-1)% game.getArchipelagos().size()).placeWizardsTower(wizard1);
             game.getArchipelagos().get((actualArchipelagoIndex + game.getArchipelagos().size() +1 )% game.getArchipelagos().size()).placeWizardsTower(wizard1);
-
+            Assertions.assertEquals(12, game.getArchipelagos().size());
             game.takeCareOfTheMerge(actualArchipelago);
             Assertions.assertEquals(10, game.getArchipelagos().size());
 
