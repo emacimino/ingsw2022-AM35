@@ -70,7 +70,7 @@ public class CLIHandler {
             if (nameCharacter.equals("quit")) {
                 return null;
             }
-            if (cli.getRemoteModel().getCurrentBoard().getCoins() <= cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()){
+            if (cli.getRemoteModel().getCurrentBoard().getCoins() < cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()){
                 System.out.println("Could not play the card for lack of coins");
                 return null;
             }
