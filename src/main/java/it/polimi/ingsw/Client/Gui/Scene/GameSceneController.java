@@ -30,7 +30,6 @@ public class GameSceneController extends GenericSceneController {
     private int indexColumn = 0;
     private HBox cloudsOne = new HBox(), cloudsTwo = new HBox();
     private Map<Integer, Cloud> cloudMap = new HashMap<>();
-    private Cloud cloudSelected;
     private boolean chooseCloud = false;
 
     public void setGame(Game game) {
@@ -40,8 +39,6 @@ public class GameSceneController extends GenericSceneController {
 
     @FXML
     private GridPane sky;
-    @FXML
-    private Button boardBtn, quitBtn;
     @FXML
     private HBox characterCardBox;
     @FXML
@@ -215,4 +212,6 @@ public class GameSceneController extends GenericSceneController {
         }else
             System.out.println("index cloud in gamescene controller " +indexCloud);
     }
+
+
 }

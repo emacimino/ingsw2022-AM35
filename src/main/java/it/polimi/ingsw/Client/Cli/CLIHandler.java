@@ -96,7 +96,6 @@ public class CLIHandler {
             case GAME_INFO -> showCurrentGame(message);
             case ERROR -> showErrorMessage(((ErrorMessage) message).getError());
             case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
-            case ACTIVE_CHARACTER_CARD -> showActiveCharacterCard(message);
             case SHOW_CHARACTER_CARD_INFO -> showChosenCharacterCard(message);
             default -> System.out.println(message);
 
@@ -337,10 +336,9 @@ public class CLIHandler {
     public void showAssistantsCardOption(List<AssistantsCards> assistantsCardsInTurn) {
         System.out.println("Please select an Assistant Card from the option below: ");
         cli.getRemoteModel().getAssistantsCardsMap().clear();
-        for (AssistantsCards a : assistantsCardsInTurn) {
-            cli.getRemoteModel().getAssistantsCardsMap().put(Constants.getAssistantCardCLI(a), a);
-            System.out.println(Printable.getAssistantCardCLI(a));
-        }
+        cli.getRemoteModel().setAssistantsCardsMap(assistantsCardsInTurn);
+        for(AssistantsCards a : assistantsCardsInTurn)
+             System.out.println(Printable.getAssistantCardCLI(a));
     }
 
     /**
@@ -377,7 +375,6 @@ public class CLIHandler {
     private Message createAssistantCardMessage(String assistant) {
         assistant = assistant.toUpperCase();
         if (cli.getRemoteModel().getAssistantsCardsMap().containsKey(assistant)) {
-            cli.getRemoteModel().assistantCardUsed(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
             return new AssistantCardMessage(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
         } else {
             System.out.println("Please write a valid Assistant Card");
@@ -493,11 +490,6 @@ public class CLIHandler {
         }
     }
 
-    private void showActiveCharacterCard(Message message) {
-        ActiveCharacterCardMessage activeMessage = (ActiveCharacterCardMessage) message;
-        System.out.println(activeMessage.getActiveCharacterCardName());
-        cli.getRemoteModel().setActiveCharacterCard(activeMessage.getActiveCharacterCardName());
-    }
 
     private void showChosenCharacterCard(Message message) {
         CharacterCardInfo infoMessage = (CharacterCardInfo) message;

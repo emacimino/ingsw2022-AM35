@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.Cli;
 
-import it.polimi.ingsw.Client.CLIENT2.UserView;
+import it.polimi.ingsw.Client.UserView;
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class CLI  implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
-    private final RemoteModel remoteModel = new RemoteModel();
+    private RemoteModel remoteModel;
     private final String ip;
     private final int port;
     protected ObjectOutputStream outputStream;
@@ -149,11 +149,6 @@ public class CLI  implements UserView {
         return remoteModel;
     }
 
-
-
-
-
-
     //code to be changed in order to be more readable and usable within cli and gui
     @Override
     public void askLogin() {
@@ -232,5 +227,15 @@ public class CLI  implements UserView {
     @Override
     public void loadStudentOnEntrance(Map<Integer, Student> students) {
         cliHandler.showStudentsOnEntranceOption(students);
+    }
+
+    @Override
+    public void setRemoteModel(RemoteModel remoteModel) {
+        this.remoteModel = remoteModel;
+    }
+
+    @Override
+    public void showChosenCharacterCard() {
+
     }
 }

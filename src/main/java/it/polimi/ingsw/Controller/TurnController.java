@@ -281,7 +281,6 @@ public class TurnController {
         messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
         messageHandler.setActiveCharacterCard(message.getCharacterCardName());
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        sendMessageToView(new ActiveCharacterCardMessage(messageHandler.getActiveCharacterCardName()), remoteView);
         sendMessageToView(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
         sendMessageToView(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()), remoteView);
 

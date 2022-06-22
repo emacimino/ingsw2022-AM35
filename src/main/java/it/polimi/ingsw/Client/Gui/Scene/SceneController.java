@@ -1,12 +1,14 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
 
+import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.CloudInGame;
 import it.polimi.ingsw.Observer.Observer;
 import javafx.event.Event;
@@ -20,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SceneController {
-    private static Game currentGame;
     private static Scene activeScene ;
     private static GenericSceneController activeController;
     private static Parent previousRoot;
@@ -69,8 +70,6 @@ public class SceneController {
     }
 
     public static void showGame(Game game){
-        if(game != null)
-             currentGame = game;
         if(activeController instanceof ActionSceneController){
             return;
         }
@@ -137,14 +136,33 @@ public class SceneController {
             e.printStackTrace();
             return;
         }
+
+        List<Wizard> wizards = getClientController(observers).getRemoteModel().getGame().getWizards();
         BoardsSceneController boardsSceneController = loader.getController();
         Scene boardScene = new Scene(parent);
-        boardsSceneController.setBoards(currentGame.getWizards());
+        boardsSceneController.setBoards(wizards);
         boardsSceneController.addAllObserver(observers);
         boardsSceneController.setScene(boardScene);
         boardsSceneController.display();
     }
 
+    public static void showCharacterCardsOption(List<Observer> observers){
+        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/chooseCharacterCardScene.fxml"));
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        ChooseCharacterCardSceneController chooseCharacterCardSceneController = loader.getController();
+        Scene assistantScene = new Scene(parent);
+        chooseCharacterCardSceneController.setCharacters(getClientController(observers).getRemoteModel().getCharacterCardMap());
+        chooseCharacterCardSceneController.addAllObserver(observers);
+        chooseCharacterCardSceneController.setScene(assistantScene);
+        chooseCharacterCardSceneController.displayOptions();
+
+    }
     public static void loadArchipelagos(Map<Integer, Archipelago> archipelago) {
         if(activeController instanceof ActionSceneController){
             ((ActionSceneController) activeController).setArchipelagos(archipelago);
@@ -169,10 +187,10 @@ public class SceneController {
         }
     }
 
-    public static void enableClouds(CloudInGame cloud) {
+    public static void enableClouds(CloudInGame cloud, Game game) {
         if(! (activeController instanceof GameSceneController)){
             setScene(activeController.getObservers(), "gameScene.fxml");
-            ((GameSceneController)activeController).setGame(currentGame);
+            ((GameSceneController)activeController).setGame(game);
         }
         ((GameSceneController)activeController).enableCloud(cloud.getCloudMap());
     }
@@ -183,5 +201,17 @@ public class SceneController {
             ((EndSceneController)activeController).setWinMessage(winners);
         else
             ((EndSceneController)activeController).setLoseMessage(winners);
+    }
+
+    public static ClientController getClientController(List<Observer> observers){
+        if(observers.get(0) instanceof ClientController)
+            return (ClientController)observers.get(0);
+        else return null;
+    }
+
+    public static void setActualSceneExpert() {
+        if(activeController instanceof ActionSceneController){
+            ((ActionSceneController) activeController).setExpert();
+        }
     }
 }

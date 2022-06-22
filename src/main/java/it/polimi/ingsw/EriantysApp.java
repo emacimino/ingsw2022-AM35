@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Client.CLIENT2.ClientController;
+import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Client.Cli.CLI;
 import it.polimi.ingsw.Client.Gui.JavaFxGui;
 import it.polimi.ingsw.Server.Server;

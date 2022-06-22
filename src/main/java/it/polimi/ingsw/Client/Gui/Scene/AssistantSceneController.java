@@ -18,16 +18,10 @@ import java.util.*;
 public class AssistantSceneController extends GenericSceneController {
     private final Stage stage;
     private Map<AssistantsCards, String> mapImageId ;
-    private List<AssistantsCards> assistantsCardsOptions = new ArrayList<>();
     private AssistantsCards assistantsCardSelected;
 
     @FXML
     private Label assLbl;
-    @FXML
-    private Button confirmBtn;
-    @FXML
-    private ImageView ASSISTANT_ONE, ASSISTANT_TWO, ASSISTANT_THREE, ASSISTANT_FOUR, ASSISTANT_FIVE,
-            ASSISTANT_SIX, ASSISTANT_SEVEN, ASSISTANT_EIGHT, ASSISTANT_NINE, ASSISTANT_TEN;
     @FXML
     private HBox oneToFive;
     @FXML
@@ -36,7 +30,6 @@ public class AssistantSceneController extends GenericSceneController {
 
     public void setAssistants(List<AssistantsCards> assistantsCards) {
         mapImageId = createMapButton();
-        assistantsCardsOptions.addAll(assistantsCards);
         List<Node> nodes;
         Node card;
         HBox hBox;
@@ -76,6 +69,7 @@ public class AssistantSceneController extends GenericSceneController {
         assistantsCardSelected = assistantsCards;
         assLbl.setText("YOU HAVE SELECTED: " + assistantsCardSelected);
     }
+
 
     public Map<AssistantsCards, String> createMapButton() {
         Map<AssistantsCards, String> map = new HashMap<>();

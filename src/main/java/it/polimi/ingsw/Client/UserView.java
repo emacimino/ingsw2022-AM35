@@ -1,5 +1,7 @@
-package it.polimi.ingsw.Client.CLIENT2;
+package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.RemoteModel;
+import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
@@ -46,5 +48,8 @@ public interface UserView {
 
     void loadStudentOnEntrance(Map<Integer, Student> students);
 
+    void setRemoteModel(RemoteModel remoteModel);
 
+
+    void showChosenCharacterCard();
 }

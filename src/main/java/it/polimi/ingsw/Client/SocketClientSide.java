@@ -1,5 +1,6 @@
-package it.polimi.ingsw.Client.CLIENT2;
+package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.NetworkUtilities.DisconnectMessage;
 import it.polimi.ingsw.NetworkUtilities.ErrorMessage;
 import it.polimi.ingsw.NetworkUtilities.Message;

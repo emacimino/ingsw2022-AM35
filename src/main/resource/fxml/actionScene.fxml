@@ -40,19 +40,24 @@
                     <buttons>
                         <VBox prefHeight="300.0" prefWidth="139.0" spacing="15.0">
                            <children>
-                              <Label fx:id="archipelagoSelectedLbl" prefHeight="74.0" prefWidth="134.0">
+                              <Label fx:id="archipelagoSelectedLbl" prefHeight="132.0" prefWidth="176.0">
                                  <font>
                                     <Font name="Apple Chancery" size="18.0" />
                                  </font>
                               </Label>
-                            <Button fx:id="moveBtn" mnemonicParsing="false" onAction="#move" prefHeight="85.0" prefWidth="129.0" text="Move Student">
+                            <Button fx:id="moveBtn" mnemonicParsing="false" onAction="#move" prefHeight="85.0" prefWidth="156.0" text="Move Student">
                                  <font>
                                     <Font name="Apple Chancery" size="18.0" />
                                  </font>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#goToBoards" prefHeight="69.0" prefWidth="129.0" text="Go to the Boards">
+                              <Button mnemonicParsing="false" onAction="#goToBoards" prefHeight="84.0" prefWidth="139.0" text="Go to the Boards">
                                  <font>
                                     <Font name="Apple Chancery" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="playCharacterBtn" mnemonicParsing="false" onAction="#goToScenePlayCharacter" prefHeight="76.0" prefWidth="170.0" text="Play Character">
+                                 <font>
+                                    <Font name="Apple Chancery" size="13.0" />
                                  </font>
                               </Button>
                            </children>

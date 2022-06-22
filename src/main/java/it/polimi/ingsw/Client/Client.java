@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.CLIENT2;
+package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observable;

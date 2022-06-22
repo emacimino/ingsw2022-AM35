@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Client.Gui;
 
-import it.polimi.ingsw.Client.CLIENT2.UserView;
+import it.polimi.ingsw.Client.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GUI extends Observable implements UserView {
-
+    private RemoteModel remoteModel;
 
     @Override
     public void askLogin() {
@@ -43,25 +44,31 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void askToMoveStudent() {
-        Platform.runLater(()-> SceneController.setScene(getObservers(), "actionScene.fxml"));
+        Platform.runLater(()-> {
+            SceneController.setScene(getObservers(), "actionScene.fxml");
+            if(remoteModel.getCharacterCardMap().isEmpty())
+                SceneController.setActualSceneExpert();
+        });
     }
 
     @Override
     public void askMoveMotherNature(String message) {
         Platform.runLater(()->{SceneController.setScene(getObservers(), "actionScene.fxml");
             SceneController.letMoveMotherNature();
+            if(remoteModel.getCharacterCardMap().isEmpty())
+                SceneController.setActualSceneExpert();
         });
     }
 
     @Override
     public void askChooseCloud(CloudInGame cloud) {
-        Platform.runLater(()-> SceneController.enableClouds(cloud));
+        Platform.runLater(()-> SceneController.enableClouds(cloud, remoteModel.getGame()));
     }
 
 
     @Override
     public void showGameState(CurrentGameMessage currentGameMessage){
-        Platform.runLater(()-> SceneController.showGame(currentGameMessage.getGame()));
+        Platform.runLater(()-> SceneController.showGame(remoteModel.getGame()));
     }
 
     @Override
@@ -81,6 +88,15 @@ public class GUI extends Observable implements UserView {
         Platform.runLater(() -> SceneController.loadStudentOnEntrance(students));
     }
 
+    @Override
+    public void setRemoteModel(RemoteModel remoteModel) {
+        this.remoteModel = remoteModel;
+    }
+
+    @Override
+    public void showChosenCharacterCard() {
+
+    }
 
 
     @Override

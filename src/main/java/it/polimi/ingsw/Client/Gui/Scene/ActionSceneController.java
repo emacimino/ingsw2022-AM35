@@ -26,6 +26,8 @@ public class ActionSceneController extends GenericSceneController {
     private Label archipelagoSelectedLbl;
     @FXML
     private Button moveBtn;
+    @FXML
+    private Button playCharacterBtn;
 
     private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
     private Map<Integer, Student> studentMap = new HashMap<>();
@@ -162,5 +164,15 @@ public class ActionSceneController extends GenericSceneController {
     public void setMoveMN(Boolean moveMN) {
         this.moveMN = moveMN;
         moveBtn.setText("Move Mother Nature");
+    }
+
+    public void setExpert(){
+        playCharacterBtn.setDisable(false);
+        playCharacterBtn.setVisible(true);
+    }
+
+    public void goToScenePlayCharacter(ActionEvent event){
+        SceneController.showCharacterCardsOption(getObservers());
+
     }
 }
