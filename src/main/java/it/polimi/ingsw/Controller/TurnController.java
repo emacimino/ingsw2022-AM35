@@ -276,16 +276,20 @@ public class TurnController {
 
     private void sendCharacterCardInfo(AskCharacterCardMessage message) throws ExceptionGame {
         ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
-        messageHandler.setStudentOnCardMap(match.getCharactersForThisGame().get(message.getCharacterCardName()).getStudentsOnCard());
+        String nameOfCard = message.getCharacterCardName();
+        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+
+        messageHandler.setStudentOnCardMap(match.getCharactersForThisGame().get(nameOfCard).getStudentsOnCard());
         messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
         messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
-        messageHandler.setActiveCharacterCard(message.getCharacterCardName());
-        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+        messageHandler.setActiveCharacterCard(nameOfCard);
+        sendMessageToView(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"), remoteView);
         sendMessageToView(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
         sendMessageToView(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()), remoteView);
 
-        sendMessageToView(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"), remoteView);
     }
+
+
 
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
         String cardName = message.getNameCharacterCard();
