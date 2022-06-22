@@ -67,7 +67,11 @@ public class CLIHandler {
         do {
             System.out.println("Select the character card you want to play, or input 'quit' to return to the game: ");
             nameCharacter = cli.scanner.nextLine(); //expected to have the Name of the character selected
-            if (nameCharacter.equals("quit") || cli.getRemoteModel().getCurrentBoard().getCoins() != cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost() ) {
+            if (nameCharacter.equals("quit")) {
+                return null;
+            }
+            if (cli.getRemoteModel().getCurrentBoard().getCoins() <= cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()){
+                System.out.println("Could not play the card for lack of coins");
                 return null;
             }
         } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
