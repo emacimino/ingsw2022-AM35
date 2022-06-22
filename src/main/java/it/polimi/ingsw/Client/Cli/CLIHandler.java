@@ -290,12 +290,13 @@ public class CLIHandler {
     private void getInfoBoard(Board board) throws ExceptionGame {
         List<Student> students = new ArrayList<>();
         System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
-        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        if(!board.getTowersInBoard().isEmpty())
+             Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
         for (Color c : Color.values()) {
             students.addAll(board.getStudentsFromTable(c));
         }
         Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
-        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getTowersInBoard().iterator().next().getProperty().getCoins());
+        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getCoins());
         System.out.print("\n");
     }
 
