@@ -497,6 +497,7 @@ public class CLIHandler {
         cli.getRemoteModel().setArchipelagosMap(infoMessage.getArchipelagoMap());
         cli.getRemoteModel().setStudentsOnCardMap(infoMessage.getStudentsOnCardMap());
         cli.getRemoteModel().setStudentOnEntranceMap(infoMessage.getStudentsOnEntranceMap());
+        cli.getRemoteModel().setActiveCharacterCard(infoMessage.getCharacterCardName());
         System.out.println("Archipelagos: ");
         for (Integer integer : cli.getRemoteModel().getArchipelagosMap().keySet()) {
             System.out.println(integer + ") ");
