@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 
@@ -58,6 +59,8 @@ public class Minstrel extends CharacterCard implements StudentEffectCard , Seria
             if (studentsInCase.containsAll(getActiveStudents())) {
                 if (getActiveWizard().getBoard().getStudentsInEntrance().containsAll(getPassiveStudents())) {
                     tradeStudents(getActiveStudents(), getPassiveStudents(), studentsInCase, getActiveWizard().getBoard().getStudentsInEntrance());
+                    for(Color c : getPassiveStudents().stream().map(s -> s.getColor()).toList())
+                        getBasicMatch().lookUpProfessor(c);
                 } else
                     throw new ExceptionGame("The entrance of the wizard does not contains all the students selected");
             } else

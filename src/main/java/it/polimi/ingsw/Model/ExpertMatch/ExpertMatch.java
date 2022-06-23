@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -116,6 +117,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
             activeMotherNatureCard.resetCard();
             activeMotherNatureCard = null;
         }
+        notifyObserver(new CurrentGameMessage(getGame()));
     }
 
     public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {

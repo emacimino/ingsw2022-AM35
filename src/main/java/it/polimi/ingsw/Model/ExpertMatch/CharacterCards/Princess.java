@@ -50,6 +50,7 @@ public class Princess extends CharacterCard implements StudentEffectCard , Seria
         if(getStudentsOnCard().contains(chosenStudent)) {
             wizard.getBoard().addStudentInTable(chosenStudent);
             getStudentsOnCard().remove(chosenStudent);
+            getBasicMatch().lookUpProfessor(chosenStudent.getColor());
         }
         else
             throw new ExceptionGame("This student is not on the card");

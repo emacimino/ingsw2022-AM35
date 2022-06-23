@@ -54,7 +54,12 @@ public class DeckCharacterCard{
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
-        }return deckForAMatch;
+        }
+        if(!deckForAMatch.containsKey("Friar")) {
+            deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(0));
+            deckForAMatch.put("Friar", factoryCharacterCard.createACharacterCard(basicMatch, "Friar"));
+        }
+        return deckForAMatch;
     }
 
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="511.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ChooseCharacterCardSceneController">
+<AnchorPane prefHeight="511.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.ChooseCharacterCardSceneController">
    <children>
       <ImageView fitHeight="609.0" fitWidth="892.0" layoutX="-8.0" layoutY="-78.0" pickOnBounds="true" preserveRatio="true">
          <image>

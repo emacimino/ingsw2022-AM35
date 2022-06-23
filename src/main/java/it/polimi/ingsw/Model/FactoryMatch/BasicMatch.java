@@ -132,7 +132,7 @@ public class BasicMatch extends Observable implements Serializable {
      *
      * @param c is the color
      */
-    protected void lookUpProfessor(Color c){
+    public void lookUpProfessor(Color c){
         try {
             game.placeProfessor(c);
         }catch (ExceptionGame e){

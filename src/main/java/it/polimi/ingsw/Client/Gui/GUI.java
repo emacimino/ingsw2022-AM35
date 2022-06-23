@@ -8,10 +8,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
-import it.polimi.ingsw.NetworkUtilities.CloudInGame;
-import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
-import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
 import java.util.List;
@@ -45,7 +42,7 @@ public class GUI extends Observable implements UserView {
     @Override
     public void askToMoveStudent() {
         Platform.runLater(()-> {
-            SceneController.setScene(getObservers(), "actionScene.fxml");
+            SceneController.setActionScene(getObservers(), "actionScene.fxml");
             if(remoteModel.getCharacterCardMap().isEmpty())
                 SceneController.setActualSceneExpert();
         });
@@ -53,7 +50,7 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void askMoveMotherNature(String message) {
-        Platform.runLater(()->{SceneController.setScene(getObservers(), "actionScene.fxml");
+        Platform.runLater(()->{
             SceneController.letMoveMotherNature();
             if(remoteModel.getCharacterCardMap().isEmpty())
                 SceneController.setActualSceneExpert();
@@ -62,13 +59,21 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void askChooseCloud(CloudInGame cloud) {
-        Platform.runLater(()-> SceneController.enableClouds(cloud, remoteModel.getGame()));
+        Platform.runLater(()-> { //rifare la scena prendendo info da remote model
+                SceneController.enableClouds(cloud, remoteModel.getGame());
+        });
+
     }
 
 
     @Override
     public void showGameState(CurrentGameMessage currentGameMessage){
-        Platform.runLater(()-> SceneController.showGame(remoteModel.getGame()));
+        Platform.runLater(()-> {
+            SceneController.showGame(remoteModel.getGame());
+            if(!remoteModel.getCharacterCardMap().isEmpty()){
+                SceneController.loadCharacterCards(remoteModel.getCharacterCardMap());
+            }
+        });
     }
 
     @Override
@@ -95,7 +100,14 @@ public class GUI extends Observable implements UserView {
 
     @Override
     public void showChosenCharacterCard() {
-
+        switch (remoteModel.getActiveCharacterCard()){
+            case "Archer", "Magician", "Knight", "Baker" -> {
+                notifyObserver(new PlayCharacterMessage(remoteModel.getActiveCharacterCard(), 13, null, null, null));
+                }
+            case "Princess", "Friar" -> {
+                SceneController.setCharacterScene(getObservers(), "expertScenes/studentCardScene.fxml");
+            }
+        }
     }
 
 
@@ -108,7 +120,7 @@ public class GUI extends Observable implements UserView {
     public void showError(String error) {
         Platform.runLater(() -> {
             SceneController.showAlert("ERROR", error);
-            SceneController.setScene(getObservers(), "login.fxml");
+            //SceneController.setScene(getObservers(), "login.fxml");
         });
     }
 

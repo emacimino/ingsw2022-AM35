@@ -12,6 +12,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,16 @@ public class RemoteModel {
     private Map<Integer, Cloud> cloudsMap = new HashMap<>();
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
     private String activeCharacterCard;
+    private List<Integer> studentSelected = new ArrayList<>();
+    private Integer archipelagoSelected;
+
+    public Integer getArchipelagoSelected() {
+        return archipelagoSelected;
+    }
+
+    public void setArchipelagoSelected(Integer archipelagoSelected) {
+        this.archipelagoSelected = archipelagoSelected;
+    }
 
     public void setStudentOnEntranceMap(Map<Integer, Student> map){
         studentsOnEntranceMap = map;
@@ -94,5 +105,11 @@ public class RemoteModel {
         this.currentBoard = currentBoard;
     }
 
+    public void setStudentSelected(List<Integer> studentSelected) {
+        this.studentSelected = studentSelected;
+    }
 
+    public List<Integer> getStudentSelected() {
+        return studentSelected;
+    }
 }
