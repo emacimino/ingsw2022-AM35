@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="900.0" maxWidth="1400.0" minHeight="327.0" minWidth="709.0" prefHeight="346.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.BoardPanelController">
    <children>
@@ -21,7 +22,7 @@
       </ImageView>
       <StackPane layoutX="125.0" layoutY="77.0" prefHeight="32.0" prefWidth="337.0">
          <children>
-            <HBox fx:id="greenTable" prefHeight="28.0" prefWidth="332.0" spacing="1.0">
+            <HBox fx:id="greenTable" disable="true" prefHeight="28.0" prefWidth="332.0" spacing="1.0">
                <children>
                   <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                   <Circle disable="true" fill="#3cc945" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
@@ -36,12 +37,15 @@
                </children>
                <StackPane.margin>
                   <Insets left="3.0" />
-               </StackPane.margin></HBox>
+               </StackPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
          </children>
       </StackPane>
       <StackPane layoutX="125.0" layoutY="125.0" prefHeight="33.0" prefWidth="337.0">
          <children>
-            <HBox fx:id="redTable" prefHeight="30.0" prefWidth="329.0" spacing="1.0">
+            <HBox fx:id="redTable" disable="true" prefHeight="30.0" prefWidth="329.0" spacing="1.0">
                <children>
                   <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                   <Circle disable="true" fill="#cd1a1a" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
@@ -56,12 +60,15 @@
                </children>
                <StackPane.margin>
                   <Insets left="3.0" />
-               </StackPane.margin></HBox>
+               </StackPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
          </children>
       </StackPane>
       <StackPane layoutX="126.0" layoutY="176.0" prefHeight="32.0" prefWidth="337.0">
          <children>
-            <HBox fx:id="yellowTable" prefHeight="25.0" prefWidth="327.0" spacing="1.0">
+            <HBox fx:id="yellowTable" disable="true" prefHeight="25.0" prefWidth="327.0" spacing="1.0">
                <children>
                   <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                   <Circle disable="true" fill="#e3ff0c" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
@@ -76,12 +83,15 @@
                </children>
                <padding>
                   <Insets left="3.0" />
-               </padding></HBox>
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
          </children>
       </StackPane>
       <StackPane layoutX="126.0" layoutY="225.0" prefHeight="32.0" prefWidth="335.0">
          <children>
-            <HBox fx:id="pinkTable" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+            <HBox fx:id="pinkTable" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
                <children>
                   <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                   <Circle disable="true" fill="#ff62e5" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
@@ -96,12 +106,15 @@
                </children>
                <StackPane.margin>
                   <Insets left="3.0" />
-               </StackPane.margin></HBox>
+               </StackPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
          </children>
       </StackPane>
       <StackPane layoutX="126.0" layoutY="274.0" prefHeight="38.0" prefWidth="336.0">
          <children>
-            <HBox fx:id="blueTable" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
+            <HBox fx:id="blueTable" disable="true" prefHeight="100.0" prefWidth="200.0" spacing="1.0">
                <children>
                   <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                   <Circle disable="true" fill="DODGERBLUE" radius="16.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
@@ -116,7 +129,10 @@
                </children>
                <StackPane.margin>
                   <Insets left="3.0" />
-               </StackPane.margin></HBox>
+               </StackPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></HBox>
          </children>
       </StackPane>
       <StackPane layoutX="18.0" layoutY="70.0" prefHeight="245.0" prefWidth="80.0">
@@ -268,9 +284,14 @@
             <Font name="Apple Chancery" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="studentSelectedLbl" layoutX="377.0" layoutY="19.0">
+      <Text fx:id="studentSelectedTxt" layoutX="508.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="Apple Chancery" size="14.0" />
-         </font></Label>
+            <Font name="Apple Chancery" size="13.0" />
+         </font></Text>
+      <Text fx:id="colorSelectedTxt" layoutX="281.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Apple Chancery" size="13.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

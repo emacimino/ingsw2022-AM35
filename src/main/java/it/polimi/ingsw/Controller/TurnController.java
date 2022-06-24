@@ -151,7 +151,7 @@ public class TurnController {
 
         } catch (ExceptionGame e) {
             ViewInterface view = viewMap.get(activePlayer.getUsername());
-            sendMessageToView(new GenericMessage(e.getMessage()), (RemoteView) view);
+            sendMessageToView(new ErrorMessage(e.getMessage()), (RemoteView) view);
             askingViewToPlayAnAssistantCard();
             return false;
         }
@@ -170,7 +170,7 @@ public class TurnController {
             askNextAction();
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
-            sendMessageToView(new GenericMessage("Can't move MotherNature in this position"), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
+            sendMessageToView(new ErrorMessage("Can't move MotherNature in this position"), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
 
         }
     }
@@ -187,7 +187,7 @@ public class TurnController {
 
         } catch (ExceptionGame e) {
             e.printStackTrace();
-            sendMessageToView(new GenericMessage(e.getMessage()), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
+            sendMessageToView(new ErrorMessage(e.getMessage()), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
         }
 
 
@@ -217,7 +217,7 @@ public class TurnController {
 
         } catch (ExceptionGame exceptionGame) {
             exceptionGame.printStackTrace();
-            sendMessageToView(new GenericMessage("Can't move more students from board"), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
+            sendMessageToView(new ErrorMessage("Can't move more students from board"), (RemoteView)viewMap.get(getActivePlayer().getUsername()) );
             askingViewToMoveAStudent(numberOfStudentMoved);
         }
     }
@@ -259,7 +259,6 @@ public class TurnController {
      */
     public void setActivePlayer(Player player) {
         activePlayer = player;
-        System.out.println("Active player: "+ player);
         RemoteView remoteView = (RemoteView) viewMap.get(player.getUsername());
         sendMessageToView(new YourTurnMessage(), remoteView);
         askNextAction();
@@ -284,16 +283,14 @@ public class TurnController {
      */
     private void askingViewToMoveAStudent(int numberOfStudentMoved) {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-        sendMessageToView(new GenericMessage("It's your turn, move " + (controller.getMatch().getNumberOfMovableStudents() - numberOfStudentMoved) + " students from your board"), remoteView);
+      //  sendMessageToView(new GenericMessage("It's your turn, move " + (controller.getMatch().getNumberOfMovableStudents() - numberOfStudentMoved) + " students from your board"), remoteView);
         try {
             messageHandler.setStudentOnEntranceMap(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-
-            sendMessageToView(new AskToMoveStudents(), remoteView);
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
             sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
             sendMessageToView(new StudentsOnEntranceMessage(messageHandler.getStudentsOnEntranceMap()), remoteView);
-
+            sendMessageToView(new AskToMoveStudents(), remoteView);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -321,11 +318,13 @@ public class TurnController {
     private void askingViewToMoveMotherNature(){
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-            sendMessageToView(new GenericMessage("\nIt's your turn, move Mother Nature!!"), remoteView);
+           // sendMessageToView(new GenericMessage("\nIt's your turn, move Mother Nature!!"), remoteView);
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-            sendMessageToView(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()), remoteView);
+
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
             sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
+            sendMessageToView(new StudentsOnEntranceMessage(messageHandler.getStudentsOnEntranceMap()), remoteView);
+            sendMessageToView(new AskToMoveMotherNatureMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getRoundAssistantsCard().getStep()), remoteView);
         } catch (ExceptionGame e) {
             e.printStackTrace();
         }
@@ -340,20 +339,18 @@ public class TurnController {
             nextPlayerActionPhase();
             return;
         }
-        try{
+       /* try{*/
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-            sendMessageToView(new GenericMessage("\n It's your turn, choose a Cloud!!"), remoteView);
+     //       sendMessageToView(new GenericMessage("\n It's your turn, choose a Cloud!!"), remoteView);
 
             messageHandler.setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
-
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
-
-            sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
-            sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
+           // sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
+           // sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
             sendMessageToView(new CloudInGame(messageHandler.getCloudMap()), remoteView);
-        } catch (ExceptionGame e) {
+      /*  } catch (ExceptionGame e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -364,18 +361,23 @@ public class TurnController {
      */
     private void sendCharacterCardInfo(AskCharacterCardMessage message) throws ExceptionGame {
         ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
-        String nameOfCard = message.getCharacterCardName();
+        messageHandler.setCharacterCardMap(match.getCharactersForThisGame());
+        int wizardCoins = match.getGame().getWizardFromPlayer(activePlayer).getCoins();
+        int cardCost = messageHandler.getCharacterCardMap().get(message.getCharacterCardName()).getCost();
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
-
-        messageHandler.setStudentOnCardMap(match.getCharactersForThisGame().get(nameOfCard).getStudentsOnCard());
-        messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
-        messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
-        messageHandler.setActiveCharacterCard(nameOfCard);
-        sendMessageToView(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"), remoteView);
-        sendMessageToView(new BoardMessage(match.getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
-        sendMessageToView(new CharacterCardInfo(message.getCharacterCardName(),messageHandler.getStudentsOnCardMap(),messageHandler.getStudentsOnEntranceMap(),messageHandler.getArchipelagoMap()), remoteView);
-
+        if( wizardCoins >= cardCost) {
+            messageHandler.setStudentOnCardMap(match.getCharactersForThisGame().get(message.getCharacterCardName()).getStudentsOnCard());
+            messageHandler.setStudentOnEntranceMap(match.getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
+            messageHandler.setArchipelagoMap(match.getGame().getArchipelagos());
+            sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
+            sendMessageToView(new CharacterCardInfo(message.getCharacterCardName(), messageHandler.getStudentsOnCardMap(), messageHandler.getStudentsOnEntranceMap(), messageHandler.getArchipelagoMap()), remoteView);
+          //  sendMessageToView(new GenericMessage("\n It's your turn, write what needed for your CharacterCard!!"), remoteView);
+        }else {
+            sendMessageToView(new ErrorMessage("you don't have enough coins!"), remoteView);
+            askNextAction();
+        }
     }
+
 
 
     /**
@@ -391,16 +393,17 @@ public class TurnController {
             } catch (ExceptionGame e) {
                 e.printStackTrace();
                 sendMessageToView(new ErrorMessage(e.getMessage()),remoteView);
+                askNextAction();
             }
         }
-
         try {
             ((ExpertMatch)controller.getMatch()).getCharactersForThisGame().get(cardName).useCard((ExpertMatch) controller.getMatch());
             sendMessageToView(new CharacterCardInGameMessage(((ExpertMatch)controller.getMatch()).getCharactersForThisGame()), remoteView);
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();
-            sendMessageToView(new ErrorMessage(e.getMessage()),remoteView);
+            sendMessageToView(new ErrorMessage(e.getMessage()), remoteView);
+            askNextAction();
         }
 
 

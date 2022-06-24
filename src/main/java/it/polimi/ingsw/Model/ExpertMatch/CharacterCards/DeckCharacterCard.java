@@ -54,7 +54,16 @@ public class DeckCharacterCard{
             CharacterCard drawnCharacterCard = factoryCharacterCard.createACharacterCard(basicMatch, deckOfCharacterCards.get(toChoose));
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
-        }return deckForAMatch;
+        }
+        if(!deckForAMatch.containsKey("Minstrel")) {
+            deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(0));
+            deckForAMatch.put("Minstrel", factoryCharacterCard.createACharacterCard(basicMatch, "Minstrel"));
+        }
+        if(!deckForAMatch.containsKey("Jester")) {
+            deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(1));
+            deckForAMatch.put("Jester", factoryCharacterCard.createACharacterCard(basicMatch, "Jester"));
+        }
+        return deckForAMatch;
     }
 
 }

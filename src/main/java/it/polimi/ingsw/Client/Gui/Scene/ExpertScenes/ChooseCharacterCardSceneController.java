@@ -1,5 +1,7 @@
-package it.polimi.ingsw.Client.Gui.Scene;
+package it.polimi.ingsw.Client.Gui.Scene.ExpertScenes;
 
+import it.polimi.ingsw.Client.Gui.Scene.CardMap;
+import it.polimi.ingsw.Client.Gui.Scene.GenericSceneController;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.AskCharacterCardMessage;
 import javafx.event.ActionEvent;

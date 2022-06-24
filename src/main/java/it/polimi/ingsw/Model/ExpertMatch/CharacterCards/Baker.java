@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
     public Baker(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(2);
+
     }
 
     /**
@@ -36,7 +38,8 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveInfluenceCard(this);
-        this.cost++;
+        paymentOfTheCard();
+
     }
 
     /**
@@ -60,6 +63,7 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
         return influence;
     }
 
+
     /**
      * resets the card
      */
@@ -67,4 +71,5 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
     public void resetCard() {
         super.resetCard();
     }
+
 }

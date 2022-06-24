@@ -46,7 +46,6 @@ public interface UserView {
      */
     void showGenericMessage(String genericMessage);
 
-    void showDisconnectionMessage(String usernameDisconnected, String text);
 
     /**
      * Show the view an error message
@@ -54,11 +53,6 @@ public interface UserView {
      */
     void showError(String error);
 
-    /**
-     * load the board for the view
-     * @param board id the board selected
-     */
-    void loadBoard(Board board);
 
     /**
      * Communicate if someone won the game
@@ -85,17 +79,6 @@ public interface UserView {
      */
     void askToMoveStudent();
 
-    /**
-     * load the archipelago situation for the client
-     * @param archipelago current archipelago list whit index
-     */
-    void loadArchipelagosOption(Map<Integer, Archipelago> archipelago);
-
-    /**
-     * load the student entrance for the client
-     * @param students current students entrance list whit index
-     */
-    void loadStudentOnEntrance(Map<Integer, Student> students);
 
     /**
      * update the remote model

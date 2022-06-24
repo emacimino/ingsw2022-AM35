@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard, S
         super(basicMatch, name);
         setCost(2);
         setProhibitionPass(4);
+
     }
 
     /**
@@ -39,7 +41,8 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard, S
         if(match.getActiveProhibitionCard() == null)
             match.setActiveProhibitionCard(this);
         useProhibitionEffect();
-        this.cost++;
+        paymentOfTheCard();
+        resetCard();
     }
 
     /**
@@ -52,7 +55,6 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard, S
             setProhibitionPass(getProhibitionPass() - 1);
         }
         else throw new ExceptionGame("No more Prohibition pass on this card");
-        resetCard();
     }
 
     /**

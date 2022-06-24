@@ -75,14 +75,6 @@ public abstract class CharacterCard extends Observable implements Serializable {
     }
 
     /**
-     *  This method sets the passive wizard
-     * @param passiveWizard The passive wizard
-     */
-    public void setPassiveWizard(Wizard passiveWizard) {
-        this.passiveWizard = passiveWizard;
-    }
-
-    /**
      * This method sets the color effected
      * @param colorEffected color
      */
@@ -131,8 +123,12 @@ public abstract class CharacterCard extends Observable implements Serializable {
         if(activeWizard == null){
             throw new ExceptionGame("activeWizard hasn't been set");
         }
+    }
+
+    protected void paymentOfTheCard() throws ExceptionGame {
+        notifyObserver(new CurrentGameMessage(basicMatch.getGame()));
         activeWizard.reduceCoins(getCost());
-        notifyObserver(new CurrentGameMessage(match.getGame())); //not sure if it works, line to check
+        cost++;
     }
 
     /**
@@ -143,13 +139,6 @@ public abstract class CharacterCard extends Observable implements Serializable {
         return activeWizard;
     }
 
-    /**
-     * This method gets the passive wizard
-     * @return the passive wizard
-     */
-    public Wizard getPassiveWizard() {
-        return passiveWizard;
-    }
 
     /**
      * This method gets the color effected

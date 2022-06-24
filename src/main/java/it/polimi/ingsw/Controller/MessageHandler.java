@@ -19,10 +19,8 @@ public class MessageHandler {
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
     private Map<Integer, Cloud> cloudMap = new HashMap<>();
-    private final Map<String, Color> colorMap = setColorMap();
     private Map<String, CharacterCard> characterCardMap = new HashMap<>();
     private Map<Integer,Student> studentsOnCardMap = new HashMap<>();
-    private String activeCharacterCardName;
 
     /**
      * Setter for studentsOnCardMap
@@ -80,12 +78,8 @@ public class MessageHandler {
         }
     }
 
-    public void setCharacterCardMap(List<CharacterCard> characterCard) {
-        characterCardMap.clear();
-        for(CharacterCard c: characterCard){
-            characterCardMap.put(c.getName(), c);
-
-        }
+    public void setCharacterCardMap(Map<String, CharacterCard> characterCard) {
+        characterCardMap = characterCard;
     }
 
     /**
@@ -132,12 +126,9 @@ public class MessageHandler {
     }
 
 
-    /**
-     * Setter for activeCharacterCard
-     */
-    public void setActiveCharacterCard(String characterCardName) {
-        this.activeCharacterCardName = characterCardName;
-    }
 
+    public Map<String, CharacterCard> getCharacterCardMap() {
+        return characterCardMap;
+    }
 
 }

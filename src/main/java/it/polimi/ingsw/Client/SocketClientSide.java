@@ -71,12 +71,10 @@ public class SocketClientSide extends Client {
                     Message message;
                     try{
                         message = (Message) inputStream.readObject();
+                        notifyObserver(message);
                     }catch (IOException | ClassNotFoundException e ){
-                        message = new ErrorMessage("Connection lost");
                         disconnect();
-                        executorService.shutdownNow();
                     }
-                    notifyObserver(message);
                 }
         });
 
@@ -87,7 +85,7 @@ public class SocketClientSide extends Client {
     @Override
     public void disconnect() {
         try{
-            new Thread(()-> sendMessage(new DisconnectMessage())).start();
+            new Thread(()-> notifyObserver(new DisconnectMessage())).start();
             if(!socket.isClosed()){
                 System.out.println("socket not closed yer");
                 executorService.shutdownNow();
