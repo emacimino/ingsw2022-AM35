@@ -24,24 +24,17 @@ public class CLI  extends Observable implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private RemoteModel remoteModel;
-    private final String ip;
-    private final int port;
-    protected ObjectOutputStream outputStream;
+   // protected ObjectOutputStream outputStream;
     private boolean active = true;
-    protected ObjectInputStream socketIn;
+   // protected ObjectInputStream socketIn;
     protected TurnPhase turnPhase = TurnPhase.LOGIN;
 
-
-    public CLI(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
-    }
 
     /**
      * Scan the user input and elaborate the result
      * @return a new thread that handle the reading functions
      */
-    public Thread asyncWriteToSocket(){
+    public Thread readFromInput(){
         Thread thread = new Thread(() -> {
             try{
                 scanner = new Scanner(System.in);
@@ -49,8 +42,7 @@ public class CLI  extends Observable implements UserView {
                     String inputLine = scanner.nextLine(); //Scan input from command line
                     Message message = cliHandler.convertInputToMessage(inputLine, turnPhase); //Create message from input
                     if(message != null) {
-                        //notifyObserver(message);
-                        sendToServer(message);
+                        notifyObserver(message);
                     }
                 }
             }catch (Exception e){
@@ -64,10 +56,10 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * Receive an input from server and elaborate it
-     * @param inputObject object from server
+   //  * @param inputObject object from server
      * @return a thread that handle everything
      */
-    public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
+ /*   public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
         Thread thread = new Thread(() -> {
             try{
                 while (isActive()){
@@ -82,7 +74,7 @@ public class CLI  extends Observable implements UserView {
         });
         thread.start();
         return  thread;
-    }
+    }/*
 
     /**
      * Check if the connection exist
@@ -105,53 +97,41 @@ public class CLI  extends Observable implements UserView {
      * @throws IOException if the connection cease to exist
      */
     public void run() throws IOException {
-        Socket socketClient = new Socket(ip,port);
 
-        try (socketClient) {
-            ClientController clientController = new ClientController(this);
-            this.addObserver(clientController);
-            System.out.println("Connection Established");
+        try {
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Insert the IP: ");
+            String ip = scanner.nextLine();
+            System.out.println("Port: ");
+            String port = scanner.nextLine();
+            boolean isValidIpAddress = ClientController.isValidIpAddress(ip);
+            boolean isValidPort = ClientController.isValidPort(port);
+
+            if (isValidIpAddress && isValidPort) {
+                notifyObserver(new ServerInfoMessage(ip, port));
+            }
+          /*  System.out.println("Connection Established");
             socketIn = new ObjectInputStream(socketClient.getInputStream());
             outputStream = new ObjectOutputStream(socketClient.getOutputStream());
-            Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket();
-            Thread t2 = ping();
-            t0.join();
+            Thread t0 = asyncReadFromSocket(socketIn);*/
+            Thread t1 = readFromInput();
+            // Thread t2 = ping();
+           // t0.join();
             t1.join();
-            t2.join();
+          //  t2.join();*/
+
         } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
-        } finally {
-            socketIn.close();
-            outputStream.close();
         }
     }
-
-    /**
-     * set the turnPhase by the type of message that arrives
-     * @param message message that arrives from server
-     */
-    private void setNextAction(Message message) {
-        switch (message.getType()){
-            case ASK_ASSISTANT_CARD -> this.turnPhase = TurnPhase.PLAY_ASSISTANT;
-            case STUDENTS_ON_ENTRANCE ->  this.turnPhase = TurnPhase.MOVE_STUDENTS;
-            case ASK_MOVE_MOTHER_NATURE -> this.turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
-            case CLOUD_IN_GAME -> this.turnPhase = TurnPhase.CHOOSE_CLOUD;
-            case SHOW_CHARACTER_CARD_INFO -> this.turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
-            case END_OF_TURN -> this.turnPhase = TurnPhase.END_TURN;
-
-            default -> {
-                //do nothing
-            }
-
-        }
-    }
+    
 
     /**
      * Send to server a message
      * @param message message to be sent
      */
-    protected synchronized void sendToServer(Message message) {
+   /* protected synchronized void sendToServer(Message message) {
         try{
             outputStream.reset();
             outputStream.writeObject(message);
@@ -159,13 +139,13 @@ public class CLI  extends Observable implements UserView {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * thread that handle the ping function
      * @return a thread
      */
-    public Thread ping(){
+  /*  public Thread ping(){
         Ping ping = new Ping();
         return new Thread(() -> {
             try{
@@ -180,7 +160,7 @@ public class CLI  extends Observable implements UserView {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 
     /**
      * getter of remoteModel
@@ -205,6 +185,7 @@ public class CLI  extends Observable implements UserView {
      */
     @Override
     public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
+        turnPhase = TurnPhase.PLAY_ASSISTANT;
         cliHandler.showAssistantsCardOption(assistantsCards);
     }
 
@@ -215,6 +196,7 @@ public class CLI  extends Observable implements UserView {
      */
     @Override
     public void askMoveMotherNature(String message) {
+        turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
         cliHandler.askToMotherNature(message);
     }
     /**
@@ -223,6 +205,7 @@ public class CLI  extends Observable implements UserView {
      */
     @Override
     public void askChooseCloud(CloudInGame clouds) {
+        turnPhase = TurnPhase.CHOOSE_CLOUD;
         cliHandler.showClouds(clouds);
     }
     /**
@@ -242,10 +225,7 @@ public class CLI  extends Observable implements UserView {
         cliHandler.showGenericMessage(genericMessage);
     }
 
-    @Override
-    public void showDisconnectionMessage(String usernameDisconnected, String text) {
-        //TO DO
-    }
+
     /**
      * Show the view an error message
      * @param error could be a phrase that help the client doing the right choice
@@ -258,7 +238,10 @@ public class CLI  extends Observable implements UserView {
 
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
-
+        if(isWinner)
+             cliHandler.showGenericMessage("congratulation! You Won!");
+        else
+            cliHandler.showGenericMessage("I'm Sorry you have lose");
     }
     /**
      * Help to understand how the current match is going
@@ -283,7 +266,8 @@ public class CLI  extends Observable implements UserView {
      */
     @Override
     public void askToMoveStudent() {
-
+        turnPhase = TurnPhase.MOVE_STUDENTS;
+        cliHandler.showStudentsOnEntranceOption(remoteModel.getStudentsOnEntranceMap());
     }
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
@@ -294,7 +278,8 @@ public class CLI  extends Observable implements UserView {
      */
     @Override
     public void showChosenCharacterCard() {
-
+        turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
+        cliHandler.showInfoChosenCharacterCard();
     }
 
 

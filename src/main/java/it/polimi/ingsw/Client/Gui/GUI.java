@@ -123,8 +123,4 @@ public class GUI extends Observable implements UserView {
         );
     }
 
-    @Override
-    public void showDisconnectionMessage(String usernameDisconnected, String text) {
-
-    }
 }

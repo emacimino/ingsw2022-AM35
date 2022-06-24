@@ -46,7 +46,6 @@ public interface UserView {
      */
     void showGenericMessage(String genericMessage);
 
-    void showDisconnectionMessage(String usernameDisconnected, String text);
 
     /**
      * Show the view an error message

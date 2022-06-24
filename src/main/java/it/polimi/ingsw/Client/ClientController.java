@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.Gui.GUI;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.NetworkUtilities.*;
@@ -44,7 +45,8 @@ public class ClientController implements Observer, ViewObserver {
      */
     @Override
     public void update(Message message) {
-        System.out.println("in client controller: " + message);
+        if(view instanceof GUI)
+             System.out.println("in client controller: " + message);
         switch (message.getType()) {
             case OK_LOGIN -> tasks.execute(() -> view.showLogin(true));
             case LOGIN_RESPONSE -> updateOnLogin((LoginResponse) message);
@@ -156,7 +158,6 @@ public class ClientController implements Observer, ViewObserver {
             client.addObserver(this); //throughout Client, like in SocketClientSide, add clientController as Observer -> Client controller will be updated from the SocketClientSide notification
             client.readMessage(); //start an async Read from server
             //client.enablePingPong(true);
-            tasks.execute(view::askLogin);
         } catch (IOException e) {
             tasks.execute(() -> view.showLogin(false));
         }
