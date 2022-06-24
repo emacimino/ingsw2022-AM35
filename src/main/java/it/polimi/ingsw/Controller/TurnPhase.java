@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Controller;
 
+/**
+ * All the turnPhase of the turn
+ */
 public enum TurnPhase {
     LOGIN,
     PLAY_ASSISTANT,
