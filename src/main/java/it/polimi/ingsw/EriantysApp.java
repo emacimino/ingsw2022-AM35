@@ -30,8 +30,6 @@ public class EriantysApp {
                 System.out.println("Port: ");
                 String port = scanner.nextLine();
                 CLI client = new CLI(ip, Integer.parseInt(port));
-                ClientController clientController = new ClientController(client);
-                //client.addObserver(clientController);
                 client.run();
             }
             case "-gui" -> Application.launch(JavaFxGui.class);

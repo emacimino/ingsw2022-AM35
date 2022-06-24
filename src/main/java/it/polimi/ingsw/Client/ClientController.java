@@ -10,25 +10,36 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientController implements Observer, ViewObserver {
-    private final UserView view; //view è cli o gui
-    private Client client;  //rappresenta il socket lato client
+    private final UserView view; //either CLI or GUI
+    private Client client;  //represent the socket in client
     private String username;
     private final ExecutorService tasks;
 
-    private final RemoteModel remoteModel; //gestire in update tutti i salvataggi in remoteModel
+    private final RemoteModel remoteModel; //every save in remote in update must be managed in update
 
-
-    public ClientController(UserView view) { //User view sara o cli o gui,
+    /**
+     * Constructor method of client Controller
+     * @param view associated to the controller, either CLI or GUI
+     */
+    public ClientController(UserView view) {
         this.view = view;
         remoteModel = new RemoteModel();
         view.setRemoteModel(remoteModel);
         tasks = Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Getter for remote Model
+     * @return the instance of RemoteModel
+     */
     public RemoteModel getRemoteModel() {
         return remoteModel;
     }
 
+    /**
+     * Receive a message and by his type decide what to do
+     * @param message is the message received
+     */
     @Override
     public void update(Message message) {
         System.out.println("in client controller: "+message);
@@ -90,27 +101,39 @@ public class ClientController implements Observer, ViewObserver {
                 view.showChosenCharacterCard();
 
             }
-            case ASK_CHARACTER_CARD -> {askInfoCharacter(message);}
-            case PLAY_CHARACTER_CARD -> {updateOnPlayCharacter(message);}
+            case ASK_CHARACTER_CARD -> askInfoCharacter(message);
+            case PLAY_CHARACTER_CARD -> updateOnPlayCharacter(message);
             case DISCONNECT -> onDisconnection();
         }
     }
 
+    /**
+     * Receive a message and send it to the client
+     * @param message infoCharacterMessage
+     */
     private void askInfoCharacter(Message message) {
         client.sendMessage(message);
     }
 
+    /**
+     * Receive a message and send it to the client
+     * @param message playCharacterMessage
+     */
     private void updateOnPlayCharacter(Message message) {
         client.sendMessage(message);
     }
 
-
+    /**
+     * Send to the server the destination requested
+     * @param ip requested from the client
+     * @param port requested from the client
+     */
     @Override
     public void updateOnServerInfo(String ip, String port) {
         try {
             client = new SocketClientSide(ip, Integer.parseInt(port));
-            client.addObserver(this); //alla SocketClientSide, attraverso la facciata di Client aggiungo come osservatore il clientController -> Client controller verrà aggiornato alla notifica di cioè che accade a SocketClientSide
-            client.readMessage(); //inizia una lettura asincrona dal server
+            client.addObserver(this); //throughout Client, like in SocketClientSide, add clientController as Observer -> Client controller will be updated from the SocketClientSide notification
+            client.readMessage(); //start an async Read from server
             //client.enablePingPong(true);
             tasks.execute(view::askLogin);
         } catch (IOException e) {
@@ -118,29 +141,46 @@ public class ClientController implements Observer, ViewObserver {
         }
     }
 
+    /**
+     * receive the login parameters checked from Server
+     * @param message is a LoginResponse message
+     */
     @Override
     public void updateOnLogin(LoginResponse message) {
         username = message.getName();
         client.sendMessage(message);
     }
 
-
+    /**
+     * receive the login parameters checked from Server
+     * @param message is a LoginResponse message
+     */
     @Override
     public void updateOnSelectedAssistantCard(AssistantCardMessage message) {
         client.sendMessage(message);
     }
 
-
+    /**
+     * receive the student parameters checked from Server
+     * @param message is a MoveStudentMessage message
+     */
     @Override
     public void updateOnMoveStudent(MoveStudentMessage message) {
         client.sendMessage(message);
     }
-
+    /**
+     * receive the mother Nature parameters checked from Server
+     * @param message is a MoveMotherNatureMessage message
+     */
     @Override
     public void updateOnMoveMotherNature(MoveMotherNatureMessage message) {
         client.sendMessage(message);
     }
 
+    /**
+     * receive the cloud parameters checked from Server
+     * @param message is a CloudMessage message
+     */
     @Override
     public void updateOnSelectedCloud(CloudMessage message) {
         client.sendMessage(message);
@@ -151,11 +191,19 @@ public class ClientController implements Observer, ViewObserver {
 
     }
 
+    /**
+     * Handle client disconnection
+     */
     @Override
     public void onDisconnection() {
         client.disconnect();
     }
 
+    /**
+     * check the ip inserted from the client
+     * @param ip ip string
+     * @return if is valid
+     */
     public static boolean isValidIpAddress(String ip) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -163,7 +211,11 @@ public class ClientController implements Observer, ViewObserver {
                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
         return ip.matches(regex);
     }
-
+    /**
+     * check the port inserted from the client
+     * @param portStr port string
+     * @return if is valid
+     */
     public static boolean isValidPort(String portStr) {
         try {
             int port = Integer.parseInt(portStr);
