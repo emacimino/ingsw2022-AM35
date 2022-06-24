@@ -44,7 +44,6 @@ public class Messenger extends CharacterCard implements Serializable {
     /**
      * This method is used to calculate the card effect on the influence
      * @param archipelago targeted archipelago
-     * @return the modified influence
      * @throws ExceptionGame if a move that is not permitted is made or a method fails to return a value
      */
     public void calculateEffectInfluence(Archipelago archipelago) throws ExceptionGame{ //wizard del capitano

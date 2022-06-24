@@ -2,6 +2,9 @@ package it.polimi.ingsw.NetworkUtilities;
 
 import java.io.Serial;
 
+/**
+ * Used to communicate how many steps can do motherNature
+ */
 public class AskToMoveMotherNatureMessage extends Message{
 
     @Serial
@@ -9,6 +12,10 @@ public class AskToMoveMotherNatureMessage extends Message{
     private final int numOfSteps;
     private final String message;
 
+    /**
+     * Constructor of the class
+     * @param numOfSteps numOfSteps allowed
+     */
     public AskToMoveMotherNatureMessage(int numOfSteps) {
         this.numOfSteps = numOfSteps;
         setType(TypeMessage.ASK_MOVE_MOTHER_NATURE);
