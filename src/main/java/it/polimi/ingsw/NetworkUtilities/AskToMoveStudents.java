@@ -8,5 +8,8 @@ public class AskToMoveStudents extends Message{
 
     public AskToMoveStudents() {
         setType(TypeMessage.ASK_TO_MOVE_STUDENT);
+        setMessage("Move your students!");
     }
+
+
 }

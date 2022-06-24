@@ -7,12 +7,11 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 /**Implements the effect from Character card
@@ -40,7 +39,8 @@ public class Minstrel extends CharacterCard implements StudentEffectCard , Seria
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useMinstrelCard();
-        this.cost++;
+        paymentOfTheCard();
+        resetCard();
     }
 
     /**
@@ -56,10 +56,11 @@ public class Minstrel extends CharacterCard implements StudentEffectCard , Seria
                             studentsInCase.add(s);
                 }
             }
+            Set<Color> colorToLookUp = new HashSet<>(getPassiveStudents().stream().map(Student::getColor).toList());
             if (studentsInCase.containsAll(getActiveStudents())) {
                 if (getActiveWizard().getBoard().getStudentsInEntrance().containsAll(getPassiveStudents())) {
                     tradeStudents(getActiveStudents(), getPassiveStudents(), studentsInCase, getActiveWizard().getBoard().getStudentsInEntrance());
-                    for(Color c : getPassiveStudents().stream().map(s -> s.getColor()).toList())
+                    for(Color c : colorToLookUp)
                         getBasicMatch().lookUpProfessor(c);
                 } else
                     throw new ExceptionGame("The entrance of the wizard does not contains all the students selected");
@@ -92,7 +93,6 @@ public class Minstrel extends CharacterCard implements StudentEffectCard , Seria
         studentsEntrance.removeAll(toEntrance);
         studentsEntrance.addAll(fromTables);
 
-        resetCard();
     }
 
 }

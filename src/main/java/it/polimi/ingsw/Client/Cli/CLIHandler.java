@@ -97,7 +97,7 @@ public class CLIHandler {
             case ERROR -> showErrorMessage(((ErrorMessage) message).getError());
             case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
             case SHOW_CHARACTER_CARD_INFO -> showChosenCharacterCard(message);
-            default -> System.out.println(message);
+            default -> System.out.println(message.getMessage());
 
         }
     }

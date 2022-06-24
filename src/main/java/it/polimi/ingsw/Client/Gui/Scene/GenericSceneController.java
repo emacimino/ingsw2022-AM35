@@ -12,4 +12,5 @@ public abstract class GenericSceneController extends Observable {
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
     }
+
 }

@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
+package it.polimi.ingsw.ModelTest.ExpertMatchTest;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.Minstrel;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
@@ -138,7 +140,7 @@ class MinstrelTest {
             List<Student> studentsOnTable = wizard4.getBoard().getTableOfStudent(c).getStudentsInTable().stream().toList();
             List<Student> fromA = new ArrayList<>(studentsOnTable.subList(0,2));
             List<Student> toB = new ArrayList<>(wizard4.getBoard().getStudentsInEntrance().stream().toList().subList(0,2));
-
+System.out.println(toB);
             minstrel.setActiveWizard(wizard4);
             minstrel.setActiveStudents(fromA);
             minstrel.setPassiveStudents(toB);

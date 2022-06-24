@@ -192,10 +192,6 @@ public class CLI  implements UserView {
         cliHandler.showErrorMessage(error);
     }
 
-    @Override
-    public void loadBoard(Board board) {
-        cliHandler.showBoard(board);
-    }
 
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
@@ -218,17 +214,6 @@ public class CLI  implements UserView {
     public void askToMoveStudent() {
 
     }
-
-    @Override
-    public void loadArchipelagosOption(Map<Integer, Archipelago> archipelago) {
-
-    }
-
-    @Override
-    public void loadStudentOnEntrance(Map<Integer, Student> students) {
-        cliHandler.showStudentsOnEntranceOption(students);
-    }
-
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;

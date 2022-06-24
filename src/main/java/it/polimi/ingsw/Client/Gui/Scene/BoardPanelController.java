@@ -1,11 +1,13 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import it.polimi.ingsw.Model.Wizard.Tower;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -20,10 +22,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.util.*;
 
-public class BoardPanelController {
+public class BoardPanelController extends GenericSceneController{
     @FXML
     private VBox entrance1, entrance2;
     @FXML
@@ -33,11 +36,17 @@ public class BoardPanelController {
     @FXML
     private ImageView profRed, profPink, profYellow, profBlue, profGreen;
     @FXML
-    private Label wizardLbl, studentSelectedLbl;
+    private Label wizardLbl;
+    @FXML
+    private Text studentSelectedTxt, colorSelectedTxt;
 
+    private String colorSel = "Color selected: ";
     private Student studentToMove;
     private Map<Node, Student> studentEntranceMap = new HashMap<>();
     private boolean onBoard = false;
+    private Map<HBox, Color> tableToColorMap = new HashMap<>();
+    private Map<Color, HBox> colorToTableMap = new HashMap<>();
+
 
 
     public void setBoard(Board board, String wizardName) {
@@ -109,27 +118,7 @@ public class BoardPanelController {
     }
 
     private HBox getTable(TableOfStudents t) {
-        switch (t.getColor()) {
-            case GREEN -> {
-                return greenTable;
-            }
-            case BLUE -> {
-                return blueTable;
-            }
-            case PINK -> {
-                return pinkTable;
-            }
-            case RED -> {
-                return redTable;
-            }
-            case YELLOW -> {
-                return yellowTable;
-            }
-            default -> {
-                return null;
-            }
-
-        }
+        return colorToTableMap.get(t.getColor());
     }
 
     private void setProfessors(List<Professor> professors) {
@@ -151,12 +140,69 @@ public class BoardPanelController {
     public void onStudentClick(MouseEvent event){
         Node node = (Circle) event.getTarget();
         studentToMove = studentEntranceMap.get(node);
-        studentSelectedLbl.setText("You have selected a " + studentToMove.getColor() + " student");
-        System.out.println(studentToMove);
+        studentSelectedTxt.setText("");
+        studentSelectedTxt.setText("You have selected a " + studentToMove.getColor() + " student");
 
     }
 
+    public Color getColorOfTable(HBox table){
+        return tableToColorMap.get(table);
+    }
     public Student getStudentToMove() {
         return studentToMove;
+    }
+
+    public void enableExpert(){
+        for(HBox t : tableToColorMap.keySet()){
+            t.setDisable(false);
+            t.setOnMouseClicked(mouseEvent -> {
+                remoteModel.setColorSelected(getColorOfTable(t));
+                colorSel = colorSel + getColorOfTable(t) + " ";
+                colorSelectedTxt.setText(colorSel);
+            });
+        }
+        for(Node n : entrance1.getChildren()){
+            n.setOnMouseClicked(mouseEvent -> {
+                studentToMove = studentEntranceMap.get(n);
+                remoteModel.setStudentFromEntrance(studentToMove);
+                System.out.println("on student click: " + remoteModel.getStudentFromEntrance());
+            });
+        }
+        for(Node n : entrance2.getChildren()){
+            n.setOnMouseClicked(mouseEvent -> {
+                studentToMove = studentEntranceMap.get(n);
+                remoteModel.setStudentFromEntrance(studentToMove);
+                System.out.println("on student click: " + remoteModel.getStudentFromEntrance());
+            });
+        }
+    }
+
+    @Override
+    public void setRemoteModel(RemoteModel remoteModel){
+        this.remoteModel = remoteModel;
+        setTablesMap();
+    }
+
+    private void setTablesMap() {
+        tableToColorMap.put(greenTable, Color.GREEN);
+        tableToColorMap.put(blueTable, Color.BLUE);
+        tableToColorMap.put(yellowTable, Color.YELLOW);
+        tableToColorMap.put(pinkTable, Color.PINK);
+        tableToColorMap.put(redTable, Color.RED);
+
+        colorToTableMap.put(Color.GREEN, greenTable);
+        colorToTableMap.put(Color.BLUE, blueTable);
+        colorToTableMap.put(Color.YELLOW, yellowTable);
+        colorToTableMap.put(Color.PINK, pinkTable);
+        colorToTableMap.put(Color.RED, redTable);
+
+    }
+
+
+    public void clearSelection() {
+        studentSelectedTxt.setText("");
+        colorSelectedTxt.setText("");
+        colorSel = "Color selected: ";
+
     }
 }

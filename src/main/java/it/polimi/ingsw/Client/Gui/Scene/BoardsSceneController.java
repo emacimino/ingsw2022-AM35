@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import javafx.event.ActionEvent;
@@ -31,7 +32,6 @@ public class BoardsSceneController extends GenericSceneController {
             } else if (i == 1) {
                 addBoard(1, 0, wizards.get(i).getBoard(), wizards.get(i).getUsername());
             } else if (i == 2) {
-                System.out.println("tre giocatori in boardsSceneController");
                 addBoard(0, 2, wizards.get(i).getBoard(), wizards.get(i).getUsername());
             } else if (i == 3) {
                 addBoard(1, 2, wizards.get(i).getBoard(), wizards.get(i).getUsername());
@@ -49,6 +49,7 @@ public class BoardsSceneController extends GenericSceneController {
             e.printStackTrace();
         }
         BoardPanelController controller = loader.getController();
+        controller.setRemoteModel(remoteModel);
         controller.setBoard(board, username);
         sky.add(node, x, y);
     }
@@ -65,4 +66,8 @@ public class BoardsSceneController extends GenericSceneController {
         stage.showAndWait();
     }
 
+    @Override
+    public void setRemoteModel(RemoteModel remoteModel){
+        this.remoteModel = remoteModel;
+    }
 }

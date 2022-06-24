@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -33,7 +34,8 @@ public class Jester extends CharacterCard implements StudentEffectCard , Seriali
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useJesterCard();
-        this.cost++;
+        paymentOfTheCard();
+        resetCard();
     }
 
     /**
@@ -52,7 +54,6 @@ public class Jester extends CharacterCard implements StudentEffectCard , Seriali
         } else
             throw new ExceptionGame("The list of students to trade have not the same number or there have been selected more than 3 students");
 
-    resetCard();
     }
 
 

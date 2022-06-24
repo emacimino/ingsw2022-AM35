@@ -32,7 +32,6 @@ public interface UserView {
 
     void showError(String error);
 
-    void loadBoard(Board board);
 
     void showWinMessage(EndMatchMessage message, Boolean isWinner);
 
@@ -44,9 +43,6 @@ public interface UserView {
 
     void askToMoveStudent();
 
-    void loadArchipelagosOption(Map<Integer, Archipelago> archipelago);
-
-    void loadStudentOnEntrance(Map<Integer, Student> students);
 
     void setRemoteModel(RemoteModel remoteModel);
 

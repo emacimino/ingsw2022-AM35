@@ -18,9 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class StudentCardSceneController extends GenericSceneController {
@@ -35,7 +33,7 @@ public class StudentCardSceneController extends GenericSceneController {
     Label selectionLbl, instructionLbl;
 
 
-    private List<Integer> studentsSelected = new ArrayList<>();
+    private Set<Integer> studentsSelected = new HashSet<>();
     private CharacterCard characterCard;
 
 
@@ -54,11 +52,11 @@ public class StudentCardSceneController extends GenericSceneController {
         students.add(s6);
         Circle c;
         for (Integer i : remoteModel.getStudentsOnCardMap().keySet()) {
-            c = students.get(i);
+            c = students.get(i-1);
             setRightColorStudent(c, remoteModel.getStudentsOnCardMap().get(i));
             c.setOnMouseClicked(MouseEvent -> {
                         if (studentsSelected.contains(i))
-                            studentsSelected.remove(studentsSelected.indexOf(i));
+                            studentsSelected.remove(i);
                         else
                             studentsSelected.add(i);
                         updateSelectionLabel();
@@ -102,15 +100,19 @@ public class StudentCardSceneController extends GenericSceneController {
     }
 
     public void selectStudents(ActionEvent event) {
-        remoteModel.setStudentSelected(studentsSelected);
+        remoteModel.setStudentSelected(studentsSelected.stream().toList());
         nextMove();
     }
 
     private void nextMove() {
+        System.out.println("student on card: " + remoteModel.getStudentsFromCard());
+        for (Integer i : remoteModel.getStudentsFromCard()) {
+            System.out.println(remoteModel.getStudentsOnCardMap().get(i).getColor());
+        }
         switch (characterCard.getName()) {
-            case "Princess" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, studentsSelected, null));
-            case "Friar" ->  Platform.runLater(()->SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
-            case "Jester" -> {/* scegliere studenti in ingresso */}
+            case "Princess" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, studentsSelected.stream().toList(), null));
+            case "Friar" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
+            case "Jester" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
         }
     }
 

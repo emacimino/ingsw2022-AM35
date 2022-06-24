@@ -22,7 +22,7 @@ public class Board implements Serializable {
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
     private final int limitStudentOnTable = 10;
-    private int coins = 10;
+    private int coins = 0;
 
     /**
      * constructs the class
@@ -134,8 +134,10 @@ public class Board implements Serializable {
     }
 
     public void reduceCoins(int reduce) throws ExceptionGame{
-        if(reduce > getCoins())
+        if(reduce > getCoins()) {
+            System.out.println(reduce + " " + getCoins());
             throw new ExceptionGame("wizard does not have enough coins");
+        }
         this.coins -= reduce;
 
     }
