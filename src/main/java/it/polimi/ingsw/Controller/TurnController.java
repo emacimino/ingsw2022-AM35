@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Handle the turnPhase in the server
+ */
 public class TurnController {
     private final MessageHandler messageHandler = new MessageHandler();
     private final Controller controller;
@@ -29,16 +32,27 @@ public class TurnController {
     private int numberOfStudentMoved = 0;
 
 
-
+    /**
+     * Constructor of the class
+     * @param controller controller associated
+     * @param viewMap view of the players associated
+     */
     public TurnController(Controller controller, Map<String, ViewInterface> viewMap){
         this.controller = controller;
         this.viewMap = viewMap;
     }
 
+    /**
+     * calculate the next player in planning phase
+     */
     public void nextPlayerPlanningPhase(){
         int indexNewActivePlayer = (controller.getMatch().getPlayers().indexOf(activePlayer) + 1) % controller.getMatch().getNumberOfPlayers();
         setActivePlayer(controller.getMatch().getPlayers().get(indexNewActivePlayer));
     }
+
+    /**
+     * calculate the next player in action phase
+     */
     public void nextPlayerActionPhase(){
         if(controller.getMatch().getActionPhaseOrderOfPlayers().isEmpty()){
             setTurnPhase(TurnPhase.PLAY_ASSISTANT);
@@ -50,6 +64,9 @@ public class TurnController {
 
     }
 
+    /**
+     * pick the first player to play a match
+     */
     protected void pickFirstPlayerPlanningPhaseHandler() {
         Random r = new Random();
         Player player = controller.getMatch().getPlayers().get(r.nextInt(0, controller.getMatch().getNumberOfPlayers()));
@@ -57,6 +74,10 @@ public class TurnController {
         setActivePlayer(player);
     }
 
+    /**
+     * handle the planning phase
+     * @param receivedMessage message to handle
+     */
     protected synchronized void planningPhaseHandling(Message receivedMessage) {
         Player activePlayer = getActivePlayer();
         boolean correctPlay = false;
@@ -71,12 +92,17 @@ public class TurnController {
             nextPlayerPlanningPhase();
         }
     }
-
+    /**
+     * pick the first player to play in action phase
+     */
     protected void pickFirstPlayerActionPhaseHandler() {
         setActionOrderOfPlayers(controller.getMatch().getActionPhaseOrderOfPlayers());
         setTurnPhase(TurnPhase.MOVE_STUDENTS);
     }
-
+    /**
+     * handle the action phase
+     * @param receivedMessage message to handle
+     */
     protected void actionPhaseHandling(Message receivedMessage) {
         switch (receivedMessage.getType()) {
             case MOVE_STUDENT -> {
@@ -112,6 +138,12 @@ public class TurnController {
         }
     }
 
+    /**
+     * Play an assistant card
+     * @param activePlayer the player that's playing
+     * @param assistantsCard assistant card played
+     * @return if the assistant card could be played
+     */
     private boolean playAssistantCard(Player activePlayer, AssistantsCards assistantsCard) {
         try {
             controller.getMatch().playAssistantsCard(activePlayer, assistantsCard);
@@ -125,6 +157,11 @@ public class TurnController {
         }
 
     }
+
+    /**
+     * Move motherNature
+     * @param message indicate where to put motherNature
+     */
     private void MoveMotherNatureForThisTurn(MoveMotherNatureMessage message) {
         Integer indexArch = message.getArchipelago();
         try {
@@ -137,6 +174,10 @@ public class TurnController {
 
         }
     }
+    /**
+     * Select a cloud
+     * @param message indicate which cloud to pick
+     */
     private void selectCloudForThisTurn(CloudMessage message) {
         try {
             controller.getMatch().chooseCloud(getActivePlayer(), messageHandler.getCloudMap().get(message.getCloud()));
@@ -151,6 +192,10 @@ public class TurnController {
 
 
     }
+    /**
+     * Move student
+     * @param message indicate where to move a student
+     */
     private void moveStudentsForThisTurn(MoveStudentMessage message) {
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
@@ -177,15 +222,28 @@ public class TurnController {
         }
     }
 
+    /**
+     * Setter for the action phase order of playing
+     * @param actionOrderOfPlayers list of waiting for turn
+     */
     public void setActionOrderOfPlayers(List<Player> actionOrderOfPlayers) {
         this.actionOrderOfPlayers.clear();
         this.actionOrderOfPlayers.addAll(actionOrderOfPlayers);
         setTurnPhase(TurnPhase.MOVE_STUDENTS);
         setActivePlayer(actionOrderOfPlayers.get(0));
     }
+
+    /**
+     * setter for turnPhase
+     * @param turnPhase turnPhase to set
+     */
     public void setTurnPhase(TurnPhase turnPhase) {
         this.turnPhase = turnPhase;
     }
+
+    /**
+     * Handle the next action by turnPhase
+     */
     private void askNextAction() {
         switch (turnPhase) {
             case PLAY_ASSISTANT -> askingViewToPlayAnAssistantCard();
@@ -195,6 +253,10 @@ public class TurnController {
         }
     }
 
+    /**
+     * Choose the player in turn
+     * @param player activePlayer for this turn
+     */
     public void setActivePlayer(Player player) {
         activePlayer = player;
         RemoteView remoteView = (RemoteView) viewMap.get(player.getUsername());
@@ -206,9 +268,19 @@ public class TurnController {
 
         }
     }
+
+    /**
+     * Getter for the active Player
+     * @return the player in game
+     */
     public Player getActivePlayer() {
         return activePlayer;
     }
+
+    /**
+     * Ask the view to move a student
+     * @param numberOfStudentMoved record of the students already moved in turn
+     */
     private void askingViewToMoveAStudent(int numberOfStudentMoved) {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
       //  sendMessageToView(new GenericMessage("It's your turn, move " + (controller.getMatch().getNumberOfMovableStudents() - numberOfStudentMoved) + " students from your board"), remoteView);
@@ -223,6 +295,10 @@ public class TurnController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Ask the view to play an assistant card
+     */
     private void askingViewToPlayAnAssistantCard() {
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         try {
@@ -235,6 +311,10 @@ public class TurnController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Ask the view to move motherNature
+     */
     private void askingViewToMoveMotherNature(){
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
@@ -250,6 +330,9 @@ public class TurnController {
         }
 
     }
+    /**
+     * Ask the view to pick a cloud
+     */
     private void askingViewToChooseCloud(){
         if(controller.getMatch().getGame().getStudentBag().getStudentsInBag().isEmpty()){
             setTurnPhase(TurnPhase.MOVE_STUDENTS);
@@ -271,6 +354,11 @@ public class TurnController {
 
     }
 
+    /**
+     * Send info for the chosen characterCard
+     * @param message characterCard asked to be played
+     * @throws ExceptionGame if the CharacterCard could not be played
+     */
     private void sendCharacterCardInfo(AskCharacterCardMessage message) throws ExceptionGame {
         ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
         messageHandler.setCharacterCardMap(match.getCharactersForThisGame());
@@ -290,6 +378,12 @@ public class TurnController {
         }
     }
 
+
+
+    /**
+     * Handle the phase of the match when the controller use a characterCard on the model
+     * @param message message with the info to use a characterCard
+     */
     private void playCharacterCardForThisTurn(PlayCharacterMessage message){
         String cardName = message.getNameCharacterCard();
         RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
@@ -315,6 +409,12 @@ public class TurnController {
 
     }
 
+    /**
+     * Set the CharacterCard to be played
+     * @param card card to be played
+     * @param message message with the info to set the card
+     * @throws ExceptionGame if the card could not be setted
+     */
     private void handleCardSettings(CharacterCard card, PlayCharacterMessage message) throws ExceptionGame {
         ExpertMatch match = ((ExpertMatch)this.controller.getMatch());
         Wizard activeWizard = match.getGame().getWizardFromPlayer(activePlayer);
@@ -332,9 +432,6 @@ public class TurnController {
                 card.setActiveStudents(activeStudent);
             }
             case "Jester" -> {
-                System.out.println("in jester di turn contorller");
-                System.out.println("student da card " + message.getToTradeFromCard());
-                System.out.println("student da entrnacne " + message.getToTradeFromEntrance());
                 List<Student> activeStudent = new ArrayList<>();
                 List<Student> passiveStudent = new ArrayList<>();
                 for (Integer integer: message.getToTradeFromCard()) {
@@ -381,6 +478,11 @@ public class TurnController {
     }
 
 
+    /**
+     * Send a message to the view after an event
+     * @param message the event
+     * @param remoteView the view chosen
+     */
     private void sendMessageToView(Message message, RemoteView remoteView){
         if(controller.isMatchOnGoing()){
             remoteView.sendMessage(message);
