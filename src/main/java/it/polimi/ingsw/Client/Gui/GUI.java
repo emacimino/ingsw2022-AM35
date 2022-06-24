@@ -102,6 +102,7 @@ public class GUI extends Observable implements UserView {
     }
 
 
+
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater(() -> SceneController.showAlert("Message for you!", genericMessage));

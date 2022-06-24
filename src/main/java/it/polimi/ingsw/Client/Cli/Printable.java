@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.Cli;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
@@ -24,9 +23,8 @@ public class Printable {
     public static final String GREEN = Constants.ANSI_GREEN;
     public static final String PINK = Constants.ANSI_PINK;
     public static final String RESET = Constants.ANSI_RESET;
-    public static final String DEEPBLUE = Constants.ANSI_DEEPBLUE;
+    public static final String DEEP_BLUE = Constants.ANSI_DEEPBLUE;
 
-    public static final String PLUS = "+";
 
     public static final HashMap<Color, String> colorANSI = new HashMap<>(){{
         put(Color.GREEN, GREEN);
@@ -36,8 +34,6 @@ public class Printable {
         put(Color.YELLOW, YELLOW);
     }};
 
-    public static final String LINE_BLOCK =
-            "█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████";
 
     public static final String bigTitle=
             """
@@ -57,19 +53,9 @@ public class Printable {
     public static final String STUDENT_PINK = PINK + "█"+ RESET;
 
     public static final String PROF = "███";
-    public static final String PROF_BLUE = BLUE +"███"+ RESET;
-    public static final String PROF_RED = RED + "███"+ RESET;
-    public static final String PROF_YELLOW = YELLOW + "███"+ RESET;
-    public static final String PROF_GREEN = GREEN +"███"+ RESET;
-    public static final String PROF_PINK = PINK + "███"+ RESET;
 
     public static final String MOTHER_NATURE = Constants.ANSI_ORANGE + "§§" + RESET;
 
-    public static final String TABLE_OF_STUDENTS_PINK = PINK + " | "+ RESET;
-    public static final String TABLE_OF_STUDENTS_GREEN = GREEN + " | "+ RESET;
-    public static final String TABLE_OF_STUDENTS_BLUE = BLUE + " | "+ RESET;
-    public static final String TABLE_OF_STUDENTS_YELLOW = YELLOW + " | "+ RESET;
-    public static final String TABLE_OF_STUDENTS_RED = RED + " | "+ RESET;
 
     public static final String ASSISTANT_ONE = Constants.ASSISTANT_ONE + ", Value = 1, Steps = 1";
     public static final String ASSISTANT_TWO = Constants.ASSISTANT_TWO + ", Value = 2, Steps = 1";
@@ -83,18 +69,7 @@ public class Printable {
     public static final String ASSISTANT_TEN = Constants.ASSISTANT_TEN + ", Value = 10, Steps = 5";
 
 
-    public static final String TOWER_GREY = RESET +
-            "█████\n" +
-            " ███ \n" +
-            " ███ " + RESET;
-    public static final String TOWER_BLACK = ANSI_BRIGHTBLACK +
-            "█████\n" +
-            " ███ \n" +
-            " ███ " + RESET;
-    public static final String TOWER_WHITE = ANSI_BRIGHTWHITE +
-            "█████\n" +
-            " ███ \n" +
-            " ███ " + RESET;
+
     public static final String TOWER_TOP =
             " █████ ";
     public static final String TOWER_MIDDLE =
@@ -102,10 +77,14 @@ public class Printable {
 
 
 
-    public static final String BOARD_LEFT_MARGIN = "##   ";
-    public static final String BOARD_RIGHT_MARGIN = "   ##";
+
     public static final String BOARD_TOP_MARGIN = "########";
 
+    /**
+     * Get the name for the cli for assistant card
+     * @param assistantsCards list of playable assistant card
+     * @return the assistant card selected
+     */
     public static String getAssistantCardCLI(AssistantsCards assistantsCards){
         switch (assistantsCards.getValue()){
             case 1 -> {
@@ -143,6 +122,12 @@ public class Printable {
             }
         }
     }
+
+    /**
+     * print students in cli
+     * @param student student to be printed
+     * @return string of its color
+     */
     public static String getStudentsCLI(Student student){
         String studentString;
         switch (student.getColor()) {
@@ -156,27 +141,12 @@ public class Printable {
         return studentString;
     }
 
-    public static String getProfessorsCLI(Professor professor){
-        String professorString;
-        switch (professor.getColor()) {
-            case GREEN -> professorString = STUDENT_GREEN;
-            case BLUE -> professorString = STUDENT_BLUE;
-            case PINK -> professorString = STUDENT_PINK;
-            case RED -> professorString = STUDENT_RED;
-            case YELLOW -> professorString = STUDENT_YELLOW;
-            default -> professorString = null;
-        }
-        return professorString;
-    }
 
-    public static void printCharacterCards(List<CharacterCard> characterCards){
-        for (CharacterCard c: characterCards) {
-            System.out.println(c);
-        }
-    }
-
-
-
+    /**
+     * Print tower in board
+     * @param numberOfTowers number of towers
+     * @param towerColor color of towers
+     */
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
         final String color;
         switch (towerColor) {
@@ -185,9 +155,9 @@ public class Printable {
             case "Gray" -> color = ANSI_BRIGHTWHITE;
             default -> throw new IllegalStateException("Unexpected value: " + towerColor);
         }
-        int top_margin_lenght = 13;
+        int top_margin_length = 13;
         int firstRowTowers=numberOfTowers - 4 ;
-        for (int i = 0; i < top_margin_lenght; i++) {
+        for (int i = 0; i < top_margin_length; i++) {
             System.out.print(BOARD_TOP_MARGIN);
         }
         System.out.print("\n");
@@ -200,12 +170,17 @@ public class Printable {
             printTowersRow(numberOfTowers, color);
             System.out.print("\n");
         }
-        for (int i = 0; i < top_margin_lenght; i++) {
+        for (int i = 0; i < top_margin_length; i++) {
             System.out.print(BOARD_TOP_MARGIN);
         }
         System.out.print("\n");
     }
 
+    /**
+     * Print tower
+     * @param firstRowTowers first row Tower
+     * @param color color of the tower
+     */
     public static void printTowersRow(int firstRowTowers, String color){
         for (int i = 0; i < firstRowTowers; i++) {
             System.out.print( color + TOWER_TOP + RESET);
@@ -220,6 +195,10 @@ public class Printable {
         }
     }
 
+    /**
+     * print tower
+     * @param towerColors the color of the tower to be printed
+     */
     public static void printTowersIsland(TowerColors towerColors){
         final String color;
         switch (towerColors.name()) {
@@ -236,15 +215,20 @@ public class Printable {
         System.out.print("       |" + "\n" + "|   ");
     }
 
+    /**
+     * Print students and professors that belongs to the board
+     * @param students to be printed
+     * @param professors to be printed
+     */
     public static void printBoardProfessorAndTables(List<Professor> professors, List<Student> students) {
                 for (Color color :
                         Color.values()) {
                     printProfessorSeat(professors, color);
                     System.out.print("  #  ");
                             int n = 0;
-                            for (int k = 0; k < students.size(); k++) {
-                                if (students.get(k).getColor() == color) n++;
-                            }
+                    for (Student student : students) {
+                        if (student.getColor() == color) n++;
+                    }
                             for (int i = 0; i < (10 - n); i++) {
                                 System.out.print(RESET + " | ");
                                 System.out.print(" ");
@@ -260,20 +244,28 @@ public class Printable {
                 System.out.print("\n");
     }
 
-
-    public static void printProfessorSeat(List<Professor> p, Color c){
-        for (Professor professor: p){
-            if(professor.getColor() == c){
-                System.out.print(colorANSI.get(c) + " #| ");
+    /**
+     * Print professors
+     * @param professors list of professors
+     * @param color chosen to print
+     */
+    public static void printProfessorSeat(List<Professor> professors, Color color){
+        for (Professor professor: professors){
+            if(professor.getColor() == color){
+                System.out.print(colorANSI.get(color) + " #| ");
                 System.out.print(PROF);
                 System.out.print(" |# " + RESET);
                 return;
             }
         }
-        System.out.print(colorANSI.get(c) + " #|   ");
+        System.out.print(colorANSI.get(color) + " #|   ");
         System.out.print("  |# " + RESET);
     }
-
+    /**
+     * Print entrance and coins
+     * @param students to be printed
+     * @param coins to be printed
+     */
     public static void printEntranceAndCoins(List<Student> students, int coins){
         for (int i = 0; i < 13; i++) {
             System.out.print(BOARD_TOP_MARGIN);
@@ -289,8 +281,12 @@ public class Printable {
         }
     }
 
+    /**
+     * Print an archipelago
+     * @param archipelago to be printed
+     */
     public static void printArchipelago(Archipelago archipelago) {
-        System.out.print(DEEPBLUE + "\n ##################### \n\n");
+        System.out.print(DEEP_BLUE + "\n ##################### \n\n");
         for (int i = 0; i < 16; i++) System.out.print(RESET + "—");
         System.out.print("\n" + "|  ");
         if(archipelago.isMotherNaturePresence()) {
