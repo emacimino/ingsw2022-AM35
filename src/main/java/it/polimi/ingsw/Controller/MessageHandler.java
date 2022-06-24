@@ -127,12 +127,8 @@ public class MessageHandler {
 
 
 
-    /**
-     * Setter for activeCharacterCard
-     */
-    public void setActiveCharacterCard(String characterCardName) {
-        this.activeCharacterCardName = characterCardName;
+    public Map<String, CharacterCard> getCharacterCardMap() {
+        return characterCardMap;
     }
-
 
 }
