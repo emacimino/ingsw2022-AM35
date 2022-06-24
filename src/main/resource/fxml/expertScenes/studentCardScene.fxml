@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="900.0" maxWidth="1400.0" minHeight="900.0" minWidth="1400.0" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.StudentCardSceneController">
+   <children>
+      <ImageView fitHeight="928.0" fitWidth="1487.0" layoutX="-24.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Graphics/Background/sky_game_scene.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="257.0" layoutY="186.0" prefHeight="579.0" prefWidth="941.0">
+         <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="card" fitHeight="582.0" fitWidth="405.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../Graphics/Personaggi/CarteTOT_front10.jpg" />
+                     </image>
+                  </ImageView>
+                  <Circle fx:id="s1" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_LEFT">
+                     <StackPane.margin>
+                        <Insets left="20.0" top="150.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+                  <Circle fx:id="s2" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="20.0" top="150.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+                  <Circle fx:id="s3" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_LEFT">
+                     <StackPane.margin>
+                        <Insets left="20.0" top="300.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+                  <Circle fx:id="s4" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_RIGHT">
+                     <StackPane.margin>
+                        <Insets right="20.0" top="300.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+                  <Circle fx:id="s5" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="BOTTOM_LEFT">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <StackPane.margin>
+                        <Insets bottom="35.0" left="20.0" />
+                     </StackPane.margin>
+                  </Circle>
+                  <Circle fx:id="s6" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+                     <StackPane.margin>
+                        <Insets bottom="35.0" right="20.0" />
+                     </StackPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Circle>
+               </children>
+            </StackPane>
+            <Button fx:id="selectBtn" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#selectStudents" prefHeight="113.0" prefWidth="358.0" text="Select Students">
+               <font>
+                  <Font name="Apple Chancery" size="36.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <HBox.margin>
+                  <Insets left="100.0" top="100.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <Label fx:id="instructionLbl" layoutX="280.0" layoutY="59.0" text="Instructions:">
+         <font>
+            <Font name="Apple Chancery" size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="selectionLbl" layoutX="744.0" layoutY="60.0" text="Students Selected:">
+         <font>
+            <Font name="Apple Chancery" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
