@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.Gui.Scene;
 
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
@@ -26,6 +27,8 @@ public class ActionSceneController extends GenericSceneController {
     private Label archipelagoSelectedLbl;
     @FXML
     private Button moveBtn;
+    @FXML
+    private Button playCharacterBtn;
 
     private Map<Integer, Archipelago> archipelagoMap = new HashMap<>();
     private Map<Integer, Student> studentMap = new HashMap<>();
@@ -105,6 +108,7 @@ public class ActionSceneController extends GenericSceneController {
             e.printStackTrace();
         }
         boardPanelController = loader.getController();
+        boardPanelController.setRemoteModel(remoteModel);
         boardPanelController.setBoard(board, "My");
         sky.add(node, 1, 1);
         ok = true;
@@ -162,5 +166,22 @@ public class ActionSceneController extends GenericSceneController {
     public void setMoveMN(Boolean moveMN) {
         this.moveMN = moveMN;
         moveBtn.setText("Move Mother Nature");
+    }
+
+    public void setExpert(){
+        playCharacterBtn.setDisable(false);
+        playCharacterBtn.setVisible(true);
+    }
+
+    public void goToScenePlayCharacter(ActionEvent event){
+        SceneController.showCharacterCardsOption(getObservers());
+    }
+
+    @Override
+    public void setRemoteModel(RemoteModel remoteModel) {
+        this.remoteModel = remoteModel;
+        setBoard(remoteModel.getCurrentBoard());
+        setArchipelagos(remoteModel.getArchipelagosMap());
+        loadStudentsMovable(remoteModel.getStudentsOnEntranceMap());
     }
 }

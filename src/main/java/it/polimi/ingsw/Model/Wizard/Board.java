@@ -134,8 +134,10 @@ public class Board implements Serializable {
     }
 
     public void reduceCoins(int reduce) throws ExceptionGame{
-        if(reduce > getCoins())
+        if(reduce > getCoins()) {
+            System.out.println(reduce + " " + getCoins());
             throw new ExceptionGame("wizard does not have enough coins");
+        }
         this.coins -= reduce;
 
     }

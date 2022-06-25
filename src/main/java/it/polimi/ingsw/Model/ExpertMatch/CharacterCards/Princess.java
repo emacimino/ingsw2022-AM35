@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -37,7 +38,7 @@ public class Princess extends CharacterCard implements StudentEffectCard , Seria
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
         usedPrincessCard(getActiveWizard(), getActiveStudents().get(0));
-        this.cost++;
+        paymentOfTheCard();
     }
 
     /**
@@ -50,11 +51,11 @@ public class Princess extends CharacterCard implements StudentEffectCard , Seria
         if(getStudentsOnCard().contains(chosenStudent)) {
             wizard.getBoard().addStudentInTable(chosenStudent);
             getStudentsOnCard().remove(chosenStudent);
+            getBasicMatch().lookUpProfessor(chosenStudent.getColor());
         }
         else
             throw new ExceptionGame("This student is not on the card");
         drawStudent(getStudentsOnCard(), 1, getBasicMatch().getGame().getStudentBag());
-        resetCard();
     }
 
 }

@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
+package it.polimi.ingsw.ModelTest.ExpertMatchTest;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.Magician;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;

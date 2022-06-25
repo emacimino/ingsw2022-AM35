@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.Gui;
 
-import it.polimi.ingsw.Client.CLIENT2.ClientController;
+import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Client.Gui.Scene.MenuSceneController;
 import javafx.application.Application;
 import javafx.application.Platform;

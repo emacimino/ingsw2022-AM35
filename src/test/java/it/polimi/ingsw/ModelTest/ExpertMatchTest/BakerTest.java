@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Model.ExpertMatch.CharacterCards;
+package it.polimi.ingsw.ModelTest.ExpertMatchTest;
 
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.Baker;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
@@ -19,7 +21,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChefTest {
+class BakerTest {
+
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);
     private final ExpertMatch expertMatch = new ExpertMatch(basicMatch2Players);
@@ -35,7 +38,7 @@ class ChefTest {
         players.add(player2);
         return players;
     }
-    public int getSteps(Player player) throws ExceptionGame {
+    public int getSteps(Player player) throws ExceptionGame{
         Wizard wizard = expertMatch.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
     }
@@ -62,19 +65,19 @@ class ChefTest {
 
     @RepeatedTest(10)
     public void setTestMatch() {
-        assertDoesNotThrow(() -> {
+        Assertions.assertDoesNotThrow(() -> {
             this.setATestMatch();
             wizard1 = expertMatch.getGame().getWizardFromPlayer(player1);
             wizard2 = expertMatch.getGame().getWizardFromPlayer(player2);
             expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(0));
             expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(3));
-            //sets a Chef card in the game in position 0
-            CharacterCard chef = new Chef( basicMatch2Players,"chef");
-            expertMatch.getCharactersForThisGame().put(chef.getName(), chef);
-            assertEquals(3, chef.getCost());
-            assertEquals(1, wizard1.getCoins());
-            assertEquals(1, wizard2.getCoins());
-            int cost = chef.getCost();
+            //sets a Baker card in the game in position 0
+            CharacterCard baker = new Baker( basicMatch2Players,"Baker");
+            expertMatch.getCharactersForThisGame().put(baker.getName(), baker);
+            Assertions.assertEquals(2, baker.getCost());
+            Assertions.assertEquals(1, wizard1.getCoins());
+            Assertions.assertEquals(1, wizard2.getCoins());
+            int cost = baker.getCost();
 
             Collection<Student> studentsPlayer1 = expertMatch.getGame().getWizardFromPlayer(player1).getBoard().getStudentsInEntrance();
             Collection<Student> studentsPlayer2 = expertMatch.getGame().getWizardFromPlayer(player2).getBoard().getStudentsInEntrance();
@@ -87,84 +90,73 @@ class ChefTest {
             expertMatch.moveStudentOnBoard(player2, students2[0]);
             expertMatch.moveStudentOnBoard(player2, students2[1]);
             int positionMN = expertMatch.getPositionOfMotherNature();
-            expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player1)) % expertMatch.getGame().getArchipelagos().size());
-            Archipelago interestArchipelago;
+            Archipelago interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player1)) % expertMatch.getGame().getArchipelagos().size());
 
+            wizard1.addACoin(); //wizard has 2 coin now
+            Assertions.assertEquals(2, wizard1.getCoins());
+            Assertions.assertEquals(2, baker.getCost());
+            baker.setActiveWizard(wizard1);
+            baker.useCard(expertMatch);
 
-            positionMN = expertMatch.getPositionOfMotherNature();
-            interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player1)) % expertMatch.getGame().getArchipelagos().size());
-            Student[] s = new Student[2];
-            Student student = interestArchipelago.getStudentFromArchipelago().toArray(s)[0];
-            wizard1.addACoin();
-            wizard1.addACoin(); //wizard has 3 coin now
-            assertEquals(3, wizard1.getCoins());
-            assertEquals(3, chef.getCost());
+            Assertions.assertEquals(0, wizard1.getCoins());
+            Assertions.assertEquals(cost + 1, baker.getCost());
 
-            int influenceBeforeEffectW2 = expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago);
-            int influenceBeforeEffectW1 = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
-
-            chef.setActiveWizard(wizard1);
-            chef.setColorEffected(student.getColor());
-            chef.useCard(expertMatch);
-            assertEquals(0, wizard1.getCoins());
-            assertEquals(cost + 1, chef.getCost());
-
-
-            if (wizard2.getBoard().isProfessorPresent(student.getColor()) )
-                assertEquals(influenceBeforeEffectW2 - 1, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
-           else
-                assertEquals(influenceBeforeEffectW2, expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago));
-
-            if (wizard1.getBoard().isProfessorPresent(student.getColor()) && !s[0].getColor().equals(student.getColor()))
-                assertEquals(influenceBeforeEffectW1  , expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
-            else if (wizard1.getBoard().isProfessorPresent(student.getColor()) && s[0].getColor().equals(student.getColor()))
-                assertEquals(influenceBeforeEffectW1 - 1, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
-            else
-                assertEquals(influenceBeforeEffectW1, expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago));
-
-            int influenceAfterEffectW2 = expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago);
-            int influenceAfterEffectW1 = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
 
             expertMatch.moveMotherNature(player1, interestArchipelago);
 
-            if (influenceAfterEffectW1 > influenceAfterEffectW2) {
-                Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
-            }else if (influenceAfterEffectW1 < influenceAfterEffectW2){
-                Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
-            }else{
-                Assertions.assertEquals(8, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
-            }
-
             Assertions.assertNull(expertMatch.getActiveInfluenceCard());
-            Assertions.assertEquals(null, expertMatch.getActiveInfluenceCard());
+            Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
+
 
             positionMN = expertMatch.getPositionOfMotherNature();
             interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
 
-
-            Assertions.assertThrows(ExceptionGame.class, ()->chef.useCard(expertMatch));
-            chef.setActiveWizard(wizard2);
-            Assertions.assertThrows(ExceptionGame.class, ()->chef.useCard(expertMatch));
-
-            int influenceW2 = expertMatch.getWizardInfluenceInArchipelago(player2, interestArchipelago);
-            int influenceW1 = expertMatch.getWizardInfluenceInArchipelago(player1, interestArchipelago);
-            int numTowers1 = wizard1.getBoard().getTowersInBoard().size();
-            int numTowers2 = wizard2.getBoard().getTowersInBoard().size();
-
+            baker.setActiveWizard(wizard2);
+            Assertions.assertThrows(ExceptionGame.class, ()->baker.useCard(expertMatch));
+            wizard2.addACoin();
+            wizard2.addACoin();//wizard2 now has 3 coins
+            baker.useCard(expertMatch);
+            Assertions.assertEquals(cost+2, baker.getCost());
+            Assertions.assertEquals(0, wizard2.getCoins());
             expertMatch.moveMotherNature(player2, interestArchipelago);
-            if (influenceW1 > influenceW2) {
-                Assertions.assertEquals(numTowers1 , wizard1.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numTowers2, wizard2.getBoard().getTowersInBoard().size());
-            }else if (influenceW1 < influenceW2){
-                Assertions.assertEquals(numTowers2 - 1, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numTowers1, wizard1.getBoard().getTowersInBoard().size());
-            }else{
-                Assertions.assertEquals(numTowers2, wizard2.getBoard().getTowersInBoard().size());
-                Assertions.assertEquals(numTowers1, wizard1.getBoard().getTowersInBoard().size());
+            Assertions.assertEquals(7, wizard2.getBoard().getTowersInBoard().size());
+            expertMatch.chooseCloud(player1, expertMatch.getGame().getClouds().get(0));
+            expertMatch.chooseCloud(player2, expertMatch.getGame().getClouds().get(1));
+            expertMatch.playAssistantsCard(player1, wizard1.getAssistantsDeck().getPlayableAssistants().get(7));
+            expertMatch.playAssistantsCard(player2, wizard2.getAssistantsDeck().getPlayableAssistants().get(5));
+
+            positionMN = expertMatch.getPositionOfMotherNature();
+            interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
+            expertMatch.moveMotherNature(player2, interestArchipelago); //muove player 2
+
+            Wizard wizardMostInfluence;
+
+            if (interestArchipelago.calculateInfluenceInArchipelago(wizard1) > interestArchipelago.calculateInfluenceInArchipelago(wizard2)) {
+                Assertions.assertEquals(7, wizard2.getBoard().getTowersInBoard().size());
+                wizardMostInfluence = wizard1;
+            } else if (interestArchipelago.calculateInfluenceInArchipelago(wizard1) < interestArchipelago.calculateInfluenceInArchipelago(wizard2)) {
+                Assertions.assertEquals(6, wizard2.getBoard().getTowersInBoard().size());
+                wizardMostInfluence = wizard2;
+            } else {
+                Assertions.assertEquals(7, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(7, wizard2.getBoard().getTowersInBoard().size());
+                wizardMostInfluence = null;
             }
+            positionMN = expertMatch.getPositionOfMotherNature();
+            interestArchipelago = expertMatch.getGame().getArchipelagos().get((positionMN + getSteps(player2)) % expertMatch.getGame().getArchipelagos().size());
+
+            baker.setActiveWizard(wizard1);
+            Assertions.assertThrows(ExceptionGame.class, ()-> baker.useCard(expertMatch));
+            wizard1.addACoin();
+            wizard1.addACoin();
+            wizard1.addACoin();
+            wizard1.addACoin();
+            baker.useCard(expertMatch);
+            expertMatch.moveMotherNature(player1, interestArchipelago);
+            Assertions.assertEquals(6, wizard1.getBoard().getTowersInBoard().size());
+
+
+
         });
     }
 
@@ -192,14 +184,14 @@ class ChefTest {
             Wizard wizard4 = expertMatch4Players.getGame().getWizardFromPlayer(player4);
             expertMatch4Players.playAssistantsCard(player3, wizard3.getAssistantsDeck().getPlayableAssistants().get(1));
             expertMatch4Players.playAssistantsCard(player4, wizard4.getAssistantsDeck().getPlayableAssistants().get(5));
-            CharacterCard chef = new Chef(match4players,"chef");
-            expertMatch4Players.getCharactersForThisGame().put(chef.getName(), chef);
-            assertEquals(3, chef.getCost());
+            CharacterCard baker = new Baker(  match4players,"baker");
+            expertMatch4Players.getCharactersForThisGame().put(baker.getName(), baker);
+            assertEquals(2, baker.getCost());
             assertEquals(1, wizard1.getCoins());
             assertEquals(1, wizard2.getCoins());
             assertEquals(1, wizard3.getCoins());
             assertEquals(1, wizard4.getCoins());
-            int cost = chef.getCost();
+            int cost = baker.getCost();
             Collection<Student> studentsPlayer3 = expertMatch4Players.getGame().getWizardFromPlayer(player3).getBoard().getStudentsInEntrance();
             Collection<Student> studentsPlayer4 = expertMatch4Players.getGame().getWizardFromPlayer(player4).getBoard().getStudentsInEntrance();
             List<Student> students3 = new ArrayList<>(studentsPlayer3);
@@ -220,24 +212,21 @@ class ChefTest {
             expertMatch4Players.moveStudentOnBoard(player2, students2[1]);
 
             int positionMN = expertMatch4Players.getPositionOfMotherNature();
-            expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
             positionMN = expertMatch4Players.getPositionOfMotherNature();
             Archipelago interestArchipelago = expertMatch4Players.getGame().getArchipelagos().get((positionMN + getSteps(expertMatch4Players, player4)) % expertMatch4Players.getGame().getArchipelagos().size());
             Student[] s = new Student[2];
             Student student = interestArchipelago.getStudentFromArchipelago().toArray(s)[0];
-            wizard4.addACoin();
             wizard4.addACoin(); //wizard has 3 coin now
-            assertEquals(3, wizard4.getCoins());
-            assertEquals(3, chef.getCost());
+            assertEquals(2, wizard4.getCoins());
+            assertEquals(2, baker.getCost());
 
             int influenceBeforeEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago);
             int influenceBeforeEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago);
 
-            chef.setActiveWizard(wizard4);
-            chef.setColorEffected(student.getColor());
-            chef.useCard(expertMatch4Players);
+            baker.setActiveWizard(wizard4);
+            baker.useCard(expertMatch4Players);
             assertEquals(0, wizard4.getCoins());
-            assertEquals(cost + 1, chef.getCost());
+            assertEquals(cost + 1, baker.getCost());
 
             int influenceAfterEffectTeam1 = expertMatch4Players.getWizardInfluenceInArchipelago(player1, interestArchipelago) ;
             int influenceAfterEffectTeam2 = expertMatch4Players.getWizardInfluenceInArchipelago(player3, interestArchipelago) ;
@@ -245,8 +234,8 @@ class ChefTest {
             expertMatch4Players.moveMotherNature(player4, interestArchipelago); //NB MN MOVED BY PLAYER4
 
             if (influenceAfterEffectTeam1 > influenceAfterEffectTeam2) {
-               Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
-               Assertions.assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(8, wizard1.getBoard().getTowersInBoard().size());
+                Assertions.assertEquals(8, wizard3.getBoard().getTowersInBoard().size());
                 Assertions.assertEquals(0, wizard2.getBoard().getTowersInBoard().size());
                 Assertions.assertEquals(0, wizard4.getBoard().getTowersInBoard().size());
             }else if (influenceAfterEffectTeam1 < influenceAfterEffectTeam2){
@@ -263,7 +252,6 @@ class ChefTest {
         });
 
     }
-
     public int getSteps(ExpertMatch expertMatch, Player player) throws ExceptionGame{
         Wizard wizard = expertMatch.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();

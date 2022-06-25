@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -36,7 +37,7 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard, S
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveMotherNatureCard(this);
-        this.cost++;
+        paymentOfTheCard();
     }
 
     /**

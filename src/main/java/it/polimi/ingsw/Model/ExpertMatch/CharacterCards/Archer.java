@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -36,7 +37,7 @@ public class Archer extends CharacterCard implements InfluenceEffectCard, Serial
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveInfluenceCard(this);
-        this.cost++;
+        paymentOfTheCard();
     }
 
     /**
@@ -51,10 +52,15 @@ public class Archer extends CharacterCard implements InfluenceEffectCard, Serial
         return normalInfluence - towerInfluence;
     }
 
+
+    /**
+     * resets the card
+     */
     @Override
     public void resetCard() {
         super.resetCard();
     }
+
 }
 
 

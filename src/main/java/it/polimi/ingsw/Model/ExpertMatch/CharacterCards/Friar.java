@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ public class Friar extends CharacterCard implements StudentEffectCard, Serializa
         super(basicMatch, name);
         setCost(1);
         drawStudent(getStudentsOnCard(), 4, basicMatch.getGame().getStudentBag());
+
     }
 
     /**
@@ -37,7 +39,8 @@ public class Friar extends CharacterCard implements StudentEffectCard, Serializa
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
         usedFriarCard(getActiveStudents().stream().findFirst().orElse(null));
-        this.cost++;
+        paymentOfTheCard();
+        resetCard();
     }
 
     /**
@@ -56,7 +59,6 @@ public class Friar extends CharacterCard implements StudentEffectCard, Serializa
 
         drawStudent( getStudentsOnCard(), 1, getBasicMatch().getGame().getStudentBag());
 
-        resetCard();
     }
 }
 

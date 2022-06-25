@@ -61,7 +61,7 @@ public class BasicMatch extends Observable implements Serializable {
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
         notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Order of the players: \n" + players));
+      //  notifyObserver(new GenericMessage("Order of the players: \n" + players));
 
     }
 
@@ -97,7 +97,7 @@ public class BasicMatch extends Observable implements Serializable {
         wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCard);
         notifyObserver(new CurrentGameMessage(game));
-        notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
+     //   notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**
@@ -132,7 +132,7 @@ public class BasicMatch extends Observable implements Serializable {
      *
      * @param c is the color
      */
-    protected void lookUpProfessor(Color c){
+    public void lookUpProfessor(Color c){
         try {
             game.placeProfessor(c);
         }catch (ExceptionGame e){

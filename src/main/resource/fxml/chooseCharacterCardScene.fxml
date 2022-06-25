@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="511.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.ChooseCharacterCardSceneController">
+   <children>
+      <ImageView fitHeight="609.0" fitWidth="892.0" layoutX="-8.0" layoutY="-78.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Background/wood_assistant_card.jpeg" />
+         </image>
+      </ImageView>
+      <HBox fx:id="characterCardBox" alignment="TOP_CENTER" layoutX="145.0" layoutY="130.0" prefHeight="253.0" prefWidth="536.0" spacing="20.0" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="134.0">
+         <children>
+            <ImageView fitHeight="243.0" fitWidth="158.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Personaggi/CarteTOT_front.jpg" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="239.0" fitWidth="158.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Personaggi/CarteTOT_front.jpg" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="276.0" fitWidth="158.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Graphics/Personaggi/CarteTOT_front.jpg" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </HBox>
+      <Label layoutX="250.0" layoutY="19.0" prefHeight="67.0" prefWidth="358.0" text="Choose your Character!" textFill="WHITE">
+         <font>
+            <Font name="Apple Chancery" size="36.0" />
+         </font>
+      </Label>
+      <Button fx:id="playBtn" layoutX="564.0" layoutY="423.0" mnemonicParsing="false" onAction="#sendAskCharacterCard" prefHeight="46.0" prefWidth="124.0" text="Play">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="53.0" layoutY="40.0" mnemonicParsing="false" onAction="#closeStage" prefHeight="37.0" prefWidth="76.0" text="Back">
+         <font>
+            <Font name="Apple Chancery" size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="characterLbl" layoutX="58.0" layoutY="432.0" text="CHARACTER SELECTED:" textFill="WHITE">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

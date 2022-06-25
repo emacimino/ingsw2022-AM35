@@ -45,7 +45,11 @@ public class Constants {
     public static final String ANSI_ORANGE = "\u001b[38;5;208m";
     public static final String ANSI_DEEPBLUE = "\u001b[34;1m";
 
-
+    /**
+     * Pick the correct assistantt card from it-s value
+     * @param assistantsCards to be picked
+     * @return string to identify the assistant card picked
+     */
     public static String getAssistantCardCLI(AssistantsCards assistantsCards){
         switch (assistantsCards.getValue()){
             case 1 -> {

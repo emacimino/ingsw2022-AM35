@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Island;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
     public Chef(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(3);
+
     }
 
     /**
@@ -34,7 +36,7 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveInfluenceCard(this);
-        this.cost++;
+        paymentOfTheCard();
     }
 
     /**
@@ -57,8 +59,9 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
         return normalInfluence;
     }
 
+
     /**
-     * This method resets the card
+     * resets the card
      */
     @Override
     public void resetCard() {

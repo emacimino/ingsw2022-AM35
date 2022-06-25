@@ -70,6 +70,10 @@ public class CLIHandler {
             if (nameCharacter.equals("quit")) {
                 return null;
             }
+            if (cli.getRemoteModel().getCurrentBoard().getCoins() < cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()){
+                System.out.println("Could not play the card for lack of coins");
+                return null;
+            }
         } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
 
         return new AskCharacterCardMessage(nameCharacter);
@@ -80,11 +84,11 @@ public class CLIHandler {
      *
      * @param message message received
      */
-    public void showMessage(Message message) {
+/*    public void showMessage(Message message) {
         switch (message.getType()) {
             case REQUEST_LOGIN -> requestLogin();
             case ASK_ASSISTANT_CARD -> showAssistantsCardOption(((AskAssistantCardMessage) message).getAssistantsCards());
-            case STUDENTS_ON_ENTRANCE -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage) message).getStudents());
+            case ASK_TO_MOVE_STUDENT -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage) message).getStudents());
             case ASK_MOVE_MOTHER_NATURE -> askToMotherNature(((AskToMoveMotherNatureMessage) message).getMessage());
             case BOARD -> showBoard(((BoardMessage) message).getBoard());
             case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
@@ -96,13 +100,12 @@ public class CLIHandler {
             case GAME_INFO -> showCurrentGame(message);
             case ERROR -> showErrorMessage(((ErrorMessage) message).getError());
             case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
-            case ACTIVE_CHARACTER_CARD -> showActiveCharacterCard(message);
-            case SHOW_CHARACTER_CARD_INFO -> showChosenCharacterCard(message);
-            default -> System.out.println(message);
+            case SHOW_CHARACTER_CARD_INFO -> showInfoChosenCharacterCard();
+            default -> System.out.println(message.getMessage());
 
         }
     }
-
+*/
 
     /**
      * This method that prints the Login info
@@ -291,12 +294,13 @@ public class CLIHandler {
     private void getInfoBoard(Board board) throws ExceptionGame {
         List<Student> students = new ArrayList<>();
         System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
-        Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        if(!board.getTowersInBoard().isEmpty())
+             Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
         for (Color c : Color.values()) {
             students.addAll(board.getStudentsFromTable(c));
         }
         Printable.printBoardProfessorAndTables(board.getProfessorInTable(), students);
-        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getTowersInBoard().iterator().next().getProperty().getCoins());
+        Printable.printEntranceAndCoins(board.getStudentsInEntrance().stream().toList(), board.getCoins());
         System.out.print("\n");
     }
 
@@ -337,10 +341,9 @@ public class CLIHandler {
     public void showAssistantsCardOption(List<AssistantsCards> assistantsCardsInTurn) {
         System.out.println("Please select an Assistant Card from the option below: ");
         cli.getRemoteModel().getAssistantsCardsMap().clear();
-        for (AssistantsCards a : assistantsCardsInTurn) {
-            cli.getRemoteModel().getAssistantsCardsMap().put(Constants.getAssistantCardCLI(a), a);
-            System.out.println(Printable.getAssistantCardCLI(a));
-        }
+        cli.getRemoteModel().setAssistantsCardsMap(assistantsCardsInTurn);
+        for(AssistantsCards a : assistantsCardsInTurn)
+             System.out.println(Printable.getAssistantCardCLI(a));
     }
 
     /**
@@ -349,6 +352,7 @@ public class CLIHandler {
      * @param studentMap containing map of students in entrance
      */
     public void showStudentsOnEntranceOption(Map<Integer, Student> studentMap) {
+        showBoard(cli.getRemoteModel().getCurrentBoard());
         System.out.println("\nPlease select an Student from the option below: ");
         System.out.println("Indicate the student you cho ose with its number than after the comma choose the Archipelago you want to move the student" +
                 "\n Write just the number if you want move the student on your board ");
@@ -364,6 +368,7 @@ public class CLIHandler {
      * This method prints the options for Mother Nature movements
      */
     public void askToMotherNature(String string) {
+        displayArchipelagos();
         System.out.println(string);
         System.out.println("Insert the index of the Archipelago you want to move Mother Nature");
     }
@@ -375,9 +380,9 @@ public class CLIHandler {
      * @return a message containing an assistant
      */
     private Message createAssistantCardMessage(String assistant) {
+        System.out.println("sono qui in create assistant card");
         assistant = assistant.toUpperCase();
         if (cli.getRemoteModel().getAssistantsCardsMap().containsKey(assistant)) {
-            cli.getRemoteModel().assistantCardUsed(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
             return new AssistantCardMessage(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
         } else {
             System.out.println("Please write a valid Assistant Card");
@@ -385,6 +390,11 @@ public class CLIHandler {
         }
     }
 
+    /**
+     * This method creates a message containing login parameters
+     * @param login is the input login
+     * @return a correct login message
+     */
     private Message createLoginMessage(String login) {
         LoginResponse message;
         String[] info = login.split(",");
@@ -413,6 +423,11 @@ public class CLIHandler {
         }
     }
 
+    /**
+     * This method creates a message containing a student
+     * @param student is the index of the student to be moved
+     * @return moveStudentMessage
+     */
     private Message createMoveStudentMessage(String student) {
         Message message = null;
         try {
@@ -465,6 +480,11 @@ public class CLIHandler {
         return message;
     }
 
+    /**
+     * This method creates a message containing the chosen cloud
+      * @param cloud is the index of the chosen cloud
+     * @return cloudMessage
+     */
     private Message createChooseCloudMessage(String cloud) {
         System.out.println("IN CREATE CHOOSE CLOUD  IN CLIHANDLER");
         Message message = null;
@@ -482,7 +502,7 @@ public class CLIHandler {
     }
 
     /**
-     * This method prints the character cards
+     * This method prints the character cards chosen for this game
      */
     private void displayCharacterCardInGame() {
         System.out.println("Character Card available: \n");
@@ -493,17 +513,11 @@ public class CLIHandler {
         }
     }
 
-    private void showActiveCharacterCard(Message message) {
-        ActiveCharacterCardMessage activeMessage = (ActiveCharacterCardMessage) message;
-        System.out.println(activeMessage.getActiveCharacterCardName());
-        cli.getRemoteModel().setActiveCharacterCard(activeMessage.getActiveCharacterCardName());
-    }
-
-    private void showChosenCharacterCard(Message message) {
-        CharacterCardInfo infoMessage = (CharacterCardInfo) message;
-        cli.getRemoteModel().setArchipelagosMap(infoMessage.getArchipelagoMap());
-        cli.getRemoteModel().setStudentsOnCardMap(infoMessage.getStudentsOnCardMap());
-        cli.getRemoteModel().setStudentOnEntranceMap(infoMessage.getStudentsOnEntranceMap());
+    /**
+     * This method prints the info for all the character cards chosen for this game
+     *
+     */
+    public void showInfoChosenCharacterCard() {
         System.out.println("Archipelagos: ");
         for (Integer integer : cli.getRemoteModel().getArchipelagosMap().keySet()) {
             System.out.println(integer + ") ");
@@ -520,6 +534,9 @@ public class CLIHandler {
         askToChoose();
     }
 
+    /**
+     * This method prints the info requested for the character cards chosen for this turn
+     */
     private void askToChoose() {
         String nameCharacter = cli.getRemoteModel().getActiveCharacterCard();
         switch (nameCharacter) {
@@ -548,6 +565,11 @@ public class CLIHandler {
 
     }
 
+    /**
+     * This method create the info to use the character card chosen for this turn
+      * @param input is the userInput with all the information needed
+     * @return characterCardMessage with all the information needed
+     */
     private Message createCharacterMessage(String input) {
         String nameCharacter = cli.getRemoteModel().getActiveCharacterCard();
         int notValidArchipelago = 13;
@@ -650,6 +672,12 @@ public class CLIHandler {
         return null;
     }
 
+    /**
+     * This method choose the right color from the user input
+     * @param color is the color inserted by the user
+     * @return the color chosen in Color type
+     * @throws Exception if this color does not exist in the Game
+     */
     private Color getColor(String color) throws Exception {
         Color tmpColor;
         switch (color) {

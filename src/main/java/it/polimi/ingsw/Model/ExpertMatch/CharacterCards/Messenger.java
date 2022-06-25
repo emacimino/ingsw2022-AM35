@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.Wizard.Wizard;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class Messenger extends CharacterCard implements Serializable {
     public Messenger(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(3);
+
     }
 
     /**
@@ -36,7 +38,7 @@ public class Messenger extends CharacterCard implements Serializable {
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         calculateEffectInfluence(getArchipelagoEffected());
-        this.cost++;
+        paymentOfTheCard();
     }
 
     /**
