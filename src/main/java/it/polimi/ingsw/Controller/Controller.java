@@ -152,4 +152,8 @@ public class Controller implements Observer {
     public boolean isMatchOnGoing() {
         return matchOnGoing;
     }
+
+    public TurnController getTurnController(){
+        return this.turnController;
+    }
 }

@@ -292,6 +292,9 @@ public class Printable {
         if(archipelago.isMotherNaturePresence()) {
             System.out.print(MOTHER_NATURE + "          |");
         }
+        else if(archipelago.isProhibition()){
+            System.out.print(RED + "=#=" + RESET + "         |");
+        }
         else{
             System.out.print("            |");
         }
