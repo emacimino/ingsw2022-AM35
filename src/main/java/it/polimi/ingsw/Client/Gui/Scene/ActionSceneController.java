@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Wizard.Board;
 
 import it.polimi.ingsw.NetworkUtilities.MoveMotherNatureMessage;
 import it.polimi.ingsw.NetworkUtilities.MoveStudentMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -121,7 +122,7 @@ public class ActionSceneController extends GenericSceneController {
         boardPanelController.setMovableStudentOnEntrance(studentMap);
     }
 
-    public void move(ActionEvent event) {
+    public void move() {
         Integer indexStud, indexArch;
         if(moveMN){
             indexArch = getArchipelagoIndex(archipelagoSelected);
@@ -158,8 +159,8 @@ public class ActionSceneController extends GenericSceneController {
         return indexStud;
     }
 
-    public void goToBoards(ActionEvent event) {
-        SceneController.showWizardsBoards(getObservers());
+    public void goToBoards() {
+        Platform.runLater(() -> SceneController.showWizardsBoards(getObservers()));
 
     }
 
@@ -173,8 +174,8 @@ public class ActionSceneController extends GenericSceneController {
         playCharacterBtn.setVisible(true);
     }
 
-    public void goToScenePlayCharacter(ActionEvent event){
-        SceneController.showCharacterCardsOption(getObservers());
+    public void goToScenePlayCharacter(){
+        Platform.runLater(() -> SceneController.showCharacterCardsOption(getObservers()));
     }
 
     @Override

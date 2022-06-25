@@ -42,7 +42,8 @@ public class CLIHandler {
         Message message;
         if (inputString.equals("CharacterCard") && !cli.getRemoteModel().getCharacterCardMap().isEmpty()) {
             return askCharacterCardInfoMessage();
-        }
+        }else if(inputString.equals("exit"))
+            System.exit(0);
 
 
         switch (turnPhase) {
@@ -81,7 +82,6 @@ public class CLIHandler {
 
     /**
      * This method calls all the sub-methods that print a message
-     *
      * @param message message received
      */
 /*    public void showMessage(Message message) {

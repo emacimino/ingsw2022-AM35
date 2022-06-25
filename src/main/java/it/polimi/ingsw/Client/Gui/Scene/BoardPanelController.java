@@ -38,7 +38,7 @@ public class BoardPanelController extends GenericSceneController{
     @FXML
     private Label wizardLbl;
     @FXML
-    private Text studentSelectedTxt, colorSelectedTxt;
+    private Text studentSelectedTxt, colorSelectedTxt, coinsTxt;
 
     private String colorSel = "Color selected: ";
     private Student studentToMove;
@@ -57,6 +57,7 @@ public class BoardPanelController extends GenericSceneController{
         setTowers(board.getTowersInBoard());
         setStudentsInEntrance(board.getStudentsInEntrance().stream().toList());
         wizardLbl.setText(wizardName + " board");
+        coinsTxt.setText("coins: " + board.getCoins());
 
     }
 

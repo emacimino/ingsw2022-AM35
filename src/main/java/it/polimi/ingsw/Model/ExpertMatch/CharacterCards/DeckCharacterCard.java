@@ -55,13 +55,9 @@ public class DeckCharacterCard{
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
         }
-        if(!deckForAMatch.containsKey("Minstrel")) {
+        if(!deckForAMatch.containsKey("Herbalist")) {
             deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(0));
-            deckForAMatch.put("Minstrel", factoryCharacterCard.createACharacterCard(basicMatch, "Minstrel"));
-        }
-        if(!deckForAMatch.containsKey("Jester")) {
-            deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(1));
-            deckForAMatch.put("Jester", factoryCharacterCard.createACharacterCard(basicMatch, "Jester"));
+            deckForAMatch.put("Herbalist", factoryCharacterCard.createACharacterCard(basicMatch, "Herbalist"));
         }
         return deckForAMatch;
     }

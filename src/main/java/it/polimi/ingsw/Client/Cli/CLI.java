@@ -93,10 +93,9 @@ public class CLI  extends Observable implements UserView {
     }
 
     /**
-     * runnable for the cli application of Eryantis
-     * @throws IOException if the connection cease to exist
+     * runnable for the cli application of Eriantys
      */
-    public void run() throws IOException {
+    public void run(){
 
         try {
 
@@ -242,6 +241,8 @@ public class CLI  extends Observable implements UserView {
              cliHandler.showGenericMessage("congratulation! You Won!");
         else
             cliHandler.showGenericMessage("I'm Sorry you have lose");
+        System.exit(0);
+
     }
     /**
      * Help to understand how the current match is going
