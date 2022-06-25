@@ -166,7 +166,7 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showArchipelagos(Message message) {
+    private void showArchipelagos(Message message){
         ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
         cli.getRemoteModel().setArchipelagosMap(archipelagoListMessage.getArchipelago());
         for (int i : cli.getRemoteModel().getArchipelagosMap().keySet()) {
@@ -281,7 +281,7 @@ public class CLIHandler {
      *
      * @param archipelago is the printed archipelago
      */
-    private void getInfoArchipelago(Archipelago archipelago) {
+    private void getInfoArchipelago(Archipelago archipelago){
         Printable.printArchipelago(archipelago);
     }
 

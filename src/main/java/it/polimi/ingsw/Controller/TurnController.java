@@ -479,4 +479,8 @@ public class TurnController {
             remoteView.sendMessage(message);
         }
     }
+
+    public TurnPhase getTurnPhase(){
+        return this.turnPhase;
+    }
 }
