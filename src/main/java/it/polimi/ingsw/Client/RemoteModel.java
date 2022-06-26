@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class used to display a remote model on the client
+ */
 public class RemoteModel {
     private Game game;
     private Map<String , AssistantsCards> assistantsCardsMap = new HashMap<>();
@@ -31,14 +34,26 @@ public class RemoteModel {
     private List<Color> colorSelected = new ArrayList<>();
     private List<Integer> studentFromEntrance = new ArrayList<>();
 
+    /**
+     * Set method for studentFromCard
+     * @param studentsFromCard list of students
+     */
     public void setStudentsFromCard(List<Integer> studentsFromCard) {
         this.studentsFromCard = studentsFromCard;
     }
 
+    /**
+     * Set method for color selection
+     * @param colorSelected color selected
+     */
     public void setColorSelected(Color colorSelected) {
         this.colorSelected.add(colorSelected);
     }
 
+    /**
+     * Set method for student from entrance
+     * @param student student from entrance
+     */
     public void setStudentFromEntrance(Student student) {
         Integer indexStud = getStudentIndex(student);
         if(!studentFromEntrance.contains(indexStud)){
@@ -47,22 +62,42 @@ public class RemoteModel {
             studentFromEntrance.remove(studentFromEntrance.indexOf(indexStud));
     }
 
+    /**
+     * Get method returning the students on the card
+     * @return a list of int representing the students
+     */
     public List<Integer> getStudentsFromCard() {
         return studentsFromCard;
     }
 
+    /**
+     * Get method returning the color selected
+     * @return the color selected
+     */
     public List<Color> getColorSelected() {
         return colorSelected;
     }
 
+    /**
+     * Get method returning the students from the entrance
+     * @return a list of int representing the students
+     */
     public List<Integer> getStudentFromEntrance() {
         return studentFromEntrance;
     }
 
+    /**
+     * Get method returning the archipelago selected
+     * @return an int representing the archipelago
+     */
     public Integer getArchipelagoSelected() {
         return archipelagoSelected;
     }
 
+    /**
+     * Set method for selecting an archipelago
+     * @param archipelagoSelected an int representing the set archipelago
+     */
     public void setArchipelagoSelected(Integer archipelagoSelected) {
         this.archipelagoSelected = archipelagoSelected;
     }
@@ -201,14 +236,27 @@ public class RemoteModel {
         this.currentBoard = currentBoard;
     }
 
+    /**
+     * Method that sets the student selected attribute
+     * @param studentSelected a list of integers representing the students
+     */
     public void setStudentSelected(List<Integer> studentSelected) {
         this.studentsFromCard = studentSelected;
     }
 
+    /**
+     * Get method returning the students selected
+     * @return a list of int representing the students
+     */
     public List<Integer> getStudentSelected() {
         return studentsFromCard;
     }
 
+    /**
+     * Get method returning the index of the student
+     * @param student student selected
+     * @return the index of the student
+     */
     private Integer getStudentIndex(Student student){
         Integer indexStud = null;
         for (Integer i : studentsOnEntranceMap.keySet()) {
@@ -219,6 +267,9 @@ public class RemoteModel {
         return indexStud;
     }
 
+    /**
+     * Method used to clear the previous selections
+     */
     public void clearSelection() {
         colorSelected.clear();
         studentFromEntrance.clear();

@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Class that implements the UserView interface for CLI purposes
+ */
 public class CLI  extends Observable implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;

@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Scene used during the action phase
+ */
 public class ActionSceneController extends GenericSceneController {
 
     @FXML
@@ -37,6 +40,10 @@ public class ActionSceneController extends GenericSceneController {
     private Boolean ok = false;
     private Boolean moveMN = false;
 
+    /**
+     * Method used to set the archipelagos
+     * @param archipelagos a Map associating archipelagos with a number
+     */
     public void setArchipelagos(Map<Integer, Archipelago> archipelagos) {
         archipelagoMap = archipelagos;
         {
@@ -78,6 +85,13 @@ public class ActionSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * Method used to load archipelagos on the GUI
+     * @param archipelago archipelagos to print
+     * @param row used for coordinates on the screen
+     * @param column used for coordinates on the screen
+     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     */
     private void loadArchipelagos(Archipelago archipelago, int row, int column) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/archipelago.fxml"));
@@ -98,6 +112,10 @@ public class ActionSceneController extends GenericSceneController {
         sky.add(node, column, row);
     }
 
+    /**
+     * Method used to set the board on the GUI
+     * @param board the board to set
+     */
     public void setBoard(Board board) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/singleBoard.fxml"));
@@ -115,12 +133,20 @@ public class ActionSceneController extends GenericSceneController {
 
     }
 
+    /**
+     * Method used to load students on the GUI
+     * @param studentsMovable a Map associating students with an int
+     */
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
         while(!ok){}
         studentMap = studentsMovable;
         boardPanelController.setMovableStudentOnEntrance(studentMap);
     }
 
+    /**
+     * Method used to move students
+     * @param event an event representing some type of action
+     */
     public void move(ActionEvent event) {
         Integer indexStud, indexArch;
         if(moveMN){
@@ -139,6 +165,11 @@ public class ActionSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * Method used to get the archipelago index
+     * @param archipelago the archipelago the index of is requested
+     * @return an int representing the index
+     */
     private Integer getArchipelagoIndex(Archipelago archipelago){
         Integer indexArch = null;
         for (Integer i : archipelagoMap.keySet()) {
@@ -148,6 +179,11 @@ public class ActionSceneController extends GenericSceneController {
         }
         return indexArch;
     }
+    /**
+     * Method used to get the student index
+     * @param student the student the index of is requested
+     * @return an int representing the index
+     */
     private Integer getStudentIndex(Student student){
         Integer indexStud = null;
         for (Integer i : studentMap.keySet()) {
@@ -158,25 +194,44 @@ public class ActionSceneController extends GenericSceneController {
         return indexStud;
     }
 
+    /**
+     * Method that shows the wizards' board
+     * @param event
+     */
     public void goToBoards(ActionEvent event) {
         SceneController.showWizardsBoards(getObservers());
 
     }
 
+    /**
+     * Method used to set the movement of mother nature
+     * @param moveMN a boolean to set the movement
+     */
     public void setMoveMN(Boolean moveMN) {
         this.moveMN = moveMN;
         moveBtn.setText("Move Mother Nature");
     }
 
+    /**
+     * Method used to set the match in expert mode
+     */
     public void setExpert(){
         playCharacterBtn.setDisable(false);
         playCharacterBtn.setVisible(true);
     }
 
+    /**
+     * Method used to switch scene
+     * @param event An Event representing some type of action input by the player
+     */
     public void goToScenePlayCharacter(ActionEvent event){
         SceneController.showCharacterCardsOption(getObservers());
     }
 
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;

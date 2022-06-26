@@ -26,6 +26,9 @@ import javafx.scene.text.Text;
 
 import java.util.*;
 
+/**
+ * Class used to control the Board on the GUI
+ */
 public class BoardPanelController extends GenericSceneController{
     @FXML
     private VBox entrance1, entrance2;
@@ -48,7 +51,11 @@ public class BoardPanelController extends GenericSceneController{
     private Map<Color, HBox> colorToTableMap = new HashMap<>();
 
 
-
+    /**
+     * Method used to set the board
+     * @param board the board to set
+     * @param wizardName the name of the wizard that owns the board
+     */
     public void setBoard(Board board, String wizardName) {
         for (TableOfStudents t : board.getTables()) {
             loadStudentsOnTable(getTable(t), t.getStudentsInTable().stream().toList());
@@ -60,6 +67,10 @@ public class BoardPanelController extends GenericSceneController{
 
     }
 
+    /**
+     * Method used to set students in the entrance of the board
+     * @param studentsInEntrance a list of students in entrance
+     */
     private void setStudentsInEntrance(List<Student> studentsInEntrance) {
         List<Node> nodes1 = entrance1.getChildren();
         List<Node> nodes2 = entrance2.getChildren();
@@ -72,6 +83,11 @@ public class BoardPanelController extends GenericSceneController{
         }
     }
 
+    /**
+     * Method used to set the color of the students
+     * @param node a node used to display students
+     * @param student student to display
+     */
     private void setRightColorStudent(Node node, Student student) {
         Color color = student.getColor();
         switch (color) {
@@ -85,6 +101,10 @@ public class BoardPanelController extends GenericSceneController{
         studentEntranceMap.put(node, student);
     }
 
+    /**
+     * Method used to set the towers in the board
+     * @param towersInBoard a collection of towers in the board
+     */
     private void setTowers(Collection<Tower> towersInBoard) {
         List<Node> nodes = towersPane.getChildren();
         for (int i = 0; i < towersInBoard.size(); i++) {
@@ -94,6 +114,11 @@ public class BoardPanelController extends GenericSceneController{
         }
     }
 
+    /**
+     * Method that returns the color of the towers
+     * @param tower tower to get the color from
+     * @return an image with the towers of the correct color
+     */
     private Image takeColorOfTower(Tower tower) {
         switch (tower.getTowerColors()) {
             case Gray -> {
@@ -111,12 +136,22 @@ public class BoardPanelController extends GenericSceneController{
         }
     }
 
+    /**
+     * Method used to load students on the table
+     * @param table a graphical tablet o arrange the students
+     * @param students students to load on the table
+     */
     private void loadStudentsOnTable(HBox table, List<Student> students) {
         for (int i = 0; i < students.size(); i++) {
             table.getChildren().get(i).setVisible(true);
         }
     }
 
+    /**
+     * Method used to get the table
+     * @param t a table of students
+     * @return a box to display the table
+     */
     private HBox getTable(TableOfStudents t) {
         return colorToTableMap.get(t.getColor());
     }
@@ -133,10 +168,18 @@ public class BoardPanelController extends GenericSceneController{
         }
     }
 
+    /**
+     * Method used to set the movable students on the entrance
+     * @param students a map of students
+     */
     public void setMovableStudentOnEntrance(Map<Integer, Student> students) {
         setStudentsInEntrance(students.values().stream().toList());
     }
 
+    /**
+     * Method used to select a student on click
+     * @param event the input of the player
+     */
     public void onStudentClick(MouseEvent event){
         Node node = (Circle) event.getTarget();
         studentToMove = studentEntranceMap.get(node);
@@ -145,13 +188,26 @@ public class BoardPanelController extends GenericSceneController{
 
     }
 
+    /**
+     * Method used to get the color of the table
+     * @param table a box representing a table of students
+     * @return a color
+     */
     public Color getColorOfTable(HBox table){
         return tableToColorMap.get(table);
     }
+
+    /**
+     * Method that returns the students to move
+     * @return a student
+     */
     public Student getStudentToMove() {
         return studentToMove;
     }
 
+    /**
+     * Method used when the expert match is selected
+     */
     public void enableExpert(){
         for(HBox t : tableToColorMap.keySet()){
             t.setDisable(false);
@@ -177,12 +233,19 @@ public class BoardPanelController extends GenericSceneController{
         }
     }
 
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
         setTablesMap();
     }
 
+    /**
+     * Method that sets the tables of students map
+     */
     private void setTablesMap() {
         tableToColorMap.put(greenTable, Color.GREEN);
         tableToColorMap.put(blueTable, Color.BLUE);
@@ -198,7 +261,9 @@ public class BoardPanelController extends GenericSceneController{
 
     }
 
-
+    /**
+     * Method used to clear the current selection
+     */
     public void clearSelection() {
         studentSelectedTxt.setText("");
         colorSelectedTxt.setText("");

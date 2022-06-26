@@ -17,6 +17,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Class containing the base settings for a match
+ */
 public class BasicMatch extends Observable implements Serializable {
 
     @Serial
@@ -383,56 +386,115 @@ public class BasicMatch extends Observable implements Serializable {
         return game.getMotherNature().getPosition();
     }
 
+    /**
+     * Method used to set teams
+     * @param players a list of players
+     * @throws ExceptionGame If the match does not have teams
+     */
     public void setTeams(List<Player> players) throws ExceptionGame{
         throw new ExceptionGame("This match does not have teams");
     }
 
+    /**
+     * Get method for teams
+     * @return
+     * @throws ExceptionGame if the match does not have teams
+     */
     public List<List<Player>> getTeams() throws ExceptionGame{
         throw new ExceptionGame("This match does not have teams");
     }
 
+    /**
+     * Method used to set number of players
+     * @param numberOfPlayers number of players playing
+     */
     //protected setter
     protected void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
 
+    /**
+     * Method used to set the game
+     * @param game current game
+     */
     protected void setActualGame(Game game) {
         this.game = game;
     }
 
+    /**
+     * Set method for players
+     * @param players a list of players playing
+     */
     protected void setPlayers(List<Player> players) {
         this.players = players;
     }
 
+    /**
+     *
+     * @param actionPhaseOrderOfPlayers
+     */
     protected void setActionPhaseOrderOfPlayers(List<Player> actionPhaseOrderOfPlayers) {
         this.actionPhaseOrderOfPlayers = actionPhaseOrderOfPlayers;
     }
 
+    /**
+     * This method sets the number of movable students
+     * @param numberOfMovableStudents int representing the number of movable students
+     */
     protected void setNumberOfMovableStudents(int numberOfMovableStudents) {
         this.numberOfMovableStudents = numberOfMovableStudents;
     }
 
+    /**
+     * Method that sets the number of clouds
+     * @param numberOfClouds number of clouds
+     */
     protected void setNumberOfClouds(int numberOfClouds) {
         this.numberOfClouds = numberOfClouds;
     }
 
+    /**
+     * Method that sets the number of students on clouds
+     * @param numberOfStudentsOnCLoud number of students on clouds
+     */
     protected void setNumberOfStudentsOnCLoud(int numberOfStudentsOnCLoud) {
         this.numberOfStudentsOnCLoud = numberOfStudentsOnCLoud;
     }
 
+    /**
+     * Method that sets the number of students in entrance
+     * @param numberOfStudentInEntrance number of students in entrance
+     */
     protected void setNumberOfStudentInEntrance(int numberOfStudentInEntrance) {
         this.numberOfStudentInEntrance = numberOfStudentInEntrance;
     }
 
+    /**
+     * Method that sets the number of towers
+     * @param numberOfTowers number of towers
+     */
     protected void setNumberOfTowers(int numberOfTowers) {
         this.numberOfTowers = numberOfTowers;
     }
 
+    /**
+     * Method that returns the influence of the given wizard in the archipelago
+     * @param p player used for influence calculation
+     * @param archipelago target archipelago
+     * @return an int representing the influence
+     * @throws ExceptionGame is thrown where there is no association between the player and the wizards in the game
+     */
     public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame{
         Wizard w = game.getWizardFromPlayer(p);
         return game.getWizardInfluenceInArchipelago(w, archipelago);
     }
 
+    /**
+     * Returns the rival team
+     * @param player player you want to know the rival of
+     * @return a list of players in the opposing team
+     * @throws ExceptionGame
+     */
     public List<Player> getRivals(Player player) throws ExceptionGame{
         List<Player> rivals = new ArrayList<>();
         for (Player p : getPlayers()){
@@ -442,17 +504,33 @@ public class BasicMatch extends Observable implements Serializable {
         return rivals;
     }
 
+    /**
+     * Returns true if a given player controls the professor of the given color
+     * @param player player
+     * @param color color of the professor
+     * @return a boolean
+     * @throws ExceptionGame is thrown where there is no association between the player and the wizards in the game
+     */
     public boolean playerControlProfessor(Player player, Color color) throws ExceptionGame{
         Wizard wizard = getGame().getWizardFromPlayer(player);
         return wizard.getBoard().isProfessorPresent(color);
     }
 
+    /**
+     * This method returns the captain of the team
+     * @param player player you want to know the captain of
+     * @return a player that is captain
+     * @throws ExceptionGame if a method call throws an exception
+     */
     public Player getCaptainTeamOfPlayer(Player player) throws ExceptionGame{
         System.out.println("This match does not have teams");
         return player;
     }
 
-
+    /**
+     * toString() method for this class
+     * @return
+     */
     @Override
     public String toString() {
         return "BasicMatch{" +

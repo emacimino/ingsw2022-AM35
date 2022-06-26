@@ -6,6 +6,9 @@ import it.polimi.ingsw.Model.FactoryMatch.Game;
 
 import java.util.HashSet;
 
+/**
+ * Factory class for the Character Cards
+ */
 public class FactoryCharacterCard{
 
      public CharacterCard createACharacterCard(BasicMatch basicMatch, String name) throws IllegalArgumentException{
