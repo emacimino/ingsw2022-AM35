@@ -220,7 +220,7 @@ public class ControllerTest {
         //Assertions.assertThrows(ExceptionGame.class, () -> controllerExpertMatch2Players.onMessageReceived()));
     }
 
-    @RepeatedTest(12)
+    @RepeatedTest(100)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
@@ -275,9 +275,15 @@ public class ControllerTest {
             System.out.println(controllerExpertMatch2Players.getTurnController().getActivePlayer());
             expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().getProfessorInTable().clear();
             expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable().clear();
+            System.out.println(expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable());
+            expertMatch2Players.getGame().placeProfessor(Color.RED);
             expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(new Professor(Color.RED));
             expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().setProfessorInTable(new Professor(Color.GREEN));
             expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().add(new Student(Color.RED));
+            expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().add(new Student(Color.RED));
+            expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().addStudentInTable(new Student(Color.RED));
+            expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().addStudentInTable(new Student(Color.RED));
+            expertMatch2Players.getGame().placeProfessor(Color.RED);
             Assertions.assertDoesNotThrow(()->controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage("Messenger", 3, null, null, null)));
            System.out.println(expertMatch2Players.getGame().getArchipelagos().get(2).getIsle().get(0));
             Assertions.assertTrue(expertMatch2Players.getGame().getArchipelagos().get(2).getIsle().get(0).isThereTower());
