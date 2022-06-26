@@ -69,7 +69,7 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
         }
         System.out.println("in student effect scene: in remote color" + remoteModel.getColorSelected());
         switch (characterCard.getName()) {
-
+            case "Banker", "Chef" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, null, remoteModel.getColorSelected()));
             case "Minstrel" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), null, remoteModel.getColorSelected()));
             case "Jester" ->notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), remoteModel.getStudentsFromCard(), null));
         }

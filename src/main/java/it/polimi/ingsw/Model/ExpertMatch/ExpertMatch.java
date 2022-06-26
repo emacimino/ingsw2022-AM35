@@ -102,9 +102,10 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         if(activeProhibitionCard!=null)
             if(archipelago.isProhibition()){
-                activeProhibitionCard.resetProhibitionEffect(archipelago);
                 basicMatch.getGame().placeMotherNature(player, archipelago);
+                activeProhibitionCard.resetProhibitionEffect(archipelago);
                 basicMatch.checkVictory(player);
+                notifyObserver(new CurrentGameMessage(getGame()));
                 return;
             }
 
@@ -143,7 +144,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
-            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) { //influenza del player in negativo
+            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) {
                 isMostInfluence = false;
             }
         }

@@ -126,9 +126,10 @@ public abstract class CharacterCard extends Observable implements Serializable {
     }
 
     protected void paymentOfTheCard() throws ExceptionGame {
-        notifyObserver(new CurrentGameMessage(basicMatch.getGame()));
         activeWizard.reduceCoins(getCost());
         cost++;
+        notifyObserver(new CurrentGameMessage(basicMatch.getGame()));
+
     }
 
     /**

@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Wizard.Board;
 
 import it.polimi.ingsw.NetworkUtilities.MoveMotherNatureMessage;
 import it.polimi.ingsw.NetworkUtilities.MoveStudentMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -145,9 +146,8 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to move students
-     * @param event an event representing some type of action
      */
-    public void move(ActionEvent event) {
+    public void move() {
         Integer indexStud, indexArch;
         if(moveMN){
             indexArch = getArchipelagoIndex(archipelagoSelected);
@@ -198,10 +198,9 @@ public class ActionSceneController extends GenericSceneController {
      * Method that shows the wizards' board
      * @param event
      */
-    public void goToBoards(ActionEvent event) {
-        SceneController.showWizardsBoards(getObservers());
-
-    }
+    public void goToBoards() {
+        Platform.runLater(() -> SceneController.showWizardsBoards(getObservers()));
+        
 
     /**
      * Method used to set the movement of mother nature
@@ -220,13 +219,13 @@ public class ActionSceneController extends GenericSceneController {
         playCharacterBtn.setVisible(true);
     }
 
-    /**
-     * Method used to switch scene
-     * @param event An Event representing some type of action input by the player
-     */
-    public void goToScenePlayCharacter(ActionEvent event){
-        SceneController.showCharacterCardsOption(getObservers());
-    }
+        /**
+         * Method used to switch scene
+         * @param event An Event representing some type of action input by the player
+         */
+    public void goToScenePlayCharacter(){
+        Platform.runLater(() -> SceneController.showCharacterCardsOption(getObservers()));
+
 
     /**
      * update the remote model

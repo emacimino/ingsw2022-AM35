@@ -21,7 +21,6 @@ public class Board implements Serializable {
     private final List<Professor> professorInTable= new ArrayList<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
-    private final int limitStudentOnTable = 10;
     private int coins = 0;
 
     /**
