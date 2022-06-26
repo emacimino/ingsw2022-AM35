@@ -261,11 +261,11 @@ public class ControllerTest {
         }*/
 
         if(card1.getName()=="Messenger"){
-
+            System.out.println(controllerExpertMatch2Players.getTurnController().getActivePlayer());
             expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().getProfessorInTable().clear();
             expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().getProfessorInTable().clear();
-            expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().setProfessorInTable(new Professor(Color.RED));
-            expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(new Professor(Color.GREEN));
+            expertMatch2Players.getGame().getWizardFromPlayer(playerOne).getBoard().setProfessorInTable(new Professor(Color.RED));
+            expertMatch2Players.getGame().getWizardFromPlayer(playerTwo).getBoard().setProfessorInTable(new Professor(Color.GREEN));
             for(Student s :expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago() )
                 expertMatch2Players.getGame().getArchipelagos().get(2).addStudentInArchipelago(new Student(Color.RED));
 
