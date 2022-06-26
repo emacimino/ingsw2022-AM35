@@ -41,7 +41,6 @@ public class BasicMatch extends Observable implements Serializable {
         numberOfTowers = 8;
         numberOfStudentInEntrance = 7;
         numberOfStudentsOnCLoud = 3;
-        game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
     }
 
     /**
@@ -50,6 +49,7 @@ public class BasicMatch extends Observable implements Serializable {
      * @throws ExceptionGame is thrown if this method is called during an execution of a match
      */
     public void setGame(List<Player> players) throws ExceptionGame {
+        game = new Game(numberOfStudentInEntrance, numberOfMovableStudents);
         if(players.size()>numberOfPlayers)
             throw new ExceptionGame("There are more player than allowed in this match");
         this.players.addAll(players);
@@ -61,7 +61,6 @@ public class BasicMatch extends Observable implements Serializable {
         game.setClouds(numberOfClouds, numberOfStudentsOnCLoud);
         game.setRandomlyFirstPlayer();
         notifyObserver(new CurrentGameMessage(game));
-      //  notifyObserver(new GenericMessage("Order of the players: \n" + players));
 
     }
 

@@ -50,7 +50,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         basicMatch.setGame(players);
         setFirstCoin();
         characterCardInMatchMap = deckCharacterCard.drawCharacterCard(basicMatch);
-
+        notifyObserver(new CurrentGameMessage(getGame()));
         notifyObserver(new CharacterCardInGameMessage(characterCardInMatchMap));
 
     }
