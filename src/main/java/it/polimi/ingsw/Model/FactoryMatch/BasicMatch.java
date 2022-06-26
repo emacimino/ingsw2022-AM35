@@ -242,7 +242,6 @@ public class BasicMatch extends Observable implements Serializable {
             throw new ExceptionGame("The studentBag is empty, it is not possible to pick a cloud");
         game.moveStudentFromCloudToBoard(player, cloud);
         notifyObserver(new CurrentGameMessage(game));
-        System.out.println("in chooseCloud BAsicMAtch " + actionPhaseOrderOfPlayers);
         if (player.equals(actionPhaseOrderOfPlayers.get(actionPhaseOrderOfPlayers.size() - 1))) {
             resetRound();
         }

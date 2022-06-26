@@ -483,4 +483,8 @@ public class TurnController {
     public TurnPhase getTurnPhase(){
         return this.turnPhase;
     }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
 }
