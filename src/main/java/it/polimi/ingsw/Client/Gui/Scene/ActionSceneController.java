@@ -43,6 +43,7 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to set the archipelagos
+     *
      * @param archipelagos a Map associating archipelagos with a number
      */
     public void setArchipelagos(Map<Integer, Archipelago> archipelagos) {
@@ -88,9 +89,10 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to load archipelagos on the GUI
+     *
      * @param archipelago archipelagos to print
-     * @param row used for coordinates on the screen
-     * @param column used for coordinates on the screen
+     * @param row         used for coordinates on the screen
+     * @param column      used for coordinates on the screen
      * @throws IOException Signals that an I/O exception of some sort has occurred.
      */
     private void loadArchipelagos(Archipelago archipelago, int row, int column) throws IOException {
@@ -100,14 +102,14 @@ public class ActionSceneController extends GenericSceneController {
         ArchipelagoPanelController controller = loader.getController();
         controller.setArchipelago(archipelago);
         node.setOnMouseClicked(MouseEvent -> {
-            if(archipelago == archipelagoSelected){
-                archipelagoSelected = null;
-                archipelagoSelectedLbl.setText("");
-            }else{
-                    archipelagoSelected = archipelago;
-                archipelagoSelectedLbl.setText("You have selected \n the " + getArchipelagoIndex(archipelago) + " archipelago");
-            }
-        }
+                    if (archipelago == archipelagoSelected) {
+                        archipelagoSelected = null;
+                        archipelagoSelectedLbl.setText("");
+                    } else {
+                        archipelagoSelected = archipelago;
+                        archipelagoSelectedLbl.setText("You have selected \n the " + getArchipelagoIndex(archipelago) + " archipelago");
+                    }
+                }
         );
         node.setDisable(false);
         sky.add(node, column, row);
@@ -115,6 +117,7 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to set the board on the GUI
+     *
      * @param board the board to set
      */
     public void setBoard(Board board) {
@@ -136,10 +139,12 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to load students on the GUI
+     *
      * @param studentsMovable a Map associating students with an int
      */
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
-        while(!ok){}
+        while (!ok) {
+        }
         studentMap = studentsMovable;
         boardPanelController.setMovableStudentOnEntrance(studentMap);
     }
@@ -149,12 +154,12 @@ public class ActionSceneController extends GenericSceneController {
      */
     public void move() {
         Integer indexStud, indexArch;
-        if(moveMN){
+        if (moveMN) {
             indexArch = getArchipelagoIndex(archipelagoSelected);
-            if(indexArch != null){
+            if (indexArch != null) {
                 notifyObserver(new MoveMotherNatureMessage(indexArch));
             }
-        }else {
+        } else {
             Student student = boardPanelController.getStudentToMove();
             indexStud = getStudentIndex(student);
             indexArch = getArchipelagoIndex(archipelagoSelected);
@@ -167,10 +172,11 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to get the archipelago index
+     *
      * @param archipelago the archipelago the index of is requested
      * @return an int representing the index
      */
-    private Integer getArchipelagoIndex(Archipelago archipelago){
+    private Integer getArchipelagoIndex(Archipelago archipelago) {
         Integer indexArch = null;
         for (Integer i : archipelagoMap.keySet()) {
             if (archipelagoMap.get(i).equals(archipelago)) {
@@ -179,12 +185,14 @@ public class ActionSceneController extends GenericSceneController {
         }
         return indexArch;
     }
+
     /**
      * Method used to get the student index
+     *
      * @param student the student the index of is requested
      * @return an int representing the index
      */
-    private Integer getStudentIndex(Student student){
+    private Integer getStudentIndex(Student student) {
         Integer indexStud = null;
         for (Integer i : studentMap.keySet()) {
             if (studentMap.get(i).equals(student)) {
@@ -196,46 +204,43 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method that shows the wizards' board
-     * @param event
      */
     public void goToBoards() {
         Platform.runLater(() -> SceneController.showWizardsBoards(getObservers()));
-        
-
-    /**
-     * Method used to set the movement of mother nature
-     * @param moveMN a boolean to set the movement
-     */
-    public void setMoveMN(Boolean moveMN) {
-        this.moveMN = moveMN;
-        moveBtn.setText("Move Mother Nature");
     }
-
     /**
-     * Method used to set the match in expert mode
-     */
-    public void setExpert(){
-        playCharacterBtn.setDisable(false);
-        playCharacterBtn.setVisible(true);
+    * Method used to set the movement of mother nature
+    * @param moveMN a boolean to set the movement
+    */
+    public void setMoveMN (Boolean moveMN){
+    this.moveMN = moveMN;
+    moveBtn.setText("Move Mother Nature");
     }
 
         /**
-         * Method used to switch scene
-         * @param event An Event representing some type of action input by the player
+         * Method used to set the match in expert mode
          */
-    public void goToScenePlayCharacter(){
-        Platform.runLater(() -> SceneController.showCharacterCardsOption(getObservers()));
+        public void setExpert () {
+            playCharacterBtn.setDisable(false);
+            playCharacterBtn.setVisible(true);
+        }
 
+        /**
+         * Method used to switch scene
+         */
+        public void goToScenePlayCharacter () {
+            Platform.runLater(() -> SceneController.showCharacterCardsOption(getObservers()));
+        }
 
-    /**
-     * update the remote model
-     * @param remoteModel remote model updated
-     */
-    @Override
-    public void setRemoteModel(RemoteModel remoteModel) {
-        this.remoteModel = remoteModel;
-        setBoard(remoteModel.getCurrentBoard());
-        setArchipelagos(remoteModel.getArchipelagosMap());
-        loadStudentsMovable(remoteModel.getStudentsOnEntranceMap());
-    }
+            /**
+             * update the remote model
+             * @param remoteModel remote model updated
+             */
+            @Override
+            public void setRemoteModel (RemoteModel remoteModel){
+                this.remoteModel = remoteModel;
+                setBoard(remoteModel.getCurrentBoard());
+                setArchipelagos(remoteModel.getArchipelagosMap());
+                loadStudentsMovable(remoteModel.getStudentsOnEntranceMap());
+            }
 }
