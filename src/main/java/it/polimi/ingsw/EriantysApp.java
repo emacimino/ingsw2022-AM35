@@ -24,7 +24,7 @@ public class EriantysApp {
                     System.err.println("Impossible to initialize the server: " + e.getMessage() + "!");
                 }
             }
-            case "client -cli" -> {
+            case "-cli" -> {
                 CLI cli = new CLI();
                 ClientController clientController = new ClientController(cli);
                 cli.addObserver(clientController);

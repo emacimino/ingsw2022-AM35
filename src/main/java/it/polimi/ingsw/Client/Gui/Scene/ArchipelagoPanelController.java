@@ -8,41 +8,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
+/**
+ * Class used to control the archipelagos on the GUI
+ */
 public class ArchipelagoPanelController {
     @FXML
-    private Circle blueStudent;
-    @FXML
-    private Circle greenStudent;
-    @FXML
-    private Circle pinkStudent;
-    @FXML
-    private Circle redStudent;
-    @FXML
-    private Circle yellowStudent;
+    private Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
     @FXML
     private Polygon motherNature;
     @FXML
-    private ImageView blackTower;
+    private ImageView whiteTower, greyTower, blackTower;
     @FXML
-    private ImageView whiteTower;
-    @FXML
-    private ImageView greyTower;
+    private ImageView prohibitionCard;
 
     @FXML
-    private Label numBlueStudents;
-    @FXML
-    private Label numPinkStudents;
-    @FXML
-    private Label numGreenStudents;
-    @FXML
-    private Label numRedStudents;
-    @FXML
-    private Label numYellowStudents;
+    private Label numBlueStudents, numPinkStudents, numGreenStudents, numRedStudents, numYellowStudents;
+
     @FXML
     private Label numOfTowers;
 
 
-
+    /**
+     * Class used to set the archipelago
+     * @param archipelago the archipelago that needs to be set
+     */
     public void setArchipelago(Archipelago archipelago) {
         {
             int numberOfStudentBlue = archipelago.getStudentFromArchipelago().stream()
@@ -113,6 +102,8 @@ public class ArchipelagoPanelController {
         if(archipelago.isMotherNaturePresence()){
             motherNature.setVisible(true);
         }
+        if(archipelago.isProhibition())
+            prohibitionCard.setVisible(true);
     }
 
 }

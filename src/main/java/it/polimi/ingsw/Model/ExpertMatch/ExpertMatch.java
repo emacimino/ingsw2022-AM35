@@ -44,6 +44,11 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
 
     }
 
+    /**
+     * Overrides the setGame method from basicMatch
+     * @param players a list of players
+     * @throws ExceptionGame if a method call throws an exception
+     */
     @Override
     public void setGame(List<Player> players) throws ExceptionGame {
         basicMatch.addAllObserver(this.getObservers());
@@ -79,18 +84,28 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
             wizard.addACoin();
     }
 
+    /**
+     * Get method returning a map of character cards
+     * @return a map of character cards
+     */
     public Map<String, CharacterCard> getCharactersForThisGame() {
         return characterCardInMatchMap;
     }
 
-
+    /**
+     * Method used to move Mother Nature
+     * @param player      is the player that move Mother Nature
+     * @param archipelago is the archipelago where the player wants to place Mother Nature
+     * @throws ExceptionGame is thrown if the tower can't be built
+     */
     @Override
     public void moveMotherNature(Player player, Archipelago archipelago) throws ExceptionGame {
         if(activeProhibitionCard!=null)
             if(archipelago.isProhibition()){
-                activeProhibitionCard.resetProhibitionEffect(archipelago);
                 basicMatch.getGame().placeMotherNature(player, archipelago);
+                activeProhibitionCard.resetProhibitionEffect(archipelago);
                 basicMatch.checkVictory(player);
+                notifyObserver(new CurrentGameMessage(getGame()));
                 return;
             }
 
@@ -120,10 +135,16 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         notifyObserver(new CurrentGameMessage(getGame()));
     }
 
+    /**
+     * Method used to build towers
+     * @param player      is the player
+     * @param archipelago is the archipelago
+     * @throws ExceptionGame if a tower can't be built
+     */
     public void buildTower(Player player, Archipelago archipelago) throws ExceptionGame {
         boolean isMostInfluence = true;
         for(Player p : getRivals(player)){
-            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) { //influenza del player in negativo
+            if(getWizardInfluenceInArchipelago(p, archipelago) >= getWizardInfluenceInArchipelago(player, archipelago)) {
                 isMostInfluence = false;
             }
         }
@@ -133,7 +154,13 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     }
 
 
-
+    /**
+     * This Method returns the influence of the given wizard in the archielago
+     * @param p player used for influence calculation
+     * @param archipelago target archipelago
+     * @return an int representing the influence
+     * @throws ExceptionGame if a method call throws an exception
+     */
     @Override
     public int getWizardInfluenceInArchipelago(Player p, Archipelago archipelago) throws ExceptionGame {
         Wizard wizard = getGame().getWizardFromPlayer(basicMatch.getCaptainTeamOfPlayer(p));

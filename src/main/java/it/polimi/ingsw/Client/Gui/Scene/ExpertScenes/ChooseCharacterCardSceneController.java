@@ -2,17 +2,22 @@ package it.polimi.ingsw.Client.Gui.Scene.ExpertScenes;
 
 import it.polimi.ingsw.Client.Gui.Scene.CardMap;
 import it.polimi.ingsw.Client.Gui.Scene.GenericSceneController;
+import it.polimi.ingsw.Client.Gui.Scene.SceneController;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.NetworkUtilities.AskCharacterCardMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ChooseCharacterCardSceneController extends GenericSceneController {
@@ -25,6 +30,8 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
     private Label characterLbl;
     @FXML
     private HBox characterCardBox;
+    @FXML
+    private Text coins1, coins2, coins3;
 
     public ChooseCharacterCardSceneController() {
         this.stage = new Stage();
@@ -51,14 +58,14 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         characterLbl.setText("YOU HAVE SELECTED: " + characterCardSelected);
     }
 
-    public void sendAskCharacterCard(ActionEvent event) {
+    public void sendAskCharacterCard() {
         if (characterCardSelected != null) {
             notifyObserver(new AskCharacterCardMessage(characterCardSelected));
             stage.close();
         }
     }
 
-    public void closeStage(ActionEvent event) {
+    public void closeStage() {
         stage.close();
     }
 
@@ -67,10 +74,16 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         List<Node> cards = characterCardBox.getChildren();
         setImageOnCard(CardMap.characterCardImageMap.get(names.get(0)), cards.get(0));
         mapImageId.put(cards.get(0), names.get(0));
+        coins1.setText("cost: " + characterCardMap.get(names.get(0)).getCost());
+
         setImageOnCard(CardMap.characterCardImageMap.get(names.get(1)), cards.get(1));
         mapImageId.put(cards.get(1), names.get(1));
+        coins2.setText("cost: " + characterCardMap.get(names.get(1)).getCost());
+
         setImageOnCard(CardMap.characterCardImageMap.get(names.get(2)), cards.get(2));
         mapImageId.put(cards.get(2), names.get(2));
+        coins3.setText("cost: " + characterCardMap.get(names.get(2)).getCost());
+
         setCharacterButton();
     }
 
@@ -90,5 +103,23 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         n.setVisible(true);
     }
 
+    public void seeCardSelected(){
+        if(!(characterCardSelected == null)){
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/expertScenes/card.fxml"));
+            Parent parent;
+            try {
+                parent = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            CardController cardController = loader.getController();
+            Scene cardScene = new Scene(parent);
+            cardController.setCharacterCard(characterCardMap.get(characterCardSelected));
+            cardController.addAllObserver(getObservers());
+            cardController.setScene(cardScene);
+            cardController.displayOptions();
+        }
+    }
 
 }

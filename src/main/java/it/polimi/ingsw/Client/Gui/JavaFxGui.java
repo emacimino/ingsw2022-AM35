@@ -10,8 +10,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * Main class for GUI
+ */
 public class JavaFxGui extends Application{
-
+    /**
+     * Start method for the GUI
+     * @param primaryStage the first stage of the UI
+     */
     @Override
     public void start(Stage primaryStage){
         GUI gui = new GUI();
@@ -50,6 +56,9 @@ public class JavaFxGui extends Application{
         primaryStage.show(); //used it to show the stage NB it needs to be at the end of start()
     }
 
+    /**
+     * Method used to stop the GUI
+     */
     public void stop() {
         Platform.exit();
         System.exit(0);
