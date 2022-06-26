@@ -14,6 +14,9 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Match decorator used in the ExpertMatch to extend the BasicMatch
+ */
 public abstract class MatchDecorator extends BasicMatch {
     protected BasicMatch basicMatch;
 

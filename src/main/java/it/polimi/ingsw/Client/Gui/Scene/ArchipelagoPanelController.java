@@ -8,6 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 
+/**
+ * Class used to control the archipelagos on the GUI
+ */
 public class ArchipelagoPanelController {
     @FXML
     private Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
@@ -25,7 +28,10 @@ public class ArchipelagoPanelController {
     private Label numOfTowers;
 
 
-
+    /**
+     * Class used to set the archipelago
+     * @param archipelago the archipelago that needs to be set
+     */
     public void setArchipelago(Archipelago archipelago) {
         {
             int numberOfStudentBlue = archipelago.getStudentFromArchipelago().stream()

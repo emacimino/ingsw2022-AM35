@@ -20,7 +20,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class CLI extends Observable implements UserView {
+/**
+ * Class that implements the UserView interface for CLI purposes
+ */
+public class CLI  extends Observable implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private RemoteModel remoteModel;
@@ -32,7 +35,6 @@ public class CLI extends Observable implements UserView {
 
     /**
      * Scan the user input and elaborate the result
-     *
      * @return a new thread that handle the reading functions
      */
     public Thread readFromInput() {
@@ -88,7 +90,6 @@ public class CLI extends Observable implements UserView {
 
     /**
      * set the status of connection
-     *
      * @param active status of connection
      */
     public synchronized void setActive(boolean active) {
@@ -209,10 +210,8 @@ public class CLI extends Observable implements UserView {
         turnPhase = TurnPhase.MOVE_MOTHER_NATURE;
         cliHandler.askToMotherNature(message);
     }
-
     /**
      * ask view to pick a cloud
-     *
      * @param clouds cloud to pick
      */
     @Override
@@ -220,20 +219,16 @@ public class CLI extends Observable implements UserView {
         turnPhase = TurnPhase.CHOOSE_CLOUD;
         cliHandler.showClouds(clouds);
     }
-
     /**
      * tell view if the login is correct
-     *
      * @param success true if log has success
      */
     @Override
     public void showLogin(boolean success) {
         System.out.println("Login successful");
     }
-
     /**
      * Show the view a generic message
-     *
      * @param genericMessage could be a phrase that help the client
      */
     @Override
@@ -265,7 +260,6 @@ public class CLI extends Observable implements UserView {
 
     /**
      * Help to understand how the current match is going
-     *
      * @param currentGameMessage send a copy of the match with its information
      */
     @Override
@@ -275,7 +269,6 @@ public class CLI extends Observable implements UserView {
 
     /**
      * Show the Character Cards for this game
-     *
      * @param characterCardInGameMessage shows the deck of this match
      */
     @Override
