@@ -5,6 +5,9 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A Map used by the assistant card and character cards
+ */
 public class CardMap {
     public static Map<String, String> characterCardImageMap = new HashMap<>();
     static {
