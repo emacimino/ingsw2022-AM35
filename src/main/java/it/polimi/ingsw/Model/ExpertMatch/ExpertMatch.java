@@ -104,8 +104,8 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
             if(archipelago.isProhibition()){
                 basicMatch.getGame().placeMotherNature(player, archipelago);
                 activeProhibitionCard.resetProhibitionEffect(archipelago);
-                basicMatch.checkVictory(player);
-                notifyObserver(new CurrentGameMessage(getGame()));
+                if(!basicMatch.checkVictory(player))
+                    notifyObserver(new CurrentGameMessage(getGame()));
                 return;
             }
 
@@ -121,7 +121,8 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            basicMatch.checkVictory(player);
+           if(!basicMatch.checkVictory(player))
+               notifyObserver(new CurrentGameMessage(getGame()));
         }
 
         if(activeInfluenceCard != null) {
@@ -132,7 +133,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
             activeMotherNatureCard.resetCard();
             activeMotherNatureCard = null;
         }
-        notifyObserver(new CurrentGameMessage(getGame()));
+
     }
 
     /**

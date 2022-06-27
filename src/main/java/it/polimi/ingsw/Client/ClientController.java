@@ -8,7 +8,6 @@ import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewObserver;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -72,15 +71,9 @@ public class ClientController implements Observer, ViewObserver {
             }
             case ASK_TO_MOVE_STUDENT -> {
                 view.askToMoveStudent();
-                //   view.loadArchipelagosOption(remoteModel.getArchipelagosMap());
-                //  view.loadBoard(remoteModel.getCurrentBoard());
-                //  view.loadStudentOnEntrance(remoteModel.getStudentsOnEntranceMap());
             }
             case ASK_MOVE_MOTHER_NATURE -> {
-                //   view.loadArchipelagosOption(remoteModel.getArchipelagosMap());
-                //  view.loadBoard(getRemoteModel().getCurrentBoard());
-                view.askMoveMotherNature(((AskToMoveMotherNatureMessage) message).getMessage());
-
+                view.askMoveMotherNature(message.getMessage());
             }
             case CLOUD_IN_GAME -> view.askChooseCloud((CloudInGame) message);
             case MOVE_STUDENT -> updateOnMoveStudent((MoveStudentMessage) message);
@@ -92,7 +85,6 @@ public class ClientController implements Observer, ViewObserver {
             }
             case BOARD -> {
                 remoteModel.setCurrentBoard(((BoardMessage) message).getBoard());
-
             }
             case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage) message);
             case CLOUD_CHOICE -> updateOnSelectedCloud((CloudMessage) message);
@@ -102,7 +94,6 @@ public class ClientController implements Observer, ViewObserver {
             }
             case END_MATCH -> {
                 updateOnEndMatch(message);
-
             }
             case NEW_MATCH -> client.sendMessage(message);
             case SHOW_CHARACTER_CARD_INFO -> {
@@ -125,6 +116,9 @@ public class ClientController implements Observer, ViewObserver {
     }
 
     private void updateOnEndMatch(Message message) {
+        if(message instanceof DisconnectMessage){
+            view.showDisconnection();
+        }
         EndMatchMessage matchMessage = (EndMatchMessage) message;
         boolean isWinner = matchMessage.getWinners().stream().map(Player::getUsername).anyMatch(s -> s.equals(username));
         view.showWinMessage(matchMessage, isWinner);
@@ -218,7 +212,7 @@ public class ClientController implements Observer, ViewObserver {
      */
     @Override
     public void onDisconnection() {
-        updateOnEndMatch(new EndMatchMessage(new ArrayList<>()));
+        updateOnEndMatch(new DisconnectMessage());
     }
 
     /**

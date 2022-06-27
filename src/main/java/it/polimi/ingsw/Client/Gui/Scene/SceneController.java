@@ -3,12 +3,10 @@ package it.polimi.ingsw.Client.Gui.Scene;
 
 import it.polimi.ingsw.Client.ClientController;
 import it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.ChooseCharacterCardSceneController;
+import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.CloudInGame;
 import it.polimi.ingsw.Observer.Observer;
@@ -27,7 +25,12 @@ public class SceneController {
     private static GenericSceneController activeController;
     private static Parent previousRoot;
 
+    public static GenericSceneController getActiveController() {
+        return activeController;
+    }
+
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
+        System.gc();
         GenericSceneController controller;
         if (activeScene != null) {
             previousRoot = activeScene.getRoot();
@@ -74,19 +77,27 @@ public class SceneController {
         if (activeController instanceof ActionSceneController) {
             return;
         }
-        GameSceneController controller;
-        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
-        List<Observer> observers = activeController.getObservers();
-        try {
-            Parent root = loader.load();
-            controller = loader.getController();
-            controller.addAllObserver(observers);
-            controller.setGame(game);
-            activeController = controller;
-            activeScene.setRoot(root);
+        if(!(activeController instanceof GameSceneController)) {
+            GameSceneController controller;
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
+            List<Observer> observers = activeController.getObservers();
+            try {
+                Parent root = loader.load();
+                controller = loader.getController();
+                controller.addAllObserver(observers);
+                controller.setGame(game);
+                activeController = controller;
+                activeScene.setRoot(root);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            ((GameSceneController)activeController).updateArchipelagoOnInfoGame(game.getArchipelagos());
+            ((GameSceneController)activeController).updateCloudsOnInfoGame(game.getClouds());
+            ((GameSceneController)activeController).updateAssistantCardOnInfoGame(game.getAssistantsCardsPlayedInRound());
+
+
         }
     }
 
@@ -137,7 +148,6 @@ public class SceneController {
         BoardsSceneController boardsSceneController = loader.getController();
         Scene boardScene = new Scene(parent);
         boardsSceneController.setRemoteModel(getClientController(observers).getRemoteModel());
-        boardsSceneController.setBoards(wizards);
         boardsSceneController.addAllObserver(observers);
         boardsSceneController.setScene(boardScene);
         boardsSceneController.display();
@@ -163,13 +173,12 @@ public class SceneController {
 
 
     public static void letMoveMotherNature() {
-        setActionScene(activeController.getObservers(), "actionScene.fxml");
+        //setActionScene(activeController.getObservers(), "actionScene.fxml");
         ((ActionSceneController) activeController).setMoveMN(true);
     }
 
     public static void enableClouds(CloudInGame cloud, Game game) {
         if (!(activeController instanceof GameSceneController)) {
-            System.out.println("in enable cloud setting game scene");
             setScene(activeController.getObservers(), "gameScene.fxml");
             ((GameSceneController) activeController).setGame(game);
         }
@@ -202,5 +211,15 @@ public class SceneController {
 
     public static void setActionScene(List<Observer> observers, String actionFxml) {
         changeRootPane(observers, activeScene, actionFxml);
+    }
+
+    public static void updateBoardOnMoveStudent() {
+        RemoteModel remoteModel = getClientController(activeController.getObservers()).getRemoteModel();
+        ((ActionSceneController)activeController).getBoardPanelController().updateBoardOnMoveStudent(remoteModel.getCurrentBoard());
+    }
+
+    public static void updateArchipelagosOnMoveStudent() {
+        RemoteModel remoteModel = getClientController(activeController.getObservers()).getRemoteModel();
+        ((ActionSceneController)activeController).updateArchipelagoOnMoveStudent(remoteModel.getArchipelagosMap());
     }
 }

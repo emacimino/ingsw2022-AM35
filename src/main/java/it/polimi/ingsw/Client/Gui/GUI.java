@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.Gui;
 
+import it.polimi.ingsw.Client.Gui.Scene.ActionSceneController;
 import it.polimi.ingsw.Client.UserView;
 import it.polimi.ingsw.Client.Gui.Scene.SceneController;
 import it.polimi.ingsw.Client.RemoteModel;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * GUI class  that implements the UserView interface
@@ -55,8 +57,15 @@ public class GUI extends Observable implements UserView {
     @Override
     public void askToMoveStudent() {
         Platform.runLater(()-> {
-            SceneController.setActionScene(getObservers(), "actionScene.fxml");
-            if(remoteModel.getCharacterCardMap().isEmpty())
+            if(!(SceneController.getActiveController() instanceof ActionSceneController)){
+                System.out.println("istanzio actionScene in GUI");
+                SceneController.setActionScene(getObservers(), "actionScene.fxml");
+
+            }else{
+                SceneController.updateArchipelagosOnMoveStudent();
+                SceneController.updateBoardOnMoveStudent();
+            }
+            if(!remoteModel.getCharacterCardMap().isEmpty())
                 SceneController.setActualSceneExpert();
         });
     }
@@ -68,8 +77,11 @@ public class GUI extends Observable implements UserView {
     @Override
     public void askMoveMotherNature(String message) {
         Platform.runLater(()->{
+            SceneController.updateArchipelagosOnMoveStudent();
+            SceneController.updateBoardOnMoveStudent();
             SceneController.letMoveMotherNature();
-            if(remoteModel.getCharacterCardMap().isEmpty())
+
+            if(!remoteModel.getCharacterCardMap().isEmpty())
                 SceneController.setActualSceneExpert();
         });
     }
@@ -139,6 +151,18 @@ public class GUI extends Observable implements UserView {
         }
     }
 
+    @Override
+    public void showDisconnection() {
+        Platform.runLater(() -> SceneController.showAlert("Message for you!", "Disconnection of the server or a player"));
+
+    }
+
+    @Override
+    public void confirmMoveStudent() {
+        SceneController.updateArchipelagosOnMoveStudent();
+        SceneController.updateBoardOnMoveStudent();
+    }
+
 
     /**
      * Show the view a generic message
@@ -166,7 +190,8 @@ public class GUI extends Observable implements UserView {
      */
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
-        Platform.runLater(()-> SceneController.setEndingScene(message.getWinners().stream().map(Player::getUsername).toList(), isWinner)
+        List<String> winners = message.getWinners().stream().map(Player::getUsername).collect(Collectors.toList());
+        Platform.runLater(()-> SceneController.setEndingScene(winners, isWinner)
         );
     }
 

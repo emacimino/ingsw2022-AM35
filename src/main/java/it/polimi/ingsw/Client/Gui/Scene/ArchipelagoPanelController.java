@@ -3,10 +3,14 @@ package it.polimi.ingsw.Client.Gui.Scene;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class used to control the archipelagos on the GUI
@@ -33,6 +37,7 @@ public class ArchipelagoPanelController {
      * @param archipelago the archipelago that needs to be set
      */
     public void setArchipelago(Archipelago archipelago) {
+
         {
             int numberOfStudentBlue = archipelago.getStudentFromArchipelago().stream()
                     .filter(s -> s.getColor().equals(Color.BLUE))
@@ -80,6 +85,9 @@ public class ArchipelagoPanelController {
                 int numberOfTowers = archipelago.getIsle().size();
                 numOfTowers.setVisible(true);
                 numOfTowers.setText(String.valueOf(numberOfTowers));
+                greyTower.setVisible(false);
+                whiteTower.setVisible(false);
+                blackTower.setVisible(false);
                 switch (archipelago.getIsle().get(0).getTower().getTowerColors()) {
                     case Gray -> {
                         greyTower.setVisible(true);
@@ -93,17 +101,22 @@ public class ArchipelagoPanelController {
                         whiteTower.setVisible(true);
                         whiteTower.setDisable(false);
                     }
-                    default -> System.out.println("COLOR OF TOWER NOT CORRECT, in archipelagopanelcontroller");
+                    default -> System.out.println("COLOR OF TOWER NOT CORRECT, in archipelagoPanelController");
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+        motherNature.setVisible(false);
         if(archipelago.isMotherNaturePresence()){
             motherNature.setVisible(true);
         }
+        prohibitionCard.setVisible(false);
         if(archipelago.isProhibition())
             prohibitionCard.setVisible(true);
     }
 
+    public void hideArchipelago() {
+
+    }
 }

@@ -197,6 +197,7 @@ public class TurnController {
      * @param message indicate where to move a student
      */
     private void moveStudentsForThisTurn(MoveStudentMessage message) {
+        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
         try {
@@ -207,6 +208,7 @@ public class TurnController {
             } else {
                 controller.getMatch().moveStudentOnBoard(getActivePlayer(), s);
             }
+
             numberOfStudentMoved ++;
             if (numberOfStudentMoved == controller.getMatch().getNumberOfMovableStudents()) {
                 numberOfStudentMoved = 0;
@@ -316,6 +318,7 @@ public class TurnController {
     private void askingViewToMoveMotherNature(){
         try{
             RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
+            messageHandler.setStudentOnEntranceMap(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().stream().toList());
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
             sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);

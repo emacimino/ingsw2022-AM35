@@ -32,11 +32,11 @@ public class EndSceneController extends GenericSceneController{
 
     public void setWinMessage(List<String> winners){
         this.winners = winners;
-        messageLbl.setText("Congratulations " + winners.stream().reduce((s,t) -> s + ", " + t) +" \n! You have won!");
+        messageLbl.setText("Congratulations " + winners +" \n! You have won!");
     }
 
     public void setLoseMessage(List<String> winners){
         this.winners = winners;
-        messageLbl.setText("You have lose to "+ winners.stream().reduce((s,t) -> s + ", " + t) +" ! \n Don't worry the important thing is to participate !");
+        messageLbl.setText("You have lose to "+ winners+" ! \n Don't worry the important thing is to participate !");
     }
 }

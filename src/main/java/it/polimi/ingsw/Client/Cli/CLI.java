@@ -254,7 +254,10 @@ public class CLI  extends Observable implements UserView {
             cliHandler.showGenericMessage("congratulation! You Won!");
         else
             cliHandler.showGenericMessage("I'm Sorry you have lose");
+        System.out.println("write any letter to esc");
+        String input = new Scanner(System.in).nextLine();
         System.exit(0);
+
 
     }
 
@@ -298,6 +301,17 @@ public class CLI  extends Observable implements UserView {
     public void showChosenCharacterCard() {
         turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
         cliHandler.showInfoChosenCharacterCard();
+    }
+
+    @Override
+    public void showDisconnection() {
+        cliHandler.showGenericMessage("Disconnection of the server or a player");
+        System.exit(0);
+    }
+
+    @Override
+    public void confirmMoveStudent() {
+        //do nothing
     }
 
 

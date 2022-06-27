@@ -34,6 +34,16 @@ public class RemoteModel {
     private List<Color> colorSelected = new ArrayList<>();
     private List<Integer> studentFromEntrance = new ArrayList<>();
 
+    private Integer studentSelectedFromEntrance;
+
+    public void setStudentSelectedFromEntrance(Integer studentSelectedFromEntrance) {
+        this.studentSelectedFromEntrance = studentSelectedFromEntrance;
+    }
+
+    public Integer getStudentSelectedFromEntrance() {
+        return studentSelectedFromEntrance;
+    }
+
     /**
      * Set method for studentFromCard
      * @param studentsFromCard list of students
@@ -55,7 +65,7 @@ public class RemoteModel {
      * @param student student from entrance
      */
     public void setStudentFromEntrance(Student student) {
-        Integer indexStud = getStudentIndex(student);
+        Integer indexStud = getStudentOnEntranceIndex(student);
         if(!studentFromEntrance.contains(indexStud)){
             studentFromEntrance.add(indexStud);
         }else
@@ -257,7 +267,7 @@ public class RemoteModel {
      * @param student student selected
      * @return the index of the student
      */
-    private Integer getStudentIndex(Student student){
+    public Integer getStudentOnEntranceIndex(Student student){
         Integer indexStud = null;
         for (Integer i : studentsOnEntranceMap.keySet()) {
             if (studentsOnEntranceMap.get(i).equals(student)) {

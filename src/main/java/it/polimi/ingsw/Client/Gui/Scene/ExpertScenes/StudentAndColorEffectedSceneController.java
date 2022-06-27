@@ -38,7 +38,7 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
         }
         boardPanelController = loader.getController();
         boardPanelController.setRemoteModel(remoteModel);
-        boardPanelController.setBoard(board, "My");
+        boardPanelController.setCurrentBoard(board, "My");
         boardStack.getChildren().add(node);
         ok = true;
 
@@ -48,7 +48,7 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
         while(!ok){}
         studentMap = studentsMovable;
-        boardPanelController.setMovableStudentOnEntrance(studentMap);
+        boardPanelController.setMovableStudentOnEntrance(studentMap.values().stream().toList());
     }
 
 

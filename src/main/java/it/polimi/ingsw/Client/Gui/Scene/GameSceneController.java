@@ -31,9 +31,15 @@ public class GameSceneController extends GenericSceneController {
     private HBox cloudsOne = new HBox(), cloudsTwo = new HBox();
     private Map<Integer, Cloud> cloudMap = new HashMap<>();
     private boolean chooseCloud = false;
+    private Map<Integer, ArchipelagoPanelController> archipelagoControllerMap = new HashMap<>();
+    private Map<ArchipelagoPanelController, Node> archipelagoNodeMap = new HashMap<>();
+    private Map<Integer, CloudPanelController> cloudControllerMap = new HashMap<>();
+    private Map<Node, CloudPanelController> cloudNodeMap = new HashMap<>();
 
     public void setGame(Game game) {
         this.game = game;
+        cloudControllerMap.clear();
+        archipelagoControllerMap.clear();
         initialize();
     }
 
@@ -47,10 +53,11 @@ public class GameSceneController extends GenericSceneController {
 
     private void initialize() {
         {
-            for (Archipelago a : game.getArchipelagos()) {
+            for (Integer i = 0; i < game.getArchipelagos().size(); i++) {
+                Archipelago a = game.getArchipelagos().get(i);
                 if (indexRow == 0 && indexColumn < 5) {
                     try {
-                        loadArchipelagos(a, indexRow, indexColumn);
+                        loadArchipelagos(i, a, indexRow, indexColumn);
                         indexColumn++;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -59,14 +66,14 @@ public class GameSceneController extends GenericSceneController {
                     indexColumn = indexColumn - 1;
                     indexRow = 1;
                     try {
-                        loadArchipelagos(a, indexRow, indexColumn);
+                        loadArchipelagos(i, a, indexRow, indexColumn);
                         indexRow = 2;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else if (indexRow == 2 && indexColumn >= 0) {
                     try {
-                        loadArchipelagos(a, indexRow, indexColumn);
+                        loadArchipelagos(i, a, indexRow, indexColumn);
                         indexColumn = indexColumn - 1;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -75,7 +82,7 @@ public class GameSceneController extends GenericSceneController {
                     indexColumn++;
                     try {
                         indexRow = 1;
-                        loadArchipelagos(a, indexRow, indexColumn);
+                        loadArchipelagos(i, a, indexRow, indexColumn);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -83,50 +90,56 @@ public class GameSceneController extends GenericSceneController {
             }
         }
         {
+
             indexRow = 1;
             indexColumn = 1;
             int pos = 1;
             HBox hBox = cloudsOne;
             sky.add(cloudsOne, indexColumn, indexRow);
-            for (Cloud cloud : game.getClouds()) {
+            for (Integer i = 0; i < game.getClouds().size(); i++) {
+                Cloud cloud = game.getClouds().get(i);
                 try {
-                    loadCloud(cloud, pos, hBox);
+                    loadCloud(i + 1, cloud, pos, hBox);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (pos == 1) {
                     pos = 2;
-                } else if(indexColumn != 3){
+                } else if (indexColumn != 3) {
                     pos = 1;
                     indexColumn = 3;
                     hBox = cloudsTwo;
                     sky.add(cloudsTwo, indexColumn, indexRow);
                 }
+
             }
         }
 
         for (int i = 0; i < game.getAssistantsCardsPlayedInRound().size(); i++)
             loadAssistantCard(game.getAssistantsCardsPlayedInRound().get(i), i);
-
     }
 
-    private void loadArchipelagos(Archipelago archipelago, int row, int column) throws IOException {
+    private void loadArchipelagos(Integer i, Archipelago archipelago, int row, int column) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/archipelago.fxml"));
         Node node = loader.load();
         ArchipelagoPanelController controller = loader.getController();
         controller.setArchipelago(archipelago);
         sky.add(node, column, row);
+        archipelagoControllerMap.put(i + 1, controller);
+        archipelagoNodeMap.put(controller, node);
+
     }
 
-    private void loadCloud(Cloud cloud, int pos, HBox hBox) throws IOException {
+    private void loadCloud(Integer i, Cloud cloud, int pos, HBox hBox) throws IOException {
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/cloud.fxml"));
         Node node = loader.load();
         CloudPanelController controller = loader.getController();
         controller.setCloud(cloud);
-        if(chooseCloud) {
-            node.setOnMouseClicked(mouseEvent -> selectCloud(cloud));
+        if (chooseCloud) {
+            node.setOnMouseClicked(mouseEvent -> selectCloud(i));
         }
         VBox vBox;
         Node tmp = new Pane();
@@ -144,6 +157,8 @@ public class GameSceneController extends GenericSceneController {
             vBox.getChildren().add(tmp);
             hBox.getChildren().add(vBox);
         }
+        cloudControllerMap.put(i, controller);
+        cloudNodeMap.put(node, controller);
     }
 
 
@@ -162,7 +177,6 @@ public class GameSceneController extends GenericSceneController {
     private void setImageOnCard(String name, Node n) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResource(name)).toExternalForm());
         ((ImageView) n).setImage(image);
-        n.setDisable(false);
         n.setVisible(true);
     }
 
@@ -179,39 +193,59 @@ public class GameSceneController extends GenericSceneController {
 
     public void enableCloud(Map<Integer, Cloud> cloud) {
         chooseCloud = true;
-        cloudMap.putAll(cloud);
-        cloudsOne.getChildren().clear();
-        cloudsTwo.getChildren().clear();
-        HBox hBox = cloudsOne;
-        int pos = 1;
-        for(Cloud c : cloud.values()){
-            try {
-                loadCloud(c, pos, hBox);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (pos == 1) {
-                pos = 2;
-            } else {
-                pos = 1;
-                hBox = cloudsTwo;
-                indexColumn = 3;
-            }
+        for(Node n : cloudNodeMap.keySet()){
+            n.setDisable(false);
+            CloudPanelController c = cloudNodeMap.get(n);
+            n.setOnMouseClicked(mouseEvent -> selectCloud(getIntegerCloudControllerPanel(c)));
+
         }
     }
 
-    private void selectCloud(Cloud cloud) {
-        Integer indexCloud = null;
-        for (Integer i : cloudMap.keySet()) {
-            if (cloudMap.get(i).equals(cloud)) {
-                indexCloud = i;
+
+    private int getIntegerCloudControllerPanel(CloudPanelController cloudPanelController){
+        Integer index = null;
+        for (Integer i : cloudControllerMap.keySet()) {
+            if (cloudControllerMap.get(i).equals(cloudPanelController)) {
+                index = i;
             }
         }
-        if(indexCloud != null) {
-            notifyObserver(new CloudMessage(indexCloud));
-        }else
-            System.out.println("index cloud in gamescene controller " +indexCloud);
+        return index;
+    }
+    private void selectCloud(Integer cloud) {
+        for(Node n : cloudNodeMap.keySet()){
+            CloudPanelController c = cloudNodeMap.get(n);
+            n.setDisable(true);
+
+        }
+        notifyObserver(new CloudMessage(cloud));
+
     }
 
+    public void updateArchipelagoOnInfoGame(List<Archipelago> archipelagos) { //da 0 a 11 max
+        for (Integer i = 1; i <= archipelagos.size(); i++) {
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
+            Archipelago a = archipelagos.get(i - 1);
+            controller.setArchipelago(a);
+        }
+        for (Integer i = archipelagos.size() + 1; i <= archipelagoControllerMap.size(); i++) {
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
+            sky.getChildren().remove(archipelagoNodeMap.get(controller));
+        }
+    }
 
+    public void updateCloudsOnInfoGame(List<Cloud> clouds) {
+        for (Integer i = 1; i <= clouds.size(); i++) {
+            CloudPanelController controller = cloudControllerMap.get(i);
+            Cloud c = clouds.get(i-1);
+            controller.setCloud(c);
+        }
+
+    }
+
+    public void updateAssistantCardOnInfoGame(List<AssistantsCards> assistantsCardsPlayedInRound) {
+        for(Node n : assistantBox.getChildren())
+            n.setVisible(false);
+        for (int i = 0; i < assistantsCardsPlayedInRound.size(); i++)
+            loadAssistantCard(assistantsCardsPlayedInRound.get(i), i);
+    }
 }

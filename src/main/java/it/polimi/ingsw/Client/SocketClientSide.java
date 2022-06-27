@@ -87,7 +87,7 @@ public class SocketClientSide extends Client {
         try{
             new Thread(()-> notifyObserver(new DisconnectMessage())).start();
             if(!socket.isClosed()){
-                System.out.println("socket not closed yer");
+                System.out.println("socket not closed yet");
                 executorService.shutdownNow();
                 socket.close();
             }

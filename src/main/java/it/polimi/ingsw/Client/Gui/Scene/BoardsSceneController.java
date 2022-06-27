@@ -101,5 +101,6 @@ public class BoardsSceneController extends GenericSceneController {
     @Override
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
+        setBoards(remoteModel.getGame().getWizards());
     }
 }

@@ -183,10 +183,11 @@ public class BasicMatch extends Observable implements Serializable {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            checkVictory(player);
-
+            if(!checkVictory(player))
+                notifyObserver(new CurrentGameMessage(game));
         }
-        notifyObserver(new CurrentGameMessage(game));
+
+
     }
 
     /**
@@ -250,7 +251,7 @@ public class BasicMatch extends Observable implements Serializable {
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    public void checkVictory(Player player) throws ExceptionGame{
+    public boolean checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = getGame().getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
@@ -291,7 +292,7 @@ public class BasicMatch extends Observable implements Serializable {
             }).toList();
             notifyObserver(new EndMatchMessage(winnerPlayers));
         }
-
+        return endOfTheMatch;
     }
 
     /**
