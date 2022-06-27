@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Controller that handle the communication through the interfaces and the Server
+ */
 public class ClientController implements Observer, ViewObserver {
     private final UserView view; //either CLI or GUI
     private Client client;  //represent the socket in client
