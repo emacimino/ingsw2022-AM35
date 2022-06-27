@@ -6,34 +6,58 @@ import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 
+/**
+ * Implements the main methods to communicate with the user interfaces
+ */
 public class RemoteView extends ViewInterface   {
 
-    //pay attention to the message parameters and adjust them
     private final SocketClientConnection clientConnection;
 
+    /**
+     * Constructor of the class
+     * @param clientConnection is the client associated to the view
+     */
     public RemoteView(SocketClientConnection clientConnection) {
         this.clientConnection = clientConnection;
     }
 
+    /**
+     * Getter of clientConnection
+     * @return clientConnection
+     */
     public ClientConnection getClientConnection() {
         return clientConnection;
     }
 
+    /**
+     * Generic message sent to the view
+     * @param genericMessage Just a generic text message useful for comprehension of the application dynamics
+     */
     @Override
     public void showGenericMessage(Message genericMessage) {
         clientConnection.sendMessage(genericMessage);
     }
 
+    /**
+     * Play character card message sent to the view
+     * @param card character Card used
+     */
     public void playCharacterCard(CharacterCard card) {
         //    clientConnection.sendMessage(new CharacterCard("",card));
     }
 
-
+    /**
+     * Move Mother Nature message sent to the view
+     * @param archipelago chosen archipelago
+     */
     public void moveMotherNature(Integer archipelago) {
         clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
     }
 
-
+    /**
+     * Used to update every view after an event
+     * @param message a message created after a trigger event
+     */
     @Override
     public void update(Message message){
         if(message instanceof EndMatchMessage)
@@ -42,6 +66,10 @@ public class RemoteView extends ViewInterface   {
             sendMessage(message);
     }
 
+    /**
+     * Used to handle the end of the match event
+     * @param message EndMatchMessage
+     */
     private void manageEndMatch(Message message) {
         sendMessage(message);
         if(clientConnection.getController().isMatchOnGoing()) {
@@ -51,6 +79,10 @@ public class RemoteView extends ViewInterface   {
 
     }
 
+    /**
+     * Used to send a message from the view
+     * @param message message to be sent
+     */
     @Override
     public void sendMessage(Message message) {
         clientConnection.sendMessage(message);
