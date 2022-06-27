@@ -28,7 +28,7 @@ includes classes and methods used
 |----------------|----------------------------------------------------|
 | __Maven__      | software project management and comprehension tool |
 | __JavaFx__     | Graphics library used to create user interfaces    |
-| __JUnit__      | Unit Testing Framework .                           |
+| __JUnit__      | Unit Testing Framework                           |
 
 
 ### Implemented functionalities
