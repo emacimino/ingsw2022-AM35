@@ -7,8 +7,19 @@ import it.polimi.ingsw.Observer.Observer;
 
 import java.util.List;
 
+/**
+ * Abstract class
+ */
 public abstract class GenericSceneController extends Observable {
     protected RemoteModel remoteModel;
+
+    /**
+     *
+     *update the remote model
+     *@param remoteModel remote model updated
+     *
+     * @param remoteModel
+     */
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
     }

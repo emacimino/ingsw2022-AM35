@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * A class that handles the choice of character cards
+ */
 public class ChooseCharacterCardSceneController extends GenericSceneController {
     private final Stage stage;
     private String characterCardSelected;
@@ -33,31 +36,51 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
     @FXML
     private Text coins1, coins2, coins3;
 
+    /**
+     * This method sets the new stage
+     */
     public ChooseCharacterCardSceneController() {
         this.stage = new Stage();
         stage.setAlwaysOnTop(false);
 
     }
 
+    /**
+     * This method sets the character cards to be loaded
+     * @param characterCards map of character cards
+     */
     public void setCharacters(Map<String, CharacterCard> characterCards) {
         this.characterCardMap = characterCards;
         loadCharacterCards();
     }
 
-
+    /**
+     * Method used to switch scene
+     * @param scene new scene
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * This method is used to display options
+     */
     public void displayOptions() {
         stage.showAndWait();
     }
 
+    /**
+     * This method is used to select a card
+     * @param name name of the card
+     */
     public void selectCharacterCard(String name) {
         characterCardSelected = name;
         characterLbl.setText("YOU HAVE SELECTED: " + characterCardSelected);
     }
 
+    /**
+     * This method is used to send a character card request to the controller
+     */
     public void sendAskCharacterCard() {
         if (characterCardSelected != null) {
             notifyObserver(new AskCharacterCardMessage(characterCardSelected));
@@ -65,10 +88,16 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * This method is used to close the stage
+     */
     public void closeStage() {
         stage.close();
     }
 
+    /**
+     * This method is used to load a card on screen
+     */
     private void loadCharacterCards() {
         List<String> names = characterCardMap.keySet().stream().toList();
         List<Node> cards = characterCardBox.getChildren();
@@ -87,6 +116,9 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         setCharacterButton();
     }
 
+    /**
+     * This method is used to set the cards' buttons
+     */
     private void setCharacterButton() {
         for (Node card : mapImageId.keySet()) {
             assert card != null;
@@ -96,6 +128,11 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * This method is used to set the image on a card
+     * @param name card name
+     * @param n element of the scene
+     */
     private void setImageOnCard(String name, Node n) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResource(name)).toExternalForm());
         ((ImageView) n).setImage(image);
@@ -103,6 +140,9 @@ public class ChooseCharacterCardSceneController extends GenericSceneController {
         n.setVisible(true);
     }
 
+    /**
+     * This method is used to display the card selected
+     */
     public void seeCardSelected(){
         if(!(characterCardSelected == null)){
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/expertScenes/card.fxml"));

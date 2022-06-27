@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A class used to display the UI during the game
+ */
 public class GameSceneController extends GenericSceneController {
     private Game game;
     private int indexRow = 0;
@@ -32,6 +35,10 @@ public class GameSceneController extends GenericSceneController {
     private Map<Integer, Cloud> cloudMap = new HashMap<>();
     private boolean chooseCloud = false;
 
+    /**
+     * Set method for initializing a game
+     * @param game the current game
+     */
     public void setGame(Game game) {
         this.game = game;
         initialize();
@@ -44,7 +51,9 @@ public class GameSceneController extends GenericSceneController {
     @FXML
     private HBox assistantBox;
 
-
+    /**
+     * This method is used to initialize all the game variables in the GUI
+     */
     private void initialize() {
         {
             for (Archipelago a : game.getArchipelagos()) {
@@ -110,6 +119,13 @@ public class GameSceneController extends GenericSceneController {
 
     }
 
+    /**
+     * This method is used to load an archipelago on screen
+     * @param archipelago the archipelago to load
+     * @param row coordinates
+     * @param column coordinates
+     * @throws IOException if some input is not valid
+     */
     private void loadArchipelagos(Archipelago archipelago, int row, int column) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/archipelago.fxml"));
@@ -119,6 +135,13 @@ public class GameSceneController extends GenericSceneController {
         sky.add(node, column, row);
     }
 
+    /**
+     * This method is used to load a cloud on screen
+     * @param cloud the cloud to load
+     * @param pos position on screen
+     * @param hBox a box containing the students
+     * @throws IOException if some input is not valid
+     */
     private void loadCloud(Cloud cloud, int pos, HBox hBox) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/cloud.fxml"));
@@ -146,7 +169,10 @@ public class GameSceneController extends GenericSceneController {
         }
     }
 
-
+    /**
+     * A method used to quit and close the application
+     * @param event user input
+     */
     public void quit(ActionEvent event) {
         System.exit(0);
     }
@@ -159,6 +185,11 @@ public class GameSceneController extends GenericSceneController {
         setImageOnCard(CardMap.characterCardImageMap.get(names.get(2)), cards.get(2));
     }
 
+    /**
+     * This method is used to load an image on a card
+     * @param name card name
+     * @param n node representing the card
+     */
     private void setImageOnCard(String name, Node n) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResource(name)).toExternalForm());
         ((ImageView) n).setImage(image);
@@ -166,17 +197,29 @@ public class GameSceneController extends GenericSceneController {
         n.setVisible(true);
     }
 
+    /**
+     * This method is used to load an assistant card on screen
+     * @param assistantsCards assistant card to load
+     * @param pos position on screen
+     */
     public void loadAssistantCard(AssistantsCards assistantsCards, int pos) {
         List<Node> cards = assistantBox.getChildren();
         setImageOnCard(CardMap.assistantsCardsImageMap.get(assistantsCards), cards.get(pos));
     }
 
+    /**
+     * This method is used to open a board
+     * @param event user input
+     */
     public void goToBoards(ActionEvent event) {
         SceneController.showWizardsBoards(getObservers());
 
     }
 
-
+    /**
+     * This method is used to enable the selection of the cloud
+     * @param cloud the target cloud
+     */
     public void enableCloud(Map<Integer, Cloud> cloud) {
         chooseCloud = true;
         cloudMap.putAll(cloud);
@@ -200,6 +243,10 @@ public class GameSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * This method is used to select a cloud
+     * @param cloud target cloud
+     */
     private void selectCloud(Cloud cloud) {
         Integer indexCloud = null;
         for (Integer i : cloudMap.keySet()) {

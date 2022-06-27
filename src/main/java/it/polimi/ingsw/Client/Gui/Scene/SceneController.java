@@ -22,11 +22,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A class that handles the scenes
+ */
 public class SceneController {
     private static Scene activeScene;
     private static GenericSceneController activeController;
     private static Parent previousRoot;
 
+    /**
+     * This method is used to load resources and set controller and remote model
+     * @param observers list of game observers
+     * @param scene the scene to load
+     * @param fxml fxml string
+     */
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
         GenericSceneController controller;
         if (activeScene != null) {
@@ -48,11 +57,22 @@ public class SceneController {
         }
     }
 
+    /**
+     * This method calls the changeRootPane method
+     * @param observers a list of game observers
+     * @param event user input
+     * @param fxml fxml string
+     */
     public static void changeRootPane(List<Observer> observers, Event event, String fxml) {
         Scene scene = ((Node) event.getSource()).getScene();
         changeRootPane(observers, scene, fxml);
     }
 
+    /**
+     * This method is used to display an alert
+     * @param title title of the alert
+     * @param message message of the alert
+     */
     public static void showAlert(String title, String message) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/alertScene.fxml"));
         Parent parent;
@@ -70,6 +90,10 @@ public class SceneController {
         alertSceneController.displayAlert();
     }
 
+    /**
+     * This method is used to load a game on screen
+     * @param game the current game
+     */
     public static void showGame(Game game) {
         if (activeController instanceof ActionSceneController) {
             return;
@@ -90,21 +114,37 @@ public class SceneController {
         }
     }
 
+    /**
+     * This method is used to load character cards on screen
+     * @param characterCard the map of the character cards
+     */
     public static void loadCharacterCards(Map<String, CharacterCard> characterCard) {
         if (activeController instanceof GameSceneController) {
             ((GameSceneController) activeController).loadCharacterCards(characterCard);
         }
     }
 
+    /**
+     * This method returns the active scene
+     * @return a scene
+     */
     public static Scene getActiveScene() {
         return activeScene;
     }
 
+    /**
+     * This method is sued to switch scene
+     * @param observers a list of game observers
+     * @param fxml fxml string
+     */
     public static void setScene(List<Observer> observers, String fxml) {
         changeRootPane(observers, activeScene, fxml);
     }
 
-
+    /**
+     * This method is used to load assistant cards on screen
+     * @param assistantsCards a list of assistant cards
+     */
     public static void showAssistantsCardOption(List<AssistantsCards> assistantsCards) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/assistantScene.fxml"));
         Parent parent;
@@ -123,6 +163,10 @@ public class SceneController {
         assistantSceneController.displayOptions();
     }
 
+    /**
+     * This method is used to open the wizard board on screen
+     * @param observers a list of game observers
+     */
     public static void showWizardsBoards(List<Observer> observers) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/boardsScene.fxml"));
         Parent parent;
@@ -143,6 +187,10 @@ public class SceneController {
         boardsSceneController.display();
     }
 
+    /**
+     * This method is used to show the character cards related option
+     * @param observers a list of game observers
+     */
     public static void showCharacterCardsOption(List<Observer> observers) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/chooseCharacterCardScene.fxml"));
         Parent parent;
@@ -161,12 +209,19 @@ public class SceneController {
 
     }
 
-
+    /**
+     * This method is used to enbale the movement of mother nature
+     */
     public static void letMoveMotherNature() {
         setActionScene(activeController.getObservers(), "actionScene.fxml");
         ((ActionSceneController) activeController).setMoveMN(true);
     }
 
+    /**
+     * This method is used to enable the cloud selection
+     * @param cloud the cloud to be selected
+     * @param game the current game
+     */
     public static void enableClouds(CloudInGame cloud, Game game) {
         if (!(activeController instanceof GameSceneController)) {
             System.out.println("in enable cloud setting game scene");
@@ -176,6 +231,11 @@ public class SceneController {
         ((GameSceneController) activeController).enableCloud(cloud.getCloudMap());
     }
 
+    /**
+     * This method is used to set an ending scene
+     * @param winners list of winners
+     * @param isWinner true if a player is a winner
+     */
     public static void setEndingScene(List<String> winners, Boolean isWinner) {
         setScene(activeController.getObservers(), "endScene.fxml");
         if (isWinner)
@@ -184,22 +244,40 @@ public class SceneController {
             ((EndSceneController) activeController).setLoseMessage(winners);
     }
 
+    /**
+     * This method returns the client controller
+     * @param observers a list of game observers
+     * @return a client controller or null
+     */
     public static ClientController getClientController(List<Observer> observers) {
         if (observers.get(0) instanceof ClientController)
             return (ClientController) observers.get(0);
         else return null;
     }
 
+    /**
+     * This method is used to set the scene on expert mode
+     */
     public static void setActualSceneExpert() {
         if (activeController instanceof ActionSceneController) {
             ((ActionSceneController) activeController).setExpert();
         }
     }
 
+    /**
+     * This method is used to set the character cards scene
+     * @param observers a list of game observers
+     * @param fxml fxml string
+     */
     public static void setCharacterScene(List<Observer> observers, String fxml) {
         changeRootPane(observers, activeScene, fxml);
     }
 
+    /**
+     * This method is used to set the action scene
+     * @param observers a list of game observers
+     * @param actionFxml fxml string
+     */
     public static void setActionScene(List<Observer> observers, String actionFxml) {
         changeRootPane(observers, activeScene, actionFxml);
     }
