@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.Gui.GUI;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ViewObserver;
@@ -84,26 +83,16 @@ public class ClientController implements Observer, ViewObserver {
             }
             case CLOUD_IN_GAME -> view.askChooseCloud((CloudInGame) message);
             case MOVE_STUDENT -> updateOnMoveStudent((MoveStudentMessage) message);
-            case STUDENTS_ON_ENTRANCE -> {
-                remoteModel.setStudentOnEntranceMap(((StudentsOnEntranceMessage) message).getStudents());
-            }
-            case ARCHIPELAGOS_IN_GAME -> {
-                remoteModel.setArchipelagosMap(((ArchipelagoInGameMessage) message).getArchipelago());
-            }
-            case BOARD -> {
-                remoteModel.setCurrentBoard(((BoardMessage) message).getBoard());
-
-            }
+            case STUDENTS_ON_ENTRANCE -> remoteModel.setStudentOnEntranceMap(((StudentsOnEntranceMessage) message).getStudents());
+            case ARCHIPELAGOS_IN_GAME -> remoteModel.setArchipelagosMap(((ArchipelagoInGameMessage) message).getArchipelago());
+            case BOARD -> remoteModel.setCurrentBoard(((BoardMessage) message).getBoard());
             case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage) message);
             case CLOUD_CHOICE -> updateOnSelectedCloud((CloudMessage) message);
             case CHARACTER_CARD_IN_GAME -> {
                 remoteModel.setCharacterCardMap(((CharacterCardInGameMessage) message).getCharacterCard());
                 view.showCharactersCards((CharacterCardInGameMessage) message);
             }
-            case END_MATCH -> {
-                updateOnEndMatch(message);
-
-            }
+            case END_MATCH -> updateOnEndMatch(message);
             case NEW_MATCH -> client.sendMessage(message);
             case SHOW_CHARACTER_CARD_INFO -> {
                 CharacterCardInfo card = (CharacterCardInfo) message;
@@ -114,12 +103,10 @@ public class ClientController implements Observer, ViewObserver {
                 view.showChosenCharacterCard();
 
             }
-            case ASK_CHARACTER_CARD -> {
-                askInfoCharacter(message);
-            }
-            case PLAY_CHARACTER_CARD -> {
-                updateOnPlayCharacter(message);
-            }
+            case ASK_CHARACTER_CARD -> askInfoCharacter(message);
+
+            case PLAY_CHARACTER_CARD -> updateOnPlayCharacter(message);
+
             case DISCONNECT -> onDisconnection();
         }
     }
@@ -206,11 +193,6 @@ public class ClientController implements Observer, ViewObserver {
     @Override
     public void updateOnSelectedCloud(CloudMessage message) {
         client.sendMessage(message);
-    }
-
-    @Override
-    public void updateOnSelectedColor(Color color) {
-
     }
 
     /**

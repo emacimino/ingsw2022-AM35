@@ -2,9 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.NetworkUtilities.*;
-import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnection;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 
 /**
  * Implements the main methods to communicate with the user interfaces
@@ -19,31 +17,6 @@ public class RemoteView extends ViewInterface   {
      */
     public RemoteView(SocketClientConnection clientConnection) {
         this.clientConnection = clientConnection;
-    }
-
-    /**
-     * Getter of clientConnection
-     * @return clientConnection
-     */
-    public ClientConnection getClientConnection() {
-        return clientConnection;
-    }
-
-    /**
-     * Generic message sent to the view
-     * @param genericMessage Just a generic text message useful for comprehension of the application dynamics
-     */
-    @Override
-    public void showGenericMessage(Message genericMessage) {
-        clientConnection.sendMessage(genericMessage);
-    }
-
-    /**
-     * Play character card message sent to the view
-     * @param card character Card used
-     */
-    public void playCharacterCard(CharacterCard card) {
-        //    clientConnection.sendMessage(new CharacterCard("",card));
     }
 
     /**

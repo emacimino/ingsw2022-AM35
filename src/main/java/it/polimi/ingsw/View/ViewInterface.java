@@ -6,14 +6,27 @@ import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.ClientConnection;
 
+/**
+ * Represent the methods that help the view to communicate
+ */
 public abstract class ViewInterface extends Observable implements Observer{
-
-    public abstract void playCharacterCard(CharacterCard card);
-
+    /**
+     * Used to move mother Nature
+     * @param archipelago archipelago chosen
+     */
     public abstract void moveMotherNature(Integer archipelago);
 
+    /**
+     * Update after an event
+     * @param message message with the event
+     */
     public abstract void update(Message message) ;
+
+    /**
+     * Message to be sent from view
+     *
+     * @param message message to be sent
+     */
     public abstract void sendMessage(Message message);
-    public abstract void showGenericMessage(Message message);
-    public abstract ClientConnection getClientConnection();
+
 }

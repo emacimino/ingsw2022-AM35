@@ -16,6 +16,9 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Server class
+ */
 public class Server {
 
     private static final int PORT = 1234;
@@ -26,10 +29,18 @@ public class Server {
     private int matchCounter = 0;
     private int connections = 0;
 
+    /**
+     * Constructor of the class
+     * @throws IOException if the server could not be created
+     */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
     }
 
+    /**
+     * Handle the de - registration of a client
+     * @param c client connection to be de-registered
+     */
     public synchronized void deregisterConnection(ClientConnection c) {
         ClientsInMatch clientsInMatch = matchInServer.get(c.getNumOfMatch());
         Collection<ClientConnection> opponents = clientsInMatch.getClientConnectionList();
@@ -44,6 +55,10 @@ public class Server {
 
     }
 
+    /**
+     * Runnable class of the server
+     * Start the server
+     */
     public void run() {
         System.out.println("Server is running");
         while (true) {
@@ -51,8 +66,12 @@ public class Server {
         }
     }
 
-    public synchronized void lobby(ClientConnection c) {
-        SocketClientConnection newClientConnection = (SocketClientConnection) c;
+    /**
+     * Handle the creation of a lobby before the creation of a match
+     * @param clientConnection client connection connected to the server
+     */
+    public synchronized void lobby(ClientConnection clientConnection) {
+        SocketClientConnection newClientConnection = (SocketClientConnection) clientConnection;
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         Map<String, ClientConnection> waitingList = new HashMap<>();
         findCompatiblePlayers(newClientConnection, keys, waitingList);
@@ -67,6 +86,11 @@ public class Server {
         }
     }*/
 
+    /**
+     * Support method for lobby, useful to create a match if we have enough players
+     * @param newClientConnection Client connection just connected
+     * @param waitingList every client connection already connected
+     */
     private void createIfPossibleAMatch(SocketClientConnection newClientConnection, Map<String, ClientConnection> waitingList) {
         if (waitingList.size() == newClientConnection.getNumberOfPlayers()) {
             BasicMatch match = instantiateModel(newClientConnection);
@@ -88,6 +112,12 @@ public class Server {
         }
     }
 
+    /**
+     * Support method which find the players with the same game specifics
+     * @param clientConnection client connection just connected
+     * @param keys username of every client
+     * @param waitingList every client connection already connected
+     */
     private void findCompatiblePlayers(SocketClientConnection clientConnection, List<String> keys, Map<String, ClientConnection> waitingList) {
         for (String key : keys) { //keys belong to size of players in lobby
             SocketClientConnection connection = (SocketClientConnection) waitingPlayersInLobby.get(key); //take connection of whoever is in the lobby
@@ -99,6 +129,12 @@ public class Server {
         waitingList.put(clientConnection.getUsername(), clientConnection);
     }
 
+    /**
+     * Creation of a Controller
+     * @param match match created
+     * @param waitingList client who joins this match
+     * @return controller for the requested match
+     */
     private Controller instantiateController(BasicMatch match, Map<String, ClientConnection> waitingList) {
         Controller controller = null;
         try {
@@ -118,6 +154,11 @@ public class Server {
         return controller;
     }
 
+    /**
+     * Instantiate model
+     * @param clientConnection clientConnection which requested the game
+     * @return model for the match
+     */
     private BasicMatch instantiateModel(SocketClientConnection clientConnection) {
         BasicMatch match;
         FactoryMatch factoryMatch = new FactoryMatch();
@@ -128,6 +169,11 @@ public class Server {
         return match;
     }
 
+    /**
+     * Check if the name is unique for every player
+     * @param name username of the player
+     * @return if the name is valid
+     */
     public synchronized boolean isNameNotOk(String name) {
         List<String> keys = new ArrayList<>(waitingPlayersInLobby.keySet());
         boolean nameNotOk;
@@ -137,6 +183,9 @@ public class Server {
         return nameNotOk;
     }
 
+    /**
+     * Accept a new Client connection
+     */
     private void acceptConnections() {
         try {
             Socket newSocket = serverSocket.accept();

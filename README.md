@@ -70,6 +70,9 @@ You can launch either server or the user interfaces by digit the command:
 - ```-cli```
 - ```-gui```
 
+### Utilities
+The port where the server works is 1234
+
 ### Students:
 
 [Camilla Andiloro](camilla.andiloro@mail.polimi.it)   
