@@ -16,7 +16,7 @@ public class Tower implements Serializable {
     /**
      * Constructor of Tower, it sets the property of the tower
      * @param w is the wizard who owns the tower
-     * @param towerColors
+     * @param towerColors color of the towers
      */
     public Tower(Wizard w, TowerColors towerColors){
         this.property = w;
@@ -31,10 +31,18 @@ public class Tower implements Serializable {
         return property;
     }
 
+    /**
+     * Getter of the tower color
+     * @return the color of the tower
+     */
     public TowerColors getTowerColors() {
         return towerColors;
     }
 
+    /**
+     * Override of toString
+     * @return to whom belongs the tower
+     */
     @Override
     public String toString(){
         return "Tower belongs to: " + getProperty() ;
