@@ -8,12 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to control the board display on the GUI
@@ -22,6 +24,10 @@ public class BoardsSceneController extends GenericSceneController {
     private final Stage stage;
     @FXML
     private GridPane sky;
+    @FXML
+    private Text teamsText;
+
+    private Map<String, BoardPanelController> boardPanelControllerMap = new HashMap<>();
 
     /**
      * Constructor of the class
@@ -69,6 +75,7 @@ public class BoardsSceneController extends GenericSceneController {
         controller.setRemoteModel(remoteModel);
         controller.setBoard(board, username);
         sky.add(node, x, y);
+        boardPanelControllerMap.put(username, controller);
     }
 
     /**
@@ -102,5 +109,19 @@ public class BoardsSceneController extends GenericSceneController {
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
         setBoards(remoteModel.getGame().getWizards());
+        if(remoteModel.getTeamOne() != null || remoteModel.getTeamTwo() != null){
+            String p1 = remoteModel.getTeamOne().get(0).getUsername();
+            String p2 = remoteModel.getTeamOne().get(1).getUsername();
+            String p3 = remoteModel.getTeamTwo().get(0).getUsername();
+            String p4 = remoteModel.getTeamTwo().get(1).getUsername();
+            teamsText.setText("Team One: " + p1 + ", "+ p2 + "; Team Two: "+ p3 + ", "+ p4 );
+        }
+    }
+
+    public void updateBoards(List<Wizard> wizards){
+        for(Wizard w : wizards ){
+            BoardPanelController controller = boardPanelControllerMap.get(w.getUsername());
+            controller.setBoard(w.getBoard(), w.getUsername());
+        }
     }
 }

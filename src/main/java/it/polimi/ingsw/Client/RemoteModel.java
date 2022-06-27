@@ -4,12 +4,15 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.Cli.Constants;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.NetworkUtilities.Message;
+import it.polimi.ingsw.NetworkUtilities.TeamMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import java.util.Map;
  */
 public class RemoteModel {
     private Game game;
+    private List<Player> teamOne = new ArrayList<>(), teamTwo = new ArrayList<>();
     private Map<String , AssistantsCards> assistantsCardsMap = new HashMap<>();
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Board currentBoard;
@@ -283,5 +287,18 @@ public class RemoteModel {
     public void clearSelection() {
         colorSelected.clear();
         studentFromEntrance.clear();
+    }
+
+    public void setTeams(TeamMessage message) {
+        teamOne.addAll(message.getTeamOne());
+        teamTwo.addAll(message.getTeamTwo());
+    }
+
+    public List<Player> getTeamOne() {
+        return teamOne;
+    }
+
+    public List<Player> getTeamTwo() {
+        return teamTwo;
     }
 }

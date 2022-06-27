@@ -112,16 +112,18 @@ public class ClientController implements Observer, ViewObserver {
                 updateOnPlayCharacter(message);
             }
             case DISCONNECT -> onDisconnection();
+            case TEAM_MESSAGE -> remoteModel.setTeams((TeamMessage) message);
         }
     }
 
     private void updateOnEndMatch(Message message) {
-        if(message instanceof DisconnectMessage){
+        if(message == null){
             view.showDisconnection();
+        }else {
+            EndMatchMessage matchMessage = (EndMatchMessage) message;
+            boolean isWinner = matchMessage.getWinners().stream().map(Player::getUsername).anyMatch(s -> s.equals(username));
+            view.showWinMessage(matchMessage, isWinner);
         }
-        EndMatchMessage matchMessage = (EndMatchMessage) message;
-        boolean isWinner = matchMessage.getWinners().stream().map(Player::getUsername).anyMatch(s -> s.equals(username));
-        view.showWinMessage(matchMessage, isWinner);
     }
 
     /**
@@ -212,7 +214,7 @@ public class ClientController implements Observer, ViewObserver {
      */
     @Override
     public void onDisconnection() {
-        updateOnEndMatch(new DisconnectMessage());
+        updateOnEndMatch(null);
     }
 
     /**

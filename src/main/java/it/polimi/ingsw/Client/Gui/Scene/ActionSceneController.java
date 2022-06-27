@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Scene used during the action phase
@@ -33,10 +34,8 @@ public class ActionSceneController extends GenericSceneController {
     @FXML
     private Button playCharacterBtn;
 
-    private Map<Integer, Student> studentMap = new HashMap<>();
     private Map<Integer, ArchipelagoPanelController> archipelagoControllerMap = new HashMap<>();
     private BoardPanelController boardPanelController;
-    private Boolean ok = false;
     private Boolean moveMN = false;
 
     /**
@@ -45,11 +44,10 @@ public class ActionSceneController extends GenericSceneController {
      * @param archipelagos a Map associating archipelagos with a number
      */
     public void setArchipelagos(Map<Integer, Archipelago> archipelagos) {
-        Map<Integer, Archipelago> archipelagoMap = archipelagos;
         {
             int indexRow = 0, indexColumn = 0;
             for (Integer i : archipelagos.keySet()) {
-                Archipelago a = archipelagoMap.get(i);
+                Archipelago a = archipelagos.get(i);
                 if (indexRow == 0 && indexColumn < 5) {
                     try {
                         loadArchipelagos(i , a, indexRow, indexColumn);
@@ -101,7 +99,7 @@ public class ActionSceneController extends GenericSceneController {
         ArchipelagoPanelController controller = loader.getController();
         controller.setArchipelago(archipelago);
         node.setOnMouseClicked(MouseEvent -> {
-                    if (i == remoteModel.getArchipelagoSelected()) {
+                    if (Objects.equals(i, remoteModel.getArchipelagoSelected())) {
                         remoteModel.setArchipelagoSelected(null);
                         archipelagoSelectedLbl.setText("");
                     } else {
@@ -133,20 +131,7 @@ public class ActionSceneController extends GenericSceneController {
         boardPanelController.setRemoteModel(remoteModel);
         boardPanelController.setCurrentBoard(board, "My");
         sky.add(node, 1, 1);
-        ok = true;
 
-    }
-
-    /**
-     * Method used to load students on the GUI
-     *
-     * @param studentsMovable a Map associating students with an int
-     */
-    public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
-        while (!ok) {
-        }
-        studentMap = studentsMovable;
-        boardPanelController.setMovableStudentOnEntrance(studentMap.values().stream().toList());
     }
 
     /**
@@ -183,22 +168,6 @@ public class ActionSceneController extends GenericSceneController {
         }
         return indexArch;
     }
-
-    /**
-     * Method used to get the student index
-     *
-     * @param student the student the index of is requested
-     * @return an int representing the index
-     */
-  /*  private Integer getStudentIndex(Student student) {
-        Integer indexStud = null;
-        for (Integer i : studentMap.keySet()) {
-            if (studentMap.get(i).equals(student)) {
-                indexStud = i;
-            }
-        }
-        return indexStud;
-    }*/
 
     /**
      * Method that shows the wizards' board
@@ -241,10 +210,12 @@ public class ActionSceneController extends GenericSceneController {
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;
+        remoteModel.setArchipelagoSelected(null);
+        remoteModel.setStudentSelectedFromEntrance(null);
         setButtonCharacterCard();
         setBoard(remoteModel.getCurrentBoard());
         setArchipelagos(remoteModel.getArchipelagosMap());
-    //    loadStudentsMovable(remoteModel.getStudentsOnEntranceMap());
+
     }
 
     private void setButtonCharacterCard() {

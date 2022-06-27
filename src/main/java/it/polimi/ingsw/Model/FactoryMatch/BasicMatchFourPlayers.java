@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
 import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
 import it.polimi.ingsw.NetworkUtilities.GenericMessage;
+import it.polimi.ingsw.NetworkUtilities.TeamMessage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,6 +61,7 @@ public class BasicMatchFourPlayers extends BasicMatch {
         super.getGame().setClouds(getNumberOfClouds(), getNumberOfStudentsOnCLoud());
         super.getGame().setRandomlyFirstPlayer();
         notifyObserver(new GenericMessage("Order of the players: " + players));
+        notifyObserver(new TeamMessage(teamOne, teamTwo));
         notifyObserver(new CurrentGameMessage(super.getGame()));
     }
 
@@ -182,7 +184,7 @@ public class BasicMatchFourPlayers extends BasicMatch {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            if (checkVictory(player)){
+            if (!checkVictory(player)){
                 notifyObserver(new CurrentGameMessage(super.getGame()));
             }
         }

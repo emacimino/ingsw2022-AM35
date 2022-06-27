@@ -15,24 +15,6 @@ public class RemoteView extends ViewInterface   {
         this.clientConnection = clientConnection;
     }
 
-    public ClientConnection getClientConnection() {
-        return clientConnection;
-    }
-
-    @Override
-    public void showGenericMessage(Message genericMessage) {
-        clientConnection.sendMessage(genericMessage);
-    }
-
-    public void playCharacterCard(CharacterCard card) {
-        //    clientConnection.sendMessage(new CharacterCard("",card));
-    }
-
-
-    public void moveMotherNature(Integer archipelago) {
-        clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
-    }
-
 
     @Override
     public void update(Message message){

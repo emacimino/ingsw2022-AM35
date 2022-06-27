@@ -19,11 +19,13 @@ import javafx.scene.Scene;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SceneController {
     private static Scene activeScene;
     private static GenericSceneController activeController;
-    private static Parent previousRoot;
+    private static Parent wizardBoardParent;
+    private static BoardsSceneController wizardBoardController;
 
     public static GenericSceneController getActiveController() {
         return activeController;
@@ -32,9 +34,6 @@ public class SceneController {
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
         System.gc();
         GenericSceneController controller;
-        if (activeScene != null) {
-            previousRoot = activeScene.getRoot();
-        }
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
             Parent root = loader.load();
@@ -44,7 +43,7 @@ public class SceneController {
             activeController = controller;
             activeScene = scene;
             activeScene.setRoot(root);
-            activeController.setRemoteModel(getClientController(observers).getRemoteModel());
+            activeController.setRemoteModel(Objects.requireNonNull(getClientController(observers)).getRemoteModel());
 
         } catch (IOException e) {
             e.printStackTrace(); //TO DO
@@ -135,22 +134,25 @@ public class SceneController {
     }
 
     public static void showWizardsBoards(List<Observer> observers) {
-        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/boardsScene.fxml"));
-        Parent parent;
-        try {
-            parent = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        if(wizardBoardController == null) {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/boardsScene.fxml"));
+            try {
+                wizardBoardParent = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            wizardBoardController = loader.getController();
+            Scene boardScene = new Scene(wizardBoardParent);
+            wizardBoardController.setRemoteModel(Objects.requireNonNull(getClientController(observers)).getRemoteModel());
+            wizardBoardController.addAllObserver(observers);
+            wizardBoardController.setScene(boardScene);
+        }else{
+            List<Wizard> wizards = Objects.requireNonNull(getClientController(observers)).getRemoteModel().getGame().getWizards();
+            wizardBoardController.updateBoards(wizards);
         }
 
-        List<Wizard> wizards = getClientController(observers).getRemoteModel().getGame().getWizards();
-        BoardsSceneController boardsSceneController = loader.getController();
-        Scene boardScene = new Scene(parent);
-        boardsSceneController.setRemoteModel(getClientController(observers).getRemoteModel());
-        boardsSceneController.addAllObserver(observers);
-        boardsSceneController.setScene(boardScene);
-        boardsSceneController.display();
+        wizardBoardController.display();
     }
 
     public static void showCharacterCardsOption(List<Observer> observers) {
@@ -164,7 +166,7 @@ public class SceneController {
         }
         ChooseCharacterCardSceneController chooseCharacterCardSceneController = loader.getController();
         Scene assistantScene = new Scene(parent);
-        chooseCharacterCardSceneController.setCharacters(getClientController(observers).getRemoteModel().getCharacterCardMap());
+        chooseCharacterCardSceneController.setCharacters(Objects.requireNonNull(getClientController(observers)).getRemoteModel().getCharacterCardMap());
         chooseCharacterCardSceneController.addAllObserver(observers);
         chooseCharacterCardSceneController.setScene(assistantScene);
         chooseCharacterCardSceneController.displayOptions();
@@ -214,12 +216,12 @@ public class SceneController {
     }
 
     public static void updateBoardOnMoveStudent() {
-        RemoteModel remoteModel = getClientController(activeController.getObservers()).getRemoteModel();
+        RemoteModel remoteModel = Objects.requireNonNull(getClientController(activeController.getObservers())).getRemoteModel();
         ((ActionSceneController)activeController).getBoardPanelController().updateBoardOnMoveStudent(remoteModel.getCurrentBoard());
     }
 
     public static void updateArchipelagosOnMoveStudent() {
-        RemoteModel remoteModel = getClientController(activeController.getObservers()).getRemoteModel();
+        RemoteModel remoteModel = Objects.requireNonNull(getClientController(activeController.getObservers())).getRemoteModel();
         ((ActionSceneController)activeController).updateArchipelagoOnMoveStudent(remoteModel.getArchipelagosMap());
     }
 }

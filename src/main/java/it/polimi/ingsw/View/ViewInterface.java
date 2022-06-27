@@ -8,12 +8,6 @@ import it.polimi.ingsw.Server.ClientConnection;
 
 public abstract class ViewInterface extends Observable implements Observer{
 
-    public abstract void playCharacterCard(CharacterCard card);
-
-    public abstract void moveMotherNature(Integer archipelago);
-
     public abstract void update(Message message) ;
     public abstract void sendMessage(Message message);
-    public abstract void showGenericMessage(Message message);
-    public abstract ClientConnection getClientConnection();
 }

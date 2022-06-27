@@ -1,7 +1,8 @@
 package it.polimi.ingsw.NetworkUtilities;
 
 public enum TypeMessage {
-    OK_MOVE_STUDENT,
+
+    TEAM_MESSAGE,
     PING,
     PONG,
     SERVER_INFO,
