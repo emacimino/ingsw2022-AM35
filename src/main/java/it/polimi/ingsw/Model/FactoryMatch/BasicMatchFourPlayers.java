@@ -33,8 +33,6 @@ public class BasicMatchFourPlayers extends BasicMatch{
         super.setNumberOfTowers(8);
         super.setNumberOfStudentInEntrance(7);
         super.setNumberOfStudentsOnCLoud(3);
-        Game game = new Game(getNumberOfStudentInEntrance(), getNumberOfMovableStudents());
-        super.setActualGame(game);
     }
 
     /**
@@ -44,6 +42,8 @@ public class BasicMatchFourPlayers extends BasicMatch{
      */
     @Override
     public void setGame(List<Player> players) throws ExceptionGame {
+        Game game = new Game(getNumberOfStudentInEntrance(), getNumberOfMovableStudents());
+        super.setActualGame(game);
         if(captains.size() != 2)
             throw new ExceptionGame("Please, declare the TWO teams");
         if(players.size() >4)
@@ -332,5 +332,6 @@ public class BasicMatchFourPlayers extends BasicMatch{
         Wizard companion = getGame().getWizardFromPlayer(getTeamOfPlayer(player).get(1));
         return (companion.getBoard().isProfessorPresent(color) || captain.getBoard().isProfessorPresent(color));
     }
+
 
 }

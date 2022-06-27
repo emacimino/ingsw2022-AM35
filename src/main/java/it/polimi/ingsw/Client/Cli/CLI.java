@@ -27,9 +27,9 @@ public class CLI  extends Observable implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private RemoteModel remoteModel;
-   // protected ObjectOutputStream outputStream;
+    // protected ObjectOutputStream outputStream;
     private boolean active = true;
-   // protected ObjectInputStream socketIn;
+    // protected ObjectInputStream socketIn;
     protected TurnPhase turnPhase = TurnPhase.LOGIN;
 
 
@@ -37,18 +37,18 @@ public class CLI  extends Observable implements UserView {
      * Scan the user input and elaborate the result
      * @return a new thread that handle the reading functions
      */
-    public Thread readFromInput(){
+    public Thread readFromInput() {
         Thread thread = new Thread(() -> {
-            try{
+            try {
                 scanner = new Scanner(System.in);
-                while (isActive()){
+                while (isActive()) {
                     String inputLine = scanner.nextLine(); //Scan input from command line
                     Message message = cliHandler.convertInputToMessage(inputLine, turnPhase); //Create message from input
-                    if(message != null) {
+                    if (message != null) {
                         notifyObserver(message);
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 setActive(false);
             }
@@ -59,7 +59,8 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * Receive an input from server and elaborate it
-   //  * @param inputObject object from server
+     * //  * @param inputObject object from server
+     *
      * @return a thread that handle everything
      */
  /*   public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
@@ -98,36 +99,40 @@ public class CLI  extends Observable implements UserView {
     /**
      * runnable for the cli application of Eriantys
      */
-    public void run(){
+    public void run() {
 
         try {
 
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Insert the IP: ");
-            String ip = scanner.nextLine();
-            System.out.println("Port: ");
-            String port = scanner.nextLine();
-            boolean isValidIpAddress = ClientController.isValidIpAddress(ip);
-            boolean isValidPort = ClientController.isValidPort(port);
+            boolean isValidIpAddress;
+            boolean isValidPort;
+            String port, ip;
+            do {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Insert the IP: ");
+                ip = scanner.nextLine();
+                System.out.println("Port: ");
+                port = scanner.nextLine();
+                isValidIpAddress = ClientController.isValidIpAddress(ip);
+                isValidPort = ClientController.isValidPort(port);
+            } while (!(isValidIpAddress && isValidPort));
 
-            if (isValidIpAddress && isValidPort) {
-                notifyObserver(new ServerInfoMessage(ip, port));
-            }
+            notifyObserver(new ServerInfoMessage(ip, port));
+
           /*  System.out.println("Connection Established");
             socketIn = new ObjectInputStream(socketClient.getInputStream());
             outputStream = new ObjectOutputStream(socketClient.getOutputStream());
             Thread t0 = asyncReadFromSocket(socketIn);*/
             Thread t1 = readFromInput();
             // Thread t2 = ping();
-           // t0.join();
+            // t0.join();
             t1.join();
-          //  t2.join();*/
+            //  t2.join();*/
 
         } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
         }
     }
-    
+
 
     /**
      * Send to server a message
@@ -166,6 +171,7 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * getter of remoteModel
+     *
      * @return remoteModel
      */
     public RemoteModel getRemoteModel() {
@@ -173,6 +179,7 @@ public class CLI  extends Observable implements UserView {
     }
 
     //code to be changed in order to be more readable and usable within cli and gui
+
     /**
      * ask view to log in
      */
@@ -183,6 +190,7 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * ask view to play an assistant card
+     *
      * @param assistantsCards assistant card to be picked
      */
     @Override
@@ -194,6 +202,7 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * ask view to move mother nature
+     *
      * @param message step of mother nature
      */
     @Override
@@ -230,6 +239,7 @@ public class CLI  extends Observable implements UserView {
 
     /**
      * Show the view an error message
+     *
      * @param error could be a phrase that help the client doing the right choice
      */
     @Override
@@ -240,13 +250,14 @@ public class CLI  extends Observable implements UserView {
 
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
-        if(isWinner)
-             cliHandler.showGenericMessage("congratulation! You Won!");
+        if (isWinner)
+            cliHandler.showGenericMessage("congratulation! You Won!");
         else
             cliHandler.showGenericMessage("I'm Sorry you have lose");
         System.exit(0);
 
     }
+
     /**
      * Help to understand how the current match is going
      * @param currentGameMessage send a copy of the match with its information
@@ -255,6 +266,7 @@ public class CLI  extends Observable implements UserView {
     public void showGameState(CurrentGameMessage currentGameMessage) {
         cliHandler.showCurrentGame(currentGameMessage);
     }
+
     /**
      * Show the Character Cards for this game
      * @param characterCardInGameMessage shows the deck of this match
@@ -273,10 +285,12 @@ public class CLI  extends Observable implements UserView {
         turnPhase = TurnPhase.MOVE_STUDENTS;
         cliHandler.showStudentsOnEntranceOption(remoteModel.getStudentsOnEntranceMap());
     }
+
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;
     }
+
     /**
      * Show the characterCard chosen by the player
      */

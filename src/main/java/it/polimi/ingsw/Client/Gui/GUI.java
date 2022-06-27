@@ -119,7 +119,7 @@ public class GUI extends Observable implements UserView {
     }
 
     /**
-     * Show the characterCard chosen by the player
+     * Show the action to perform regarding the characterCard chosen by the player
      */
     @Override
     public void showChosenCharacterCard() {
