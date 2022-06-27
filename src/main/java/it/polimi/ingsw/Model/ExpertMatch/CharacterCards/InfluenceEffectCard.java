@@ -12,7 +12,18 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 
 public interface InfluenceEffectCard {
 
+    /**
+     * Calculate the influence effect of the card
+     * @param wizard wizard that play the card
+     * @param archipelago archipelago effected by the card
+     * @param normalInfluence usual calculation influence
+     * @return the effected influence
+     * @throws ExceptionGame if the card could not be used
+     */
     int calculateEffectInfluence(Wizard wizard,Archipelago archipelago, int normalInfluence) throws ExceptionGame; //Wizard is the captain
 
+    /**
+     * reset the card parameters
+     */
     void resetCard();
 }

@@ -11,6 +11,13 @@ import java.util.HashSet;
  */
 public class FactoryCharacterCard{
 
+    /**
+     * Handle the creation of a character card when the expert match is started
+     * @param basicMatch current match
+     * @param name name of character card to create
+     * @return created characterCard
+     * @throws IllegalArgumentException if the name is not correct
+     */
      public CharacterCard createACharacterCard(BasicMatch basicMatch, String name) throws IllegalArgumentException{
          return switch (name) {
              case "Archer" -> new Archer(basicMatch, name);

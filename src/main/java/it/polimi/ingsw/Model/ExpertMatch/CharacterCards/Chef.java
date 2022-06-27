@@ -21,6 +21,11 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
     @Serial
     private final static long serialVersionUID = -90494329657295844L;
 
+    /**
+     * Constructor of the class
+     * @param basicMatch current match
+     * @param name name of the card
+     */
     public Chef(BasicMatch basicMatch, String name) {
         super(basicMatch, name);
         setCost(3);
@@ -30,7 +35,7 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
     /**
      * This method let the player use the card
      * @param match the current match
-     * @throws ExceptionGame
+     * @throws ExceptionGame if the card can't be used
      */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {
