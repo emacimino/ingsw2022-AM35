@@ -42,7 +42,8 @@ public class CLIHandler {
         Message message;
         if (inputString.equals("CharacterCard") && !cli.getRemoteModel().getCharacterCardMap().isEmpty()) {
             return askCharacterCardInfoMessage();
-        }
+        }else if(inputString.equals("exit"))
+            System.exit(0);
 
 
         switch (turnPhase) {
@@ -81,7 +82,6 @@ public class CLIHandler {
 
     /**
      * This method calls all the sub-methods that print a message
-     *
      * @param message message received
      */
 /*    public void showMessage(Message message) {
@@ -166,7 +166,7 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showArchipelagos(Message message) {
+    private void showArchipelagos(Message message){
         ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
         cli.getRemoteModel().setArchipelagosMap(archipelagoListMessage.getArchipelago());
         for (int i : cli.getRemoteModel().getArchipelagosMap().keySet()) {
@@ -281,7 +281,7 @@ public class CLIHandler {
      *
      * @param archipelago is the printed archipelago
      */
-    private void getInfoArchipelago(Archipelago archipelago) {
+    private void getInfoArchipelago(Archipelago archipelago){
         Printable.printArchipelago(archipelago);
     }
 

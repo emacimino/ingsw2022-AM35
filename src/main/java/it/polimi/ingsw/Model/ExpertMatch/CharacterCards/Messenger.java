@@ -50,7 +50,7 @@ public class Messenger extends CharacterCard implements Serializable {
         Player activePlayer = getBasicMatch().getPlayerFromWizard(getActiveWizard());
         Player captainOfActivePlayer = getBasicMatch().getCaptainTeamOfPlayer(activePlayer);
         getBasicMatch().buildTower(captainOfActivePlayer, archipelago);
-       getBasicMatch().lookUpArchipelago(archipelago);
+        getBasicMatch().lookUpArchipelago(archipelago);
     }
 
     /**

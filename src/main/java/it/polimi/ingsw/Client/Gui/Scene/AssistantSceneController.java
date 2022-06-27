@@ -14,7 +14,9 @@ import javafx.scene.control.Label;
 
 import java.util.*;
 
-
+/**
+ * Class used to control the assistant cards display
+ */
 public class AssistantSceneController extends GenericSceneController {
     private final Stage stage;
     private Map<AssistantsCards, String> mapImageId ;
@@ -27,7 +29,10 @@ public class AssistantSceneController extends GenericSceneController {
     @FXML
     private HBox sixToTen;
 
-
+    /**
+     * Method used to set the assistant cards
+     * @param assistantsCards a list of the assistant cards in game
+     */
     public void setAssistants(List<AssistantsCards> assistantsCards) {
         mapImageId = createMapButton();
         List<Node> nodes;
@@ -52,25 +57,42 @@ public class AssistantSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * A method that sets a new stage
+     */
     public AssistantSceneController() {
         stage = new Stage();
         stage.setAlwaysOnTop(false);
     }
 
+    /**
+     * A method used to set the scene
+     * @param scene the new scene
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * A method used to display the options
+     */
     public void displayOptions() {
         stage.showAndWait();
     }
 
+    /**
+     * Method used to select the assistant card
+     * @param assistantsCards assistant card selected
+     */
     public void selectAssistantCard(AssistantsCards assistantsCards) {
         assistantsCardSelected = assistantsCards;
         assLbl.setText("YOU HAVE SELECTED: " + assistantsCardSelected);
     }
 
-
+    /**
+     * Method used to map cards and buttons
+     * @return a map of cards and buttons associated to them
+     */
     public Map<AssistantsCards, String> createMapButton() {
         Map<AssistantsCards, String> map = new HashMap<>();
         for (Node n : oneToFive.getChildren()) {
@@ -94,7 +116,10 @@ public class AssistantSceneController extends GenericSceneController {
         return map;
     }
 
-
+    /**
+     * Method used to send the assistant card
+     * @param event An Event representing some type of action input by the player
+     */
     public void sendAssistant(ActionEvent event) {
         if(assistantsCardSelected != null) {
             notifyObserver(new AssistantCardMessage(assistantsCardSelected));

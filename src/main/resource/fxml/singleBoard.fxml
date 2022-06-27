@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="900.0" maxWidth="1400.0" minHeight="327.0" minWidth="709.0" prefHeight="346.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.BoardPanelController">
+<AnchorPane maxHeight="900.0" maxWidth="1400.0" minHeight="327.0" minWidth="706.0" prefHeight="394.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.BoardPanelController">
    <children>
-      <ImageView fitHeight="302.0" fitWidth="756.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="321.0" fitWidth="696.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../PLANCIA_GIOCO.png" />
          </image>
@@ -279,7 +279,7 @@
             </ImageView>
          </children>
       </StackPane>
-      <Label fx:id="wizardLbl" layoutX="32.0" layoutY="10.0" text="Board of Wizard : ">
+      <Label fx:id="wizardLbl" layoutX="7.0" layoutY="10.0" text="Board of Wizard : ">
          <font>
             <Font name="Apple Chancery" size="18.0" />
          </font>
@@ -288,9 +288,14 @@
          <font>
             <Font name="Apple Chancery" size="13.0" />
          </font></Text>
-      <Text fx:id="colorSelectedTxt" layoutX="281.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="colorSelectedTxt" layoutX="331.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Apple Chancery" size="13.0" />
+         </font>
+      </Text>
+      <Text fx:id="coinsTxt" layoutX="202.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Apple Chancery" size="18.0" />
          </font>
       </Text>
    </children>

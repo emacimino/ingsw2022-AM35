@@ -20,7 +20,9 @@ import javafx.scene.shape.Circle;
 
 import java.util.*;
 
-
+/**
+ * A class that handles the students on the cards
+ */
 public class StudentCardSceneController extends GenericSceneController {
 
     @FXML
@@ -36,12 +38,17 @@ public class StudentCardSceneController extends GenericSceneController {
     private Set<Integer> studentsSelected = new HashSet<>();
     private CharacterCard characterCard;
 
-
+    /**
+     * This method is used to initialize the class
+     */
     private void initialize() {
         setImageOnCard(CardMap.characterCardImageMap.get(characterCard.getName()), card);
         setStudentsOnCard();
     }
 
+    /**
+     * This method is used to set the student on the cards
+     */
     private void setStudentsOnCard() {
         List<Circle> students = new ArrayList<>();
         students.add(s1);
@@ -67,6 +74,9 @@ public class StudentCardSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * This method is used to update the selection labels
+     */
     private void updateSelectionLabel() {
         List<Color> color = new ArrayList<>();
         for (Integer i : studentsSelected) {
@@ -79,6 +89,11 @@ public class StudentCardSceneController extends GenericSceneController {
         selectionLbl.setText(s.toString());
     }
 
+    /**
+     * This method is used to set the image on the card
+     * @param n element of the scene
+     * @param name name of the card
+     */
     private void setImageOnCard(String name, Node n) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResource(name)).toExternalForm());
         ((ImageView) n).setImage(image);
@@ -86,6 +101,11 @@ public class StudentCardSceneController extends GenericSceneController {
         n.setVisible(true);
     }
 
+    /**
+     * This method is used to set the students
+     * @param node element of the scene
+     * @param student student target
+     */
     private void setRightColorStudent(Node node, Student student) {
         Color color = student.getColor();
         switch (color) {
@@ -99,11 +119,18 @@ public class StudentCardSceneController extends GenericSceneController {
         node.setVisible(true);
     }
 
+    /**
+     * This method is used to select a student
+     * @param event a user input
+     */
     public void selectStudents(ActionEvent event) {
         remoteModel.setStudentSelected(studentsSelected.stream().toList());
         nextMove();
     }
 
+    /**
+     * This method is used to to go on to the next move
+     */
     private void nextMove() {
         System.out.println("student on card: " + remoteModel.getStudentsFromCard());
         for (Integer i : remoteModel.getStudentsFromCard()) {
@@ -116,6 +143,10 @@ public class StudentCardSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;

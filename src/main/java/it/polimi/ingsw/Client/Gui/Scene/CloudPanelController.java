@@ -9,12 +9,19 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class used to control the clouds on the GUI
+ */
 public class CloudPanelController {
 
     private List<Circle> circles = new ArrayList<>();
     @FXML
     private Circle s1,s2,s3,s4;
 
+    /**
+     * Set method for clouds
+     * @param cloud the cloud to be set
+     */
     public void setCloud(Cloud cloud) {
         circles.add(0,s1);
         circles.add(1,s2);
@@ -23,6 +30,10 @@ public class CloudPanelController {
         initialize(cloud);
     }
 
+    /**
+     * This method is used to put students on the cloud
+     * @param cloud the target cloud
+     */
     private void initialize(Cloud cloud) {
         List<Student> students = cloud.getStudentOnCloud().stream().toList();
         for(int i = 0; i < students.size(); i++){

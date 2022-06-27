@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that handles the student and colors effect on the scene
+ */
 public class StudentAndColorEffectedSceneController extends GenericSceneController {
 
 
@@ -27,6 +30,10 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
     private Boolean ok = false;
     private CharacterCard characterCard;
 
+    /**
+     * This method is used to set the board
+     * @param board the player's board
+     */
     public void setBoard(Board board) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/singleBoard.fxml"));
@@ -44,7 +51,10 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
 
     }
 
-
+    /**
+     * This method is used to load the movable students
+     * @param studentsMovable a map of students
+     */
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
         while(!ok){}
         studentMap = studentsMovable;
@@ -52,15 +62,23 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
     }
 
 
-
+    /**
+     * This method is used to enable expert mode
+     */
     private void enableExpert(){
         boardPanelController.enableExpert();
     }
 
+    /**
+     * This method is used to switch to next move
+     */
     public void selectionComplete(){
         nextMove();
     }
 
+    /**
+     * This method is used to go on to the next move
+     */
     private void nextMove() {
         System.out.println("in student effect scene: in remote stud from entrance" + remoteModel.getStudentFromEntrance());
         System.out.println("color of student " );
@@ -69,18 +87,25 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
         }
         System.out.println("in student effect scene: in remote color" + remoteModel.getColorSelected());
         switch (characterCard.getName()) {
-
+            case "Banker", "Chef" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, null, remoteModel.getColorSelected()));
             case "Minstrel" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), null, remoteModel.getColorSelected()));
             case "Jester" ->notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), remoteModel.getStudentsFromCard(), null));
         }
         clearSelection();
     }
 
+    /**
+     * This method is used to clear selection
+     */
     public void clearSelection(){
         remoteModel.clearSelection();
         boardPanelController.clearSelection();
     }
 
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;

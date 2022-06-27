@@ -10,14 +10,24 @@ import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
 import java.util.List;
 
+/**
+ * GUI class  that implements the UserView interface
+ */
 public class GUI extends Observable implements UserView {
     private RemoteModel remoteModel;
 
+    /**
+     * ask view to log in
+     */
     @Override
     public void askLogin() {
         Platform.runLater(()-> SceneController.setScene(getObservers(), "login.fxml"));
     }
 
+    /**
+     * tell view if the login is correct
+     * @param success true if log has success
+     */
     @Override
     public void showLogin(boolean success) {
         if (!success) {
@@ -30,11 +40,18 @@ public class GUI extends Observable implements UserView {
 
     }
 
+    /**
+     * ask view to play an assistant card
+     * @param assistantsCards assistant card to be picked
+     */
     @Override
     public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
         Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
     }
 
+    /**
+     * ask view to move a student
+     */
     @Override
     public void askToMoveStudent() {
         Platform.runLater(()-> {
@@ -44,6 +61,10 @@ public class GUI extends Observable implements UserView {
         });
     }
 
+    /**
+     * ask view to move mother nature
+     * @param message step of mother nature
+     */
     @Override
     public void askMoveMotherNature(String message) {
         Platform.runLater(()->{
@@ -53,6 +74,10 @@ public class GUI extends Observable implements UserView {
         });
     }
 
+    /**
+     * ask view to pick a cloud
+     * @param cloud cloud to pick
+     */
     @Override
     public void askChooseCloud(CloudInGame cloud) {
         Platform.runLater(()-> { //rifare la scena prendendo info da remote model
@@ -61,7 +86,10 @@ public class GUI extends Observable implements UserView {
 
     }
 
-
+    /**
+     * Help to understand how the current match is going
+     * @param currentGameMessage send a copy of the match with its information
+     */
     @Override
     public void showGameState(CurrentGameMessage currentGameMessage){
         Platform.runLater(()-> {
@@ -72,17 +100,27 @@ public class GUI extends Observable implements UserView {
         });
     }
 
+    /**
+     * Show the Character Cards for this game
+     * @param characterCardInGameMessage shows the deck of this match
+     */
     @Override
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
         Platform.runLater(()-> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
     }
 
-
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;
     }
 
+    /**
+     * Show the action to perform regarding the characterCard chosen by the player
+     */
     @Override
     public void showChosenCharacterCard() {
         switch (remoteModel.getActiveCharacterCard()){
@@ -102,12 +140,18 @@ public class GUI extends Observable implements UserView {
     }
 
 
-
+    /**
+     * Show the view a generic message
+     * @param genericMessage could be a phrase that help the client
+     */
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater(() -> SceneController.showAlert("Message for you!", genericMessage));
     }
-
+    /**
+     * Show the view an error message
+     * @param error could be a phrase that help the client doing the right choice
+     */
     @Override
     public void showError(String error) {
         Platform.runLater(() -> {
@@ -115,8 +159,11 @@ public class GUI extends Observable implements UserView {
         });
     }
 
-
-
+    /**
+     * Communicate if someone won the game
+     * @param message endOfMatch
+     * @param isWinner tell if the match has been won
+     */
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
         Platform.runLater(()-> SceneController.setEndingScene(message.getWinners().stream().map(Player::getUsername).toList(), isWinner)

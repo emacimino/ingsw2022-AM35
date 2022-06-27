@@ -42,6 +42,11 @@
       <Label fx:id="numYellowStudents" alignment="CENTER" layoutX="38.0" layoutY="76.0" prefHeight="25.0" prefWidth="32.0" text="0" visible="false" />
       <Label fx:id="numPinkStudents" alignment="CENTER" layoutX="58.0" layoutY="43.0" prefHeight="25.0" prefWidth="34.0" text="0" visible="false" />
       <Label fx:id="numOfTowers" alignment="CENTER" contentDisplay="CENTER" layoutX="91.0" layoutY="3.0" prefHeight="17.0" prefWidth="44.0" text="1" visible="false" />
+      <ImageView fx:id="prohibitionCard" blendMode="SRC_ATOP" fitHeight="29.0" fitWidth="26.0" layoutX="98.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphics/Reame/PNG/prohibitionCard.png" />
+         </image>
+      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="HAND" />

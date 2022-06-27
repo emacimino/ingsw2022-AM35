@@ -12,7 +12,9 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+/**
+ * A class that controls the server scene
+ */
 public class ServerInfoSceneController extends GenericSceneController implements Initializable {
 
     @FXML //this annotation porterà tutti i valori del file fxml che ha menuSceneController
@@ -23,11 +25,19 @@ public class ServerInfoSceneController extends GenericSceneController implements
     private TextField ipAddressField;
     @FXML
     private TextField portField;
+
+    /**
+     * Method used to initialize the quit button
+     */
     @FXML
     public void initialize() {
         quitBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.exit(0));
     }
 
+    /**
+     * This method is used to switch to login screen
+     * @param event a user input
+     */
     public void switchToLoginScene(Event event){
         String ipAddress = ipAddressField.getText();
         String port = portField.getText();
@@ -42,7 +52,11 @@ public class ServerInfoSceneController extends GenericSceneController implements
        // SceneController.changeRootPane(getObservers(), event, "login.fxml");
     }
 
-
+    /**
+     * This method initializes a server
+     * @param url resources
+     * @param resourceBundle resources
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ipAddressField.setText("127.0.0.1");

@@ -3,6 +3,9 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Observer.Observable;
 
+/**
+ * Client class used to send and read messages
+ */
 public abstract class Client extends Observable {
     /**
      * Create a message and send it to the server
