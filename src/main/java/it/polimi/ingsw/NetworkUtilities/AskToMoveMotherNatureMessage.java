@@ -2,6 +2,9 @@ package it.polimi.ingsw.NetworkUtilities;
 
 import java.io.Serial;
 
+/**
+ * Class used to request movement of mother nature
+ */
 public class AskToMoveMotherNatureMessage extends Message{
 
     @Serial
@@ -9,6 +12,10 @@ public class AskToMoveMotherNatureMessage extends Message{
     private final int numOfSteps;
     private final String message;
 
+    /**
+     * Constructor of the class
+     * @param numOfSteps number of steps to move mother nature by
+     */
     public AskToMoveMotherNatureMessage(int numOfSteps) {
         this.numOfSteps = numOfSteps;
         setType(TypeMessage.ASK_MOVE_MOTHER_NATURE);
@@ -19,6 +26,10 @@ public class AskToMoveMotherNatureMessage extends Message{
         return numOfSteps;
     }
 
+    /**
+     * Method that return the message
+     * @return the message
+     */
     public String getMessage() {
         return message;
     }
