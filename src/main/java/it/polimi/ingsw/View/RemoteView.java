@@ -8,14 +8,19 @@ import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 
 public class RemoteView extends ViewInterface   {
 
-    //pay attention to the message parameters and adjust them
     private final SocketClientConnection clientConnection;
-
+    /**
+     * Constructor of the class
+     * @param clientConnection is the client associated to the view
+     */
     public RemoteView(SocketClientConnection clientConnection) {
         this.clientConnection = clientConnection;
     }
 
-
+    /**
+     * Used to update every view after an event
+     * @param message a message created after a trigger event
+     */
     @Override
     public void update(Message message){
         if(message instanceof EndMatchMessage)
@@ -24,6 +29,10 @@ public class RemoteView extends ViewInterface   {
             sendMessage(message);
     }
 
+    /**
+     * Used to handle the end of the match event
+     * @param message EndMatchMessage
+     */
     private void manageEndMatch(Message message) {
         sendMessage(message);
         if(clientConnection.getController().isMatchOnGoing()) {
@@ -33,6 +42,10 @@ public class RemoteView extends ViewInterface   {
 
     }
 
+    /**
+     * Used to send a message from the view
+     * @param message message to be sent
+     */
     @Override
     public void sendMessage(Message message) {
         clientConnection.sendMessage(message);

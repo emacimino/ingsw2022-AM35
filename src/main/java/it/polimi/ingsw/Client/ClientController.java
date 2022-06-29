@@ -10,6 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ClientController implements Observer{
+/**
+ * Controller that handle the communication through the interfaces and the Server
+ */
+public class ClientController implements Observer, ViewObserver {
     private final UserView view; //either CLI or GUI
     private Client client;  //represent the socket in client
     private String username;

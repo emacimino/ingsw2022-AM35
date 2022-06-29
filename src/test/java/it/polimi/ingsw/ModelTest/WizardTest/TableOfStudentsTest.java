@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.Wizard.TableOfStudents;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TableOfStudentsTest {
     @Test
@@ -16,7 +16,7 @@ public class TableOfStudentsTest {
              Color.values()) {
             Student stud = new Student(c);
             TableOfStudents tos= new TableOfStudents(c);
-            Assertions.assertEquals(c, tos.getColor());
+            assertEquals(c, tos.getColor());
             tos.getStudentsInTable().add(stud);
             Assertions.assertTrue(tos.getStudentsInTable().contains(stud));
         }

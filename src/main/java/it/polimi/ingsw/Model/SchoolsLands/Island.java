@@ -20,7 +20,6 @@ public class Island implements Serializable {
     private static final long serialVersionUID = -3300699129250759355L;
     private final Collection<Student> studentInIsland= new HashSet<>();
     private Tower tower = null;
-    private boolean interdictionCard;
 
     /**
      * @return an HashSet of students present on the island
@@ -68,9 +67,6 @@ public class Island implements Serializable {
 
     public boolean isThereTower(){
         return tower != null;
-    }
-    public boolean isInterdictionCard() {
-        return interdictionCard;
     }
 
     @Override

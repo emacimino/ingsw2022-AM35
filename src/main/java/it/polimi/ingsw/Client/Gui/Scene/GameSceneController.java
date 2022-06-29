@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A class used to display the UI during the game
+ */
 public class GameSceneController extends GenericSceneController {
     private Game game;
     private int indexRow = 0;
@@ -34,6 +37,10 @@ public class GameSceneController extends GenericSceneController {
     private final Map<Integer, CloudPanelController> cloudControllerMap = new HashMap<>();
     private final Map<Node, CloudPanelController> cloudNodeMap = new HashMap<>();
 
+    /**
+     * Set method for initializing a game
+     * @param game the current game
+     */
     public void setGame(Game game) {
         this.game = game;
         cloudControllerMap.clear();
@@ -48,7 +55,9 @@ public class GameSceneController extends GenericSceneController {
     @FXML
     public HBox assistantBox;
 
-
+    /**
+     * This method is used to initialize all the game variables in the GUI
+     */
     private void initialize() {
         {
             for (Integer i = 0; i < game.getArchipelagos().size(); i++) {
@@ -116,7 +125,14 @@ public class GameSceneController extends GenericSceneController {
         for (int i = 0; i < game.getAssistantsCardsPlayedInRound().size(); i++)
             loadAssistantCard(game.getAssistantsCardsPlayedInRound().get(i), i);
     }
-
+    /**
+     * This method is used to load an archipelago on screen
+     * @param index of the archipelago to load
+     * @param archipelago the archipelago to load
+     * @param row coordinates
+     * @param column coordinates
+     * @throws IOException if some input is not valid
+     */
     private void loadArchipelagos(Integer i, Archipelago archipelago, int row, int column) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/archipelago.fxml"));
@@ -129,8 +145,15 @@ public class GameSceneController extends GenericSceneController {
 
     }
 
+    /**
+     * This method is used to load a cloud on screen
+     * @param index of the cloud to load
+     * @param cloud the cloud to load
+     * @param pos position on screen
+     * @param hBox a box containing the students
+     * @throws IOException if some input is not valid
+     */
     private void loadCloud(Integer i, Cloud cloud, int pos, HBox hBox) throws IOException {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/cloud.fxml"));
         Node node = loader.load();
@@ -159,7 +182,10 @@ public class GameSceneController extends GenericSceneController {
         cloudNodeMap.put(node, controller);
     }
 
+    /**
+     * A method used to quit and close the application
 
+     */
     public void quit() {
         System.exit(0);
     }
@@ -172,23 +198,38 @@ public class GameSceneController extends GenericSceneController {
         setImageOnCard(CardMap.characterCardImageMap.get(names.get(2)), cards.get(2));
     }
 
+    /**
+     * This method is used to load an image on a card
+     * @param name card name
+     * @param n node representing the card
+     */
     private void setImageOnCard(String name, Node n) {
         javafx.scene.image.Image image = new javafx.scene.image.Image(Objects.requireNonNull(getClass().getResource(name)).toExternalForm());
         ((ImageView) n).setImage(image);
         n.setVisible(true);
     }
 
+    /**
+     * This method is used to load an assistant card on screen
+     * @param assistantsCards assistant card to load
+     * @param pos position on screen
+     */
     public void loadAssistantCard(AssistantsCards assistantsCards, int pos) {
         List<Node> cards = assistantBox.getChildren();
         setImageOnCard(CardMap.assistantsCardsImageMap.get(assistantsCards), cards.get(pos));
     }
 
+    /**
+     * This method is used to open a board
+     */
     public void goToBoards() {
         SceneController.showWizardsBoards(getObservers());
 
     }
 
-
+    /**
+     * This method is used to enable the selection of the cloud
+     */
     public void enableCloud() {
         chooseCloud = true;
         for(Node n : cloudNodeMap.keySet()){
@@ -218,6 +259,7 @@ public class GameSceneController extends GenericSceneController {
 
     }
 
+
     public void updateArchipelagoOnInfoGame(List<Archipelago> archipelagos) { //da 0 a 11 max
         for (int i = 1; i <= archipelagos.size(); i++) {
             ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
@@ -227,7 +269,6 @@ public class GameSceneController extends GenericSceneController {
         for (int i = archipelagos.size() + 1; i <= archipelagoControllerMap.size(); i++) {
             ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
             sky.getChildren().remove(archipelagoNodeMap.get(controller));
-        }
     }
 
     public void updateCloudsOnInfoGame(List<Cloud> clouds) {

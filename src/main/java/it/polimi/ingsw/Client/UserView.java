@@ -11,6 +11,9 @@ import it.polimi.ingsw.NetworkUtilities.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface that implements the method used to communicate through the view
+ */
 public interface UserView {
     /**
      * ask view to log in

@@ -58,6 +58,11 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Setter for the wizards' tower color
+     * @param indexOfWizard wizard number in the list of game
+     * @return the correct tower color for each wizard
+     */
     private TowerColors setTowersColor(int indexOfWizard) {
         switch(indexOfWizard + 1){
             case 1 -> {
@@ -411,6 +416,10 @@ public class Game implements Serializable {
         return assistantsCardsPlayedInRound;
     }
 
+    /**
+     * This method's return the wizard with the least towers
+     * @return wizard with the least towers
+     */
     public List<Wizard> getWizardsWithLeastTowers(){
         List<Wizard> wizardsWithLeastTowers = new ArrayList<>();
         Wizard comparator = wizards.get(0);
@@ -432,7 +441,10 @@ public class Game implements Serializable {
 
     }
 
-
+    /**
+     * Override of toString
+     * @return The state of the game
+     */
     @Override
     public String toString() {
         return "Game{" +

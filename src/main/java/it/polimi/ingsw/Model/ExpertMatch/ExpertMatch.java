@@ -173,31 +173,50 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         return CardEffectWizardInfluence;
     }
 
-
+    /**
+     * Setter for the active influence Card
+     * @param activeInfluenceCard active influence card
+     */
     public void setActiveInfluenceCard(InfluenceEffectCard activeInfluenceCard) {
         this.activeInfluenceCard = activeInfluenceCard;
     }
 
+    /**
+     * Getter for the active influence Card
+     */
     public InfluenceEffectCard getActiveInfluenceCard() {
         return activeInfluenceCard;
     }
 
+    /**
+     * Setter for the active motherNature Card
+     * @param activeMotherNatureCard active motherNature card
+     */
     public void setActiveMotherNatureCard(MotherNatureEffectCard activeMotherNatureCard) {
         this.activeMotherNatureCard = activeMotherNatureCard;
     }
 
+    /**
+     * Getter for the active motherNature Card
+     */
     public MotherNatureEffectCard getActiveMotherNatureCard() {
         return activeMotherNatureCard;
     }
 
+    /**
+     * Getter for the active prohibition Card
+     */
     public ProhibitionEffectCard getActiveProhibitionCard() {
         return activeProhibitionCard;
     }
 
+    /**
+     * Setter for the active prohibition Card
+     * @param activeProhibitionCard active prohibition card
+     */
     public void setActiveProhibitionCard(ProhibitionEffectCard activeProhibitionCard) {
         this.activeProhibitionCard = activeProhibitionCard;
     }
-
 
 }
 
