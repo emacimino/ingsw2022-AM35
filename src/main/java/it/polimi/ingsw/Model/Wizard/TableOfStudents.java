@@ -25,7 +25,7 @@ public class TableOfStudents implements Serializable {
     public TableOfStudents(Color color) {
         this.color = color;
         limitOfStudents=10;
-        }
+    }
 
     /**
      * Getter for students in table
@@ -54,3 +54,4 @@ public class TableOfStudents implements Serializable {
             throw new ExceptionGame("Reached the limit of students in the table of color: "+ this.color);
     }
 }
+
