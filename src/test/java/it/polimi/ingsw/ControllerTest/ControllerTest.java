@@ -247,6 +247,7 @@ public class ControllerTest {
 
 
     void cardSwitch(CharacterCard card1) throws ExceptionGame {
+        final int notValidArchipelago = 13;
         List <Integer> integersList = new ArrayList<>();
         integersList.add(1);
         List <Integer> integersList2 = new ArrayList<>();
@@ -285,11 +286,11 @@ public class ControllerTest {
             }
 
             case "Magician" -> {
-                Assertions.assertDoesNotThrow(()-> controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage("Magician")));
-                Assertions.assertDoesNotThrow(()->controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage("Magician", -1, null, null, null)));
-                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(1, 3)));
-                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(4, 3)));
-                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(2, 5)));
+                Assertions.assertDoesNotThrow(()->  controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage("Magician")));
+                Assertions.assertDoesNotThrow(()->  controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage("Magician", -1, null, null, null)));
+                Assertions.assertDoesNotThrow(()->  controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(1, 3)));
+                Assertions.assertDoesNotThrow(()->  controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(4, 3)));
+                Assertions.assertDoesNotThrow(()->  controllerExpertMatch2Players.onMessageReceived(new MoveStudentMessage(2, 5)));
                 Assertions.assertEquals(TurnPhase.MOVE_MOTHER_NATURE, controllerExpertMatch2Players.getTurnController().getTurnPhase());
                 if(expertMatch2Players.getPositionOfMotherNature() != 2 && expertMatch2Players.getPositionOfMotherNature()!=8)Assertions.assertEquals(3,  expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
                 else Assertions.assertEquals(2, expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
@@ -352,14 +353,13 @@ public class ControllerTest {
             case "Archer" -> {
                 // to write
             }
-            case "Knight"-> {
-                /*Wizard wizard = controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(controllerExpertMatch2Players.getMatch().getCaptainTeamOfPlayer(controllerBasicMatch2Players.getTurnController().getActivePlayer()));
+            case "Knight"-> { //seems to be working
                 final Archipelago archipelago = expertMatch2Players.getGame().getArchipelagos().get(1);
                 int CardEffectWizardInfluence = controllerExpertMatch2Players.getMatch().getWizardInfluenceInArchipelago((controllerBasicMatch2Players.getTurnController().getActivePlayer()), archipelago);
                 Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage(card1.getName())));
-                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage(card1.getName(), 2, null, null, null)));
+                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage(card1.getName(), notValidArchipelago, null, null, null)));
                 Assertions.assertEquals(CardEffectWizardInfluence + 2, expertMatch2Players.getWizardInfluenceInArchipelago((controllerBasicMatch2Players.getTurnController().getActivePlayer()), archipelago));
-            */}
+            }
             case "Princess"-> {
                 // will be written
             }
@@ -378,7 +378,7 @@ public class ControllerTest {
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardFive)));
         Assertions.assertEquals(list, basicMatch2Players.getGame().getAssistantsCardsPlayedInRound());
-        //Inizia il round player che gioca card Five e muove 2 studenti
+        //Start the round playing card five and moving two student
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(1, 3)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(4, 3)));
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(2, 5)));
@@ -389,7 +389,7 @@ public class ControllerTest {
             Assertions.assertEquals(3,  basicMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
         else
             Assertions.assertEquals(2, basicMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
-        //Muove madre natura
+        //Move mother nature
         int i = basicMatch2Players.getPositionOfMotherNature();
 
         if(i == 11)
@@ -406,7 +406,7 @@ public class ControllerTest {
             j=i+1;
         Assertions.assertEquals(j, basicMatch2Players.getPositionOfMotherNature());
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new CloudMessage(1)));
-        //move_students because only the first player has playes
+        //move_students because only the first player has played
         Assertions.assertEquals(TurnPhase.MOVE_STUDENTS, controllerBasicMatch2Players.getTurnController().getTurnPhase());
 
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch2Players.onMessageReceived(new MoveStudentMessage(1, 4)));
