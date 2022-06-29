@@ -30,8 +30,12 @@ public class SceneController {
 
     private static Parent wizardBoardParent;
     private static BoardsSceneController wizardBoardController;
+
     private static Parent gameSceneParent;
     private static GameSceneController gameSceneController;
+
+    private static Parent actionSceneParent;
+    private static ActionSceneController actionSceneController;
 
     public static GenericSceneController getActiveController() {
         return activeController;
@@ -114,9 +118,10 @@ public class SceneController {
                 e.printStackTrace();
             }
         }else{
-            gameSceneController.updateArchipelagoOnInfoGame(game.getArchipelagos());
-            gameSceneController.updateCloudsOnInfoGame(game.getClouds());
-            gameSceneController.updateAssistantCardOnInfoGame(game.getAssistantsCardsPlayedInRound());
+            RemoteModel remoteModel = Objects.requireNonNull(getClientController(activeController.getObservers())).getRemoteModel();
+            gameSceneController.updateArchipelagoOnInfoGame(remoteModel.getGame().getArchipelagos());
+            gameSceneController.updateCloudsOnInfoGame(remoteModel.getGame().getClouds());
+            gameSceneController.updateAssistantCardOnInfoGame(remoteModel.getGame().getAssistantsCardsPlayedInRound());
         }
         activeController = gameSceneController;
         activeScene.setRoot(gameSceneParent);
@@ -222,9 +227,8 @@ public class SceneController {
     /**
      * This method is used to enbale the movement of mother nature
      */
-    public static void letMoveMotherNature() {
-        //setActionScene(activeController.getObservers(), "actionScene.fxml");
-        ((ActionSceneController) activeController).setMoveMN(true);
+    public static void letMoveMotherNature(boolean move) {
+        ((ActionSceneController) activeController).setMoveMN(move);
     }
 
     /**
@@ -264,14 +268,7 @@ public class SceneController {
         else return null;
     }
 
-    /**
-     * This method is used to set the scene on expert mode
-     */
-    public static void setActualSceneExpert() {
-        if (activeController instanceof ActionSceneController) {
-            ((ActionSceneController) activeController).setExpert();
-        }
-    }
+
 
     /**
      * This method is used to set the character cards scene
@@ -285,10 +282,26 @@ public class SceneController {
     /**
      * This method is used to set the action scene
      * @param observers a list of game observers
-     * @param actionFxml fxml string
      */
-    public static void setActionScene(List<Observer> observers, String actionFxml) {
-        changeRootPane(observers, activeScene, actionFxml);
+    public static void setActionScene(List<Observer> observers) {
+        if(actionSceneController == null) {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/actionScene.fxml"));
+            try {
+                actionSceneParent = loader.load();
+                actionSceneController = loader.getController();
+                actionSceneController.addAllObserver(observers);
+                actionSceneController.setRemoteModel((getClientController(observers).getRemoteModel()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        activeController = actionSceneController;
+        updateArchipelagosOnMoveStudent();
+        updateBoardOnMoveStudent();
+
+        activeScene.setRoot(actionSceneParent);
+
     }
 
     public static void updateBoardOnMoveStudent() {

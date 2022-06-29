@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observable;
 import javafx.application.Platform;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +24,12 @@ public class GUI extends Observable implements UserView {
      */
     @Override
     public void askLogin() {
-        Platform.runLater(()-> SceneController.setScene(getObservers(), "login.fxml"));
+        Platform.runLater(() -> SceneController.setScene(getObservers(), "login.fxml"));
     }
 
     /**
      * tell view if the login is correct
+     *
      * @param success true if log has success
      */
     @Override
@@ -37,18 +39,19 @@ public class GUI extends Observable implements UserView {
                 SceneController.showAlert("Error", "Nickname already taken.");
                 SceneController.setScene(getObservers(), "login.fxml"); //rifai login
             });
-        }else
+        } else
             Platform.runLater(() -> SceneController.setScene(getObservers(), "setupMatch.fxml"));
 
     }
 
     /**
      * ask view to play an assistant card
+     *
      * @param assistantsCards assistant card to be picked
      */
     @Override
     public void askToPlayAssistantCard(List<AssistantsCards> assistantsCards) {
-        Platform.runLater(()->SceneController.showAssistantsCardOption(assistantsCards));
+        Platform.runLater(() -> SceneController.showAssistantsCardOption(assistantsCards));
     }
 
     /**
@@ -56,57 +59,59 @@ public class GUI extends Observable implements UserView {
      */
     @Override
     public void askToMoveStudent() {
-        Platform.runLater(()-> {
-            if(!(SceneController.getActiveController() instanceof ActionSceneController)){
-                System.out.println("istanzio actionScene in GUI");
-                SceneController.setActionScene(getObservers(), "actionScene.fxml");
+        Platform.runLater(() -> {
+            if (!(SceneController.getActiveController() instanceof ActionSceneController)) {
+                SceneController.setActionScene(getObservers());
 
-            }else{
-                SceneController.updateArchipelagosOnMoveStudent();
-                SceneController.updateBoardOnMoveStudent();
             }
-            if(!remoteModel.getCharacterCardMap().isEmpty())
-                SceneController.setActualSceneExpert();
+            SceneController.updateArchipelagosOnMoveStudent();
+            SceneController.updateBoardOnMoveStudent();
+            SceneController.letMoveMotherNature(false);
+
         });
     }
 
     /**
      * ask view to move mother nature
+     *
      * @param message step of mother nature
      */
     @Override
     public void askMoveMotherNature(String message) {
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
+            if (!(SceneController.getActiveController() instanceof ActionSceneController)) {
+                SceneController.setActionScene(getObservers());
+            }
             SceneController.updateArchipelagosOnMoveStudent();
             SceneController.updateBoardOnMoveStudent();
-            SceneController.letMoveMotherNature();
+            SceneController.letMoveMotherNature(true);
 
-            if(!remoteModel.getCharacterCardMap().isEmpty())
-                SceneController.setActualSceneExpert();
         });
     }
 
     /**
      * ask view to pick a cloud
+     *
      * @param cloud cloud to pick
      */
     @Override
     public void askChooseCloud(CloudInGame cloud) {
-        Platform.runLater(()-> { //rifare la scena prendendo info da remote model
-                SceneController.enableClouds(cloud, remoteModel.getGame());
+        Platform.runLater(() -> { //rifare la scena prendendo info da remote model
+            SceneController.enableClouds(cloud, remoteModel.getGame());
         });
 
     }
 
     /**
      * Help to understand how the current match is going
+     *
      * @param currentGameMessage send a copy of the match with its information
      */
     @Override
-    public void showGameState(CurrentGameMessage currentGameMessage){
-        Platform.runLater(()-> {
+    public void showGameState(CurrentGameMessage currentGameMessage) {
+        Platform.runLater(() -> {
             SceneController.showGame(remoteModel.getGame());
-            if(!remoteModel.getCharacterCardMap().isEmpty()){
+            if (!remoteModel.getCharacterCardMap().isEmpty()) {
                 SceneController.loadCharacterCards(remoteModel.getCharacterCardMap());
             }
         });
@@ -114,15 +119,17 @@ public class GUI extends Observable implements UserView {
 
     /**
      * Show the Character Cards for this game
+     *
      * @param characterCardInGameMessage shows the deck of this match
      */
     @Override
     public void showCharactersCards(CharacterCardInGameMessage characterCardInGameMessage) {
-        Platform.runLater(()-> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
+        Platform.runLater(() -> SceneController.loadCharacterCards(characterCardInGameMessage.getCharacterCard()));
     }
 
     /**
      * update the remote model
+     *
      * @param remoteModel remote model updated
      */
     @Override
@@ -135,11 +142,11 @@ public class GUI extends Observable implements UserView {
      */
     @Override
     public void showChosenCharacterCard() {
-        switch (remoteModel.getActiveCharacterCard()){
+        switch (remoteModel.getActiveCharacterCard()) {
             case "Archer", "Magician", "Knight", "Baker" -> notifyObserver(new PlayCharacterMessage(remoteModel.getActiveCharacterCard(), 13, null, null, null));
-            case "Princess", "Friar", "Jester" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/studentCardScene.fxml"));
-            case "Messenger", "Herbalist" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
-            case "Minstrel", "Chef", "Banker" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
+            case "Princess", "Friar", "Jester" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/studentCardScene.fxml"));
+            case "Messenger", "Herbalist" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
+            case "Minstrel", "Chef", "Banker" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
         }
     }
 
@@ -150,17 +157,19 @@ public class GUI extends Observable implements UserView {
     }
 
 
-
     /**
      * Show the view a generic message
+     *
      * @param genericMessage could be a phrase that help the client
      */
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater(() -> SceneController.showAlert("Message for you!", genericMessage));
     }
+
     /**
      * Show the view an error message
+     *
      * @param error could be a phrase that help the client doing the right choice
      */
     @Override
@@ -170,13 +179,14 @@ public class GUI extends Observable implements UserView {
 
     /**
      * Communicate if someone won the game
-     * @param message endOfMatch
+     *
+     * @param message  endOfMatch
      * @param isWinner tell if the match has been won
      */
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
         List<String> winners = message.getWinners().stream().map(Player::getUsername).collect(Collectors.toList());
-        Platform.runLater(()-> SceneController.setEndingScene(winners, isWinner)
+        Platform.runLater(() -> SceneController.setEndingScene(winners, isWinner)
         );
     }
 

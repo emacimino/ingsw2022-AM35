@@ -74,12 +74,10 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
      * This method is used to go on to the next move
      */
     private void nextMove() {
-        System.out.println("in student effect scene: in remote stud from entrance" + remoteModel.getStudentFromEntrance());
-        System.out.println("color of student " );
         for(Integer i : remoteModel.getStudentFromEntrance()){
             System.out.println(remoteModel.getStudentsOnEntranceMap().get(i));
         }
-        System.out.println("in student effect scene: in remote color" + remoteModel.getColorSelected());
+        SceneController.setActionScene(getObservers());
         switch (characterCard.getName()) {
             case "Banker", "Chef" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, null, remoteModel.getColorSelected()));
             case "Minstrel" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), null, remoteModel.getColorSelected()));

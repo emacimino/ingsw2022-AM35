@@ -21,7 +21,7 @@ public class Board implements Serializable {
     private final List<Professor> professorInTable= new ArrayList<>();
     private final Collection<TableOfStudents> tables= new HashSet<>();
     private final Collection<Student> studentsInEntrance= new HashSet<>();
-    private int coins = 10;
+    private int coins = 0;
 
     /**
      * constructor of the class

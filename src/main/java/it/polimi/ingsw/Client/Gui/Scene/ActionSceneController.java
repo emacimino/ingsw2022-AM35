@@ -34,6 +34,7 @@ public class ActionSceneController extends GenericSceneController {
     public Button playCharacterBtn;
 
     private final Map<Integer, ArchipelagoPanelController> archipelagoControllerMap = new HashMap<>();
+    private final Map<ArchipelagoPanelController, Node> archipelagoNodeMap = new HashMap<>();
     private BoardPanelController boardPanelController;
     private Boolean moveMN = false;
 
@@ -110,6 +111,7 @@ public class ActionSceneController extends GenericSceneController {
         node.setDisable(false);
         sky.add(node, column, row);
         archipelagoControllerMap.put(i, controller);
+        archipelagoNodeMap.put(controller, node);
     }
 
     /**
@@ -154,22 +156,6 @@ public class ActionSceneController extends GenericSceneController {
     }
 
     /**
-     * Method used to get the archipelago index
-     *
-     * @param archipelago the archipelago the index of is requested
-     * @return an int representing the index
-     */
-    private Integer getArchipelagoIndex(Archipelago archipelago) {
-        Integer indexArch = null;
-        for (Integer i : remoteModel.getArchipelagosMap().keySet()) {
-            if (remoteModel.getArchipelagosMap().get(i).equals(archipelago)) {
-                indexArch = i;
-            }
-        }
-        return indexArch;
-    }
-
-    /**
      * Method that shows the wizards' board
      */
     public void goToBoards() {
@@ -183,16 +169,13 @@ public class ActionSceneController extends GenericSceneController {
      */
     public void setMoveMN(Boolean moveMN) {
         this.moveMN = moveMN;
-        moveBtn.setText("Move Mother Nature");
+        if(moveMN) {
+            moveBtn.setText("Move Mother\n Nature");
+        }else
+            moveBtn.setText("Move Student");
     }
 
-    /**
-     * Method used to set the match in expert mode
-     */
-    public void setExpert() {
-        playCharacterBtn.setDisable(false);
-        playCharacterBtn.setVisible(true);
-    }
+
 
     /**
      * Method used to switch scene
@@ -229,10 +212,16 @@ public class ActionSceneController extends GenericSceneController {
     }
 
     public void updateArchipelagoOnMoveStudent(Map<Integer, Archipelago> archipelagoMap) {
-        for(Integer i = 1; i <= archipelagoMap.size(); i++){
-            ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
-            Archipelago a = archipelagoMap.get(i);
+        for(Integer i = 0; i < archipelagoMap.size(); i++){
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
+            Archipelago a = archipelagoMap.get(i+1);
             controller.setArchipelago(a);
+        }
+
+
+        for (int i = archipelagoMap.size() ; i < archipelagoControllerMap.size(); i++) {
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
+            sky.getChildren().remove(archipelagoNodeMap.get(controller));
         }
     }
 }

@@ -80,6 +80,7 @@ public class BoardPanelController extends GenericSceneController{
         }
         setProfessors(board.getProfessorInTable());
         studentEntranceMap.clear();
+        setTowers(board.getTowersInBoard());
         coinsTxt.setText("coins: " + board.getCoins());
         setMovableStudentOnEntrance(remoteModel.getStudentsOnEntranceMap().values().stream().toList());
     }

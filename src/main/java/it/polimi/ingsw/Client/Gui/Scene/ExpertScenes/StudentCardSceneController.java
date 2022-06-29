@@ -129,7 +129,7 @@ public class StudentCardSceneController extends GenericSceneController {
     }
 
     /**
-     * This method is used to to go on to the next move
+     * This method is used to go on to the next move
      */
     private void nextMove() {
         System.out.println("student on card: " + remoteModel.getStudentsFromCard());
@@ -137,7 +137,10 @@ public class StudentCardSceneController extends GenericSceneController {
             System.out.println(remoteModel.getStudentsOnCardMap().get(i).getColor());
         }
         switch (characterCard.getName()) {
-            case "Princess" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, studentsSelected.stream().toList(), null));
+            case "Princess" ->{
+                SceneController.setActionScene(getObservers());
+                notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, studentsSelected.stream().toList(), null));
+            }
             case "Friar" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
             case "Jester" -> Platform.runLater(() -> SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
         }

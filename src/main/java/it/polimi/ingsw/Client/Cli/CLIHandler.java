@@ -42,7 +42,7 @@ public class CLIHandler {
         Message message;
         if (inputString.equals("CharacterCard") && !cli.getRemoteModel().getCharacterCardMap().isEmpty()) {
             return askCharacterCardInfoMessage();
-        }else if(inputString.equals("exit"))
+        } else if (inputString.equals("exit"))
             System.exit(0);
 
 
@@ -62,20 +62,22 @@ public class CLIHandler {
     }
 
     private Message askCharacterCardInfoMessage() {
-        String nameCharacter;
+        String nameCharacter = null;
         displayCharacterCardInGame();
         System.out.println();
+
         do {
             System.out.println("Select the character card you want to play, or input 'quit' to return to the game: ");
             nameCharacter = cli.scanner.nextLine(); //expected to have the Name of the character selected
             if (nameCharacter.equals("quit")) {
                 return null;
             }
-            if (cli.getRemoteModel().getCurrentBoard().getCoins() < cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()){
-                System.out.println("Could not play the card for lack of coins");
-                return null;
-            }
-        } while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
+        }
+        while (!cli.getRemoteModel().getCharacterCardMap().containsKey(nameCharacter));
+        if (cli.getRemoteModel().getCurrentBoard().getCoins() < cli.getRemoteModel().getCharacterCardMap().get(nameCharacter).getCost()) {
+            System.out.println("Could not play the card for lack of coins");
+            return null;
+        }
 
         return new AskCharacterCardMessage(nameCharacter);
     }
@@ -84,28 +86,6 @@ public class CLIHandler {
      * This method calls all the sub-methods that print a message
      * @param message message received
      */
-/*    public void showMessage(Message message) {
-        switch (message.getType()) {
-            case REQUEST_LOGIN -> requestLogin();
-            case ASK_ASSISTANT_CARD -> showAssistantsCardOption(((AskAssistantCardMessage) message).getAssistantsCards());
-            case ASK_TO_MOVE_STUDENT -> showStudentsOnEntranceOption(((StudentsOnEntranceMessage) message).getStudents());
-            case ASK_MOVE_MOTHER_NATURE -> askToMotherNature(((AskToMoveMotherNatureMessage) message).getMessage());
-            case BOARD -> showBoard(((BoardMessage) message).getBoard());
-            case ARCHIPELAGOS_IN_GAME -> showArchipelagos(message);
-            case CLOUD_IN_GAME -> showClouds(message);
-            case CHARACTER_CARD_IN_GAME -> showCharacterCardsInGame(message);
-            case END_OF_TURN -> showEndOfTurnMessage(message);
-            case YOUR_TURN -> showYourTurnMessage(message);
-            case GENERIC_MESSAGE -> showGenericMessage((String) ((GenericMessage) message).getContent());
-            case GAME_INFO -> showCurrentGame(message);
-            case ERROR -> showErrorMessage(((ErrorMessage) message).getError());
-            case CLIENT_UNREACHABLE -> showEndOfGameMessage(message);
-            case SHOW_CHARACTER_CARD_INFO -> showInfoChosenCharacterCard();
-            default -> System.out.println(message.getMessage());
-
-        }
-    }
-*/
 
     /**
      * This method that prints the Login info
@@ -166,7 +146,7 @@ public class CLIHandler {
      *
      * @param message message printed
      */
-    private void showArchipelagos(Message message){
+    private void showArchipelagos(Message message) {
         ArchipelagoInGameMessage archipelagoListMessage = (ArchipelagoInGameMessage) message;
         cli.getRemoteModel().setArchipelagosMap(archipelagoListMessage.getArchipelago());
         for (int i : cli.getRemoteModel().getArchipelagosMap().keySet()) {
@@ -281,7 +261,7 @@ public class CLIHandler {
      *
      * @param archipelago is the printed archipelago
      */
-    private void getInfoArchipelago(Archipelago archipelago){
+    private void getInfoArchipelago(Archipelago archipelago) {
         Printable.printArchipelago(archipelago);
     }
 
@@ -294,8 +274,8 @@ public class CLIHandler {
     private void getInfoBoard(Board board) throws ExceptionGame {
         List<Student> students = new ArrayList<>();
         System.out.println("\n\nTO THIS WIZARD BELONGS:  \n");
-        if(!board.getTowersInBoard().isEmpty())
-             Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
+        if (!board.getTowersInBoard().isEmpty())
+            Printable.printBoardTowers(board.getTowersInBoard().size(), board.getTowersInBoard().iterator().next().getTowerColors().toString());
         for (Color c : Color.values()) {
             students.addAll(board.getStudentsFromTable(c));
         }
@@ -342,8 +322,8 @@ public class CLIHandler {
         System.out.println("Please select an Assistant Card from the option below: ");
         cli.getRemoteModel().getAssistantsCardsMap().clear();
         cli.getRemoteModel().setAssistantsCardsMap(assistantsCardsInTurn);
-        for(AssistantsCards a : assistantsCardsInTurn)
-             System.out.println(Printable.getAssistantCardCLI(a));
+        for (AssistantsCards a : assistantsCardsInTurn)
+            System.out.println(Printable.getAssistantCardCLI(a));
     }
 
     /**
@@ -392,6 +372,7 @@ public class CLIHandler {
 
     /**
      * This method creates a message containing login parameters
+     *
      * @param login is the input login
      * @return a correct login message
      */
@@ -425,6 +406,7 @@ public class CLIHandler {
 
     /**
      * This method creates a message containing a student
+     *
      * @param student is the index of the student to be moved
      * @return moveStudentMessage
      */
@@ -482,7 +464,8 @@ public class CLIHandler {
 
     /**
      * This method creates a message containing the chosen cloud
-      * @param cloud is the index of the chosen cloud
+     *
+     * @param cloud is the index of the chosen cloud
      * @return cloudMessage
      */
     private Message createChooseCloudMessage(String cloud) {
@@ -515,7 +498,6 @@ public class CLIHandler {
 
     /**
      * This method prints the info for all the character cards chosen for this game
-     *
      */
     public void showInfoChosenCharacterCard() {
         System.out.println("Archipelagos: ");
@@ -559,7 +541,7 @@ public class CLIHandler {
 
             }
             case "Messenger", "Herbalist" -> System.out.println("Choose an Archipelago where use the card effect");
-            case "Chef", "Banker" ->System.out.println("Choose a Color to use the card effect");
+            case "Chef", "Banker" -> System.out.println("Choose a Color to use the card effect");
             default -> System.out.println("For this card you don't need nothing! press ENTER to continue");
         }
 
@@ -567,7 +549,8 @@ public class CLIHandler {
 
     /**
      * This method create the info to use the character card chosen for this turn
-      * @param input is the userInput with all the information needed
+     *
+     * @param input is the userInput with all the information needed
      * @return characterCardMessage with all the information needed
      */
     private Message createCharacterMessage(String input) {
@@ -580,7 +563,7 @@ public class CLIHandler {
                     case "Chef", "Banker" -> {
                         List<Color> color = new ArrayList<>();
                         color.add(getColor(input));
-                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, null, null,  color);
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, null, null, color);
                     }
                     case "Messenger", "Herbalist" -> {
                         int indexOfArchipelago = Integer.parseInt(input);
@@ -593,11 +576,11 @@ public class CLIHandler {
                         List<Integer> toTradeFromCard = new ArrayList<>();
                         int indexOfArchipelago = notValidArchipelago;
                         int indexStud;
-                        if(input.contains("-")) {
+                        if (input.contains("-")) {
                             String[] info = input.split("-");
                             indexOfArchipelago = Integer.parseInt(info[0]);
                             indexStud = Integer.parseInt(info[1]);
-                        }else{
+                        } else {
                             indexStud = Integer.parseInt(input);
                         }
                         toTradeFromCard.add(indexStud);
@@ -611,14 +594,14 @@ public class CLIHandler {
                         String[] tradeFromCard;
                         String[] info = input.split("-");
 
-                        if(info[0].contains(",")) {
+                        if (info[0].contains(",")) {
                             tradeFromEntrance = info[0].split(",");
-                        }else
+                        } else
                             tradeFromEntrance = new String[]{info[0]};
 
-                        if(info[0].contains(",")) {
+                        if (info[0].contains(",")) {
                             tradeFromCard = info[1].split(",");
-                        }else
+                        } else
                             tradeFromCard = new String[]{info[1]};
 
                         for (String s : tradeFromEntrance) {
@@ -639,15 +622,15 @@ public class CLIHandler {
                         String[] info = input.split("-");
 
                         String[] tradeFromTables;
-                        if(info[0].contains(",")) {
+                        if (info[0].contains(",")) {
                             tradeFromTables = info[0].split(",");
-                        }else
+                        } else
                             tradeFromTables = new String[]{info[0]};
 
                         String[] tradeFromEntrance;
-                        if(info[0].contains(",")) {
-                             tradeFromEntrance = info[1].split(",");
-                        }else
+                        if (info[0].contains(",")) {
+                            tradeFromEntrance = info[1].split(",");
+                        } else
                             tradeFromEntrance = new String[]{info[1]};
 
                         for (String s : tradeFromTables) {
@@ -658,7 +641,7 @@ public class CLIHandler {
                             int stud1 = Integer.parseInt(s);
                             toTradeFromEntrance.add(stud1);
                         }
-                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, toTradeFromEntrance, null,  colorsOfTable);
+                        return new PlayCharacterMessage(nameCharacter, notValidArchipelago, toTradeFromEntrance, null, colorsOfTable);
                     }
 
                 }
@@ -674,6 +657,7 @@ public class CLIHandler {
 
     /**
      * This method choose the right color from the user input
+     *
      * @param color is the color inserted by the user
      * @return the color chosen in Color type
      * @throws Exception if this color does not exist in the Game

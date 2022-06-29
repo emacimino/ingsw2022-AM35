@@ -342,6 +342,7 @@ public class TurnController {
 
             messageHandler.setCloudMap(controller.getMatch().getGame().getClouds().stream().toList());
             messageHandler.setArchipelagoMap(controller.getMatch().getGame().getArchipelagos());
+            sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
             sendMessageToView(new CloudInGame(messageHandler.getCloudMap()), remoteView);
 
 
@@ -390,9 +391,11 @@ public class TurnController {
         }
         try {
             expertMatch.getCharactersForThisGame().get(cardName).useCard(expertMatch);
+
             sendMessageToView(new ArchipelagoInGameMessage(messageHandler.getArchipelagoMap()), remoteView);
             sendMessageToView(new BoardMessage(controller.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard()), remoteView);
             sendMessageToView(new CharacterCardInGameMessage(((ExpertMatch)controller.getMatch()).getCharactersForThisGame()), remoteView);
+
             askNextAction();
         } catch (ExceptionGame e) {
             e.printStackTrace();

@@ -228,7 +228,15 @@ public class BasicMatch extends Observable implements Serializable {
      * @param archipelago is the archipelago where Mother Nature was placed
      */
     public void lookUpArchipelago(Archipelago archipelago) {
+
         game.takeCareOfTheMerge(archipelago);
+
+        int actualIsle = game.getArchipelagos().indexOf(archipelago);
+        try {
+            getGame().getMotherNature().setPosition(actualIsle);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -36,6 +36,12 @@ public class GameSceneController extends GenericSceneController {
     private final Map<ArchipelagoPanelController, Node> archipelagoNodeMap = new HashMap<>();
     private final Map<Integer, CloudPanelController> cloudControllerMap = new HashMap<>();
     private final Map<Node, CloudPanelController> cloudNodeMap = new HashMap<>();
+    @FXML
+    public GridPane sky;
+    @FXML
+    public HBox characterCardBox;
+    @FXML
+    public HBox assistantBox;
 
     /**
      * Set method for initializing a game
@@ -48,12 +54,6 @@ public class GameSceneController extends GenericSceneController {
         initialize();
     }
 
-    @FXML
-    public GridPane sky;
-    @FXML
-    public HBox characterCardBox;
-    @FXML
-    public HBox assistantBox;
 
     /**
      * This method is used to initialize all the game variables in the GUI
@@ -127,7 +127,7 @@ public class GameSceneController extends GenericSceneController {
     }
     /**
      * This method is used to load an archipelago on screen
-     * @param index of the archipelago to load
+     * @param i of the archipelago to load
      * @param archipelago the archipelago to load
      * @param row coordinates
      * @param column coordinates
@@ -147,7 +147,7 @@ public class GameSceneController extends GenericSceneController {
 
     /**
      * This method is used to load a cloud on screen
-     * @param index of the cloud to load
+     * @param i of the cloud to load
      * @param cloud the cloud to load
      * @param pos position on screen
      * @param hBox a box containing the students
@@ -250,6 +250,7 @@ public class GameSceneController extends GenericSceneController {
         }
         return index;
     }
+
     private void selectCloud(Integer cloud) {
         for(Node n : cloudNodeMap.keySet()){
             n.setDisable(true);
@@ -261,14 +262,15 @@ public class GameSceneController extends GenericSceneController {
 
 
     public void updateArchipelagoOnInfoGame(List<Archipelago> archipelagos) { //da 0 a 11 max
-        for (int i = 1; i <= archipelagos.size(); i++) {
-            ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
-            Archipelago a = archipelagos.get(i - 1);
+        for (int i = 0; i < archipelagos.size(); i++) {
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
+            Archipelago a = archipelagos.get(i);
             controller.setArchipelago(a);
         }
-        for (int i = archipelagos.size() + 1; i <= archipelagoControllerMap.size(); i++) {
-            ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
+        for (int i = archipelagos.size() ; i < archipelagoControllerMap.size(); i++) {
+            ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
             sky.getChildren().remove(archipelagoNodeMap.get(controller));
+        }
     }
 
     public void updateCloudsOnInfoGame(List<Cloud> clouds) {

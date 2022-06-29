@@ -37,7 +37,7 @@ public class ArchipelagoPanelController {
      * @param archipelago the archipelago that needs to be set
      */
     public void setArchipelago(Archipelago archipelago) {
-
+            resetArchipelago();
         {
             int numberOfStudentBlue = archipelago.getStudentFromArchipelago().stream()
                     .filter(s -> s.getColor().equals(Color.BLUE))
@@ -85,9 +85,6 @@ public class ArchipelagoPanelController {
                 int numberOfTowers = archipelago.getIsle().size();
                 numOfTowers.setVisible(true);
                 numOfTowers.setText(String.valueOf(numberOfTowers));
-                greyTower.setVisible(false);
-                whiteTower.setVisible(false);
-                blackTower.setVisible(false);
                 switch (archipelago.getIsle().get(0).getTower().getTowerColors()) {
                     case Gray -> {
                         greyTower.setVisible(true);
@@ -107,16 +104,38 @@ public class ArchipelagoPanelController {
         }catch (Exception e){
             e.printStackTrace();
         }
-        motherNature.setVisible(false);
+
         if(archipelago.isMotherNaturePresence()){
             motherNature.setVisible(true);
         }
-        prohibitionCard.setVisible(false);
+
         if(archipelago.isProhibition())
             prohibitionCard.setVisible(true);
     }
 
-    public void hideArchipelago() {
+    private void resetArchipelago() {
+        pinkStudent.setVisible(false);
+        numPinkStudents.setVisible(false);
 
+        redStudent.setVisible(false);
+        numRedStudents.setVisible(false);
+
+        greenStudent.setVisible(false);
+        numGreenStudents.setVisible(false);
+
+        yellowStudent.setVisible(false);
+        numYellowStudents.setVisible(false);
+
+        blueStudent.setVisible(false);
+        numBlueStudents.setVisible(false);
+
+        greyTower.setVisible(false);
+        whiteTower.setVisible(false);
+        blackTower.setVisible(false);
+        numOfTowers.setVisible(false);
+
+        motherNature.setVisible(false);
+        prohibitionCard.setVisible(false);
     }
+
 }
