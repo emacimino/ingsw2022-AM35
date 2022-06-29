@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.NetworkUtilities.DisconnectMessage;
 import it.polimi.ingsw.NetworkUtilities.ErrorMessage;
 import it.polimi.ingsw.NetworkUtilities.Message;
-import it.polimi.ingsw.NetworkUtilities.Ping;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 
 
@@ -25,8 +21,6 @@ public class SocketClientSide extends Client {
     private final ObjectOutputStream outputStream;
     private final ObjectInputStream inputStream;
     private final ExecutorService executorService;
-    private static final int SOCKET_TIMEOUT = 10000;
-    private final ScheduledExecutorService pingPong;
 
     /**
      * Constructor class
@@ -36,11 +30,9 @@ public class SocketClientSide extends Client {
      */
     public SocketClientSide(String ipAddress, int port) throws IOException {
         this.socket = new Socket(ipAddress, port);
-     //   this.socket.connect(new InetSocketAddress(ipAddress, port), SOCKET_TIMEOUT);
         this.outputStream = new ObjectOutputStream(socket.getOutputStream());
         this.inputStream = new ObjectInputStream(socket.getInputStream());
         this.executorService = Executors.newSingleThreadExecutor();
-        this.pingPong = Executors.newSingleThreadScheduledExecutor();
 
     }
 
