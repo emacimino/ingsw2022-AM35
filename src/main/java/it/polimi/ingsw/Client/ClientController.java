@@ -47,8 +47,6 @@ public class ClientController implements Observer{
         switch (message.getType()) {
             case OK_LOGIN -> tasks.execute(() -> view.showLogin(true));
             case LOGIN_RESPONSE -> updateOnLogin((LoginResponse) message);
-            case PING -> {
-            }
             case SERVER_INFO -> {
                 ServerInfoMessage infoMessage = (ServerInfoMessage) message;
                 updateOnServerInfo(infoMessage.getIp(), infoMessage.getPort());
@@ -143,7 +141,6 @@ public class ClientController implements Observer{
             client = new SocketClientSide(ip, Integer.parseInt(port));
             client.addObserver(this); //throughout Client, like in SocketClientSide, add clientController as Observer -> Client controller will be updated from the SocketClientSide notification
             client.readMessage(); //start an async Read from server
-            //client.enablePingPong(true);
         } catch (IOException e) {
             tasks.execute(() -> view.showLogin(false));
         }

@@ -96,14 +96,5 @@ public class SocketClientSide extends Client {
             e.printStackTrace();
         }
     }
-    /**
-     * Handle the ping pong of a client
-     */
-    public void enablePingPong(boolean enabled){
-        if(enabled){
-            pingPong.scheduleAtFixedRate(()-> sendMessage(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
-        }else{
-            pingPong.shutdownNow();
-        }
-    }
+
 }
