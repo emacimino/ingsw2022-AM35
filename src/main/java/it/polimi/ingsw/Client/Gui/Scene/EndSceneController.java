@@ -14,12 +14,12 @@ import java.util.Optional;
 
 public class EndSceneController extends GenericSceneController{
     @FXML
-    Button quitBtn, restartBtn;
+    public Button quitBtn, restartBtn;
     @FXML
-    Label messageLbl;
+    public Label messageLbl;
     private List<String> winners;
 
-    public void quit(ActionEvent event){
+    public void quit(){
         System.exit(0);
     }
 

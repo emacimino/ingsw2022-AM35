@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.Gui.Scene;
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.Model.Wizard.Wizard;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,11 +22,11 @@ import java.util.Map;
 public class BoardsSceneController extends GenericSceneController {
     private final Stage stage;
     @FXML
-    private GridPane sky;
+    public GridPane sky;
     @FXML
-    private Text teamsText;
+    public Text teamsText;
 
-    private Map<String, BoardPanelController> boardPanelControllerMap = new HashMap<>();
+    private final Map<String, BoardPanelController> boardPanelControllerMap = new HashMap<>();
 
     /**
      * Constructor of the class
@@ -80,15 +79,15 @@ public class BoardsSceneController extends GenericSceneController {
 
     /**
      * Method used to close the stage
-     * @param event
+     *
      */
-    public void goBack(ActionEvent event) {
+    public void goBack() {
         stage.close();
     }
 
     /**
      * Method used to switch scene
-     * @param scene
+     * @param scene set the scene on the stage
      */
     public void setScene(Scene scene) {
         stage.setScene(scene);
@@ -109,7 +108,7 @@ public class BoardsSceneController extends GenericSceneController {
     public void setRemoteModel(RemoteModel remoteModel){
         this.remoteModel = remoteModel;
         setBoards(remoteModel.getGame().getWizards());
-        if(remoteModel.getTeamOne() != null || remoteModel.getTeamTwo() != null){
+        if(!remoteModel.getTeamOne().isEmpty() || !remoteModel.getTeamTwo().isEmpty()){
             String p1 = remoteModel.getTeamOne().get(0).getUsername();
             String p2 = remoteModel.getTeamOne().get(1).getUsername();
             String p3 = remoteModel.getTeamTwo().get(0).getUsername();

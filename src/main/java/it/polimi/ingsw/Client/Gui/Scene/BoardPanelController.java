@@ -27,40 +27,38 @@ import java.util.*;
  */
 public class BoardPanelController extends GenericSceneController{
     @FXML
-    private VBox entrance1, entrance2;
+    public VBox entrance1, entrance2;
     @FXML
-    private HBox greenTable, pinkTable, redTable, blueTable, yellowTable;
+    public HBox greenTable, pinkTable, redTable, blueTable, yellowTable;
     @FXML
-    private StackPane towersPane;
+    public StackPane towersPane;
     @FXML
-    private ImageView profRed, profPink, profYellow, profBlue, profGreen;
+    public ImageView profRed, profPink, profYellow, profBlue, profGreen;
     @FXML
-    private Label wizardLbl;
+    public Label wizardLbl;
     @FXML
-    private Text studentSelectedTxt, colorSelectedTxt, coinsTxt;
+    public Text studentSelectedTxt, colorSelectedTxt, coinsTxt;
 
     private String colorSel = "Color selected: ";
     private Student studentToMove;
-    private Map<Node, Student> studentEntranceMap = new HashMap<>();
-    private boolean onBoard = false;
-    private Map<HBox, Color> tableToColorMap = new HashMap<>();
-    private Map<Color, HBox> colorToTableMap = new HashMap<>();
+    private final Map<Node, Student> studentEntranceMap = new HashMap<>();
+    private final Map<HBox, Color> tableToColorMap = new HashMap<>();
+    private final Map<Color, HBox> colorToTableMap = new HashMap<>();
 
 
     /**
      * Method used to set the board
-     * @param board the board to set
-     * @param wizardName the name of the wizard that owns the board
      */
-    public void setCurrentBoard(Board board, String wizardName) {
+    public void setCurrentBoard() {
         setTablesMap();
+        Board board = remoteModel.getCurrentBoard();
         for (TableOfStudents t : board.getTables()) {
             loadStudentsOnTable(getTable(t), t.getStudentsInTable().stream().toList());
         }
         setProfessors(board.getProfessorInTable());
         setTowers(board.getTowersInBoard());
         setMovableStudentOnEntrance(remoteModel.getStudentsOnEntranceMap().values().stream().toList());
-        wizardLbl.setText(wizardName + " board");
+        wizardLbl.setText( "My board");
         coinsTxt.setText("coins: " + board.getCoins());
     }
 
@@ -82,6 +80,7 @@ public class BoardPanelController extends GenericSceneController{
         }
         setProfessors(board.getProfessorInTable());
         studentEntranceMap.clear();
+        coinsTxt.setText("coins: " + board.getCoins());
         setMovableStudentOnEntrance(remoteModel.getStudentsOnEntranceMap().values().stream().toList());
     }
 
@@ -90,7 +89,6 @@ public class BoardPanelController extends GenericSceneController{
      * @param studentsInEntrance a list of students in entrance
      */
     public void setStudentsInEntrance(List<Student> studentsInEntrance) {
-
         List<Node> nodes1 = entrance1.getChildren();
         List<Node> nodes2 = entrance2.getChildren();
         for(Node n : entrance1.getChildren()){
@@ -174,7 +172,6 @@ public class BoardPanelController extends GenericSceneController{
      * @param students students to load on the table
      */
     private void loadStudentsOnTable(HBox table, List<Student> students) {
-
         for (int i = 0 ; i < 10 ; i++) {
             table.getChildren().get(i).setVisible(false);
             if(i < students.size()){
@@ -303,5 +300,9 @@ public class BoardPanelController extends GenericSceneController{
         colorSelectedTxt.setText("");
         colorSel = "Color selected: ";
 
+    }
+
+    public Text getStudentSelectedTxt() {
+        return studentSelectedTxt;
     }
 }

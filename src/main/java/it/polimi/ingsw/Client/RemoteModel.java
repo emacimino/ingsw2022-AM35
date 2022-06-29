@@ -37,6 +37,7 @@ public class RemoteModel {
     private Integer archipelagoSelected;
     private List<Color> colorSelected = new ArrayList<>();
     private List<Integer> studentFromEntrance = new ArrayList<>();
+    private boolean enablePlayCharacter = true;
 
     private Integer studentSelectedFromEntrance;
 
@@ -300,5 +301,13 @@ public class RemoteModel {
 
     public List<Player> getTeamTwo() {
         return teamTwo;
+    }
+
+    public boolean isEnablePlayCharacter() {
+        return enablePlayCharacter;
+    }
+
+    public void setEnablePlayCharacter(boolean enablePlayCharacter) {
+        this.enablePlayCharacter = enablePlayCharacter;
     }
 }

@@ -135,20 +135,6 @@ public class CLI  extends Observable implements UserView {
 
 
     /**
-     * Send to server a message
-     * @param message message to be sent
-     */
-   /* protected synchronized void sendToServer(Message message) {
-        try{
-            outputStream.reset();
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }*/
-
-    /**
      * thread that handle the ping function
      * @return a thread
      */
@@ -309,10 +295,6 @@ public class CLI  extends Observable implements UserView {
         System.exit(0);
     }
 
-    @Override
-    public void confirmMoveStudent() {
-        //do nothing
-    }
 
 
 }

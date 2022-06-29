@@ -92,6 +92,4 @@ public interface UserView {
     void showChosenCharacterCard();
 
     void showDisconnection();
-
-    void confirmMoveStudent();
 }

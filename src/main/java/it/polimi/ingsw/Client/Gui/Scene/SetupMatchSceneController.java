@@ -8,7 +8,7 @@ import javafx.scene.input.MouseEvent;
 
 public class SetupMatchSceneController extends GenericSceneController{
     @FXML
-    private Button exitBtn;
+    public Button exitBtn;
 
 
     @FXML

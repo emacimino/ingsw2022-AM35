@@ -12,32 +12,27 @@ import java.util.ResourceBundle;
 
 public class LoginSceneController extends GenericSceneController implements Initializable {
 //questa classe dovrà fare il cambio di scena solo se effettivamente il match viene creato: e ricevo di conseguenza un
-    //input infoGameMessage
-    @FXML
-    private Button backBtn;
-    @FXML
-    private Button loginBtn;
-    @FXML
-    private Label userLabel;
-    @FXML
-    private ChoiceBox<Integer> choiceBoxNumber;
-    @FXML
-    private TextField textFieldUsername;
-    @FXML
-    private CheckBox isExpertCheck;
 
-    private Integer[] numberOfPlayers = {2, 3, 4};
-    private String username;
+    @FXML
+    public Button backBtn;
+    @FXML
+    public Button loginBtn;
+    @FXML
+    public Label userLabel;
+    @FXML
+    public ChoiceBox<Integer> choiceBoxNumber;
+    @FXML
+    public TextField textFieldUsername;
+    @FXML
+    public CheckBox isExpertCheck;
+
+    private final Integer[] numberOfPlayers = {2, 3, 4};
     private int numOfPlayers;
     private boolean isExpert = false;
 
-    @FXML
-    public void usernameInput(Event event){
-        username = textFieldUsername.getText();
-    }
 
     @FXML
-    public void onIsExpert(ActionEvent event){
+    public void onIsExpert(){
         isExpert = isExpertCheck.isSelected();
     }
 
@@ -47,7 +42,8 @@ public class LoginSceneController extends GenericSceneController implements Init
     }
 
     @FXML
-    public void loginBtnClick(Event event){
+    public void loginBtnClick(){
+        String username = textFieldUsername.getText();
         notifyObserver(new LoginResponse(username, numOfPlayers, isExpert));
     }
 

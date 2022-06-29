@@ -17,19 +17,19 @@ import java.util.List;
  */
 public class ArchipelagoPanelController {
     @FXML
-    private Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
+    public Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
     @FXML
-    private Polygon motherNature;
+    public Polygon motherNature;
     @FXML
-    private ImageView whiteTower, greyTower, blackTower;
+    public ImageView whiteTower, greyTower, blackTower;
     @FXML
-    private ImageView prohibitionCard;
+    public ImageView prohibitionCard;
 
     @FXML
-    private Label numBlueStudents, numPinkStudents, numGreenStudents, numRedStudents, numYellowStudents;
+    public Label numBlueStudents, numPinkStudents, numGreenStudents, numRedStudents, numYellowStudents;
 
     @FXML
-    private Label numOfTowers;
+    public Label numOfTowers;
 
 
     /**

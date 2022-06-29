@@ -136,18 +136,10 @@ public class GUI extends Observable implements UserView {
     @Override
     public void showChosenCharacterCard() {
         switch (remoteModel.getActiveCharacterCard()){
-            case "Archer", "Magician", "Knight", "Baker" -> {
-                notifyObserver(new PlayCharacterMessage(remoteModel.getActiveCharacterCard(), 13, null, null, null));
-                }
-            case "Princess", "Friar", "Jester" -> {
-                Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/studentCardScene.fxml"));
-            }
-            case "Messenger", "Herbalist" ->{
-                Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
-            }
-            case "Minstrel", "Chef", "Banker" ->{
-                Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
-            }
+            case "Archer", "Magician", "Knight", "Baker" -> notifyObserver(new PlayCharacterMessage(remoteModel.getActiveCharacterCard(), 13, null, null, null));
+            case "Princess", "Friar", "Jester" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/studentCardScene.fxml"));
+            case "Messenger", "Herbalist" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/ArchipelagoEffectedScene.fxml"));
+            case "Minstrel", "Chef", "Banker" -> Platform.runLater(() ->SceneController.setCharacterScene(getObservers(), "expertScenes/StudentAndColorEffectedScene.fxml"));
         }
     }
 
@@ -157,11 +149,6 @@ public class GUI extends Observable implements UserView {
 
     }
 
-    @Override
-    public void confirmMoveStudent() {
-        SceneController.updateArchipelagosOnMoveStudent();
-        SceneController.updateBoardOnMoveStudent();
-    }
 
 
     /**
@@ -178,9 +165,7 @@ public class GUI extends Observable implements UserView {
      */
     @Override
     public void showError(String error) {
-        Platform.runLater(() -> {
-            SceneController.showAlert("ERROR", error);
-        });
+        Platform.runLater(() -> SceneController.showAlert("ERROR", error));
     }
 
     /**

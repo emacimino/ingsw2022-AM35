@@ -8,26 +8,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ServerInfoSceneController">
-   <children>
-      <ImageView fitHeight="739.0" fitWidth="1427.0" layoutX="-76.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../EriantysMenu.jpeg" />
-         </image>
-      </ImageView>
-      <Button fx:id="playBtn" layoutX="585.0" layoutY="315.0" mnemonicParsing="false" onAction="#switchToLoginScene" prefHeight="67.0" prefWidth="119.0" text="LOGIN" />
-      <Button fx:id="quitBtn" layoutX="623.0" layoutY="586.0" mnemonicParsing="false" onAction="#initialize" text="EXIT" />
-      <TextField fx:id="ipAddressField" layoutX="528.0" layoutY="427.0" prefHeight="26.0" prefWidth="241.0" />
-      <TextField fx:id="portField" layoutX="510.0" layoutY="508.0" prefHeight="26.0" prefWidth="270.0" />
-      <Label graphicTextGap="10.0" layoutX="542.0" layoutY="399.0" prefHeight="23.0" prefWidth="221.0" text="INSERT THE IP ADDRESS:" textFill="WHITE">
-         <font>
-            <Font name="Comic Sans MS" size="16.0" />
-         </font>
-      </Label>
-      <Label layoutX="517.0" layoutY="477.0" text="INSERT THE NUMBER OF PORT:" textFill="WHITE">
-         <font>
-            <Font name="Comic Sans MS" size="16.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane minHeight="900.0" minWidth="1400.0" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ServerInfoSceneController">
+   <ImageView fitHeight="1036.0" fitWidth="1721.0" layoutX="-105.0" layoutY="-16.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../Graphics/Background/EriantysMenu.jpeg"/>
+   </ImageView>
+   <Button fx:id="playBtn" layoutX="676.0" layoutY="382.0" mnemonicParsing="false" onAction="#switchToLoginScene" prefHeight="67.0" prefWidth="119.0" text="LOGIN" />
+   <Button fx:id="quitBtn" layoutX="719.0" layoutY="658.0" mnemonicParsing="false" onAction="#initialize" text="EXIT" />
+   <TextField fx:id="ipAddressField" layoutX="620.0" layoutY="522.0" prefHeight="26.0" prefWidth="241.0" />
+   <TextField fx:id="portField" layoutX="612.0" layoutY="618.0" prefHeight="26.0" prefWidth="270.0" />
+   <Label graphicTextGap="10.0" layoutX="645.0" layoutY="469.0" prefHeight="23.0" prefWidth="221.0" text="INSERT THE IP ADDRESS:" textFill="WHITE">
+      <font>
+         <Font name="Comic Sans MS" size="16.0" />
+      </font>
+   </Label>
+   <Label layoutX="620.0" layoutY="576.0" text="INSERT THE NUMBER OF PORT:" textFill="WHITE">
+      <font>
+         <Font name="Comic Sans MS" size="16.0" />
+      </font>
+   </Label>
 </AnchorPane>

@@ -125,7 +125,7 @@ public class ArchipelagoEffectedSceneController extends GenericSceneController {
         initialize();
     }
 
-    public void goToBoards(ActionEvent event) {
+    public void goToBoards() {
         SceneController.showWizardsBoards(getObservers());
 
     }

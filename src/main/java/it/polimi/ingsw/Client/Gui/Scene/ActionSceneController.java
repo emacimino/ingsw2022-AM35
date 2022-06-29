@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.Gui.Scene;
 
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Board;
 
 import it.polimi.ingsw.NetworkUtilities.MoveMotherNatureMessage;
@@ -26,15 +25,15 @@ import java.util.Objects;
 public class ActionSceneController extends GenericSceneController {
 
     @FXML
-    private GridPane sky;
+    public GridPane sky;
     @FXML
-    private Label archipelagoSelectedLbl;
+    public Label archipelagoSelectedLbl;
     @FXML
-    private Button moveBtn;
+    public Button moveBtn;
     @FXML
-    private Button playCharacterBtn;
+    public Button playCharacterBtn;
 
-    private Map<Integer, ArchipelagoPanelController> archipelagoControllerMap = new HashMap<>();
+    private final Map<Integer, ArchipelagoPanelController> archipelagoControllerMap = new HashMap<>();
     private BoardPanelController boardPanelController;
     private Boolean moveMN = false;
 
@@ -90,7 +89,7 @@ public class ActionSceneController extends GenericSceneController {
      * @param archipelago archipelagos to print
      * @param row         used for coordinates on the screen
      * @param column      used for coordinates on the screen
-     * @throws IOException Signals that an I/O exception of some sort has occurred.
+     * @throws IOException Signals that an I/O exception to some sort has occurred.
      */
     private void loadArchipelagos(Integer i, Archipelago archipelago, int row, int column) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -115,10 +114,8 @@ public class ActionSceneController extends GenericSceneController {
 
     /**
      * Method used to set the board on the GUI
-     *
-     * @param board the board to set
      */
-    public void setBoard(Board board) {
+    private void setBoard() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/singleBoard.fxml"));
         Node node = null;
@@ -129,7 +126,7 @@ public class ActionSceneController extends GenericSceneController {
         }
         boardPanelController = loader.getController();
         boardPanelController.setRemoteModel(remoteModel);
-        boardPanelController.setCurrentBoard(board, "My");
+        boardPanelController.setCurrentBoard();
         sky.add(node, 1, 1);
 
     }
@@ -146,11 +143,14 @@ public class ActionSceneController extends GenericSceneController {
             }
         } else {
             indexStud = remoteModel.getStudentSelectedFromEntrance();
-            System.out.println(indexArch + " , " + indexStud);
             if (indexStud != null) {
                 notifyObserver(new MoveStudentMessage(indexStud, indexArch));
             }
         }
+        remoteModel.setArchipelagoSelected(null);
+        remoteModel.setStudentSelectedFromEntrance(null);
+        archipelagoSelectedLbl.setText("");
+        boardPanelController.getStudentSelectedTxt().setText("");
     }
 
     /**
@@ -182,7 +182,6 @@ public class ActionSceneController extends GenericSceneController {
      * @param moveMN a boolean to set the movement
      */
     public void setMoveMN(Boolean moveMN) {
-        //  boardPanelController.setBoard(remoteModel.getCurrentBoard(), "My");
         this.moveMN = moveMN;
         moveBtn.setText("Move Mother Nature");
     }
@@ -213,7 +212,7 @@ public class ActionSceneController extends GenericSceneController {
         remoteModel.setArchipelagoSelected(null);
         remoteModel.setStudentSelectedFromEntrance(null);
         setButtonCharacterCard();
-        setBoard(remoteModel.getCurrentBoard());
+        setBoard();
         setArchipelagos(remoteModel.getArchipelagosMap());
 
     }
@@ -230,7 +229,6 @@ public class ActionSceneController extends GenericSceneController {
     }
 
     public void updateArchipelagoOnMoveStudent(Map<Integer, Archipelago> archipelagoMap) {
-
         for(Integer i = 1; i <= archipelagoMap.size(); i++){
             ArchipelagoPanelController controller = archipelagoControllerMap.get(i);
             Archipelago a = archipelagoMap.get(i);

@@ -24,15 +24,17 @@ import java.util.Objects;
 public class SceneController {
     private static Scene activeScene;
     private static GenericSceneController activeController;
+
     private static Parent wizardBoardParent;
     private static BoardsSceneController wizardBoardController;
+    private static Parent gameSceneParent;
+    private static GameSceneController gameSceneController;
 
     public static GenericSceneController getActiveController() {
         return activeController;
     }
 
     public static void changeRootPane(List<Observer> observers, Scene scene, String fxml) {
-        System.gc();
         GenericSceneController controller;
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + fxml));
@@ -42,11 +44,11 @@ public class SceneController {
 
             activeController = controller;
             activeScene = scene;
+            activeController.setRemoteModel((Objects.requireNonNull(getClientController(observers))).getRemoteModel());
             activeScene.setRoot(root);
-            activeController.setRemoteModel(Objects.requireNonNull(getClientController(observers)).getRemoteModel());
 
         } catch (IOException e) {
-            e.printStackTrace(); //TO DO
+            e.printStackTrace();
         }
     }
 
@@ -77,27 +79,23 @@ public class SceneController {
             return;
         }
         if(!(activeController instanceof GameSceneController)) {
-            GameSceneController controller;
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/gameScene.fxml"));
             List<Observer> observers = activeController.getObservers();
             try {
-                Parent root = loader.load();
-                controller = loader.getController();
-                controller.addAllObserver(observers);
-                controller.setGame(game);
-                activeController = controller;
-                activeScene.setRoot(root);
-
+                gameSceneParent = loader.load();
+                gameSceneController = loader.getController();
+                gameSceneController.addAllObserver(observers);
+                gameSceneController.setGame(game);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            ((GameSceneController)activeController).updateArchipelagoOnInfoGame(game.getArchipelagos());
-            ((GameSceneController)activeController).updateCloudsOnInfoGame(game.getClouds());
-            ((GameSceneController)activeController).updateAssistantCardOnInfoGame(game.getAssistantsCardsPlayedInRound());
-
-
+            gameSceneController.updateArchipelagoOnInfoGame(game.getArchipelagos());
+            gameSceneController.updateCloudsOnInfoGame(game.getClouds());
+            gameSceneController.updateAssistantCardOnInfoGame(game.getAssistantsCardsPlayedInRound());
         }
+        activeController = gameSceneController;
+        activeScene.setRoot(gameSceneParent);
     }
 
     public static void loadCharacterCards(Map<String, CharacterCard> characterCard) {
@@ -181,10 +179,10 @@ public class SceneController {
 
     public static void enableClouds(CloudInGame cloud, Game game) {
         if (!(activeController instanceof GameSceneController)) {
-            setScene(activeController.getObservers(), "gameScene.fxml");
-            ((GameSceneController) activeController).setGame(game);
+            activeController = gameSceneController;
+            showGame(game);
         }
-        ((GameSceneController) activeController).enableCloud(cloud.getCloudMap());
+        ((GameSceneController) activeController).enableCloud();
     }
 
     public static void setEndingScene(List<String> winners, Boolean isWinner) {

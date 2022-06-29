@@ -8,96 +8,93 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="596.0" prefWidth="386.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.CardController">
-   <children>
-      <StackPane layoutX="-9.0" layoutY="-9.0" prefHeight="622.0" prefWidth="390.0">
-         <children>
-            <ImageView fx:id="card" fitHeight="603.0" fitWidth="405.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../Graphics/Personaggi/CarteTOT_front10.jpg" />
-               </image>
-            </ImageView>
-            <Circle fx:id="s1" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="20.0" top="150.0" />
-               </StackPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Circle>
-            <Circle fx:id="s2" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_RIGHT">
-               <StackPane.margin>
-                  <Insets right="20.0" top="150.0" />
-               </StackPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Circle>
-            <Circle fx:id="s3" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="20.0" top="300.0" />
-               </StackPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Circle>
-            <Circle fx:id="s4" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="CENTER_RIGHT">
-               <StackPane.margin>
-                  <Insets right="20.0" top="300.0" />
-               </StackPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Circle>
-            <Circle fx:id="s5" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="BOTTOM_LEFT">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-               <StackPane.margin>
-                  <Insets bottom="35.0" left="20.0" />
-               </StackPane.margin>
-            </Circle>
-            <Circle fx:id="s6" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE" visible="false" StackPane.alignment="BOTTOM_RIGHT">
-               <StackPane.margin>
-                  <Insets bottom="35.0" right="20.0" />
-               </StackPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Circle>
-            <ImageView fx:id="p2" fitHeight="81.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../Graphics/Reame/PNG/prohibitionCard.png" />
-               </image>
-               <StackPane.margin>
-                  <Insets right="90.0" />
-               </StackPane.margin>
-            </ImageView>
-            <ImageView fx:id="p3" fitHeight="81.0" fitWidth="63.0" layoutX="128.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../Graphics/Reame/PNG/prohibitionCard.png" />
-               </image>
-               <StackPane.margin>
-                  <Insets left="90.0" />
-               </StackPane.margin>
-            </ImageView>
-            <ImageView fx:id="p4" fitHeight="81.0" fitWidth="63.0" layoutX="228.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../Graphics/Reame/PNG/prohibitionCard.png" />
-               </image>
-               <StackPane.margin>
-                  <Insets left="260.0" />
-               </StackPane.margin>
-            </ImageView>
-            <ImageView fx:id="p1" fitHeight="81.0" fitWidth="63.0" layoutX="133.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../../Graphics/Reame/PNG/prohibitionCard.png" />
-               </image>
-               <StackPane.margin>
-                  <Insets right="260.0" />
-               </StackPane.margin>
-            </ImageView>
-         </children>
-      </StackPane>
-   </children>
+<AnchorPane prefHeight="596.0" prefWidth="386.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.Client.Gui.Scene.ExpertScenes.CardController">
+   <StackPane layoutX="-9.0" layoutY="-9.0" prefHeight="622.0" prefWidth="390.0">
+      <ImageView fx:id="card" fitHeight="603.0" fitWidth="405.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@../../Graphics/Personaggi/CarteTOT_front10.jpg"/>
+      </ImageView>
+      <Circle fx:id="s1" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="CENTER_LEFT">
+         <StackPane.margin>
+            <Insets left="20.0" top="150.0"/>
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+      </Circle>
+      <Circle fx:id="s2" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="CENTER_RIGHT">
+         <StackPane.margin>
+            <Insets right="20.0" top="150.0"/>
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+      </Circle>
+      <Circle fx:id="s3" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="CENTER_LEFT">
+         <StackPane.margin>
+            <Insets left="20.0" top="300.0"/>
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+      </Circle>
+      <Circle fx:id="s4" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="CENTER_RIGHT">
+         <StackPane.margin>
+            <Insets right="20.0" top="300.0"/>
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+      </Circle>
+      <Circle fx:id="s5" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="BOTTOM_LEFT">
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+         <StackPane.margin>
+            <Insets bottom="35.0" left="20.0"/>
+         </StackPane.margin>
+      </Circle>
+      <Circle fx:id="s6" disable="true" fill="DODGERBLUE" radius="30.0" stroke="BLACK" strokeType="INSIDE"
+              visible="false" StackPane.alignment="BOTTOM_RIGHT">
+         <StackPane.margin>
+            <Insets bottom="35.0" right="20.0"/>
+         </StackPane.margin>
+         <cursor>
+            <Cursor fx:constant="HAND"/>
+         </cursor>
+      </Circle>
+      <ImageView fx:id="p2" fitHeight="81.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true"
+                 visible="false">
+         <StackPane.margin>
+            <Insets right="90.0"/>
+         </StackPane.margin>
+         <Image url="@../../Graphics/Personaggi/prohibitionCard.png"/>
+      </ImageView>
+      <ImageView fx:id="p3" fitHeight="81.0" fitWidth="63.0" layoutX="128.0" layoutY="287.0" pickOnBounds="true"
+                 preserveRatio="true" visible="false">
+         <StackPane.margin>
+            <Insets left="90.0"/>
+         </StackPane.margin>
+         <Image url="@../../Graphics/Personaggi/prohibitionCard.png"/>
+      </ImageView>
+      <ImageView fx:id="p4" fitHeight="81.0" fitWidth="63.0" layoutX="228.0" layoutY="287.0" pickOnBounds="true"
+                 preserveRatio="true" visible="false">
+         <StackPane.margin>
+            <Insets left="260.0"/>
+         </StackPane.margin>
+         <Image url="@../../Graphics/Personaggi/prohibitionCard.png"/>
+      </ImageView>
+      <ImageView fx:id="p1" fitHeight="81.0" fitWidth="63.0" layoutX="133.0" layoutY="287.0" pickOnBounds="true"
+                 preserveRatio="true" visible="false">
+         <StackPane.margin>
+            <Insets right="260.0"/>
+         </StackPane.margin>
+         <Image url="@../../Graphics/Personaggi/prohibitionCard.png"/>
+      </ImageView>
+   </StackPane>
 </AnchorPane>

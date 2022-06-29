@@ -2,16 +2,14 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.Gui.GUI;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
-import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.View.ViewObserver;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientController implements Observer, ViewObserver {
+public class ClientController implements Observer{
     private final UserView view; //either CLI or GUI
     private Client client;  //represent the socket in client
     private String username;
@@ -55,65 +53,61 @@ public class ClientController implements Observer, ViewObserver {
                 ServerInfoMessage infoMessage = (ServerInfoMessage) message;
                 updateOnServerInfo(infoMessage.getIp(), infoMessage.getPort());
             }
+            case GAME_INFO -> showGame(message);
+            case CHARACTER_CARD_IN_GAME -> showCharacterInGame(message);
+            case END_MATCH -> updateOnEndMatch(message);
+            case SHOW_CHARACTER_CARD_INFO -> showCharacterCardInfo(message);
+            case ASK_CHARACTER_CARD -> askInfoCharacter(message);
+            case DISCONNECT -> onDisconnection();
+            case PLAY_CHARACTER_CARD -> playCharacterCard(message);
+
             case ERROR -> view.showError(((ErrorMessage) message).getError());
             case GENERIC_MESSAGE -> view.showGenericMessage((String) ((GenericMessage) message).getContent());
-            case GAME_INFO -> {
-                remoteModel.setGame(((CurrentGameMessage) message).getGame());
-                view.showGameState((CurrentGameMessage) message);
-            }
             case YOUR_TURN -> view.showGenericMessage(((YourTurnMessage) message).getContent());
             case REQUEST_LOGIN -> view.askLogin();
             case END_OF_TURN -> view.showGenericMessage(((EndTurnMessage) message).getContent());
-            case ASSISTANT_CARD -> updateOnSelectedAssistantCard((AssistantCardMessage) message);
-            case ASK_ASSISTANT_CARD -> {
-                remoteModel.setAssistantsCardsMap(((AskAssistantCardMessage) message).getAssistantsCards());
-                view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
-            }
-            case ASK_TO_MOVE_STUDENT -> {
-                view.askToMoveStudent();
-            }
-            case ASK_MOVE_MOTHER_NATURE -> {
-                view.askMoveMotherNature(message.getMessage());
-            }
+            case ASK_ASSISTANT_CARD -> showAssistantCardOptions(message);
+            case ASK_TO_MOVE_STUDENT -> view.askToMoveStudent();
+            case ASK_MOVE_MOTHER_NATURE -> view.askMoveMotherNature(message.getMessage());
             case CLOUD_IN_GAME -> view.askChooseCloud((CloudInGame) message);
-            case MOVE_STUDENT -> updateOnMoveStudent((MoveStudentMessage) message);
-            case STUDENTS_ON_ENTRANCE -> {
-                remoteModel.setStudentOnEntranceMap(((StudentsOnEntranceMessage) message).getStudents());
-            }
-            case ARCHIPELAGOS_IN_GAME -> {
-                remoteModel.setArchipelagosMap(((ArchipelagoInGameMessage) message).getArchipelago());
-            }
-            case BOARD -> {
-                remoteModel.setCurrentBoard(((BoardMessage) message).getBoard());
-            }
-            case MOVE_MOTHER_NATURE -> updateOnMoveMotherNature((MoveMotherNatureMessage) message);
-            case CLOUD_CHOICE -> updateOnSelectedCloud((CloudMessage) message);
-            case CHARACTER_CARD_IN_GAME -> {
-                remoteModel.setCharacterCardMap(((CharacterCardInGameMessage) message).getCharacterCard());
-                view.showCharactersCards((CharacterCardInGameMessage) message);
-            }
-            case END_MATCH -> {
-                updateOnEndMatch(message);
-            }
-            case NEW_MATCH -> client.sendMessage(message);
-            case SHOW_CHARACTER_CARD_INFO -> {
-                CharacterCardInfo card = (CharacterCardInfo) message;
-                remoteModel.setStudentsOnCardMap(card.getStudentsOnCardMap());
-                remoteModel.setStudentOnEntranceMap(card.getStudentsOnEntranceMap());
-                remoteModel.setArchipelagosMap(card.getArchipelagoMap());
-                remoteModel.setActiveCharacterCard(card.getCharacterCardName());
-                view.showChosenCharacterCard();
 
-            }
-            case ASK_CHARACTER_CARD -> {
-                askInfoCharacter(message);
-            }
-            case PLAY_CHARACTER_CARD -> {
-                updateOnPlayCharacter(message);
-            }
-            case DISCONNECT -> onDisconnection();
+            case ASSISTANT_CARD, NEW_MATCH, MOVE_STUDENT, MOVE_MOTHER_NATURE, CLOUD_CHOICE -> client.sendMessage(message);
+
+            case STUDENTS_ON_ENTRANCE -> remoteModel.setStudentOnEntranceMap(((StudentsOnEntranceMessage) message).getStudents());
+            case ARCHIPELAGOS_IN_GAME -> remoteModel.setArchipelagosMap(((ArchipelagoInGameMessage) message).getArchipelago());
+            case BOARD -> remoteModel.setCurrentBoard(((BoardMessage) message).getBoard());
             case TEAM_MESSAGE -> remoteModel.setTeams((TeamMessage) message);
         }
+    }
+
+    private void playCharacterCard(Message message) {
+        remoteModel.setEnablePlayCharacter(false);
+        client.sendMessage(message);
+    }
+
+    private void showGame(Message message) {
+        remoteModel.setGame(((CurrentGameMessage) message).getGame());
+        view.showGameState((CurrentGameMessage) message);
+    }
+
+    private void showAssistantCardOptions(Message message) {
+        remoteModel.setEnablePlayCharacter(true);
+        remoteModel.setAssistantsCardsMap(((AskAssistantCardMessage) message).getAssistantsCards());
+        view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
+    }
+
+    private void showCharacterInGame(Message message) {
+        remoteModel.setCharacterCardMap(((CharacterCardInGameMessage) message).getCharacterCard());
+        view.showCharactersCards((CharacterCardInGameMessage) message);
+    }
+
+    private void showCharacterCardInfo(Message message) {
+        CharacterCardInfo card = (CharacterCardInfo) message;
+        remoteModel.setStudentsOnCardMap(card.getStudentsOnCardMap());
+        remoteModel.setStudentOnEntranceMap(card.getStudentsOnEntranceMap());
+        remoteModel.setArchipelagosMap(card.getArchipelagoMap());
+        remoteModel.setActiveCharacterCard(card.getCharacterCardName());
+        view.showChosenCharacterCard();
     }
 
     private void updateOnEndMatch(Message message) {
@@ -131,23 +125,19 @@ public class ClientController implements Observer, ViewObserver {
      * @param message infoCharacterMessage
      */
     private void askInfoCharacter(Message message) {
-        client.sendMessage(message);
+        if(remoteModel.isEnablePlayCharacter()){
+            client.sendMessage(message);
+        }else
+            view.showError("You have already played a Character Card in this turn");
+
     }
 
-    /**
-     * Receive a message and send it to the client
-     * @param message playCharacterMessage
-     */
-    private void updateOnPlayCharacter(Message message) {
-        client.sendMessage(message);
-    }
 
     /**
      * Send to the server the destination requested
      * @param ip requested from the client
      * @param port requested from the client
      */
-    @Override
     public void updateOnServerInfo(String ip, String port) {
         try {
             client = new SocketClientSide(ip, Integer.parseInt(port));
@@ -163,56 +153,15 @@ public class ClientController implements Observer, ViewObserver {
      * receive the login parameters checked from Server
      * @param message is a LoginResponse message
      */
-    @Override
     public void updateOnLogin(LoginResponse message) {
         username = message.getName();
         client.sendMessage(message);
     }
 
-    /**
-     * receive the login parameters checked from Server
-     * @param message is a LoginResponse message
-     */
-    @Override
-    public void updateOnSelectedAssistantCard(AssistantCardMessage message) {
-        client.sendMessage(message);
-    }
-
-    /**
-     * receive the student parameters checked from Server
-     * @param message is a MoveStudentMessage message
-     */
-    @Override
-    public void updateOnMoveStudent(MoveStudentMessage message) {
-        client.sendMessage(message);
-    }
-    /**
-     * receive the mother Nature parameters checked from Server
-     * @param message is a MoveMotherNatureMessage message
-     */
-    @Override
-    public void updateOnMoveMotherNature(MoveMotherNatureMessage message) {
-        client.sendMessage(message);
-    }
-
-    /**
-     * receive the cloud parameters checked from Server
-     * @param message is a CloudMessage message
-     */
-    @Override
-    public void updateOnSelectedCloud(CloudMessage message) {
-        client.sendMessage(message);
-    }
-
-    @Override
-    public void updateOnSelectedColor(Color color) {
-
-    }
 
     /**
      * Handle client disconnection
      */
-    @Override
     public void onDisconnection() {
         updateOnEndMatch(null);
     }

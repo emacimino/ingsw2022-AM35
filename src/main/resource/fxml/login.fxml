@@ -6,18 +6,33 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <!-- This scene takes the username, number of players and expert or not-->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: PINK;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.LoginSceneController">
-   <children>
-      <Button fx:id="backBtn" layoutX="82.0" layoutY="338.0" mnemonicParsing="false" onAction="#onBackToMenuBtnClick" text="BACK TO MENU" />
-      <Button fx:id="loginBtn" layoutX="473.0" layoutY="143.0" mnemonicParsing="false" onAction="#loginBtnClick" text="Login" />
-      <Label fx:id="userLabel" layoutX="41.0" layoutY="38.0" text="Login Page" />
-      <TextField fx:id="textFieldUsername" layoutX="204.0" layoutY="93.0" onAction="#usernameInput" />
-      <Label layoutX="41.0" layoutY="98.0" text="Insert the Username:" />
-      <Label layoutX="23.0" layoutY="173.0" prefHeight="17.0" prefWidth="157.0" text="Select the number of Players:" />
-      <CheckBox fx:id="isExpertCheck" layoutX="226.0" layoutY="244.0" mnemonicParsing="false" onAction="#onIsExpert" text="Expert Match" />
-      <ChoiceBox fx:id="choiceBoxNumber" layoutX="209.0" layoutY="169.0" prefWidth="150.0" />
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="900.0" minWidth="1400.0" prefHeight="900.0"
+            prefWidth="1400.0" style="-fx-background-color: PINK;" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.LoginSceneController">
+   <Button fx:id="loginBtn" layoutX="805.0" layoutY="595.0" mnemonicParsing="false" onAction="#loginBtnClick"
+           prefHeight="41.0" prefWidth="95.0" text="Login"/>
+   <Label fx:id="userLabel" layoutX="627.0" layoutY="292.0" prefHeight="29.0" prefWidth="118.0" text="Login Page"
+          textAlignment="CENTER">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="textFieldUsername" layoutX="605.0" layoutY="384.0"/>
+   <Label layoutX="334.0" layoutY="377.0" prefHeight="40.0" prefWidth="208.0" text="Insert the Username:">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Label>
+   <Label layoutX="333.0" layoutY="477.0" prefHeight="23.0" prefWidth="232.0" text="Select the number of Players:">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </Label>
+   <CheckBox fx:id="isExpertCheck" layoutX="635.0" layoutY="534.0" mnemonicParsing="false" onAction="#onIsExpert"
+             text="Expert Match"/>
+   <ChoiceBox fx:id="choiceBoxNumber" layoutX="613.0" layoutY="468.0" prefWidth="150.0"/>
 </AnchorPane>
