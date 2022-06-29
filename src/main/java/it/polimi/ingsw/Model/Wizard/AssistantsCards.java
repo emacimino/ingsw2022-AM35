@@ -24,11 +24,13 @@ public enum AssistantsCards {
         }
 
     /**
+     * Getter for value of the card
      * @return the value of one card
      */
     public int getValue() { return value; }
 
     /**
+     * Getter for step of the card
      * @return the step that MotherNature can do by playing that card
      */
     public int getStep() { return step; }

@@ -24,7 +24,7 @@ public class Board implements Serializable {
     private int coins = 0;
 
     /**
-     * constructs the class
+     * constructor of the class
      */
     public Board() {
         for (Color c: Color.values()) {
@@ -123,15 +123,25 @@ public class Board implements Serializable {
         }
     }
 
-
-    public TableOfStudents getTableOfStudent(Color c) throws ExceptionGame{
+    /**
+     * Pick students from tables by their color
+     * @param color color of students to pick
+     * @return list of students of chosen color
+     * @throws ExceptionGame if students can't be picked
+     */
+    public TableOfStudents getTableOfStudent(Color color) throws ExceptionGame{
         for (TableOfStudents t: tables) {
-            if(t.getColor().equals(c))
+            if(t.getColor().equals(color))
                 return t;
         }
         throw new ExceptionGame("There is not a table with the color passed");
     }
 
+    /**
+     * Reduce coins after they are spent
+     * @param reduce how much the wizard spent
+     * @throws ExceptionGame if the wizard does not have enough coins
+     */
     public void reduceCoins(int reduce) throws ExceptionGame{
         if(reduce > getCoins()) {
             System.out.println(reduce + " " + getCoins());
@@ -141,10 +151,17 @@ public class Board implements Serializable {
 
     }
 
+    /**
+     * Getter for coins
+     * @return coins
+     */
     public int getCoins() {
         return coins;
     }
 
+    /**
+     * Adding one coin
+     */
     public void addACoin() {
         coins++;
     }

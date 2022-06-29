@@ -25,9 +25,10 @@ public class TableOfStudents implements Serializable {
     public TableOfStudents(Color color) {
         this.color = color;
         limitOfStudents=10;
-        }
+    }
 
     /**
+     * Getter for students in table
      * @return an HashSet of students placed in the table of their correspondent color
      */
     public Collection<Student> getStudentsInTable() {
@@ -35,6 +36,7 @@ public class TableOfStudents implements Serializable {
     }
 
     /**
+     * Getter for color of the table
      * @return the color of the table
      */
     public Color getColor() {
@@ -42,6 +44,7 @@ public class TableOfStudents implements Serializable {
     }
 
     /**
+     * Setter for student that is going to be added to the Table
      * @param student is the student that is going to be added to the Table
      */
     public void setStudentsInTable(Student student) throws ExceptionGame{
@@ -51,3 +54,4 @@ public class TableOfStudents implements Serializable {
             throw new ExceptionGame("Reached the limit of students in the table of color: "+ this.color);
     }
 }
+

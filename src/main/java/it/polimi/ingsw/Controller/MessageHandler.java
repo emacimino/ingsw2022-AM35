@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
-import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.util.HashMap;
 import java.util.List;
@@ -78,29 +76,13 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * Setter for characterCardMap
+     * @param characterCard character card map
+     */
     public void setCharacterCardMap(Map<String, CharacterCard> characterCard) {
         characterCardMap = characterCard;
     }
-
-    /**
-     * setter for color map
-     * @return a color map
-     */
-    private Map<String, Color>  setColorMap(){
-        Map<String, Color> map = new HashMap<>();
-        for(Color c: Color.values()){
-            switch (c){
-                case BLUE -> map.put("BLUE", Color.BLUE);
-                case GREEN -> map.put("GREEN", Color.GREEN);
-                case YELLOW -> map.put("YELLOW", Color.YELLOW);
-                case PINK -> map.put("PINK", Color.PINK);
-                case RED -> map.put("RED", Color.RED);
-            }
-        }
-        return map;
-    }
-
-
 
 
     /**
@@ -126,7 +108,10 @@ public class MessageHandler {
     }
 
 
-
+    /**
+     * getter for CharacterCardMap
+     * @return character card map
+     */
     public Map<String, CharacterCard> getCharacterCardMap() {
         return characterCardMap;
     }

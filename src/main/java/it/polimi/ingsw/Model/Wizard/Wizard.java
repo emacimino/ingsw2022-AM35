@@ -211,7 +211,7 @@ public class Wizard implements Serializable {
     }
 
     /**
-     *
+     * Getter of the coins
      * @return the number of coins that belongs to the wizard
      */
     public int getCoins() {

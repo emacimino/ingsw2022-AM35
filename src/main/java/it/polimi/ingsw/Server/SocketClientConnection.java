@@ -11,6 +11,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
+/**
+ * Handle the connection for one client
+ */
 public class SocketClientConnection implements Runnable, ClientConnection {
     private final Socket socket;
     private final ObjectOutputStream outputStream;
@@ -24,11 +27,12 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     private boolean active = true;
 
-
-    public Socket getSocket() {
-        return socket;
-    }
-
+    /**
+     * Constructor of the class
+     * @param socket a new one for each new client
+     * @param server the server where the client is connected
+     * @throws IOException if the object in iput or in output could not be created
+     */
     public SocketClientConnection(Socket socket, Server server) throws IOException{
         this.socket = socket;
         this.server = server;
@@ -36,14 +40,26 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
+    /**
+     * Setter for the number of the match
+     * @param numOfMatch index of the match that is played
+     */
     public void setNumOfMatch(Integer numOfMatch) {
         this.numOfMatch = numOfMatch;
     }
 
+    /**
+     * Boolean that states if the connection is active
+     * @return active parameter
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Send a message from the server after an event
+     * @param message message to be sent
+     */
     public synchronized void sendMessage(Message message) {
 
              try {
@@ -58,6 +74,9 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     }
 
+    /**
+     * Handle the closing of a connection
+     */
     @Override
     public synchronized void closeConnection() {
         try {
@@ -69,6 +88,9 @@ public class SocketClientConnection implements Runnable, ClientConnection {
 
     }
 
+    /**
+     * Close a connection
+     */
     public synchronized void close() {
         System.out.println("De-registering client...");
         server.deregisterConnection(this);
@@ -76,20 +98,35 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         closeConnection();
     }
 
+    /**
+     * Send a message after an event
+     * @param message message that contains an event
+     */
     @Override
     public void asyncSendMessage(final Message message){
         new Thread(() -> sendMessage(message)).start();
     }
 
+    /**
+     * Getter for num of match
+     * @return num of the match played
+     */
     @Override
     public Integer getNumOfMatch() {
         return numOfMatch;
     }
 
+    /**
+     * Getter for the controller
+     * @return controller for current match
+     */
     public Controller getController() {
         return controller;
     }
 
+    /**
+     * Runnable implementation of the class, handle all the game communication from client to server
+     */
     @Override
     public void run() {
         Message newMessage;
@@ -110,14 +147,27 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
 
+    /**
+     * Check if a match is in expert mode
+     * @return match mode
+     */
     public boolean isExpert(){
         return isExpert;
     }
 
+    /**
+     * Getter for number of players of the match
+     * @return number of players
+     */
     public int getNumberOfPlayers(){
         return numberOfPlayers;
     }
 
+    /**
+     * Handle the login phase of the match
+     * @throws IOException if the input is not correct
+     * @throws ClassNotFoundException if it can't found the correct class
+     */
     private void login() throws IOException, ClassNotFoundException {
         asyncSendMessage(new LoginRequest());
         Message message = (Message) inputStream.readObject();
@@ -140,6 +190,10 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         server.lobby(this);
     }
 
+    /**
+     * Method that handles the pong
+     * @param receivedMessage ping message
+     */
     public void Pong(Message receivedMessage){
         Pong pong = new Pong();
         if(receivedMessage.getType().equals(TypeMessage.PING)){
@@ -147,6 +201,11 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         }
     }
 
+    /**
+     * Timer for ping - pong
+     * @param receivedMessage pong message
+     * @return a thread that handle ping pong
+     */
     public Runnable timer(Message receivedMessage) {
         return new Thread(() -> {
             while (isActive()) {
@@ -163,10 +222,18 @@ public class SocketClientConnection implements Runnable, ClientConnection {
     });
     }
 
+    /**
+     * Setter for the match controller
+     * @param controller new controller for the match
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Getter for the client username
+     * @return client username
+     */
     public String getUsername() {
         return username;
     }

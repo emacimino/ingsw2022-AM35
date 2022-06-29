@@ -480,11 +480,12 @@ public class TurnController {
         }
     }
 
+    /**
+     * Getter for turnPhase
+     * @return turnPhase
+     */
     public TurnPhase getTurnPhase(){
         return this.turnPhase;
     }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
-    }
 }

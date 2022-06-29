@@ -15,6 +15,9 @@ import java.util.List;
 import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHTBLACK;
 import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHTWHITE;
 
+/**
+ * Printable objects for ClI
+ */
 public class Printable {
 
     public static final String BLUE = Constants.ANSI_BLUE;

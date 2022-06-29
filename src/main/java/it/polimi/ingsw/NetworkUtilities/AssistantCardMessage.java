@@ -30,8 +30,8 @@ public class AssistantCardMessage extends Message{
     }
 
     /**
-     * toString() method for this class
-     * @return
+     * Override of toString
+     * @return the values of assistant card
      */
     @Override
     public String toString() {

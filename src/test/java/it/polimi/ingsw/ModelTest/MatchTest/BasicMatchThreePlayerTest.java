@@ -1,9 +1,8 @@
 package it.polimi.ingsw.ModelTest.MatchTest;
 
-import it.polimi.ingsw.Model.Exception.ExceptionEndGame;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
-import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
+import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Professor;
@@ -128,7 +127,7 @@ public class BasicMatchThreePlayerTest {
             int oldPositionMotherNature_1 = basicMatch3Players.getPositionOfMotherNature();
             //try to move MN on the same island
             Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch3Players.moveMotherNature(playerThree, basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature_1 )% basicMatch3Players.getGame().getArchipelagos().size())));
-            //sets the game in order to put a professor on the board of playerthree and have influence on the isle where MN will be in the next move (oldPositionMotherNature +2)
+            //sets the game in order to put a professor on the board of player three and have influence on the isle where MN will be in the next move (oldPositionMotherNature +2)
             for(Student s : basicMatch3Players.getGame().getArchipelagos().get((oldPositionMotherNature_1 + getSteps(playerThree))% basicMatch3Players.getGame().getArchipelagos().size()).getStudentFromArchipelago()){
                 for(int i = 0; i< basicMatch3Players.getGame().getProfessors().size(); i++){
                     if (basicMatch3Players.getGame().getProfessors().get(i).getColor() == s.getColor()){
@@ -176,7 +175,7 @@ public class BasicMatchThreePlayerTest {
                         isInGame = true;
                     }
                 }
-                if(!isInGame){  //controllare che non ci sia gia messo in player2 dopo il primo studente dell isola
+                if(!isInGame){ //check if it's not put in player 2 after the first student of the island
                     for(int i = 0; i< basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getProfessorInTable().size(); i++){
                         if(basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getProfessorInTable().get(i).getColor() == s.getColor()){
                             Professor professor = basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().removeProfessorFromTable(s.getColor());
@@ -216,7 +215,7 @@ public class BasicMatchThreePlayerTest {
             //remove all the tower from playerThree and call CheckVictory from moveMotherNature
             basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getTowersInBoard().removeAll(basicMatch3Players.getGame().getWizardFromPlayer(playerThree).getBoard().getTowersInBoard());
             Assertions.assertEquals(basicMatch3Players.getGame().getWizardFromPlayer(playerThree), basicMatch3Players.getGame().getWizardsWithLeastTowers().get(0));
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
+            basicMatch3Players.getPositionOfMotherNature();
 
         });
     }
@@ -237,7 +236,7 @@ public class BasicMatchThreePlayerTest {
             //call moveMotherNature
             Assertions.assertEquals(basicMatch3Players.getGame().getWizards(), basicMatch3Players.getGame().getWizardsWithLeastTowers());
 
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
+            basicMatch3Players.getPositionOfMotherNature();
 
         });
     }
@@ -266,7 +265,7 @@ public class BasicMatchThreePlayerTest {
             basicMatch3Players.getGame().getArchipelagos().get(0).setMotherNaturePresence(true);
             basicMatch3Players.getGame().getMotherNature().setPosition(0);
             //check if the match will finish
-            int oldPositionMotherNature = basicMatch3Players.getPositionOfMotherNature();
+            basicMatch3Players.getPositionOfMotherNature();
 
         });
     }

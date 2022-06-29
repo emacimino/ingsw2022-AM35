@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.FactoryMatch;
 
+/**
+ * Class that create a basicMatch from the number of player requested
+ */
 public class FactoryMatch {
 
     /**
