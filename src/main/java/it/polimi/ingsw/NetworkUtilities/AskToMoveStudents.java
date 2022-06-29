@@ -1,8 +1,9 @@
 package it.polimi.ingsw.NetworkUtilities;
 
 import java.io.Serial;
+
 /**
- * Asking the view to move students
+ * Class used to request the movement of students
  */
 public class AskToMoveStudents extends Message{
     @Serial

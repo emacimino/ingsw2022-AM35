@@ -4,8 +4,9 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 
 import java.io.Serial;
 import java.util.List;
+
 /**
-Used to ask the usage of an assistantCard
+ * Class used to send a list of assistant cards
  */
 public class AskAssistantCardMessage extends Message {
 
@@ -14,8 +15,8 @@ public class AskAssistantCardMessage extends Message {
     private final List<AssistantsCards> assistantsCards;
 
     /**
-     * constructor of the class
-     * @param assistantsCards assistants in game
+     * Constructor of the class
+     * @param assistantsCards a list of Assistant cards
      */
     public AskAssistantCardMessage(List<AssistantsCards> assistantsCards) {
         this.assistantsCards = assistantsCards;
@@ -23,8 +24,8 @@ public class AskAssistantCardMessage extends Message {
     }
 
     /**
-     * Getter for assistant Card
-     * @return assistant Card list
+     * A method that returns a list of cards  contained in the message
+     * @return List of cards
      */
     public List<AssistantsCards> getAssistantsCards() {
         return assistantsCards;

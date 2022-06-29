@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Current CharacterCard selected info
+ * Class used to send information about the character cards
  */
 public class CharacterCardInfo extends Message implements Serializable {
     @Serial
@@ -20,10 +20,10 @@ public class CharacterCardInfo extends Message implements Serializable {
 
     /**
      * Constructor of the class
-     * @param characterCardName characterCard name
-     * @param studentsOnCardMap students on card list
-     * @param studentsOnEntranceMap student on the entrance of the wizard that called the card
-     * @param archipelagoMap current archipelago map
+     * @param characterCardName Name of the card
+     * @param studentsOnCardMap Students on the card
+     * @param studentsOnEntranceMap Students in entrance
+     * @param archipelagoMap Map of the archipelagos
      */
     public CharacterCardInfo(String characterCardName, Map<Integer, Student> studentsOnCardMap, Map<Integer, Student> studentsOnEntranceMap, Map<Integer, Archipelago> archipelagoMap) {
         this.characterCardName = characterCardName;
@@ -34,30 +34,32 @@ public class CharacterCardInfo extends Message implements Serializable {
     }
 
     /**
-     * Getter for characterCard name
-     * @return character card name
+     * Method that return the card's name
+     * @return a string containing the card's name
      */
     public String getCharacterCardName() {
         return characterCardName;
     }
 
     /**
-     * Getter for students on card
-     * @return students on card list
+     * Method that returns the student on the card
+     * @return a map containing the students
      */
     public Map<Integer, Student> getStudentsOnCardMap() {
         return studentsOnCardMap;
     }
+
     /**
-     * Getter for students on entrance
-     * @return students on entrance list
+     * Method that returns the student on the entrance
+     * @return a map containing the students in the entrance
      */
     public Map<Integer, Student> getStudentsOnEntranceMap() {
         return studentsOnEntranceMap;
     }
+
     /**
-     * Getter for archipelago map
-     * @return archipelago map
+     * Method that returns the map of the archipelagos
+     * @return a map of archipelagos
      */
     public Map<Integer, Archipelago> getArchipelagoMap() {
         return archipelagoMap;

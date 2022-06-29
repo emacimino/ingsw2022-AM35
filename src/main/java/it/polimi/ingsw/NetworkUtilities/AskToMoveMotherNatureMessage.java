@@ -3,7 +3,7 @@ package it.polimi.ingsw.NetworkUtilities;
 import java.io.Serial;
 
 /**
- * Used to communicate how many steps can do motherNature
+ * Class used to request movement of mother nature
  */
 public class AskToMoveMotherNatureMessage extends Message{
 
@@ -14,7 +14,7 @@ public class AskToMoveMotherNatureMessage extends Message{
 
     /**
      * Constructor of the class
-     * @param numOfSteps numOfSteps allowed
+     * @param numOfSteps number of steps to move mother nature by
      */
     public AskToMoveMotherNatureMessage(int numOfSteps) {
         this.numOfSteps = numOfSteps;
@@ -26,6 +26,10 @@ public class AskToMoveMotherNatureMessage extends Message{
         return numOfSteps;
     }
 
+    /**
+     * Method that return the message
+     * @return the message
+     */
     public String getMessage() {
         return message;
     }

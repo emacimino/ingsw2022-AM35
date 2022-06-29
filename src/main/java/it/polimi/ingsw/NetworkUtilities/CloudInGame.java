@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.util.Map;
 
 /**
- * Clouds ready to be picked message
+ * Class used to send clouds
  */
 public class CloudInGame extends Message{
     @Serial
@@ -15,7 +15,7 @@ public class CloudInGame extends Message{
 
     /**
      * Constructor of the class
-     * @param cloudMap cloud map
+     * @param cloudMap a map of the cloud in the game
      */
     public CloudInGame(Map<Integer, Cloud> cloudMap) {
         this.cloudMap = cloudMap;
@@ -23,8 +23,8 @@ public class CloudInGame extends Message{
     }
 
     /**
-     * Getter for cloud map
-     * @return cloud map
+     * Method that returns the cloud contained in the message
+     * @return a map containing the clouds
      */
     public Map<Integer, Cloud> getCloudMap() {
         return cloudMap;

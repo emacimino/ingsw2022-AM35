@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.util.Map;
 
 /**
- * Current state of the character cards that are used in the current game
+ * Class used to send the character cards in game
  */
 public class CharacterCardInGameMessage extends Message{
     @Serial
@@ -15,15 +15,16 @@ public class CharacterCardInGameMessage extends Message{
 
     /**
      * Constructor of the class
-     * @param characterCard list of character cards that are used in the current game
+     * @param characterCard a map of character cards
      */
     public CharacterCardInGameMessage(Map<String, CharacterCard> characterCard) {
         this.characterCard = characterCard;
         setType(TypeMessage.CHARACTER_CARD_IN_GAME);
     }
+
     /**
-     * Getter of the list of character card used in this game
-     * @return list of character cards that are used in the current game
+     * Method that returns the character cards contained in the message
+     * @return a map of character cards
      */
     public Map<String, CharacterCard> getCharacterCard() {
         return characterCard;

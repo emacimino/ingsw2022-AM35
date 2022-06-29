@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Controller that handle the communication through the interfaces and the Server
+ * A class that handles the client controller
  */
 public class ClientController implements Observer{
     private final UserView view; //either CLI or GUI

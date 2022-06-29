@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.util.Map;
 
 /**
- * Archipelagos state in game Message
+ * Class used for the archipelago message, contains a map of archipelagos and integer keys
  */
 public class ArchipelagoInGameMessage extends Message{
     @Serial
@@ -14,8 +14,8 @@ public class ArchipelagoInGameMessage extends Message{
     private final Map<Integer, Archipelago> archipelagos;
 
     /**
-     * constructor of the class
-     * @param archipelagos map of archipelagos in game
+     * Constructor
+     * @param archipelagos Map of archipelagos in the game
      */
     public ArchipelagoInGameMessage(Map<Integer, Archipelago> archipelagos){
         this.archipelagos = archipelagos;
@@ -23,8 +23,8 @@ public class ArchipelagoInGameMessage extends Message{
     }
 
     /**
-     * Getter for archipelago
-     * @return archipelagos in game
+     * Get method that returns a map of archipelagos
+     * @return a map of archipelagos
      */
     public Map<Integer, Archipelago> getArchipelago() {
         return archipelagos;

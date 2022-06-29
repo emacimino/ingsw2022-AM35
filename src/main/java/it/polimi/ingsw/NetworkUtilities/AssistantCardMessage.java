@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import java.io.Serial;
 
 /**
- * Communicate the card used
+ * Class used to send an assistant card
  */
 public class AssistantCardMessage extends Message{
     @Serial
@@ -14,7 +14,7 @@ public class AssistantCardMessage extends Message{
 
     /**
      * Constructor of the class
-     * @param assistantCard assistant card used
+     * @param assistantCard an assistant card
      */
     public AssistantCardMessage( AssistantsCards assistantCard) {
         this.assistantsCard = assistantCard;
@@ -22,8 +22,8 @@ public class AssistantCardMessage extends Message{
     }
 
     /**
-     * Getter of the assistant card sent
-     * @return assistant card used
+     * Method that returns the assistant card contained in the message
+     * @return an assistant card
      */
     public AssistantsCards getAssistantsCard() {
         return assistantsCard;
