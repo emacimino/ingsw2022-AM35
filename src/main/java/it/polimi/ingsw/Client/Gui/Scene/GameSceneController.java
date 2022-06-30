@@ -240,7 +240,11 @@ public class GameSceneController extends GenericSceneController {
         }
     }
 
-
+    /**
+     * Method used to get a cloud control panel
+     * @param cloudPanelController a class used to control clouds on the gui
+     * @return an index of the cloud control panel
+     */
     private int getIntegerCloudControllerPanel(CloudPanelController cloudPanelController){
         Integer index = null;
         for (Integer i : cloudControllerMap.keySet()) {
@@ -251,6 +255,10 @@ public class GameSceneController extends GenericSceneController {
         return index;
     }
 
+    /**
+     * Method used to select a cloud
+     * @param cloud the integer indicating the index of the cloud selected
+     */
     private void selectCloud(Integer cloud) {
         for(Node n : cloudNodeMap.keySet()){
             n.setDisable(true);
@@ -260,7 +268,10 @@ public class GameSceneController extends GenericSceneController {
 
     }
 
-
+    /**
+     * Method that updates the archipelagos
+     * @param archipelagos a list of archipelagos in the current game
+     */
     public void updateArchipelagoOnInfoGame(List<Archipelago> archipelagos) { //da 0 a 11 max
         for (int i = 0; i < archipelagos.size(); i++) {
             ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
@@ -273,6 +284,10 @@ public class GameSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * Method that updates the clouds
+     * @param clouds a list of clouds in the current game
+     */
     public void updateCloudsOnInfoGame(List<Cloud> clouds) {
         for (int i = 1; i <= clouds.size(); i++) {
             CloudPanelController controller = cloudControllerMap.get(i);
@@ -284,6 +299,10 @@ public class GameSceneController extends GenericSceneController {
 
     }
 
+    /**
+     * Method that updates the Assistant cards
+     * @param assistantsCardsPlayedInRound a list of assistant cards played in the current game
+     */
     public void updateAssistantCardOnInfoGame(List<AssistantsCards> assistantsCardsPlayedInRound) {
         for(Node n : assistantBox.getChildren())
             n.setVisible(false);

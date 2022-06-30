@@ -94,5 +94,8 @@ public interface UserView {
      */
     void showChosenCharacterCard();
 
+    /**
+     * Method used to show a disconnection window
+     */
     void showDisconnection();
 }

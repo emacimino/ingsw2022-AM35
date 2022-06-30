@@ -304,11 +304,17 @@ public class SceneController {
 
     }
 
+    /**
+     * Method that updates the board after a student is moved
+     */
     public static void updateBoardOnMoveStudent() {
         RemoteModel remoteModel = Objects.requireNonNull(getClientController(activeController.getObservers())).getRemoteModel();
         ((ActionSceneController)activeController).getBoardPanelController().updateBoardOnMoveStudent(remoteModel.getCurrentBoard());
     }
 
+    /**
+     * Method that updates the archipelagos after a student is moved
+     */
     public static void updateArchipelagosOnMoveStudent() {
         RemoteModel remoteModel = Objects.requireNonNull(getClientController(activeController.getObservers())).getRemoteModel();
         ((ActionSceneController)activeController).updateArchipelagoOnMoveStudent(remoteModel.getArchipelagosMap());

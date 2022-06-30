@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class used to test the creation of a 3 players match
+ */
 public class BasicMatchThreePlayerTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch3Players = factoryMatch.newMatch(3);

@@ -8,11 +8,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class used to test the professor
+ */
 public class ProfessorTest {
     int[] ints = {9, 4};
 
     /**
-     * This methodTest tests the Professor Class
+     * This methodTest tests the Professor Class and returns true if a professor is instanced correctly
      */
     @Test
     void IfProfessorExistsAsItIsSupposedToReturnsTrue() {

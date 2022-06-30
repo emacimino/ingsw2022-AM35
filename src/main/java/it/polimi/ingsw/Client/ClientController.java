@@ -81,22 +81,38 @@ public class ClientController implements Observer{
         }
     }
 
+    /**
+     * Method used to play a character card
+     * @param message a message
+     */
     private void playCharacterCard(Message message) {
         remoteModel.setEnablePlayCharacter(false);
         client.sendMessage(message);
     }
 
+    /**
+     * Method used to show the current game
+     * @param message a message containing the current game
+     */
     private void showGame(Message message) {
         remoteModel.setGame(((CurrentGameMessage) message).getGame());
         view.showGameState((CurrentGameMessage) message);
     }
 
+    /**
+     * Method that shows a window containing the assistant cards
+     * @param message a message containing the assistant cards
+     */
     private void showAssistantCardOptions(Message message) {
         remoteModel.setEnablePlayCharacter(true);
         remoteModel.setAssistantsCardsMap(((AskAssistantCardMessage) message).getAssistantsCards());
         view.askToPlayAssistantCard(((AskAssistantCardMessage) message).getAssistantsCards());
     }
 
+    /**
+     * Method used to open a window containing the character cards in the game
+     * @param message a message containing the character cards in the game
+     */
     private void showCharacterInGame(Message message) {
         remoteModel.setCharacterCardMap(((CharacterCardInGameMessage) message).getCharacterCard());
         view.showCharactersCards((CharacterCardInGameMessage) message);
@@ -111,6 +127,10 @@ public class ClientController implements Observer{
         view.showChosenCharacterCard();
     }
 
+    /**
+     * Message used to send the end of game message
+     * @param message a message signaling the end of the game
+     */
     private void updateOnEndMatch(Message message) {
         if(message == null){
             view.showDisconnection();

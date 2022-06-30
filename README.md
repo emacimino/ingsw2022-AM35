@@ -1,5 +1,5 @@
 # Ingsw2022-AM35
-![alt text](src/main/resource/EriantysMenu.jpeg)
+![alt text](src/main/resource/Graphics/Background/EriantysMenu.jpeg)
 
 Implementation of the Game [Eriantys](https://www.craniocreations.it/prodotto/eriantys/)
 Rules of the Game can be found [here](https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf)
@@ -11,7 +11,7 @@ These two diagrams describes how the project was initially thought
 and the last implementation of the project, modified to overcome some critical issues
 during the development
 
-- [Early UML](Deliveries/Model_Uml.png)
+- [Early UML](Deliveries/Javadoc/Model_Uml.png)
 - [Latest UML](//to be added)
 
 ### Coverage 
@@ -52,13 +52,13 @@ includes classes and methods used
 | 4 Player basicMatch    |   🟢   |
 | 12 Character Card            |   🟢   |
 
-## Eryantis: How to start
+## Eriantys: How to start
 
 ### Compiling
 
 There will be only one jar either for server, CLI or GUI
 
-- [Here](//to be added) can be found the pre-compiled jar
+- [Here](Deliveries/Jar) can be found the pre-compiled jar
 
 Or if you want to create your own jar executable you have to get on 
 the path of your project and use the command:

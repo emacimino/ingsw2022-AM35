@@ -178,7 +178,11 @@ public class CLI  extends Observable implements UserView {
         cliHandler.showErrorMessage(error);
     }
 
-
+    /**
+     * Communicate if someone won the game
+     * @param message endOfMatch
+     * @param isWinner tell if the match has been won
+     */
     @Override
     public void showWinMessage(EndMatchMessage message, Boolean isWinner) {
         if (isWinner)
@@ -220,6 +224,10 @@ public class CLI  extends Observable implements UserView {
         cliHandler.showStudentsOnEntranceOption(remoteModel.getStudentsOnEntranceMap());
     }
 
+    /**
+     * update the remote model
+     * @param remoteModel remote model updated
+     */
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;
@@ -234,6 +242,9 @@ public class CLI  extends Observable implements UserView {
         cliHandler.showInfoChosenCharacterCard();
     }
 
+    /**
+     * Method used to show a disconnection window
+     */
     @Override
     public void showDisconnection() {
         cliHandler.showGenericMessage("Disconnection of the server or a player");

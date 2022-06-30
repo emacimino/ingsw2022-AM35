@@ -113,6 +113,9 @@ public class ArchipelagoPanelController {
             prohibitionCard.setVisible(true);
     }
 
+    /**
+     * Method used to reset the archipelagos in the game
+     */
     private void resetArchipelago() {
         pinkStudent.setVisible(false);
         numPinkStudents.setVisible(false);
