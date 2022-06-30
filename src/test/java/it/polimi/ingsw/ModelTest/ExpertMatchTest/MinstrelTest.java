@@ -31,6 +31,12 @@ class MinstrelTest {
     private final Player player2 = new Player("username2");
 
 
+    /**
+     * Method used to set the player for the game
+     * @param player1 player one
+     * @param player2 player two
+     * @return a list of players
+     */
     private List<Player> setPlayers(Player player1, Player player2){
         ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
@@ -38,10 +44,17 @@ class MinstrelTest {
         return players;
     }
 
+    /**
+     * Method used to set a test match
+     * @throws ExceptionGame if something goes wrong
+     */
     private void setATestMatch() throws ExceptionGame {
         expertMatch.setGame(setPlayers(player1, player2));
     }
 
+    /**
+     * Method that tests 10 times the match and Minstrel character card interaction
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     public void setTestMatch1(Color c) {
@@ -101,6 +114,9 @@ class MinstrelTest {
 
     }
 
+    /**
+     * Method that tests 10 times the match and Minstrel character card interaction in a 4 player match
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     public void match4player_Test(Color c){
