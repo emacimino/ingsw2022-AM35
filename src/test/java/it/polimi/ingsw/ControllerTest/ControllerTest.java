@@ -5,6 +5,7 @@ import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.Minstrel;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
@@ -233,7 +234,9 @@ public class ControllerTest {
         for(int i=0;i<8;i++){
             controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(playerTwo).addACoin();
         }
+
         cardSwitch(card1);
+
     }
 
 
