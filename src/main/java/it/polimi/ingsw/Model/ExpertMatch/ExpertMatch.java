@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.Wizard;
 import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
 import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.ErrorMessage;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -28,20 +29,20 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
     private InfluenceEffectCard activeInfluenceCard;
     private MotherNatureEffectCard activeMotherNatureCard;
     private ProhibitionEffectCard activeProhibitionCard;
+    private int bankCoin = 20;
 
 
 
     /**
      * Constructor of ExpertMatch
-     *
      * @param basicMatch is the match that has to be modified to play in ExpertMode
      */
     public ExpertMatch(BasicMatch basicMatch) {
-        super(basicMatch); //match della classe MatchDecorator
+        super(basicMatch);
         deckCharacterCard = new DeckCharacterCard();
         activeInfluenceCard = null;
         activeMotherNatureCard = null;
-
+        activeProhibitionCard = null;
     }
 
     /**
@@ -72,7 +73,11 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         if (basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 3 ||
                 basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 6 ||
                 basicMatch.getGame().getWizardFromPlayer(player).getBoard().getStudentsFromTable(student.getColor()).size() == 9) {
-                basicMatch.getGame().getWizardFromPlayer(player).addACoin();
+                if(bankCoin > 0) {
+                    bankCoin--;
+                    basicMatch.getGame().getWizardFromPlayer(player).addACoin();
+                }else
+                    notifyObserver(new ErrorMessage("No coins in the bank!"));
         }
     }
 
@@ -80,8 +85,10 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
      * Add a coin to every wizard when we set the Match to Expert Mode
      */
     private void setFirstCoin() {
-        for (Wizard wizard : basicMatch.getGame().getWizards())
+        for (Wizard wizard : basicMatch.getGame().getWizards()) {
+            bankCoin-- ;
             wizard.addACoin();
+        }
     }
 
     /**
@@ -156,7 +163,7 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
 
 
     /**
-     * This Method returns the influence of the given wizard in the archielago
+     * This Method returns the influence of the given wizard in the archipelago
      * @param p player used for influence calculation
      * @param archipelago target archipelago
      * @return an int representing the influence
@@ -218,6 +225,13 @@ public class ExpertMatch extends MatchDecorator implements Serializable {
         this.activeProhibitionCard = activeProhibitionCard;
     }
 
+    /**
+     * Increase the coins' bank after the use of a Card
+     * @param cost is the cost of the card used
+     */
+    public void increaseBankCoin(int cost) {
+        this.bankCoin = this.bankCoin + cost;
+    }
 }
 
 

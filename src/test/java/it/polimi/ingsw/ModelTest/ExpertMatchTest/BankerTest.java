@@ -43,7 +43,7 @@ class BankerTest {
     }
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
-        System.out.println("numbero of archipelagos " + expertMatch.getGame().getArchipelagos().size());
+        System.out.println("number of archipelagos " + expertMatch.getGame().getArchipelagos().size());
 
         System.out.println("professor in game: "+ expertMatch.getGame().getProfessors());
         System.out.println("action order in round: " + expertMatch.getActionPhaseOrderOfPlayers());

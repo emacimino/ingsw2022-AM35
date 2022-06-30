@@ -39,7 +39,7 @@ public class Friar extends CharacterCard implements StudentEffectCard, Serializa
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
         usedFriarCard(getActiveStudents().stream().findFirst().orElse(null));
-        paymentOfTheCard();
+        paymentOfTheCard(match);
         resetCard();
     }
 

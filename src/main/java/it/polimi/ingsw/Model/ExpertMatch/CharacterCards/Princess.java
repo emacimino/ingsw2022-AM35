@@ -38,7 +38,7 @@ public class Princess extends CharacterCard implements StudentEffectCard , Seria
     public void useCard(ExpertMatch match) throws ExceptionGame{
         super.useCard(match);
         usedPrincessCard(getActiveWizard(), getActiveStudents().get(0));
-        paymentOfTheCard();
+        paymentOfTheCard(match);
     }
 
     /**

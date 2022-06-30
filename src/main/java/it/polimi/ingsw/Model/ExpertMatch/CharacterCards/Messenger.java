@@ -38,7 +38,7 @@ public class Messenger extends CharacterCard implements Serializable {
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         calculateEffectInfluence(getArchipelagoEffected());
-        paymentOfTheCard();
+        paymentOfTheCard(match);
     }
 
     /**

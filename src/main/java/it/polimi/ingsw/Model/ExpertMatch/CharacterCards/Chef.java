@@ -41,7 +41,7 @@ public class Chef extends CharacterCard implements InfluenceEffectCard, Serializ
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveInfluenceCard(this);
-        paymentOfTheCard();
+        paymentOfTheCard(match);
     }
 
     /**

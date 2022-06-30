@@ -99,7 +99,7 @@ public class BasicMatch extends Observable implements Serializable {
         wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCard);
         notifyObserver(new CurrentGameMessage(game));
-     //   notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
+        notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**
@@ -123,6 +123,7 @@ public class BasicMatch extends Observable implements Serializable {
                     }
 
                 }
+                break;
             }
         }
         actionPhaseOrderOfPlayers.add(position, player);

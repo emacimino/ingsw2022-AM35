@@ -55,10 +55,6 @@ public class DeckCharacterCard{
             deckForAMatch.put(drawnCharacterCard.getName(), drawnCharacterCard);
             deckOfCharacterCards.remove(toChoose);
         }
-        if(!deckForAMatch.containsKey("Messenger")){
-            deckForAMatch.remove(deckForAMatch.keySet().stream().toList().get(0));
-            deckForAMatch.put("Messenger", factoryCharacterCard.createACharacterCard(basicMatch, "Messenger"));
-        }
         return deckForAMatch;
     }
 

@@ -41,7 +41,7 @@ public class Herbalist extends CharacterCard implements ProhibitionEffectCard, S
         if(match.getActiveProhibitionCard() == null)
             match.setActiveProhibitionCard(this);
         useProhibitionEffect();
-        paymentOfTheCard();
+        paymentOfTheCard(match);
         resetCard();
     }
 

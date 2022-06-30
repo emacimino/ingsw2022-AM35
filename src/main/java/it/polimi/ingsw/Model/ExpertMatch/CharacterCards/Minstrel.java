@@ -37,7 +37,7 @@ public class Minstrel extends CharacterCard implements StudentEffectCard , Seria
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useMinstrelCard();
-        paymentOfTheCard();
+        paymentOfTheCard(match);
         resetCard();
     }
 
