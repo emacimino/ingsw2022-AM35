@@ -18,7 +18,9 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * Class used to test the Wizard class
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WizardTest {
 

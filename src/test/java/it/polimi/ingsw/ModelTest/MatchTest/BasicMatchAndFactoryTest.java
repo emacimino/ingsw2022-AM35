@@ -15,7 +15,9 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class used to test the basic match and the factory pattern used to create a match
+ */
 public class BasicMatchAndFactoryTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch3Players = factoryMatch.newMatch(3);

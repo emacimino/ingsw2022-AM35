@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import org.junit.jupiter.api.*;
 
+/**
+ * Class used to test the students' bag
+ */
 public class StudentBagTest {
 
     private final StudentBag studentBag = new StudentBag();
