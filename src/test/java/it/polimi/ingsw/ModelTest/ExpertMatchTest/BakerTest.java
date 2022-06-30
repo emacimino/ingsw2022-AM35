@@ -184,7 +184,7 @@ class BakerTest {
     }
 
     /**
-     * Method that tests 10 times the match and Archer character card interaction in a 4 player match
+     * Method that tests 10 times the match and Baker character card interaction in a 4 player match
      */
     @RepeatedTest(10)
     public void match4player_Test(){

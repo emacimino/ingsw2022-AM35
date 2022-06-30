@@ -146,7 +146,7 @@ class MagicianTest {
     }
 
     /**
-     * Method that tests 10 times the match and Knight character card interaction in a 4 player match
+     * Method that tests 10 times the match and Magician character card interaction in a 4 player match
      */
     @RepeatedTest(10)
     public void match4player_Test(){
