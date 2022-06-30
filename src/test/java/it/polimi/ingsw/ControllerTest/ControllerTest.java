@@ -429,7 +429,7 @@ public class ControllerTest {
         }
 
     }
-
+/*
     @RepeatedTest(1200)
     void minstrelTest() throws ExceptionGame {
         setControllerInTestExpert();
@@ -494,7 +494,7 @@ public class ControllerTest {
 
         }
     }
-
+*/
     /**
      * Method that tests how the controller handles the next player's action phase and how the turn flows
      */
