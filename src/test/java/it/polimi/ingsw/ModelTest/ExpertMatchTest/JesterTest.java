@@ -18,6 +18,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class that contains the tests for the Jester character card
+ */
 class JesterTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);

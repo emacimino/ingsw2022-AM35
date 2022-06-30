@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Class that contains the tests for the Minstrel character card
+ */
 class MinstrelTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);

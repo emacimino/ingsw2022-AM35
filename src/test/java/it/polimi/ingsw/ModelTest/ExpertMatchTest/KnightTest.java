@@ -19,6 +19,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Class that contains the tests for the Knight character card
+ */
 class KnightTest {
     private final FactoryMatch factoryMatch = new FactoryMatch();
     private final BasicMatch basicMatch2Players = factoryMatch.newMatch(2);

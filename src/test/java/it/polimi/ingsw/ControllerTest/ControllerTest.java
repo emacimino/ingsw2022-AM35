@@ -24,6 +24,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+/**
+ * Class that contains the tests for the game controller when two or more players are playing
+ */
 public class ControllerTest {
 
     private Set<String> usernameBasicMatch2Players;

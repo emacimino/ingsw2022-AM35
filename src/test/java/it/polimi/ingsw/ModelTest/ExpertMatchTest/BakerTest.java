@@ -21,6 +21,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class that contains the tests for the Baker character card
+ */
 class BakerTest {
 
     private final FactoryMatch factoryMatch = new FactoryMatch();
@@ -31,21 +34,38 @@ class BakerTest {
     private final Player player2 = new Player("username2");
 
     Professor greenProfessor = new Professor(Color.GREEN);
-
+    /**
+     * Method used to set the player for the game
+     * @param player1 player one
+     * @param player2 player two
+     * @return a list of players
+     */
     private List<Player> setPlayers(Player player1, Player player2){
         ArrayList<Player> players = new ArrayList<>();
         players.add(player1);
         players.add(player2);
         return players;
     }
+    /**
+     * Method used to get steps of mother nature
+     * @param player player one or two
+     * @return the steps you can move mother nature by
+     * @throws ExceptionGame is something goes wrong
+     */
     public int getSteps(Player player) throws ExceptionGame{
         Wizard wizard = expertMatch.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
     }
-
+    /**
+     * Method used to set a test match
+     * @throws ExceptionGame if something goes wrong
+     */
     private void setATestMatch() throws ExceptionGame {
         expertMatch.setGame(setPlayers(player1, player2));
     }
+    /**
+     * Method used to print the game
+     */
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
         System.out.println("numbero of archipelagos " + expertMatch.getGame().getArchipelagos().size());
@@ -63,6 +83,9 @@ class BakerTest {
         System.out.println("END OF PRINT \n");
     }
 
+    /**
+     * Method that tests 10 times the match and Baker character card interaction
+     */
     @RepeatedTest(10)
     public void setTestMatch() {
         Assertions.assertDoesNotThrow(() -> {
@@ -160,6 +183,9 @@ class BakerTest {
         });
     }
 
+    /**
+     * Method that tests 10 times the match and Archer character card interaction in a 4 player match
+     */
     @RepeatedTest(10)
     public void match4player_Test(){
         BasicMatch match4players = factoryMatch.newMatch(4);
@@ -252,6 +278,12 @@ class BakerTest {
         });
 
     }
+    /**
+     * Method used to get steps of mother nature
+     * @param player player one or two
+     * @return the steps you can move mother nature by
+     * @throws ExceptionGame is something goes wrong
+     */
     public int getSteps(ExpertMatch expertMatch, Player player) throws ExceptionGame{
         Wizard wizard = expertMatch.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
