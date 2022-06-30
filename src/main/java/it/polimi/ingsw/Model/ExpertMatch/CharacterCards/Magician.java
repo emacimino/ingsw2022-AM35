@@ -37,7 +37,7 @@ public class Magician extends CharacterCard implements MotherNatureEffectCard, S
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveMotherNatureCard(this);
-        paymentOfTheCard();
+        paymentOfTheCard(match);
     }
 
     /**

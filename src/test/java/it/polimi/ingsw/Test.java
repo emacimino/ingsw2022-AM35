@@ -9,13 +9,6 @@ import org.junit.jupiter.api.Assertions;
 
 public class Test {
 
-    @org.junit.jupiter.api.Test
-    void TestInstanceInterface(){
-        BasicMatch match = new BasicMatch();
-        CharacterCard characterCard = new Princess(match,"Princess");
-        CharacterCard c2 = new Archer(match, "Archer");
-        Assertions.assertTrue(characterCard instanceof StudentEffectCard);
-        Assertions.assertFalse(c2 instanceof StudentEffectCard);
 
-    }
+
 }

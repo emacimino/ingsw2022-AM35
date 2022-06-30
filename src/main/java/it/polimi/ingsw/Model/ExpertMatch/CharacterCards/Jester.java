@@ -34,7 +34,7 @@ public class Jester extends CharacterCard implements StudentEffectCard , Seriali
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useJesterCard();
-        paymentOfTheCard();
+        paymentOfTheCard(match);
         resetCard();
     }
 

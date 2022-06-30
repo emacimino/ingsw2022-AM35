@@ -4,12 +4,15 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.Cli.Constants;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.Game;
+import it.polimi.ingsw.Model.FactoryMatch.Player;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsLands.Cloud;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
+import it.polimi.ingsw.NetworkUtilities.Message;
+import it.polimi.ingsw.NetworkUtilities.TeamMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import java.util.Map;
  */
 public class RemoteModel {
     private Game game;
+    private List<Player> teamOne = new ArrayList<>(), teamTwo = new ArrayList<>();
     private Map<String , AssistantsCards> assistantsCardsMap = new HashMap<>();
     private Map<Integer, Student> studentsOnEntranceMap = new HashMap<>();
     private Board currentBoard;
@@ -33,6 +37,17 @@ public class RemoteModel {
     private Integer archipelagoSelected;
     private List<Color> colorSelected = new ArrayList<>();
     private List<Integer> studentFromEntrance = new ArrayList<>();
+    private boolean enablePlayCharacter = true;
+
+    private Integer studentSelectedFromEntrance;
+
+    public void setStudentSelectedFromEntrance(Integer studentSelectedFromEntrance) {
+        this.studentSelectedFromEntrance = studentSelectedFromEntrance;
+    }
+
+    public Integer getStudentSelectedFromEntrance() {
+        return studentSelectedFromEntrance;
+    }
 
     /**
      * Set method for studentFromCard
@@ -55,7 +70,7 @@ public class RemoteModel {
      * @param student student from entrance
      */
     public void setStudentFromEntrance(Student student) {
-        Integer indexStud = getStudentIndex(student);
+        Integer indexStud = getStudentOnEntranceIndex(student);
         if(!studentFromEntrance.contains(indexStud)){
             studentFromEntrance.add(indexStud);
         }else
@@ -257,7 +272,7 @@ public class RemoteModel {
      * @param student student selected
      * @return the index of the student
      */
-    private Integer getStudentIndex(Student student){
+    public Integer getStudentOnEntranceIndex(Student student){
         Integer indexStud = null;
         for (Integer i : studentsOnEntranceMap.keySet()) {
             if (studentsOnEntranceMap.get(i).equals(student)) {
@@ -273,5 +288,26 @@ public class RemoteModel {
     public void clearSelection() {
         colorSelected.clear();
         studentFromEntrance.clear();
+    }
+
+    public void setTeams(TeamMessage message) {
+        teamOne.addAll(message.getTeamOne());
+        teamTwo.addAll(message.getTeamTwo());
+    }
+
+    public List<Player> getTeamOne() {
+        return teamOne;
+    }
+
+    public List<Player> getTeamTwo() {
+        return teamTwo;
+    }
+
+    public boolean isEnablePlayCharacter() {
+        return enablePlayCharacter;
+    }
+
+    public void setEnablePlayCharacter(boolean enablePlayCharacter) {
+        this.enablePlayCharacter = enablePlayCharacter;
     }
 }

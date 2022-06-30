@@ -23,8 +23,8 @@ public abstract class CharacterCard extends Observable implements Serializable {
     @Serial
     private final static long serialVersionUID = -998328383194066909L;
     protected int cost;
-    private String name;
-    private BasicMatch basicMatch;
+    private final String name;
+    private final BasicMatch basicMatch;
     private Wizard activeWizard;
     private Wizard passiveWizard;
     private Color colorEffected;
@@ -115,7 +115,7 @@ public abstract class CharacterCard extends Observable implements Serializable {
     }
 
     /**
-     * This method reduces the player's coins by the cost of the card and it checks if a wizard is using the card, if activeWizard has not been set, throws an Exception
+     * This method reduces the player's coins by the cost of the card, and it checks if a wizard is using the card, if activeWizard has not been set, throws an Exception
      * @param match the current match
      * @throws ExceptionGame if the active wizard is not set
      */
@@ -125,8 +125,9 @@ public abstract class CharacterCard extends Observable implements Serializable {
         }
     }
 
-    protected void paymentOfTheCard() throws ExceptionGame {
+    protected void paymentOfTheCard(ExpertMatch match) throws ExceptionGame {
         activeWizard.reduceCoins(getCost());
+        match.increaseBankCoin(cost);
         cost++;
         notifyObserver(new CurrentGameMessage(basicMatch.getGame()));
 

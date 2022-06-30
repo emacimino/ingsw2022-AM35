@@ -103,10 +103,13 @@ public class ArchipelagoEffectedSceneController extends GenericSceneController {
                     if (archipelago == archipelagoSelected) {
                         archipelagoSelected = null;
                         archipelagoSelectedLbl.setText("");
+                        remoteModel.setArchipelagoSelected(null);
                     } else {
                         archipelagoSelected = archipelago;
                         archipelagoSelectedLbl.setText("You have selected \n the " + getArchipelagoIndex(archipelago) + " archipelago");
+                        remoteModel.setArchipelagoSelected(getArchipelagoIndex(archipelago));
                     }
+
                 }
         );
         node.setDisable(false);
@@ -130,9 +133,8 @@ public class ArchipelagoEffectedSceneController extends GenericSceneController {
 
     /**
      * This method is used to select an archipelago
-     * @param event user input
      */
-    public void selectArchipelago(ActionEvent event){
+    public void selectArchipelago(){
         remoteModel.setArchipelagoSelected(getArchipelagoIndex(archipelagoSelected));
         nextMove();
     }
@@ -141,10 +143,13 @@ public class ArchipelagoEffectedSceneController extends GenericSceneController {
      * This method is used to get the next move when Friar, Messenger or Herbalist cards are played
      */
     private void nextMove() {
+        System.out.println("in arcSelecCard "+remoteModel.getArchipelagoSelected());
+        SceneController.setActionScene(getObservers());
         switch (characterCard.getName()) {
             case "Friar" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), remoteModel.getArchipelagoSelected(), null, remoteModel.getStudentSelected(), null));
             case "Messenger", "Herbalist" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), remoteModel.getArchipelagoSelected(), null, null, null));
         }
+        remoteModel.setArchipelagoSelected(null);
     }
 
     /**
@@ -160,9 +165,9 @@ public class ArchipelagoEffectedSceneController extends GenericSceneController {
 
     /**
      * This method is used to open the board on screen
-     * @param event user input
      */
-    public void goToBoards(ActionEvent event) {
+
+    public void goToBoards() {
         SceneController.showWizardsBoards(getObservers());
 
     }

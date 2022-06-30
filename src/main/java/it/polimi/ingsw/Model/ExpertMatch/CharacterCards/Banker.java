@@ -37,7 +37,7 @@ public class Banker extends CharacterCard implements StudentEffectCard, Serializ
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         useBankerCard();
-        paymentOfTheCard();
+        paymentOfTheCard(match);
         resetCard();
     }
 

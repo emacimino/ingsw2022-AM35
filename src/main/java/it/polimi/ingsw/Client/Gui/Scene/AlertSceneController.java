@@ -17,11 +17,11 @@ public class AlertSceneController {
     private final Stage stage;
 
     @FXML
-    private Label titleLbl;
+    public Label titleLbl;
     @FXML
-    private Label messageLbl;
+    public Label messageLbl;
     @FXML
-    private Button okBtn;
+    public Button okBtn;
 
     /**
      * Constructor of the class

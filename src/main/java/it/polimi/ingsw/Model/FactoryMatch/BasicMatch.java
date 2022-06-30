@@ -99,7 +99,7 @@ public class BasicMatch extends Observable implements Serializable {
         wizard.playAssistantsCard(assistantsCard, game.getAssistantsCardsPlayedInRound());
         setPlayerInActionPhase(player, assistantsCard);
         notifyObserver(new CurrentGameMessage(game));
-     //   notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
+        notifyObserver(new GenericMessage("Player " + player +" has played "+ assistantsCard));
     }
 
     /**
@@ -123,6 +123,7 @@ public class BasicMatch extends Observable implements Serializable {
                     }
 
                 }
+                break;
             }
         }
         actionPhaseOrderOfPlayers.add(position, player);
@@ -183,10 +184,11 @@ public class BasicMatch extends Observable implements Serializable {
         } catch (ExceptionGame e) {
             e.printStackTrace();
         } finally {
-            checkVictory(player);
-
+            if(!checkVictory(player))
+                notifyObserver(new CurrentGameMessage(game));
         }
-        notifyObserver(new CurrentGameMessage(game));
+
+
     }
 
     /**
@@ -227,7 +229,15 @@ public class BasicMatch extends Observable implements Serializable {
      * @param archipelago is the archipelago where Mother Nature was placed
      */
     public void lookUpArchipelago(Archipelago archipelago) {
+
         game.takeCareOfTheMerge(archipelago);
+
+        int actualIsle = game.getArchipelagos().indexOf(archipelago);
+        try {
+            getGame().getMotherNature().setPosition(actualIsle);
+        } catch (ExceptionGame e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -250,7 +260,7 @@ public class BasicMatch extends Observable implements Serializable {
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
      */
-    public void checkVictory(Player player) throws ExceptionGame{
+    public boolean checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
         List<Wizard> w = getGame().getWizardsWithLeastTowers();
         List<Wizard>  winner = new ArrayList<>();
@@ -291,7 +301,7 @@ public class BasicMatch extends Observable implements Serializable {
             }).toList();
             notifyObserver(new EndMatchMessage(winnerPlayers));
         }
-
+        return endOfTheMatch;
     }
 
     /**

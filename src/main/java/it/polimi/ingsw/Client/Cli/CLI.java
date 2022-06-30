@@ -27,9 +27,7 @@ public class CLI  extends Observable implements UserView {
     private final CLIHandler cliHandler = new CLIHandler(this);
     protected Scanner scanner;
     private RemoteModel remoteModel;
-    // protected ObjectOutputStream outputStream;
     private boolean active = true;
-    // protected ObjectInputStream socketIn;
     protected TurnPhase turnPhase = TurnPhase.LOGIN;
 
 
@@ -42,8 +40,8 @@ public class CLI  extends Observable implements UserView {
             try {
                 scanner = new Scanner(System.in);
                 while (isActive()) {
-                    String inputLine = scanner.nextLine(); //Scan input from command line
-                    Message message = cliHandler.convertInputToMessage(inputLine, turnPhase); //Create message from input
+                    String inputLine = scanner.nextLine();
+                    Message message = cliHandler.convertInputToMessage(inputLine, turnPhase);
                     if (message != null) {
                         notifyObserver(message);
                     }
@@ -57,33 +55,7 @@ public class CLI  extends Observable implements UserView {
         return thread;
     }
 
-    /**
-     * Receive an input from server and elaborate it
-     * //  * @param inputObject object from server
-     *
-     * @return a thread that handle everything
-     */
- /*   public Thread asyncReadFromSocket(final ObjectInputStream inputObject){
-        Thread thread = new Thread(() -> {
-            try{
-                while (isActive()){
-                    Message inputFromServer = (Message) inputObject.readObject(); //read and cast the input from server
-                    setNextAction(inputFromServer);
-                    cliHandler.showMessage(inputFromServer); //manage to show to the user what is need to be shown
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                setActive(false);
-            }
-        });
-        thread.start();
-        return  thread;
-    }/*
 
-    /**
-     * Check if the connection exist
-     * @return if is active
-     */
     public synchronized boolean isActive() {
         return active;
     }
@@ -118,15 +90,8 @@ public class CLI  extends Observable implements UserView {
 
             notifyObserver(new ServerInfoMessage(ip, port));
 
-          /*  System.out.println("Connection Established");
-            socketIn = new ObjectInputStream(socketClient.getInputStream());
-            outputStream = new ObjectOutputStream(socketClient.getOutputStream());
-            Thread t0 = asyncReadFromSocket(socketIn);*/
             Thread t1 = readFromInput();
-            // Thread t2 = ping();
-            // t0.join();
             t1.join();
-            //  t2.join();*/
 
         } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
@@ -134,40 +99,7 @@ public class CLI  extends Observable implements UserView {
     }
 
 
-    /**
-     * Send to server a message
-     * @param message message to be sent
-     */
-   /* protected synchronized void sendToServer(Message message) {
-        try{
-            outputStream.reset();
-            outputStream.writeObject(message);
-            outputStream.flush();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }*/
 
-    /**
-     * thread that handle the ping function
-     * @return a thread
-     */
-  /*  public Thread ping(){
-        Ping ping = new Ping();
-        return new Thread(() -> {
-            try{
-                while(isActive()){
-                    long start = System.currentTimeMillis();
-                    long end = start + 2 * 1000;
-                    if (System.currentTimeMillis() > end) {
-                        sendToServer(ping);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
 
     /**
      * getter of remoteModel
@@ -178,7 +110,6 @@ public class CLI  extends Observable implements UserView {
         return remoteModel;
     }
 
-    //code to be changed in order to be more readable and usable within cli and gui
 
     /**
      * ask view to log in
@@ -254,7 +185,10 @@ public class CLI  extends Observable implements UserView {
             cliHandler.showGenericMessage("congratulation! You Won!");
         else
             cliHandler.showGenericMessage("I'm Sorry you have lose");
+        System.out.println("write any letter to esc");
+        String input = new Scanner(System.in).nextLine();
         System.exit(0);
+
 
     }
 
@@ -299,6 +233,13 @@ public class CLI  extends Observable implements UserView {
         turnPhase = TurnPhase.PLAY_CHARACTER_CARD;
         cliHandler.showInfoChosenCharacterCard();
     }
+
+    @Override
+    public void showDisconnection() {
+        cliHandler.showGenericMessage("Disconnection of the server or a player");
+        System.exit(0);
+    }
+
 
 
 }

@@ -23,6 +23,5 @@ public abstract class Client extends Observable {
      */
     public abstract void disconnect();
 
-    public abstract void enablePingPong(boolean enabled);
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
@@ -55,10 +56,13 @@
                                     <Font name="Apple Chancery" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="playCharacterBtn" mnemonicParsing="false" onAction="#goToScenePlayCharacter" prefHeight="76.0" prefWidth="170.0" text="Play Character">
+                              <Button fx:id="playCharacterBtn" disable="true" mnemonicParsing="false" onAction="#goToScenePlayCharacter" prefHeight="76.0" prefWidth="170.0" text="Play Character" visible="false">
                                  <font>
                                     <Font name="Apple Chancery" size="13.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                            </children>
                         </VBox>

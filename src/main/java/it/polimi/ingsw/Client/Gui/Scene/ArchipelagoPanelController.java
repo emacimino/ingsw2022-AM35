@@ -3,29 +3,33 @@ package it.polimi.ingsw.Client.Gui.Scene;
 import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
 import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class used to control the archipelagos on the GUI
  */
 public class ArchipelagoPanelController {
     @FXML
-    private Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
+    public Circle blueStudent, greenStudent, pinkStudent, redStudent, yellowStudent;
     @FXML
-    private Polygon motherNature;
+    public Polygon motherNature;
     @FXML
-    private ImageView whiteTower, greyTower, blackTower;
+    public ImageView whiteTower, greyTower, blackTower;
     @FXML
-    private ImageView prohibitionCard;
+    public ImageView prohibitionCard;
 
     @FXML
-    private Label numBlueStudents, numPinkStudents, numGreenStudents, numRedStudents, numYellowStudents;
+    public Label numBlueStudents, numPinkStudents, numGreenStudents, numRedStudents, numYellowStudents;
 
     @FXML
-    private Label numOfTowers;
+    public Label numOfTowers;
 
 
     /**
@@ -33,6 +37,7 @@ public class ArchipelagoPanelController {
      * @param archipelago the archipelago that needs to be set
      */
     public void setArchipelago(Archipelago archipelago) {
+            resetArchipelago();
         {
             int numberOfStudentBlue = archipelago.getStudentFromArchipelago().stream()
                     .filter(s -> s.getColor().equals(Color.BLUE))
@@ -93,17 +98,44 @@ public class ArchipelagoPanelController {
                         whiteTower.setVisible(true);
                         whiteTower.setDisable(false);
                     }
-                    default -> System.out.println("COLOR OF TOWER NOT CORRECT, in archipelagopanelcontroller");
+                    default -> System.out.println("COLOR OF TOWER NOT CORRECT, in archipelagoPanelController");
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+
         if(archipelago.isMotherNaturePresence()){
             motherNature.setVisible(true);
         }
+
         if(archipelago.isProhibition())
             prohibitionCard.setVisible(true);
+    }
+
+    private void resetArchipelago() {
+        pinkStudent.setVisible(false);
+        numPinkStudents.setVisible(false);
+
+        redStudent.setVisible(false);
+        numRedStudents.setVisible(false);
+
+        greenStudent.setVisible(false);
+        numGreenStudents.setVisible(false);
+
+        yellowStudent.setVisible(false);
+        numYellowStudents.setVisible(false);
+
+        blueStudent.setVisible(false);
+        numBlueStudents.setVisible(false);
+
+        greyTower.setVisible(false);
+        whiteTower.setVisible(false);
+        blackTower.setVisible(false);
+        numOfTowers.setVisible(false);
+
+        motherNature.setVisible(false);
+        prohibitionCard.setVisible(false);
     }
 
 }

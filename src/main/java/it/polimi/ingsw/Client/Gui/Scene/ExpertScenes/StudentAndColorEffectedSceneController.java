@@ -6,7 +6,6 @@ import it.polimi.ingsw.Client.Gui.Scene.SceneController;
 import it.polimi.ingsw.Client.RemoteModel;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
-import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.PlayCharacterMessage;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,14 +26,12 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
     private StackPane boardStack;
     private Map<Integer, Student> studentMap = new HashMap<>();
     private BoardPanelController boardPanelController;
-    private Boolean ok = false;
     private CharacterCard characterCard;
 
     /**
      * This method is used to set the board
-     * @param board the player's board
      */
-    public void setBoard(Board board) {
+    public void setBoard() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SceneController.class.getResource("/fxml/singleBoard.fxml"));
         Node node = null;
@@ -45,10 +42,8 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
         }
         boardPanelController = loader.getController();
         boardPanelController.setRemoteModel(remoteModel);
-        boardPanelController.setBoard(board, "My");
+        boardPanelController.setCurrentBoard();
         boardStack.getChildren().add(node);
-        ok = true;
-
     }
 
     /**
@@ -56,9 +51,8 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
      * @param studentsMovable a map of students
      */
     public void loadStudentsMovable(Map<Integer, Student> studentsMovable) {
-        while(!ok){}
         studentMap = studentsMovable;
-        boardPanelController.setMovableStudentOnEntrance(studentMap);
+        boardPanelController.setMovableStudentOnEntrance(studentMap.values().stream().toList());
     }
 
 
@@ -80,12 +74,10 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
      * This method is used to go on to the next move
      */
     private void nextMove() {
-        System.out.println("in student effect scene: in remote stud from entrance" + remoteModel.getStudentFromEntrance());
-        System.out.println("color of student " );
         for(Integer i : remoteModel.getStudentFromEntrance()){
             System.out.println(remoteModel.getStudentsOnEntranceMap().get(i));
         }
-        System.out.println("in student effect scene: in remote color" + remoteModel.getColorSelected());
+        SceneController.setActionScene(getObservers());
         switch (characterCard.getName()) {
             case "Banker", "Chef" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, null, null, remoteModel.getColorSelected()));
             case "Minstrel" -> notifyObserver(new PlayCharacterMessage(characterCard.getName(), 13, remoteModel.getStudentFromEntrance(), null, remoteModel.getColorSelected()));
@@ -109,7 +101,7 @@ public class StudentAndColorEffectedSceneController extends GenericSceneControll
     @Override
     public void setRemoteModel(RemoteModel remoteModel) {
         this.remoteModel = remoteModel;
-        setBoard(remoteModel.getCurrentBoard());
+        setBoard();
         loadStudentsMovable(remoteModel.getStudentsOnEntranceMap());
         enableExpert();
         characterCard = remoteModel.getCharacterCardMap().get(remoteModel.getActiveCharacterCard());

@@ -38,7 +38,7 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
     public void useCard(ExpertMatch match) throws ExceptionGame {
         super.useCard(match);
         match.setActiveInfluenceCard(this);
-        paymentOfTheCard();
+        paymentOfTheCard(match);
 
     }
 

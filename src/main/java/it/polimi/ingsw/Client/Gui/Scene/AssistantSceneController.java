@@ -23,11 +23,11 @@ public class AssistantSceneController extends GenericSceneController {
     private AssistantsCards assistantsCardSelected;
 
     @FXML
-    private Label assLbl;
+    public Label assLbl;
     @FXML
-    private HBox oneToFive;
+    public HBox oneToFive;
     @FXML
-    private HBox sixToTen;
+    public HBox sixToTen;
 
     /**
      * Method used to set the assistant cards

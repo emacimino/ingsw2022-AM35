@@ -4,6 +4,8 @@ package it.polimi.ingsw.NetworkUtilities;
  * Enumeration of the types of messages exchanged
  */
 public enum TypeMessage {
+
+    TEAM_MESSAGE,
     PING,
     PONG,
     SERVER_INFO,

@@ -300,7 +300,6 @@ public class Game implements Serializable {
      */
     public void takeCareOfTheMerge(Archipelago archipelago){
         int actualIsle = archipelagos.indexOf(archipelago);
-
         try {
             Wizard wizardActualIsle = archipelago.getIsle().get(0).getTower().getProperty();
 
@@ -311,8 +310,9 @@ public class Game implements Serializable {
                     archipelago.mergeArchipelago(archipelagos.get(previousIsle));
                     archipelagos.remove(archipelagos.get(previousIsle));
 
-                    actualIsle = archipelagos.indexOf(archipelago);
+                  /*  actualIsle = archipelagos.indexOf(archipelago);
                     motherNature.setPosition(actualIsle);
+                    archipelago.setMotherNaturePresence(true);*/
                 }
 
             } catch (ExceptionGame e1) {
@@ -320,14 +320,15 @@ public class Game implements Serializable {
             }
 
             try {
+                actualIsle = archipelagos.indexOf(archipelago);
                 int nextIsle = ((archipelagos.size() + actualIsle) + 1)%archipelagos.size();
                 Wizard wizardNextIsle = archipelagos.get(nextIsle).getIsle().get(0).getTower().getProperty();
                 if (wizardActualIsle.equals(wizardNextIsle)) {
                     archipelago.mergeArchipelago(archipelagos.get(nextIsle));
                     archipelagos.remove(archipelagos.get(nextIsle));
 
-                    actualIsle = archipelagos.indexOf(archipelago);
-                    motherNature.setPosition(actualIsle);
+                   /* actualIsle = archipelagos.indexOf(archipelago);
+                    motherNature.setPosition(actualIsle);*/
                 }
             } catch (ExceptionGame e2) {
                 System.out.println(e2.getMessage());
@@ -335,6 +336,7 @@ public class Game implements Serializable {
         }catch(ExceptionGame e0){
             System.out.println(e0.getMessage());
         }
+
     }
 
     /**

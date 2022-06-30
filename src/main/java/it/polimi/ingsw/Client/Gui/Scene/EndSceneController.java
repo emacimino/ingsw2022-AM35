@@ -16,16 +16,15 @@ import java.util.Optional;
  */
 public class EndSceneController extends GenericSceneController{
     @FXML
-    Button quitBtn, restartBtn;
+    public Button quitBtn, restartBtn;
     @FXML
-    Label messageLbl;
+    public Label messageLbl;
     private List<String> winners;
 
     /**
      * This method is used to leave a game and close the GUI
-     * @param event a user input
      */
-    public void quit(ActionEvent event){
+    public void quit(){
         System.exit(0);
     }
 
@@ -46,7 +45,7 @@ public class EndSceneController extends GenericSceneController{
      */
     public void setWinMessage(List<String> winners){
         this.winners = winners;
-        messageLbl.setText("Congratulations " + winners.stream().reduce((s,t) -> s + ", " + t) +" \n! You have won!");
+        messageLbl.setText("Congratulations " + winners +" \n! You have won!");
     }
 
     /**
@@ -55,6 +54,6 @@ public class EndSceneController extends GenericSceneController{
      */
     public void setLoseMessage(List<String> winners){
         this.winners = winners;
-        messageLbl.setText("You have lose to "+ winners.stream().reduce((s,t) -> s + ", " + t) +" ! \n Don't worry the important thing is to participate !");
+        messageLbl.setText("You have lose to "+ winners+" ! \n Don't worry the important thing is to participate !");
     }
 }

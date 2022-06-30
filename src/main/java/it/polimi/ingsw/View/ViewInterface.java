@@ -11,12 +11,6 @@ import it.polimi.ingsw.Server.ClientConnection;
  */
 public abstract class ViewInterface extends Observable implements Observer{
     /**
-     * Used to move mother Nature
-     * @param archipelago archipelago chosen
-     */
-    public abstract void moveMotherNature(Integer archipelago);
-
-    /**
      * Update after an event
      * @param message message with the event
      */
@@ -28,5 +22,4 @@ public abstract class ViewInterface extends Observable implements Observer{
      * @param message message to be sent
      */
     public abstract void sendMessage(Message message);
-
 }

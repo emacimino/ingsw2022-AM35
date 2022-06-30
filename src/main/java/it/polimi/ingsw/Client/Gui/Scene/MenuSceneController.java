@@ -11,9 +11,9 @@ import javafx.scene.input.MouseEvent;
 public class MenuSceneController extends GenericSceneController{
 
     @FXML
-    Button playBtn;
+    public Button playBtn;
     @FXML
-    Button exitBtn;
+    public Button exitBtn;
 
     /**
      * This method initializes the menu

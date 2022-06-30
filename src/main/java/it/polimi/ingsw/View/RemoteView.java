@@ -2,29 +2,19 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.GameState;
 import it.polimi.ingsw.NetworkUtilities.*;
+import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnection;
+import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 
-/**
- * Implements the main methods to communicate with the user interfaces
- */
 public class RemoteView extends ViewInterface   {
 
     private final SocketClientConnection clientConnection;
-
     /**
      * Constructor of the class
      * @param clientConnection is the client associated to the view
      */
     public RemoteView(SocketClientConnection clientConnection) {
         this.clientConnection = clientConnection;
-    }
-
-    /**
-     * Move Mother Nature message sent to the view
-     * @param archipelago chosen archipelago
-     */
-    public void moveMotherNature(Integer archipelago) {
-        clientConnection.sendMessage(new MoveMotherNatureMessage(archipelago));
     }
 
     /**

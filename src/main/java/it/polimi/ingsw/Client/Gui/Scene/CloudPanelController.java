@@ -16,13 +16,17 @@ public class CloudPanelController {
 
     private List<Circle> circles = new ArrayList<>();
     @FXML
-    private Circle s1,s2,s3,s4;
+    public Circle s1,s2,s3,s4;
 
     /**
      * Set method for clouds
      * @param cloud the cloud to be set
      */
     public void setCloud(Cloud cloud) {
+        s1.setVisible(false);
+        s2.setVisible(false);
+        s3.setVisible(false);
+        s4.setVisible(false);
         circles.add(0,s1);
         circles.add(1,s2);
         circles.add(2,s3);

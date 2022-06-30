@@ -2,11 +2,22 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: GREEN;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.MenuSceneController">
-   <children>
-      <Button fx:id="playBtn" layoutX="250.0" layoutY="162.0" mnemonicParsing="false" onAction="#goToServerInfo" prefHeight="50.0" prefWidth="101.0" text="PLAY" />
-      <Button fx:id="exitBtn" layoutX="279.0" layoutY="264.0" mnemonicParsing="false" onAction="#initialize" text="EXIT" />
-   </children>
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: pink;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.Gui.Scene.MenuSceneController">
+   <Button fx:id="playBtn" layoutX="654.0" layoutY="402.0" mnemonicParsing="false" onAction="#goToServerInfo" prefHeight="61.0" prefWidth="157.0" text="PLAY">
+      <font>
+         <Font size="24.0" />
+      </font></Button>
+   <Button fx:id="exitBtn" layoutX="650.0" layoutY="551.0" mnemonicParsing="false" onAction="#initialize" prefHeight="60.0" prefWidth="167.0" text="EXIT">
+      <font>
+         <Font size="24.0" />
+      </font></Button>
+   <Text layoutX="645.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME!" wrappingWidth="225.84918212890625">
+      <font>
+         <Font size="36.0" />
+      </font>
+   </Text>
+   <Text layoutX="615.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I promise... the graphic is better when you will play" />
 </AnchorPane>

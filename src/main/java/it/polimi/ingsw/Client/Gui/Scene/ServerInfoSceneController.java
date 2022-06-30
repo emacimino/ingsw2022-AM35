@@ -17,14 +17,14 @@ import java.util.ResourceBundle;
  */
 public class ServerInfoSceneController extends GenericSceneController implements Initializable {
 
-    @FXML //this annotation porterà tutti i valori del file fxml che ha menuSceneController
-    private Button playBtn;
     @FXML
-    private Button quitBtn;
+    public Button playBtn;
     @FXML
-    private TextField ipAddressField;
+    public Button quitBtn;
     @FXML
-    private TextField portField;
+    public TextField ipAddressField;
+    @FXML
+    public TextField portField;
 
     /**
      * Method used to initialize the quit button
@@ -41,15 +41,12 @@ public class ServerInfoSceneController extends GenericSceneController implements
     public void switchToLoginScene(Event event){
         String ipAddress = ipAddressField.getText();
         String port = portField.getText();
-        //devo settare il server
         boolean isValidIpAddress = ClientController.isValidIpAddress(ipAddress);
         boolean isValidPort = ClientController.isValidPort(port);
 
         if (isValidIpAddress && isValidPort) {
             notifyObserver(new ServerInfoMessage(ipAddress, port));
         }
-       //  questa istruzione dovrebbe farla clientController in caso le info sono corrette
-       // SceneController.changeRootPane(getObservers(), event, "login.fxml");
     }
 
     /**
