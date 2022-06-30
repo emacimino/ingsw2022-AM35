@@ -134,7 +134,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
             login();
             while(isActive()){
                 newMessage = (Message) inputStream.readObject();
-                if(!(newMessage instanceof Ping) &&  !( newMessage instanceof NewMatchMessage)) {
+                if( !( newMessage instanceof NewMatchMessage)) {
                     System.out.println("in socketClientController, socket received : " + newMessage);
                     controller.onMessageReceived(newMessage);
                 }else if(newMessage instanceof NewMatchMessage){
@@ -190,37 +190,6 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         server.lobby(this);
     }
 
-    /**
-     * Method that handles the pong
-     * @param receivedMessage ping message
-     */
-    public void Pong(Message receivedMessage){
-        Pong pong = new Pong();
-        if(receivedMessage.getType().equals(TypeMessage.PING)){
-            System.out.print("Pong");
-        }
-    }
-
-    /**
-     * Timer for ping - pong
-     * @param receivedMessage pong message
-     * @return a thread that handle ping pong
-     */
-    public Runnable timer(Message receivedMessage) {
-        return new Thread(() -> {
-            while (isActive()) {
-                long start = System.currentTimeMillis();
-                long end = start + 10 * 1000;
-                while (System.currentTimeMillis() < end) {
-                    Pong(receivedMessage);
-                }
-                if (System.currentTimeMillis() > end) {
-                   // server.EndGameDisconnected();
-                }
-            }
-
-    });
-    }
 
     /**
      * Setter for the match controller

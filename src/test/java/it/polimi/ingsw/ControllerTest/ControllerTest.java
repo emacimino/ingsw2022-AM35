@@ -219,7 +219,7 @@ public class ControllerTest {
         Assertions.assertFalse(expertMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(100)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);

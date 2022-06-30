@@ -79,13 +79,6 @@ public class Server {
         }
 
 
-  /*  public void EndGameDisconnected(){
-        for (Integer i=0; i<waitingPlayersInLobby.size();i++) {
-            waitingPlayersInLobby.get(i).asyncSendMessage(new EndOfGameMessage());
-            waitingPlayersInLobby.get(i).closeConnection();
-        }
-    }*/
-
     /**
      * Support method for lobby, useful to create a match if we have enough players
      * @param newClientConnection Client connection just connected
