@@ -15,7 +15,7 @@ import java.util.Collection;
 public class CloudTest {
 
     /**
-     * This methodTest tests the setStudentOnCloud method
+     * This methodTest tests the setStudentOnCloud method and fails if the there are more than students than allowed on a cloud, and it doesn't launch an exception
      * @param numOfStudentOnCLoud is the number of student allowed on the cloud
      */
     @ParameterizedTest
@@ -32,7 +32,7 @@ public class CloudTest {
     }
 
     /**
-     * This methodTest tests the removeStudentFromCloud method
+     * This methodTest tests the removeStudentFromCloud method and fails if there are more than 0 students on a cloud after removal
      * @param numOfStudentOnCLoud is the number of student allowed on the cloud
      */
     @ParameterizedTest

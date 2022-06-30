@@ -39,7 +39,7 @@ public class StudentBagTest {
     }
 
     /**
-     * This methodTest tests the drawStudent method
+     * This methodTest tests the drawStudent method fails is there are too may students inside the game or if the student drawn is still contained inside the bag
      */
     @Test
    public void drawStudentTest(){
