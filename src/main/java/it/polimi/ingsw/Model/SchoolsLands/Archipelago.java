@@ -114,6 +114,10 @@ public class Archipelago implements Serializable {
         isle.get(0).getStudentInIsland().add(student);
     }
 
+    /**
+     * Getter for student from archipelago
+      * @return student from archipelago
+     */
     public Collection<Student> getStudentFromArchipelago(){
         Collection<Student> students = new ArrayList<>();
         for(Island isle : isle){
@@ -122,6 +126,11 @@ public class Archipelago implements Serializable {
         return students;
     }
 
+    /**
+     * Place a tower if the wizard can place it
+     * @param wizard activeWizard
+     * @throws ExceptionGame if the tower can't be placed for some reason beyond the rules of the game
+     */
     public void placeWizardsTower(Wizard wizard) throws ExceptionGame{
         for(Island island: isle){
             Optional<Tower> t = wizard.getBoard().getTowersInBoard().stream().reduce((first, second) -> first);
@@ -133,10 +142,18 @@ public class Archipelago implements Serializable {
 
     }
 
+    /**
+     * Check if the card has prohibition on it
+     * @return prohibition attribute
+     */
     public boolean isProhibition() {
         return prohibition;
     }
 
+    /**
+     * Set prohibition on card
+     * @param prohibition
+     */
     public void setProhibition(boolean prohibition) {
         this.prohibition = prohibition;
     }

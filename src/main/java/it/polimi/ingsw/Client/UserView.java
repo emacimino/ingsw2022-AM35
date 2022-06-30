@@ -1,15 +1,12 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.RemoteModel;
-import it.polimi.ingsw.Model.FactoryMatch.Game;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.*;
+import it.polimi.ingsw.NetworkUtilities.CharacterCardInGameMessage;
+import it.polimi.ingsw.NetworkUtilities.CloudInGame;
+import it.polimi.ingsw.NetworkUtilities.CurrentGameMessage;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface that implements the method used to communicate through the view

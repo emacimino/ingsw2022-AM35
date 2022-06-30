@@ -1,22 +1,14 @@
 package it.polimi.ingsw.Client.Cli;
 
 import it.polimi.ingsw.Client.ClientController;
-import it.polimi.ingsw.Client.UserView;
 import it.polimi.ingsw.Client.RemoteModel;
+import it.polimi.ingsw.Client.UserView;
 import it.polimi.ingsw.Controller.TurnPhase;
-import it.polimi.ingsw.Model.SchoolsLands.Archipelago;
-import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
-import it.polimi.ingsw.Model.Wizard.Board;
 import it.polimi.ingsw.NetworkUtilities.*;
 import it.polimi.ingsw.Observer.Observable;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 

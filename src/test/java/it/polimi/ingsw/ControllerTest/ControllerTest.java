@@ -82,7 +82,7 @@ public class ControllerTest {
      */
     private void setControllerInTestExpert(){
 
-        setListsOfPlayers(); //aggiunge al set di stringhe gli username dei players
+        setListsOfPlayers(); //adding players username
         Assertions.assertDoesNotThrow(()->{
 
             view1 = new RemoteView(this.clientConnection1);
@@ -106,7 +106,7 @@ public class ControllerTest {
      * Method used to set the controller for the tests in a 4 player match
      */
     private void setControllerInTest4players(){
-        setListsOfPlayers4(); //aggiunge al set di stringhe gli username dei players
+        setListsOfPlayers4(); //adding players usernames
         Assertions.assertDoesNotThrow(()->{
             view1 = new RemoteView(this.clientConnection1);
             view2 = new RemoteView(this.clientConnection2);
@@ -179,6 +179,7 @@ public class ControllerTest {
         Assertions.assertTrue(controllerBasicMatch2Players.getMatch().getPlayers().stream().map(Player::getUsername).toList().containsAll(usernameBasicMatch2Players));
         Assertions.assertEquals(GameState.PLANNING_PHASE, controllerBasicMatch2Players.getGameState());
         Assertions.assertNotNull(controllerBasicMatch2Players.getMatch().getGame());
+        Assertions.assertNotNull(controllerBasicMatch2Players.getTurnController().getMessageHandler());
     }
 
     /**
@@ -197,7 +198,7 @@ public class ControllerTest {
      * Method that tests how the controllers handles messages sent to it
      */
     @RepeatedTest(12)
-    void onMessageReceived_Test() {
+    void onMessageReceived_Test() throws ExceptionGame {
         setControllerInTest();
         controllerBasicMatch2Players.setMatchOnGoing(false);
         controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
@@ -211,6 +212,7 @@ public class ControllerTest {
         controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
         Assertions.assertThrows(Exception.class, () -> controllerBasicMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
         Assertions.assertFalse(basicMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
+        controllerBasicMatch2Players.setGameState(GameState.GAME_ENDED);
 
     }
 
@@ -238,6 +240,7 @@ public class ControllerTest {
         //Assertions.assertThrows(ExceptionGame.class, () -> controllerExpertMatch2Players.onMessageReceived()));
         String card1 = expertMatch2Players.getCharactersForThisGame().keySet().stream().toList().get(0);
         Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage(expertMatch2Players.getCharactersForThisGame().get(card1).getName())));
+
     }
 
     /**
@@ -258,7 +261,7 @@ public class ControllerTest {
     /**
      * Method that tests how the controllers handles the character cards played in the game
      */
-    @RepeatedTest(1000)
+    @RepeatedTest(3000)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
@@ -328,9 +331,9 @@ public class ControllerTest {
                 int i = expertMatch2Players.getPositionOfMotherNature();
                 Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveMotherNatureMessage(((i+5) % expertMatch2Players.getGame().getArchipelagos().size()))));
                 int j;
-                if(i+5 >= 12) j=(i+5)%expertMatch2Players.getGame().getArchipelagos().size() - 1;
+                if(i+5 >= 12) j=((i+5)%expertMatch2Players.getGame().getArchipelagos().size() - 1);
                 else j=i+4;
-              //  Assertions.assertEquals(j, expertMatch2Players.getPositionOfMotherNature());
+                Assertions.assertEquals(j, expertMatch2Players.getPositionOfMotherNature());
             }
 
             case "Chef" ->{

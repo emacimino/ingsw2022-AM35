@@ -17,7 +17,7 @@ during the development
 
 ### Coverage 
 
-- [Here](//to be added) can be found all the tests with their respective coverage
+- [Here](Deliveries/Test coverage report) can be found all the tests with their respective coverage
 
 #### Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
@@ -29,7 +29,7 @@ during the development
 
 ### Javadoc
 
-- [Here](//to be added) can be found all the documentation about most of the project,
+- [Here](Deliveries/Javadoc) can be found all the documentation about most of the project,
 includes classes and methods used
 
 ### Plugins and libraries

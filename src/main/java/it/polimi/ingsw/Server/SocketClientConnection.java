@@ -31,7 +31,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
      * Constructor of the class
      * @param socket a new one for each new client
      * @param server the server where the client is connected
-     * @throws IOException if the object in iput or in output could not be created
+     * @throws IOException if the object in input or in output could not be created
      */
     public SocketClientConnection(Socket socket, Server server) throws IOException{
         this.socket = socket;
@@ -190,37 +190,8 @@ public class SocketClientConnection implements Runnable, ClientConnection {
         server.lobby(this);
     }
 
-    /**
-     * Method that handles the pong
-     * @param receivedMessage ping message
-     */
-    public void Pong(Message receivedMessage){
-        Pong pong = new Pong();
-        if(receivedMessage.getType().equals(TypeMessage.PING)){
-            System.out.print("Pong");
-        }
-    }
 
-    /**
-     * Timer for ping - pong
-     * @param receivedMessage pong message
-     * @return a thread that handle ping pong
-     */
-    public Runnable timer(Message receivedMessage) {
-        return new Thread(() -> {
-            while (isActive()) {
-                long start = System.currentTimeMillis();
-                long end = start + 10 * 1000;
-                while (System.currentTimeMillis() < end) {
-                    Pong(receivedMessage);
-                }
-                if (System.currentTimeMillis() > end) {
-                   // server.EndGameDisconnected();
-                }
-            }
 
-    });
-    }
 
     /**
      * Setter for the match controller
