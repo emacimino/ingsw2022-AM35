@@ -21,7 +21,7 @@ during the development
 #### Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
 |----------------|----------------|-----------------|---------------|
-| __Model__      | 93 %           | 90 %            | 90 %          |
+| __Model__      | 100 %          | 91 %            | 90 %          |
 | __Controller__ | 100 %          | 96 %            | 72 %          |
 
 
