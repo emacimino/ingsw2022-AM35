@@ -290,23 +290,43 @@ public class RemoteModel {
         studentFromEntrance.clear();
     }
 
+    /**
+     * Method used to set teams
+     * @param message a message containing the players in the teams
+     */
     public void setTeams(TeamMessage message) {
         teamOne.addAll(message.getTeamOne());
         teamTwo.addAll(message.getTeamTwo());
     }
 
+    /**
+     * Method that returns a list of players in team one
+     * @return a list of players
+     */
     public List<Player> getTeamOne() {
         return teamOne;
     }
 
+    /**
+     * Method that returns a list of players in team two
+     * @return a list of players
+     */
     public List<Player> getTeamTwo() {
         return teamTwo;
     }
 
+    /**
+     * Method that returns true if a character card is playable
+     * @return a boolean
+     */
     public boolean isEnablePlayCharacter() {
         return enablePlayCharacter;
     }
 
+    /**
+     * Method used to set whereas character cards are playable or not
+     * @param enablePlayCharacter a boolean
+     */
     public void setEnablePlayCharacter(boolean enablePlayCharacter) {
         this.enablePlayCharacter = enablePlayCharacter;
     }

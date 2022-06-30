@@ -81,16 +81,28 @@ public class ClientController implements Observer{
         }
     }
 
+    /**
+     * Method used to play a character card
+     * @param message a message
+     */
     private void playCharacterCard(Message message) {
         remoteModel.setEnablePlayCharacter(false);
         client.sendMessage(message);
     }
 
+    /**
+     * Method used to show the current game
+     * @param message a message containing the current game
+     */
     private void showGame(Message message) {
         remoteModel.setGame(((CurrentGameMessage) message).getGame());
         view.showGameState((CurrentGameMessage) message);
     }
 
+    /**
+     * Method that shows a window containing the assistant cards
+     * @param message a message containing the assistant cards
+     */
     private void showAssistantCardOptions(Message message) {
         remoteModel.setEnablePlayCharacter(true);
         remoteModel.setAssistantsCardsMap(((AskAssistantCardMessage) message).getAssistantsCards());
