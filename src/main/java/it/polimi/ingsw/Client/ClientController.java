@@ -211,10 +211,6 @@ public class ClientController implements Observer, ViewObserver {
         client.sendMessage(message);
     }
 
-    @Override
-    public void updateOnSelectedColor(Color color) {
-
-    }
 
     /**
      * Handle client disconnection
