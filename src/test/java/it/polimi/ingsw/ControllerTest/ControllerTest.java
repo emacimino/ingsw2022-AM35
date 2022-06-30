@@ -219,7 +219,7 @@ public class ControllerTest {
         Assertions.assertFalse(expertMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(1000)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
@@ -228,9 +228,6 @@ public class ControllerTest {
         Assertions.assertThrows(Exception.class, () -> controllerExpertMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
         Assertions.assertFalse(controllerExpertMatch2Players.getMatch().getGame().getAssistantsCardsPlayedInRound().isEmpty());
         CharacterCard card1 = ((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().get(((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().keySet().stream().toList().get(0));
-        CharacterCard cardMinstrel ;
-        cardMinstrel = new FactoryCharacterCard().createACharacterCard(basicMatch2Players,"Minstrel");
-        ((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().put("Minstrel", cardMinstrel);
         //adding coins for testing purpose
         for(int i=0;i<8;i++){
             controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(playerOne).addACoin();
@@ -239,7 +236,7 @@ public class ControllerTest {
             controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(playerTwo).addACoin();
         }
         Assertions.assertTrue(((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().containsKey(card1.getName()));
-        cardSwitch(cardMinstrel);
+        cardSwitch(card1);
     }
 
 
