@@ -62,6 +62,11 @@ public class BoardPanelController extends GenericSceneController{
         coinsTxt.setText("coins: " + board.getCoins());
     }
 
+    /**
+     * Method used to set the board for the current game
+     * @param board a board
+     * @param wizardName the name of wizard who owns the board
+     */
     public void setBoard(Board board, String wizardName) {
         setTablesMap();
         for (TableOfStudents t : board.getTables()) {
@@ -74,6 +79,10 @@ public class BoardPanelController extends GenericSceneController{
         coinsTxt.setText("coins: " + board.getCoins());
     }
 
+    /**
+     * Method used to update the board after a student is moved
+     * @param board a board
+     */
     public void updateBoardOnMoveStudent(Board board){
         for (TableOfStudents t : board.getTables()) {
             loadStudentsOnTable(getTable(t), t.getStudentsInTable().stream().toList());
@@ -190,6 +199,10 @@ public class BoardPanelController extends GenericSceneController{
         return colorToTableMap.get(t.getColor());
     }
 
+    /**
+     * Method used to set the professors for the board
+     * @param professors a list of professors
+     */
     private void setProfessors(List<Professor> professors) {
         profBlue.setVisible(false);
         profRed.setVisible(false);
@@ -303,6 +316,10 @@ public class BoardPanelController extends GenericSceneController{
 
     }
 
+    /**
+     * Method that returns a selected student related text
+     * @return a text indicating a student selected
+     */
     public Text getStudentSelectedTxt() {
         return studentSelectedTxt;
     }

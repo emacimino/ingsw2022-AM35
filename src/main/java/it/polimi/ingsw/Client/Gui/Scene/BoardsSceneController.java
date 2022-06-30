@@ -117,6 +117,10 @@ public class BoardsSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * Method used to update the boards
+     * @param wizards a list of wizards in the game
+     */
     public void updateBoards(List<Wizard> wizards){
         for(Wizard w : wizards ){
             BoardPanelController controller = boardPanelControllerMap.get(w.getUsername());

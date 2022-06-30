@@ -200,6 +200,9 @@ public class ActionSceneController extends GenericSceneController {
 
     }
 
+    /**
+     * Method that controls a button that shows a window on activation
+     */
     private void setButtonCharacterCard() {
         if (!remoteModel.getCharacterCardMap().isEmpty()) {
             playCharacterBtn.setVisible(true);
@@ -207,10 +210,18 @@ public class ActionSceneController extends GenericSceneController {
         }
     }
 
+    /**
+     * Method that returns a BoardPanelController
+     * @return a boardPanelController
+     */
     public BoardPanelController getBoardPanelController() {
         return boardPanelController;
     }
 
+    /**
+     * Method that updates the archipelagos after a student is moved
+     * @param archipelagoMap a map of the archipelagos in the game
+     */
     public void updateArchipelagoOnMoveStudent(Map<Integer, Archipelago> archipelagoMap) {
         for(Integer i = 0; i < archipelagoMap.size(); i++){
             ArchipelagoPanelController controller = archipelagoControllerMap.get(i+1);
