@@ -26,7 +26,9 @@ public class BasicMatchAndFactoryTest {
     private final Player playerTwo = new Player("usernameTwo");
     private final Player playerThree = new Player("usernameThree");
 
-
+    /**
+     * Method used to set a test match
+     */
     public void gameSetter(){
         List<Player> players = new ArrayList<>();
         players.add(playerOne);
@@ -42,6 +44,10 @@ public class BasicMatchAndFactoryTest {
         else
             Assertions.assertThrows(ExceptionGame.class, ()->basicMatch3Players.setGame(players));
     }
+
+    /**
+     * Method used to print the game
+     */
     public void printGame(){
         System.out.println("Archipelagos "+ basicMatch3Players.getGame().getArchipelagos().size());
         System.out.println(basicMatch3Players.getGame().getWizards() + "\n");
@@ -53,6 +59,10 @@ public class BasicMatchAndFactoryTest {
 
         }
     }
+
+    /**
+     * Method used to verify the integrity of the match after its creation
+     */
     @Test
     void verifyMatch2Players() {
         gameSetter();
@@ -76,6 +86,9 @@ public class BasicMatchAndFactoryTest {
         Assertions.assertThrows(ExceptionGame.class, basicMatch2Players::getTeams);
     }
 
+    /**
+     * MEthos used to verify the integrity of the match after its creation
+     */
     @Test
     void verifyMatch3Players() {
         gameSetter();
@@ -99,6 +112,9 @@ public class BasicMatchAndFactoryTest {
         Assertions.assertThrows(ExceptionGame.class, basicMatch3Players::getTeams);
     }
 
+    /**
+     * Method used to verify the correct flow of events after playing a character card
+     */
     @Test
     void playAssistantsCard_Test(){
         gameSetter();
@@ -122,6 +138,9 @@ public class BasicMatchAndFactoryTest {
         );
     }
 
+    /**
+     * Method used to verify the flow of events involved in the movement of mother nature
+     */
     @RepeatedTest(24)
     void moveMotherNature_Test(){
         gameSetter();
@@ -173,6 +192,9 @@ public class BasicMatchAndFactoryTest {
         });
     }
 
+    /**
+     * Method that tests the lookupArchipelago method
+     */
     @Test
     void lookupArchipelago_Test(){
         gameSetter();
@@ -203,6 +225,9 @@ public class BasicMatchAndFactoryTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @Test
     void checkVictory_NoTowers_Test(){
         gameSetter();
@@ -220,6 +245,9 @@ public class BasicMatchAndFactoryTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @RepeatedTest(15)
     void checkVictory_NoStudents_Test(){
         gameSetter();
@@ -269,6 +297,9 @@ public class BasicMatchAndFactoryTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @RepeatedTest(30)
     void checkVictory_LessThenThreeArchipelagos_Test() {
         gameSetter();

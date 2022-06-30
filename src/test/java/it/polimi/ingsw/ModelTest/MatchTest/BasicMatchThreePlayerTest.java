@@ -26,7 +26,9 @@ public class BasicMatchThreePlayerTest {
     private final Player playerTwo = new Player("usernameTwo");
     private final Player playerThree = new Player("usernameThree");
 
-
+    /**
+     * Method used to set a test match
+     */
     public void gameSetter() {
         List<Player> players = new ArrayList<>();
         players.add(playerOne);
@@ -37,11 +39,20 @@ public class BasicMatchThreePlayerTest {
         );
     }
 
+    /**
+     * Method used to get steps of mother nature
+     * @param player player one or two
+     * @return the steps you can move mother nature by
+     * @throws ExceptionGame is something goes wrong
+     */
     public int getSteps(Player player) throws ExceptionGame{
         Wizard wizard = basicMatch3Players.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
     }
 
+    /**
+     * Method used to print the game
+     */
     public void printGame(){
         System.out.println("\nSTART OF PRINT ");
         System.out.println("professor in game: "+ basicMatch3Players.getGame().getProfessors());
@@ -57,6 +68,10 @@ public class BasicMatchThreePlayerTest {
         }
         System.out.println("END OF PRINT \n");
     }
+
+    /**
+     * Method used to verify that the creation of the match went well
+     */
     @Test
     void verifyMatch3Players() {
         gameSetter();
@@ -81,6 +96,9 @@ public class BasicMatchThreePlayerTest {
 
     }
 
+    /**
+     * Method used to verify the correct flow of events after playing a character card
+     */
     @Test
     void playAssistantsCard_Test(){
         gameSetter();
@@ -109,6 +127,11 @@ public class BasicMatchThreePlayerTest {
                 }
         );
     }
+
+
+    /**
+     * Method used to verify the flow of events involved in the movement of mother nature
+     */
     @RepeatedTest(24)
     void moveMotherNature_Test(){
         gameSetter();
@@ -203,6 +226,9 @@ public class BasicMatchThreePlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @Test
     void checkVictory_NoTowers_Test(){
         gameSetter();
@@ -223,6 +249,9 @@ public class BasicMatchThreePlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @Test
     void checkVictory_NoStudents_Test(){
         gameSetter();
@@ -244,6 +273,9 @@ public class BasicMatchThreePlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @RepeatedTest(24)
     void checkVictory_LessThenThreeArchipelagos_Test() {
         gameSetter();

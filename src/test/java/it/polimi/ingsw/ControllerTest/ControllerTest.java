@@ -26,6 +26,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+/**
+ * Class that contains the tests for the game controller when two or more players are playing
+ */
 public class ControllerTest {
 
     private Set<String> usernameBasicMatch2Players;
@@ -51,7 +54,9 @@ public class ControllerTest {
     private  SocketClientConnection clientConnection4;
 
 
-
+    /**
+     * Method used to set the controller for the tests
+     */
     private void setControllerInTest(){
         setListsOfPlayers(); //adding players username
         Assertions.assertDoesNotThrow(()->{
@@ -72,6 +77,9 @@ public class ControllerTest {
 
     }
 
+    /**
+     * Method used to set the controller for the tests in expert mode
+     */
     private void setControllerInTestExpert(){
 
         setListsOfPlayers(); //aggiunge al set di stringhe gli username dei players
@@ -94,7 +102,9 @@ public class ControllerTest {
 
     }
 
-
+    /**
+     * Method used to set the controller for the tests in a 4 player match
+     */
     private void setControllerInTest4players(){
         setListsOfPlayers4(); //aggiunge al set di stringhe gli username dei players
         Assertions.assertDoesNotThrow(()->{
@@ -120,13 +130,18 @@ public class ControllerTest {
     }
 
 
-
+    /**
+     * Method used to set the list of players in the 2 player match
+     */
     private void setListsOfPlayers(){
         usernameBasicMatch2Players = new HashSet<>();
         usernameBasicMatch2Players.add(playerOne.getUsername());
         usernameBasicMatch2Players.add(playerTwo.getUsername());
     }
 
+    /**
+     * Method used to set the list of players in 4 players match
+     */
     private void setListsOfPlayers4(){
         usernameBasicMatch4Players = new HashSet<>();
         usernameBasicMatch4Players.add(playerOne.getUsername());
@@ -136,19 +151,28 @@ public class ControllerTest {
     }
 
 
-
+    /**
+     * Method that tests the getMatch method in a 4 player match
+     */
     @Test
     void getMatch4Players(){
         setControllerInTest4players();
         Assertions.assertEquals(controllerBasicMatch4Players.getMatch(), basicMatch4Players);
     }
 
+
+    /**
+     * Method that tests the getMatch method in a 2 player match
+     */
     @Test
     void getMatch_Test() {
         setControllerInTest();
         Assertions.assertEquals(controllerBasicMatch2Players.getMatch(), basicMatch2Players);
     }
 
+    /**
+     * Method that tests the initGame method in a 2 player match
+     */
     @RepeatedTest(12)
     void initGame_Test(){
         setControllerInTest();
@@ -157,6 +181,9 @@ public class ControllerTest {
         Assertions.assertNotNull(controllerBasicMatch2Players.getMatch().getGame());
     }
 
+    /**
+     * Method that tests the initGame method in a 4 player match
+     */
     @RepeatedTest(12)
     void initGame4Players_Test(){
         setControllerInTest4players();
@@ -166,7 +193,9 @@ public class ControllerTest {
         Assertions.assertDoesNotThrow(() -> controllerBasicMatch4Players.getMatch().getTeams());
     }
 
-
+    /**
+     * Method that tests how the controllers handles messages sent to it
+     */
     @RepeatedTest(12)
     void onMessageReceived_Test() {
         setControllerInTest();
@@ -185,6 +214,9 @@ public class ControllerTest {
 
     }
 
+    /**
+     * Method that tests how the controllers handles messages sent to it in an expert match
+     */
     @RepeatedTest(12)
     void onMessageReceivedExpertMatch_Test() throws ExceptionGame {
         setControllerInTestExpert();
@@ -208,6 +240,9 @@ public class ControllerTest {
         Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage(expertMatch2Players.getCharactersForThisGame().get(card1).getName())));
     }
 
+    /**
+     * Method that tests how the controllers handles the planning phase
+     */
     private void planningPhaseCheck() {
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
         Assertions.assertDoesNotThrow(()-> expertMatch2Players.playAssistantsCard(playerOne, AssistantsCards.CardNine));
@@ -219,6 +254,10 @@ public class ControllerTest {
         Assertions.assertFalse(expertMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
     }
 
+
+    /**
+     * Method that tests how the controllers handles the character cards played in the game
+     */
     @RepeatedTest(1000)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
@@ -239,7 +278,9 @@ public class ControllerTest {
         cardSwitch(card1);
     }
 
-
+    /**
+     * Helper method for the character cards tests
+     */
     void cardSwitch(CharacterCard card1) throws ExceptionGame {
         final int notValidArchipelago = 13;
         Player activePlayer = controllerExpertMatch2Players.getTurnController().getActivePlayer();
@@ -387,6 +428,9 @@ public class ControllerTest {
 
     }
 
+    /**
+     * Method that tests how the controller handles the next player's action phase and how the turn flows
+     */
     @RepeatedTest(12)
     void nextPlayerActionPhaseTest(){
         setControllerInTest();
@@ -436,7 +480,9 @@ public class ControllerTest {
     }
 
 
-
+    /**
+     * Method that tests how the controller responds to a mother nature's move request
+     */
     @RepeatedTest(12)
     void onMessageReceived2PLayersMotherNature_Test(){
         setControllerInTest();
@@ -485,12 +531,18 @@ public class ControllerTest {
 
     }
 
+    /**
+     * Method used to test the addView method
+     */
     @Test
     void addView_Test() {
         setControllerInTest();
         Assertions.assertNotNull(controllerBasicMatch2Players);
     }
 
+    /**
+     * Method used to test the update method when messages are passed to it
+     */
     @Test
     void update_Test(){
         setControllerInTest();
@@ -504,7 +556,9 @@ public class ControllerTest {
     }
 
 
-
+    /**
+     * Method used to test the setViewMap method
+     */
     @Test
     void setViewMap_Test() {
         setListsOfPlayers();
@@ -528,6 +582,9 @@ public class ControllerTest {
         Assertions.assertNotNull(controllerBasicMatch2Players);
     }
 
+    /**
+     * Method used to test the setGameState method
+     */
     @Test
     void setGameState_Test() {
         setControllerInTest();
@@ -537,6 +594,9 @@ public class ControllerTest {
         Assertions.assertEquals(controllerBasicMatch2Players.getGameState(), GameState.ACTION_PHASE);
     }
 
+    /**
+     * Method used to test the setGameState method
+     */
     @Test
     void getGameState_Test() {
         setControllerInTest();
@@ -544,6 +604,9 @@ public class ControllerTest {
         Assertions.assertEquals(controllerBasicMatch2Players.getGameState(), GameState.PLANNING_PHASE);
     }
 
+    /**
+     * Method used to test the isMatchOnGoing method
+     */
     @Test
     void isMatchOnGoing_test(){
         setControllerInTest();
@@ -551,6 +614,9 @@ public class ControllerTest {
         Assertions.assertTrue(controllerBasicMatch2Players.isMatchOnGoing());
     }
 
+    /**
+     * Method used to test the setMatchOnGoing method
+     */
     @Test
     void setMatchOnGoing_test(){
         setControllerInTest();

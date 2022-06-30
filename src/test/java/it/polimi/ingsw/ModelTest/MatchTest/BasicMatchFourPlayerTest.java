@@ -32,10 +32,20 @@ public class BasicMatchFourPlayerTest {
     private final Player playerThree = new Player("usernameThree");
     private final Player playerFour = new Player("usernameFour");
 
+    /**
+     * Method used to get steps of mother nature
+     * @param player player one or two
+     * @return the steps you can move mother nature by
+     * @throws ExceptionGame is something goes wrong
+     */
     public int getSteps(Player player) throws ExceptionGame{
         Wizard wizard = basicMatch4Players.getGame().getWizardFromPlayer(player);
         return wizard.getRoundAssistantsCard().getStep();
     }
+
+    /**
+     * Method used to set a test match
+     */
     public void gameSetter(){
         players.add(playerOne);
         players.add(playerTwo);
@@ -46,6 +56,10 @@ public class BasicMatchFourPlayerTest {
         Assertions.assertThrows(ExceptionGame.class, ()-> basicMatch4Players.setTeams(players));
         Assertions.assertDoesNotThrow(()-> basicMatch4Players.setGame(players));
     }
+
+    /**
+     * MEthod used to print the game
+     */
     public void printGame(){
         System.out.println("\n PRINTING STATE OF GAME: ");
         System.out.println("professor in game: "+ basicMatch4Players.getGame().getProfessors());
@@ -63,7 +77,9 @@ public class BasicMatchFourPlayerTest {
         System.out.println("END OF PRINT \n");
     }
 
-
+    /**
+     * Method used to verify the integrity of the match after its creation
+     */
     @Test
     void verifyMatch4Players() {
         gameSetter();
@@ -81,6 +97,9 @@ public class BasicMatchFourPlayerTest {
 
     }
 
+    /**
+     * Method used to verify the correct flow of events after playing a character card
+     */
     @Test
     void playAssistantsCard_Test(){
         gameSetter();
@@ -109,6 +128,10 @@ public class BasicMatchFourPlayerTest {
         });
     }
 
+
+    /**
+     * Method used to verify the flow of events involved in the movement of mother nature
+     */
     @RepeatedTest(24)
     void moveMotherNature_Test(){
         gameSetter();
@@ -228,6 +251,9 @@ public class BasicMatchFourPlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @Test
     void checkVictory_NoTowers_Test(){
         gameSetter();
@@ -249,6 +275,9 @@ public class BasicMatchFourPlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @RepeatedTest(15)
     void checkVictory_NoStudents_Test(){
         System.out.println();
@@ -300,6 +329,9 @@ public class BasicMatchFourPlayerTest {
         });
     }
 
+    /**
+     * Method that tests one of the victory condition
+     */
     @RepeatedTest(24)
     void checkVictory_LessThenThreeArchipelagos_Test() {
         gameSetter();
