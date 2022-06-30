@@ -158,6 +158,7 @@ public class TurnController {
 
     }
 
+
     /**
      * Move motherNature
      * @param message indicate where to put motherNature
@@ -492,6 +493,10 @@ public class TurnController {
      */
     public TurnPhase getTurnPhase(){
         return this.turnPhase;
+    }
+    //testing purpose
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
     }
 
 }
