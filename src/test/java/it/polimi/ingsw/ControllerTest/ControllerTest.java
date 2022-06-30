@@ -198,7 +198,7 @@ public class ControllerTest {
      * Method that tests how the controllers handles messages sent to it
      */
     @RepeatedTest(12)
-    void onMessageReceived_Test() throws ExceptionGame {
+    void onMessageReceived_Test(){
         setControllerInTest();
         controllerBasicMatch2Players.setMatchOnGoing(false);
         controllerBasicMatch2Players.setGameState(GameState.ACTION_PHASE);
@@ -261,7 +261,7 @@ public class ControllerTest {
     /**
      * Method that tests how the controllers handles the character cards played in the game
      */
-    @RepeatedTest(10)
+    @RepeatedTest(100)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
@@ -329,10 +329,10 @@ public class ControllerTest {
                 else Assertions.assertEquals(2, expertMatch2Players.getGame().getArchipelagos().get(2).getStudentFromArchipelago().size());
                 //move mother nature
                 int i = expertMatch2Players.getPositionOfMotherNature();
-                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveMotherNatureMessage(((i+5) % expertMatch2Players.getGame().getArchipelagos().size()))));
+                Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new MoveMotherNatureMessage((((i+5) % expertMatch2Players.getGame().getArchipelagos().size()) +1))));
                 int j;
-                if(i+5 >= 12) j=((i+5)%expertMatch2Players.getGame().getArchipelagos().size() - 1);
-                else j=i+4;
+                if(i+5 >= 12) j=((i+5)%expertMatch2Players.getGame().getArchipelagos().size() );
+                else j=i+5;
                 Assertions.assertEquals(j, expertMatch2Players.getPositionOfMotherNature());
             }
 
