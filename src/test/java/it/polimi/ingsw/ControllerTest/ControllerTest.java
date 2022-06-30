@@ -6,6 +6,7 @@ import it.polimi.ingsw.Controller.TurnPhase;
 import it.polimi.ingsw.Model.Exception.ExceptionGame;
 import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 import it.polimi.ingsw.Model.ExpertMatch.ExpertMatch;
+import it.polimi.ingsw.Model.ExpertMatch.FactoryCharacterCard;
 import it.polimi.ingsw.Model.FactoryMatch.BasicMatch;
 import it.polimi.ingsw.Model.FactoryMatch.FactoryMatch;
 import it.polimi.ingsw.Model.FactoryMatch.Player;
@@ -217,15 +218,17 @@ public class ControllerTest {
         Assertions.assertFalse(expertMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
     }
 
-    @RepeatedTest(10)
+    @RepeatedTest(1000)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
         Assertions.assertDoesNotThrow(()-> expertMatch2Players.playAssistantsCard(playerOne, AssistantsCards.CardNine));
         Assertions.assertDoesNotThrow(() -> controllerExpertMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
         Assertions.assertThrows(Exception.class, () -> controllerExpertMatch2Players.onMessageReceived(new AssistantCardMessage(AssistantsCards.CardEight)));
-        Assertions.assertFalse(expertMatch2Players.getGame().getAssistantsCardsPlayedInRound().isEmpty());
-        CharacterCard card1 = expertMatch2Players.getCharactersForThisGame().get(expertMatch2Players.getCharactersForThisGame().keySet().stream().toList().get(0));
+        Assertions.assertFalse(controllerExpertMatch2Players.getMatch().getGame().getAssistantsCardsPlayedInRound().isEmpty());
+        CharacterCard card1 = ((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().get(((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().keySet().stream().toList().get(0));
+        CharacterCard cardMinstrel = ((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().get("Minstrel");
+        cardMinstrel = new FactoryCharacterCard().createACharacterCard(controllerExpertMatch2Players.getMatch(),"Minstrel");
         //adding coins for testing purpose
         for(int i=0;i<8;i++){
             controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(playerOne).addACoin();
@@ -233,14 +236,15 @@ public class ControllerTest {
         for(int i=0;i<8;i++){
             controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(playerTwo).addACoin();
         }
-        cardSwitch(card1);
+        Assertions.assertTrue(((ExpertMatch)controllerExpertMatch2Players.getMatch()).getCharactersForThisGame().containsKey(card1.getName()));
+        cardSwitch(cardMinstrel);
     }
 
 
     void cardSwitch(CharacterCard card1) throws ExceptionGame {
         final int notValidArchipelago = 13;
         Player activePlayer = controllerExpertMatch2Players.getTurnController().getActivePlayer();
-        Student testStudent = new Student(Color.GREEN);
+        Student testStudent;
         List <Integer> integersList = new ArrayList<>();
         integersList.add(1);
         List <Integer> integersList2 = new ArrayList<>();
@@ -320,29 +324,45 @@ public class ControllerTest {
 
 
             }
-            case "Minstrel" ->{ //works
+            case "Minstrel" ->{ /*
+                card1.setActiveWizard(expertMatch2Players.getGame().getWizardFromPlayer(activePlayer));
+
+                //setting color list of student that will be traded from table
                 List <Color> colorsList = new ArrayList<>();
-                List<Integer> tradeFromEntrance = new ArrayList<>();
-                expertMatch2Players.getGame().getWizardFromPlayer(activePlayer).getBoard().addStudentInTable(new Student(Color.GREEN));
-                expertMatch2Players.getGame().getWizardFromPlayer(activePlayer).getBoard().addStudentInTable(new Student(Color.RED));
                 colorsList.add(Color.GREEN);
                 colorsList.add(Color.RED);
+
+                //adding the same type of student on the table
+                expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().addStudentInTable(new Student(Color.GREEN));
+                expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().addStudentInTable(new Student(Color.RED));
+
+                //create a list of two student to be traded
+                List<Integer> tradeFromEntrance = new ArrayList<>();
                 tradeFromEntrance.add(0);
                 tradeFromEntrance.add(1);
-                ArrayList<Student> studentsOnEntrance = new ArrayList<>(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance());
-                Student firstStudentTraded = studentsOnEntrance.get(0);
-                Student secondStudentTraded = studentsOnEntrance.get(1);
+                //and copy them to check later
+                ArrayList<Student> studentsOnEntrance = new ArrayList<>(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getStudentsInEntrance());
+                Color firstStudentTradedColor = studentsOnEntrance.get(0).getColor();
+                Color secondStudentTradedColor = studentsOnEntrance.get(1).getColor();
+                final int tableOneSize = expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getTableOfStudent(firstStudentTradedColor).getStudentsInTable().size();
+                final int tableTwoSize = expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getTableOfStudent(secondStudentTradedColor).getStudentsInTable().size();
 
                 Assertions.assertDoesNotThrow(()-> controllerExpertMatch2Players.onMessageReceived(new AskCharacterCardMessage(card1.getName())));
-                Assertions.assertDoesNotThrow(()->controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage(card1.getName(), -1, tradeFromEntrance, null, colorsList )));
-                Assertions.assertTrue(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().contains(new Student(colorsList.get(0))));
-                Assertions.assertTrue(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().contains(new Student(colorsList.get(1))));
-                Assertions.assertFalse(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().contains(firstStudentTraded));
-                Assertions.assertFalse(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().contains(secondStudentTraded));
-                Assertions.assertTrue(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsFromTable(firstStudentTraded.getColor()).contains(new Student(firstStudentTraded.getColor())));
-                Assertions.assertTrue(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsFromTable(secondStudentTraded.getColor()).contains(new Student(secondStudentTraded.getColor())));
-                Assertions.assertFalse(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsInEntrance().contains(secondStudentTraded));
-            }
+                Assertions.assertDoesNotThrow(()->controllerExpertMatch2Players.onMessageReceived(new PlayCharacterMessage(card1.getName(), notValidArchipelago, tradeFromEntrance, null, colorsList )));
+
+                for(Student s : studentsOnEntrance){
+                    if(!expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getStudentsInEntrance().contains(s)){
+                        Assertions.assertTrue(controllerExpertMatch2Players.getMatch().getGame().getWizardFromPlayer(activePlayer).getBoard().getStudentsFromTable(s.getColor()).contains(s));
+                    }
+                }
+
+                if(!firstStudentTradedColor.equals(secondStudentTradedColor)){
+                    Assertions.assertEquals(tableOneSize + 1,expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getTableOfStudent(firstStudentTradedColor).getStudentsInTable().size());
+                    Assertions.assertEquals(tableTwoSize + 1,expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getTableOfStudent(secondStudentTradedColor).getStudentsInTable().size());
+                }
+                else Assertions.assertEquals(tableTwoSize + 2,expertMatch2Players.getGame().getWizardFromPlayer(controllerExpertMatch2Players.getTurnController().getActivePlayer()).getBoard().getTableOfStudent(secondStudentTradedColor).getStudentsInTable().size());
+
+           */ }
 
             case "Knight"-> { //seems to be working
                 final Archipelago archipelago = expertMatch2Players.getGame().getArchipelagos().get(1);
