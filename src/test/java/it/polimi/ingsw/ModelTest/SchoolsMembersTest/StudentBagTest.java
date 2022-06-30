@@ -7,6 +7,9 @@ import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.SchoolsMembers.StudentBag;
 import org.junit.jupiter.api.*;
 
+/**
+ * Class used to test the students' bag
+ */
 public class StudentBagTest {
 
     private final StudentBag studentBag = new StudentBag();
@@ -36,7 +39,7 @@ public class StudentBagTest {
     }
 
     /**
-     * This methodTest tests the drawStudent method
+     * This methodTest tests the drawStudent method fails is there are too may students inside the game or if the student drawn is still contained inside the bag
      */
     @Test
    public void drawStudentTest(){

@@ -10,7 +10,9 @@ import it.polimi.ingsw.Model.Wizard.Wizard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * Class that tests the islands in the model
+ */
 public class IslandTest {
     int[] ints = {3, 7};
     TowerColors towerColors = TowerColors.Black;
@@ -31,7 +33,7 @@ public class IslandTest {
     }
 
     /**
-     * This methodTest tests the setTower method
+     * This methodTest tests the setTower method and fails if the property of the tower does not match the correct wizard
      */
     @Test
     void setTower_Test() {

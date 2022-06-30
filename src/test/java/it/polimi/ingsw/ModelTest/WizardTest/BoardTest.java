@@ -11,7 +11,13 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class used to test the board
+ */
 public class BoardTest {
+    /**
+     * Method that creates a board and tests if it is correct
+     */
     @Test
     void CreateBoard(){
         Board b1 = new Board();
@@ -19,6 +25,10 @@ public class BoardTest {
              Color.values()) {
             assertNotNull(b1.getTables());
         }}
+
+    /**
+     * Method that creates a board and tests if the tableOfStudents work
+     */
      @Test
     void CreateBoardAndFillTables(){
         Board b1 = new Board();
@@ -35,6 +45,10 @@ public class BoardTest {
         }
     }
 
+    /**
+     * Method used to verify the presence of the professor
+     * @param c color
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void isProfessorPresent_Test(Color c){
@@ -44,6 +58,10 @@ public class BoardTest {
         Assertions.assertTrue(board.isProfessorPresent(c));
     }
 
+    /**
+     * Method used to test the get method that returns the students from the tables
+     * @param c color
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void getStudentFromTable_Test(Color c){
@@ -59,6 +77,10 @@ public class BoardTest {
 
     }
 
+    /**
+     * Method used to test the removal of a professor and its consequence
+     * @param c color
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void removeProfessorFromTable_Test(Color c){
@@ -72,6 +94,10 @@ public class BoardTest {
 
     }
 
+    /**
+     * Method used to test what the addition of students into a table provokes
+     * @param c color
+     */
     @ParameterizedTest
     @EnumSource(Color.class)
     void addStudentInTable_Test(Color c){

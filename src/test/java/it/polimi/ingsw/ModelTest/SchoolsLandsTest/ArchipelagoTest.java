@@ -16,12 +16,14 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
+/**
+ * Class that tests the archipelago class in the model
+ */
 class ArchipelagoTest {
     int[] ints = {9, 4};
     TowerColors towerColors = TowerColors.Black;
     /**
-     * This methodTest tests the calculationInfluenceInArchipelago method
+     * This methodTest tests the calculationInfluenceInArchipelago method and fails if the influence is not correct
      * @param c color to use as parameter
      */
     @ParameterizedTest
@@ -52,7 +54,7 @@ class ArchipelagoTest {
     }
 
     /**
-     * This methodTest tests the placeWizardsTower method
+     * This methodTest tests the placeWizardsTower method and fails if the tower is not present after its construction on an isle
      */
     @Test
     void placeWizardsTower_Test(){
@@ -84,7 +86,7 @@ class ArchipelagoTest {
     }
 
     /**
-     * This methodTest tests placeWizardsTower method
+     * This methodTest tests placeWizardsTower method and fails if an exception is not thrown
      */
     @Test
     void placeWizardsTower_ExceptionTest(){
@@ -94,7 +96,7 @@ class ArchipelagoTest {
     }
 
     /**
-     * This methodTest tests the mergeArchipelago method
+     * This methodTest tests the mergeArchipelago method and fails if the merge of two islands fails
      */
     @Test
     void mergeArchipelago_Test(){
@@ -108,7 +110,7 @@ class ArchipelagoTest {
     }
 
     /**
-     * This methodTest tests the getStudentFromArchipelago method
+     * This method tests the getStudentFromArchipelago method and fails when a student placement doesn't get counted
      * @param c is the color to pass to the method
      */
     @ParameterizedTest

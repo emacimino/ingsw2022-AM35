@@ -9,7 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Class used to test the Table Of Students
+ */
 public class TableOfStudentsTest {
+    /**
+     * Test that fails is the student addition to the table goes wrong
+     */
     @Test
     void IfTableExistsAndHas9StudentsSeatsItIsTrue(){
         for (Color c:
@@ -21,6 +27,10 @@ public class TableOfStudentsTest {
             Assertions.assertTrue(tos.getStudentsInTable().contains(stud));
         }
     }
+
+    /**
+     * Test that fails is an exception is not thrown when an illegal condition is met
+     */
     @Test
     void TableLoadingAndReturn(){
         for (Color c: Color.values()) {
