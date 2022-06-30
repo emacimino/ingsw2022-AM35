@@ -18,6 +18,14 @@ during the development
 
 - [Here](//to be added) can be found all the tests with their respective coverage
 
+#### Quick view
+| Package        | Class Coverage | Method Coverage | Line Coverage |
+|----------------|----------------|-----------------|---------------|
+| __Model__      | 93 %           | 90 %            | 90 %          |
+| __Controller__ | 100 %          | 96 %            | 72 %          |
+
+
+
 ### Javadoc
 
 - [Here](//to be added) can be found all the documentation about most of the project,
@@ -26,23 +34,23 @@ includes classes and methods used
 ### Plugins and libraries
 | Plugin/Library| Description                                        |
 |----------------|----------------------------------------------------|
-| __Maven__      | software project management and comprehension tool |
+| __Maven__      | Software project management and comprehension tool |
 | __JavaFx__     | Graphics library used to create user interfaces    |
-| __JUnit__      | Unit Testing Framework                           |
+| __JUnit__      | Unit Testing Framework                             |
 
 
 ### Implemented functionalities
 
-| Functionality     |                       State                        |
-|:------------------|:--------------------------------------------------:|
-| Basic rules       | 🟢 |
-| Complete rules    | 🟢 |
-| Socket            | 🟢 |
-| GUI               | 🟢 |
-| CLI               | 🟢 |
-| Multiple games    | 🟢 |
-| 4 Player basicMatch    | 🟢 |
-| 12 Character Card            | 🟢 |
+| Functionality     | State  |
+|:------------------|:------:|
+| Basic rules       |   🟢   |
+| Complete rules    |   🟢   |
+| Socket            |   🟢   |
+| GUI               |   🟢   |
+| CLI               |   🟢   |
+| Multiple games    |   🟢   |
+| 4 Player basicMatch    |   🟢   |
+| 12 Character Card            |   🟢   |
 
 ## Eryantis: How to start
 
@@ -75,6 +83,6 @@ The port where the server works is 1234
 
 ### Students:
 
-[Camilla Andiloro](camilla.andiloro@mail.polimi.it)   
-[Emanuele Cimino](emanuele.cimino@mail.polimi.it)   
-[Marco Crisafulli](marco.crisafulli@mail.polimi.it)  
+[Camilla Andiloro](https://github.com/camillaandiloro)   
+[Emanuele Cimino](https://github.com/emacimino)   
+[Marco Crisafulli](https://github.com/MarcoCrisafulli)  
