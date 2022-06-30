@@ -22,6 +22,10 @@ public class AskToMoveMotherNatureMessage extends Message{
         message = "Please, move Mother Nature, you allowed to do at most "+numOfSteps+" steps ";
     }
 
+    /**
+     * Getter for num of steps
+     * @return num of steps
+     */
     public int getNumOfSteps() {
         return numOfSteps;
     }

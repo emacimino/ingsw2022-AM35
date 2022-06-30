@@ -9,8 +9,11 @@ import javafx.application.Application;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Main class used in jar file
+ */
 public class EriantysApp {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();

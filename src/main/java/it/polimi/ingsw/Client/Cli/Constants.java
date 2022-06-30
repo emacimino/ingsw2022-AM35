@@ -23,13 +23,13 @@ public class Constants {
     public static final String ANSI_YELLOW = "\033[93m";
     public static final String ANSI_BLUE = "\033[34m";
     public static final String ANSI_PINK = "\033[95m";
-    public static final String ANSI_BRIGHTBLACK = "\u001b[30;1m";
-    public static final String ANSI_BRIGHTWHITE = "\u001b[37;1m";
+    public static final String ANSI_BRIGHT_BLACK = "\u001b[30;1m";
+    public static final String ANSI_BRIGHT_WHITE = "\u001b[37;1m";
     public static final String ANSI_ORANGE = "\u001b[38;5;208m";
-    public static final String ANSI_DEEPBLUE = "\u001b[34;1m";
+    public static final String ANSI_DEEP_BLUE = "\u001b[34;1m";
 
     /**
-     * Pick the correct assistantt card from it-s value
+     * Pick the correct assistant card from it-s value
      * @param assistantsCards to be picked
      * @return string to identify the assistant card picked
      */

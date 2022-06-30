@@ -12,8 +12,8 @@ import it.polimi.ingsw.Model.Wizard.TowerColors;
 import java.util.HashMap;
 import java.util.List;
 
-import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHTBLACK;
-import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHTWHITE;
+import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHT_BLACK;
+import static it.polimi.ingsw.Client.Cli.Constants.ANSI_BRIGHT_WHITE;
 
 /**
  * Printable objects for ClI
@@ -26,7 +26,7 @@ public class Printable {
     public static final String GREEN = Constants.ANSI_GREEN;
     public static final String PINK = Constants.ANSI_PINK;
     public static final String RESET = Constants.ANSI_RESET;
-    public static final String DEEP_BLUE = Constants.ANSI_DEEPBLUE;
+    public static final String DEEP_BLUE = Constants.ANSI_DEEP_BLUE;
 
 
     public static final HashMap<Color, String> colorANSI = new HashMap<>(){{
@@ -153,9 +153,9 @@ public class Printable {
     public static void printBoardTowers(int numberOfTowers, String towerColor) {
         final String color;
         switch (towerColor) {
-            case "Black" -> color = ANSI_BRIGHTBLACK;
+            case "Black" -> color = ANSI_BRIGHT_BLACK;
             case "White" -> color = RESET;
-            case "Gray" -> color = ANSI_BRIGHTWHITE;
+            case "Gray" -> color = ANSI_BRIGHT_WHITE;
             default -> throw new IllegalStateException("Unexpected value: " + towerColor);
         }
         int top_margin_length = 13;
@@ -205,9 +205,9 @@ public class Printable {
     public static void printTowersIsland(TowerColors towerColors){
         final String color;
         switch (towerColors.name()) {
-            case "Black" -> color = ANSI_BRIGHTBLACK;
+            case "Black" -> color = ANSI_BRIGHT_BLACK;
             case "White" -> color = RESET;
-            case "Gray" -> color = ANSI_BRIGHTWHITE;
+            case "Gray" -> color = ANSI_BRIGHT_WHITE;
             default -> throw new IllegalStateException("Unexpected value: " + towerColors);
         }
         System.out.print( color + TOWER_TOP + RESET);

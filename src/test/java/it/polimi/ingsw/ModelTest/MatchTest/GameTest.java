@@ -321,6 +321,9 @@ public class GameTest {
         });
     }
 
+    /**
+     * This method tests that the wizard with the least tower is correct
+     */
     @Test
     void getWizardWithLeastTowers_Test(){
         int[] nums = {9,4};

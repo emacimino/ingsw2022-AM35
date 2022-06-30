@@ -259,6 +259,9 @@ public class BasicMatch extends Observable implements Serializable {
 
     /**
      * This method checks if an end-of-game condition occurs and the resulting winner
+     * @param player player to be checked
+     * @return if the match has been won
+     *
      */
     public boolean checkVictory(Player player) throws ExceptionGame{
         boolean endOfTheMatch = false;
@@ -405,7 +408,7 @@ public class BasicMatch extends Observable implements Serializable {
 
     /**
      * Get method for teams
-     * @return
+     * @return teams
      * @throws ExceptionGame if the match does not have teams
      */
     public List<List<Player>> getTeams() throws ExceptionGame{
@@ -501,7 +504,7 @@ public class BasicMatch extends Observable implements Serializable {
      * Returns the rival team
      * @param player player you want to know the rival of
      * @return a list of players in the opposing team
-     * @throws ExceptionGame
+     * @throws ExceptionGame if the rivals does not exists
      */
     public List<Player> getRivals(Player player) throws ExceptionGame{
         List<Player> rivals = new ArrayList<>();
@@ -537,7 +540,7 @@ public class BasicMatch extends Observable implements Serializable {
 
     /**
      * toString() method for this class
-     * @return
+     * @return a string that represent the match
      */
     @Override
     public String toString() {

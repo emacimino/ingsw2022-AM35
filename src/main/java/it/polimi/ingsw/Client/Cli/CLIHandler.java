@@ -62,7 +62,7 @@ public class CLIHandler {
     }
 
     private Message askCharacterCardInfoMessage() {
-        String nameCharacter = null;
+        String nameCharacter;
         displayCharacterCardInGame();
         System.out.println();
 
@@ -82,10 +82,6 @@ public class CLIHandler {
         return new AskCharacterCardMessage(nameCharacter);
     }
 
-    /**
-     * This method calls all the sub-methods that print a message
-     * @param message message received
-     */
 
     /**
      * This method that prints the Login info
@@ -360,7 +356,7 @@ public class CLIHandler {
      * @return a message containing an assistant
      */
     private Message createAssistantCardMessage(String assistant) {
-        System.out.println("sono qui in create assistant card");
+        System.out.println("I'm in create assistant card");
         assistant = assistant.toUpperCase();
         if (cli.getRemoteModel().getAssistantsCardsMap().containsKey(assistant)) {
             return new AssistantCardMessage(cli.getRemoteModel().getAssistantsCardsMap().get(assistant));
@@ -447,7 +443,7 @@ public class CLIHandler {
      * @return a message containing the new mother nature's position
      */
     private Message createMoveMotherNatureMessage(String archipelago) {
-        System.out.println("IN CREATE MOVE MOTHER NATURE IN CLIHANDLER");
+        System.out.println("IN CREATE MOVE MOTHER NATURE IN CLI HANDLER");
         Message message = null;
         try {
             Integer indexArch = Integer.parseInt(archipelago);
@@ -469,7 +465,7 @@ public class CLIHandler {
      * @return cloudMessage
      */
     private Message createChooseCloudMessage(String cloud) {
-        System.out.println("IN CREATE CHOOSE CLOUD  IN CLIHANDLER");
+        System.out.println("IN CREATE CHOOSE CLOUD  IN CLI HANDLER");
         Message message = null;
         try {
             int indexCloud = Integer.parseInt(cloud);

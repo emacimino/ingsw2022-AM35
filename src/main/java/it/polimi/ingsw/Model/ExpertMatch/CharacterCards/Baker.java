@@ -32,7 +32,7 @@ public class Baker extends CharacterCard implements InfluenceEffectCard, Seriali
     /**
      * This method lets the player use the card
      * @param match the current match
-     * @throws ExceptionGame
+     * @throws ExceptionGame if the card can't be used for some reason
      */
     @Override
     public void useCard(ExpertMatch match) throws ExceptionGame {

@@ -11,7 +11,6 @@ import it.polimi.ingsw.Model.SchoolsMembers.Color;
 import it.polimi.ingsw.Model.SchoolsMembers.Student;
 import it.polimi.ingsw.Model.Wizard.AssistantsCards;
 import it.polimi.ingsw.Model.Wizard.Board;
-import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.NetworkUtilities.TeamMessage;
 
 import java.util.ArrayList;

@@ -198,7 +198,6 @@ public class TurnController {
      * @param message indicate where to move a student
      */
     private void moveStudentsForThisTurn(MoveStudentMessage message) {
-        RemoteView remoteView = (RemoteView) viewMap.get(activePlayer.getUsername());
         Integer indexStud = message.getStudent();
         Integer indexArch = message.getArchipelago();
         try {

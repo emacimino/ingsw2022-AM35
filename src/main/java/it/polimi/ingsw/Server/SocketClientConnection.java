@@ -31,7 +31,7 @@ public class SocketClientConnection implements Runnable, ClientConnection {
      * Constructor of the class
      * @param socket a new one for each new client
      * @param server the server where the client is connected
-     * @throws IOException if the object in iput or in output could not be created
+     * @throws IOException if the object in input or in output could not be created
      */
     public SocketClientConnection(Socket socket, Server server) throws IOException{
         this.socket = socket;

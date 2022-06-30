@@ -2,6 +2,7 @@
 ![alt text](src/main/resource/Graphics/Background/EriantysMenu.jpeg)
 
 Implementation of the Game [Eriantys](https://www.craniocreations.it/prodotto/eriantys/)
+
 Rules of the Game can be found [here](https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf)
 
 # Documents
@@ -11,24 +12,24 @@ These two diagrams describes how the project was initially thought
 and the last implementation of the project, modified to overcome some critical issues
 during the development
 
-- [Early UML](Deliveries/Javadoc/Model_Uml.png)
-- [Latest UML](//to be added)
+- [Early UML](Deliveries/Final%20UML/Model_Uml.png)
+- [Latest UML](Deliveries/Final UML/ingsw.png)
 
 ### Coverage 
 
-- [Here](//to be added) can be found all the tests with their respective coverage
+- [Here](Deliveries/Test coverage report) can be found all the tests with their respective coverage
 
 #### Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
 |----------------|----------------|-----------------|---------------|
-| __Model__      | 93 %           | 90 %            | 90 %          |
+| __Model__      | 100 %          | 91 %            | 90 %          |
 | __Controller__ | 100 %          | 96 %            | 72 %          |
 
 
 
 ### Javadoc
 
-- [Here](//to be added) can be found all the documentation about most of the project,
+- [Here](Deliveries/Javadoc) can be found all the documentation about most of the project,
 includes classes and methods used
 
 ### Plugins and libraries

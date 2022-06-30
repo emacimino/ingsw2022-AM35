@@ -1,10 +1,9 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.GameState;
-import it.polimi.ingsw.NetworkUtilities.*;
-import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.NetworkUtilities.EndMatchMessage;
+import it.polimi.ingsw.NetworkUtilities.Message;
 import it.polimi.ingsw.Server.SocketClientConnection;
-import it.polimi.ingsw.Model.ExpertMatch.CharacterCards.CharacterCard;
 
 public class RemoteView extends ViewInterface   {
 
