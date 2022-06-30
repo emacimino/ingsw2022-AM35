@@ -55,7 +55,6 @@ public class LoginSceneController extends GenericSceneController implements Init
 
     /**
      * This method is used to send the login information on a button press
-     * @param event user input
      */
     @FXML
     public void loginBtnClick(){
