@@ -13,7 +13,7 @@ and the last implementation of the project, modified to overcome some critical i
 during the development
 
 - [Early UML](Deliveries/Final%20UML/Model_Uml.png)
-- [Latest UML](Deliveries/Final UML/ingsw_final_uml.png)
+- [Latest UML](Deliveries/Final%20UML/ingsw_final_uml.png)
 
 ### Coverage Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
