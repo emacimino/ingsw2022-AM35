@@ -13,11 +13,7 @@ and the last implementation of the project, modified to overcome some critical i
 during the development
 
 - [Early UML](Deliveries/Final%20UML/Model_Uml.png)
-- [Latest UML](Deliveries/Final UML/ingsw.png)
-
-### Coverage 
-
-- [Here](Deliveries/Test coverage report) can be found all the tests with their respective coverage
+- [Latest UML](Deliveries/Final UML/ingsw final uml.png)
 
 ### Coverage Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
@@ -33,11 +29,11 @@ during the development
 includes classes and methods used
 
 ### Plugins and libraries
-| Plugin/Library| Description                                        |
-|----------------|----------------------------------------------------|
-| __Maven__      | Software project management and comprehension tool |
-| __JavaFx__     | Graphics library used to create user interfaces    |
-| __JUnit__      | Unit Testing Framework                             |
+| Plugin/Library| Description                                             |
+|----------------|---------------------------------------------------------|
+| __Maven__      | Software project management and comprehension tool      |
+| __JavaFx__     | Graphics library used to create graphic user interfaces |
+| __JUnit__      | Unit Testing Framework                                  |
 
 
 ### Implemented functionalities
