@@ -35,6 +35,14 @@ includes classes and methods used
 | __JavaFx__     | Graphics library used to create graphic user interfaces |
 | __JUnit__      | Unit Testing Framework                                  |
 
+### Communication protocol
+
+- [Communication Protocol](Deliveries/Communication_Protocol.jpg)
+
+### Peer review
+
+- [Peer Review UML](Deliveries/Peer-Review_AM08.pdf)
+- [Peer Review Communication Protocol](Deliveries/PeerReview_AM08.docx)
 
 ### Implemented functionalities
 
