@@ -19,11 +19,11 @@ during the development
 
 - [Here](Deliveries/Test coverage report) can be found all the tests with their respective coverage
 
-#### Quick view
+### Coverage Quick view
 | Package        | Class Coverage | Method Coverage | Line Coverage |
 |----------------|----------------|-----------------|---------------|
 | __Model__      | 100 %          | 91 %            | 90 %          |
-| __Controller__ | 100 %          | 96 %            | 72 %          |
+| __Controller__ | 100 %          | 98 %            | 78 %          |
 
 
 
