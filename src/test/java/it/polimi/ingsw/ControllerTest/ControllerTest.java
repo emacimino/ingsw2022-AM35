@@ -261,7 +261,7 @@ public class ControllerTest {
     /**
      * Method that tests how the controllers handles the character cards played in the game
      */
-    @RepeatedTest(3000)
+    @RepeatedTest(10)
     void characterTest1of12() throws ExceptionGame {
         setControllerInTestExpert();
         controllerExpertMatch2Players.setGameState(GameState.PLANNING_PHASE);
