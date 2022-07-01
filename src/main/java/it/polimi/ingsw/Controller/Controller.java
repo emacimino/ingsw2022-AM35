@@ -68,11 +68,7 @@ public class Controller implements Observer {
             case ACTION_PHASE -> turnController.actionPhaseHandling(receivedMessage);
 
             case GAME_ENDED -> {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                //do nothing
             }
             default-> throw new ExceptionGame("Error: invalid gameState");//should never reach this condition
         }
